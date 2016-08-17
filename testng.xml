@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="CIMM2Touch Automation Suite">
+	<listeners>
+        	<listener class-name="org.cimm2touch.maincontroller.MainController"/>
+        	<listener class-name="org.cimm2touch.utils.ReportGenerator"/>
+  	</listeners>
+  <test name="End to End Testing">
+  
+  	<groups>
+  	<run>
+  	<include name="regression"/>
+  	</run>
+  	</groups>
+    <classes>	
+			<class name="org.cimm2touch.modules.ItemsModuleTest"/>
+     </classes>
+  </test> <!-- Regression Testing -->
+</suite> <!-- CIMM2Touch Automation Suite -->
