@@ -304,7 +304,7 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer {
 
 	@Features(value = {"manufacturer and brands Module"})
 	@Description("This is a test case to display fields in manufacturer list page")
-	@TestCaseId("TC_MB_19, TC_MB_20, TC_MB_21")
+	@TestCaseId("TC_MB_19, TC_MB_20, TC_MB_21,TC_MB_22")
 	@Test(groups = {"regression"})
 	public void viewSortOrderSettings() throws Exception {
 		landingPage()
