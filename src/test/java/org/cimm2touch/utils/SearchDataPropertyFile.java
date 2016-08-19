@@ -1546,5 +1546,95 @@ public String getTaxonomyToSearch() {
 		 
 		return NumaricCharacters;
 	}
+	
+	private String AttributeValue = PropertyFileReader.propertiesReader(searchData, "AttributeValue");
+	 
+	 public String getAttributeValue(){
+			return AttributeValue;
+		}
+	 
+	 private String attributegroup = PropertyFileReader.propertiesReader(searchData, "attributegroup");
+	 
+	 public String getattributegroup(){
+			return attributegroup;
+		}
+	 
+	 private String attributeUOM = PropertyFileReader.propertiesReader(searchData, "attributeUOM");
+	 
+	 public String getattributeUOM(){
+			return attributeUOM;
+		}
+	 
+private String attributesaveMsg = PropertyFileReader.propertiesReader(searchData, "attributesaveMsg");
+	 
+	 public String getattributesaveMsg(){
+			return attributesaveMsg;
+}
+private String ItemNetPrice = PropertyFileReader.propertiesReader(searchData, "ItemNetPrice");
+	 
+	 public String getItemNetPrice(){
+			return ItemNetPrice;
+}
+private String itemPackDesc = PropertyFileReader.propertiesReader(searchData, "itemPackDesc");
+	 
+	 public String getitemPackDesc(){
+			return itemPackDesc;
+}	 
+private String itemUom = PropertyFileReader.propertiesReader(searchData, "itemUom");
+	 
+	 public String getitemUom(){
+			return itemUom;
+}
+private String PricePer = PropertyFileReader.propertiesReader(searchData, "PricePer");
+	 
+	 public String getPricePer(){
+			return PricePer;
+}
+private String minorderQty = PropertyFileReader.propertiesReader(searchData, "minorderQty");
+	 
+	 public String getminorderQty(){
+			return minorderQty;
+}
+	 
+private String Qtyinterval = PropertyFileReader.propertiesReader(searchData, "Qtyinterval");
+	 
+	 public String getQtyinterval(){
+			return Qtyinterval;
+}
+	 
+private String Unspsc = PropertyFileReader.propertiesReader(searchData, "Unspsc");
+	 
+	 public String getUnspsc(){
+			return Unspsc;
+}
+	 
+private String CPN = PropertyFileReader.propertiesReader(searchData, "CPN");
+	 
+	 public String getCPN(){
+			return CPN;
+}
+	 
+private String MaterialGroup = PropertyFileReader.propertiesReader(searchData, "MaterialGroup");
+	 
+	 public String getMaterialGroup(){
+			return MaterialGroup;
+}
+	 
+private String MaterialNumber = PropertyFileReader.propertiesReader(searchData, "MaterialNumber");
+	 
+	 public String getMaterialNumber(){
+			return MaterialNumber;
+}
+private String ItemStatus = PropertyFileReader.propertiesReader(searchData, "ItemStatus");
+	 
+	 public String getItemStatus(){
+			return ItemStatus;
+}
+
+private String CPHistoryTitle = PropertyFileReader.propertiesReader(searchData, "CPHistoryTitle");
+	 
+	 public String getCPHistoryTitle(){
+			return CPHistoryTitle;
+}	 
 
 }

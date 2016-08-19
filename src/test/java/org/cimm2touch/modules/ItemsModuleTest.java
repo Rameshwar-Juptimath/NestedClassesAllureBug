@@ -20,7 +20,225 @@ public class ItemsModuleTest extends PageFactoryInitializer {
 	
 	SearchDataPropertyFile data = new SearchDataPropertyFile();
 	ApplicationSetUpPropertyFile setUp = new ApplicationSetUpPropertyFile();
+	
+	
+	@Features(value = {"Items Module"})
+	@Description("This is a test case which verifies display of records per page based on the filter chosen. 25,50,75,100 are the filter values.")
+	@TestCaseId("TC_ITEMS_002")
+	@Test(groups={"smoke","regression"})
+	public void verifyDisplayOfNumberRecordsChosen() throws Exception{
+		/*
+		 * @author:hemanth.sridhar
+		 * 
+		 */
+		data.setNumberOfRecordsToDisplay("10");
+		landingPage()
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+		.clickOnLogin()
+		.homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
+		.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
+		data.setNumberOfRecordsToDisplay("25");
+		itemsPage().selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
+		.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
+		data.setNumberOfRecordsToDisplay("50");
+		itemsPage().selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
+		.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
+		data.setNumberOfRecordsToDisplay("75");
+		itemsPage().selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
+		.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
+		data.setNumberOfRecordsToDisplay("100");
+		itemsPage().selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
+		.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
+	}
 
+	@Features(value = {"Items Module"})
+	@Description("This is a test case which verifies the fields in items page when we click show fields under the settings button.")
+	@TestCaseId("TC_ITEMS_003")
+	@Test(groups="regression")
+	public void verifyShowFieldsInItemsPage() throws Exception{
+		/*
+		 * @author:hemanth.sridhar
+		 * 
+		 */
+		String [] dynamicSettingsTableHeadings = data.getDynamicSettingsTableHeadings().split(",");
+		String [] dynamicSettingsTableFieldNames = data.getDynamicSettingsTableFieldNames().split(",");
+		String [] displayNamesInDynamicSettingsTableLocator = data.getDisplayNamesInDynamicSettingsTableLocator().split(",");
+		landingPage()
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+		.clickOnLogin()
+		.homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.clickOnSettingsIcon()
+		.clickShowFields()
+		.verifyShowFieldsTableHeadingsInItemsPage(dynamicSettingsTableHeadings)
+		.verifyFieldNames(dynamicSettingsTableFieldNames)
+		.verifyDisplayNames(displayNamesInDynamicSettingsTableLocator);
+	}
+
+	@Features(value = {"Items Module"})
+	@Description("This is a test case which verifies the field that is selected is getting displayed as a column in the items list page. It also verifies that when the field is deselected the column should not get displayed.")
+	@TestCaseId("TC_ITEMS_004")
+	@Test(groups="regression")
+	public void verifySelectedFieldIsDisplayedInItemsPage() throws Exception {
+		/*
+		 * @author:hemanth.sridhar
+		 * 
+		 */
+		landingPage()
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+		.clickOnLogin()
+		.homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.clickOnSettingsIcon()
+		.clickShowFields()
+		.selectCheckboxOfManufacturerPartNumberInDesktopViewForAdding()
+		.clickOnSaveButton()
+		.verifyDisplayOfManufacturerPartNumberColumn()
+		.clickShowFields()
+		.selectCheckboxOfManufacturerPartNumberInDesktopViewForRemoving()
+		.clickOnSaveButton()
+		.verifyManufacturerPartNumberColumnIsNotDisplayed();
+	}
+	
+	@Features(value = {"Items Module"})
+	@Description("This is a test case which verifies the taxonomy tree in the left side of the items list page")
+	@TestCaseId("TC_ITEMS_006")
+	@Test(groups="regression")
+	public void verifyAttributesInTaxonomyTree() throws Exception {
+		/*
+		 * @author:hemanth.sridhar
+		 * 
+		 */
+		String defaultTaxonomy = landingPage()
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+		.clickOnLogin()
+		.homePage()
+		.clickOnItemsLink()
+		.homePage()
+		.clickOnLeftNavigationbar()
+		.itemsPage()
+		.verifySearchTextboxInLeftNavigationbar()
+		.verifyEditTaxonomyTree()
+		.verifyFilterTaxonomyTree()
+		.verifyClearTaxonomyTree()
+		.verifyCollapseTaxonomyTree()
+		.verifyRefreshTaxonomyTree()
+		.verifySearchIconTaxonomyTree()
+		.verifyDisplayOfLevelOneCategories()
+		.homePage()
+		.clickOnSystemSettingsLink()
+		.systemSettingsPage()
+		.getDefaultTaxonomy();
+		homePage()
+		.clickOnItemsLink()
+		.homePage()
+		.clickOnLeftNavigationbar()
+		.itemsPage()
+		.verifyDefaultTaxonomyInTaxonomyTree(defaultTaxonomy);
+	}
+	
+	@Features(value = {"Items Module"})
+	@Description("This is a test case which verifies the search functionality in the taxonomy tree.")
+	@TestCaseId("TC_ITEMS_007")
+	@Test(groups="regression")
+	public void verifySearchInTaxonomyTree() throws Exception {
+		landingPage()
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+		.clickOnLogin()
+		.homePage()
+		.clickOnItemsLink()
+		.homePage()
+		.clickOnLeftNavigationbar()
+		.itemsPage()
+		.enterSearchCategory(data.getCategoryToSearch())
+		.clickOnSearchCategory()
+		.verifyWhetherSearchedTaxonomyStyleIsGreen(data.getCategoryToSearch());
+	}
+	
+	@Features(value = {"Items Module"})
+	@Description("This is a test case which verifies the refresh functionality in the taxonomy tree.")
+	@TestCaseId("TC_ITEMS_008")
+	@Issues(value = { @Issue(value = "CIM-901") })
+	@Test(groups="regression")
+	public void verifyRefreshInTaxonomyTree() throws Exception {
+		/*
+		 * @author:hemanth.sridhar
+		 * 
+		 */
+		landingPage()
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+		.clickOnLogin()
+		.homePage()
+		.clickOnItemsLink()
+		.homePage()
+		.clickOnLeftNavigationbar()
+		.itemsPage()
+		.enterSearchCategory(data.getCategoryToSearch())
+		.clickOnSearchCategory()
+		.verifyWhetherSearchedTaxonomyStyleIsGreen(data.getCategoryToSearch())
+		.verifyWhetherValueContainsTextInsideTheTextbox(data.getCategoryToSearch())
+		.clickOnRefresh()
+		.verifyWhetherSearchedTaxonomyStyleIsNotGreen(data.getCategoryToSearch())
+		.verifyClearingOfSearchTextbox(data.getCategoryToSearch());
+	}
+	
+	@Features(value = {"Items Module"})
+	@Description("This is a test case which verifies adding and clearing filter functionality in the taxonomy tree completely.")
+	@TestCaseId("TC_ITEMS_013,TC_ITEMS_014")
+	@Test(groups="regression")
+	public void verifyAddingAndClearingOfFilter() throws Exception {
+		/*
+		 * @author:hemanth.sridhar
+		 * 
+		 */
+		 landingPage()
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+		.clickOnLogin()
+		.homePage()
+		.clickOnItemsLink()
+		.homePage()
+		.clickOnLeftNavigationbar()
+		.itemsPage()
+		.clickOnSpecificCategory(data.getCategoryToSearch())
+		.clickOnFilter()
+		.homePage()
+		.clickOnLeftNavigationbar()
+		.itemsPage()
+		.verifyCategoryChosenIsSelected(data.getCategoryToSearch())
+		.homePage().clickOnLeftNavigationbar()
+		.itemsPage()
+		.clickOnRemoveFilter()
+		.homePage()
+		.clickOnLeftNavigationbar()
+		.itemsPage()
+		.verifyCategoryChosenIsNotSelected(data.getCategoryToSearch())
+		.homePage()
+		.clickOnLeftNavigationbar()
+		.itemsPage()
+		.clickOnSpecificCategory(data.getCategoryToSearch())
+		.clickOnFilter()
+		.clickOnSpecificEditButton(1)
+		.editItemsPage()
+		.clickOnCategorizationTab()
+		.verifyWhetherTheProductBelongsToTheCategory(data.getCategoryToSearch())
+		.homePage()
+		.clickOnLeftNavigationbar()
+		.itemsPage()
+		.verifyWhetherTheCategoryIsHighLighted(data.getCategoryToSearch());
+	}
+	
 	@Features(value = {"Items Module"})
 	@Description("This is a test case which verifies searching an item general search in Item List page")
 	@TestCaseId("TC_ITEMS_016,TC_ITEMS_017,TC_ITEMS_020,TC_ITEMS_021,TC_ITEMS_022")
@@ -61,7 +279,157 @@ public class ItemsModuleTest extends PageFactoryInitializer {
 		.addNewItemPage()
 		.verifyTextboxValidation(fieldName,textToBeEnteredInTheTextbox,Integer.parseInt(maximumNumberOfCharactersAcceptedByTheTexbox));
 	}
-
+	
+	@Features(value = {"Items Module"})
+	@Description("This is a test case which verifies add new items page.")
+	@TestCaseId("TC_ITEMS_023")
+	@Test(groups="regression")
+	public void verifyRightNavigationBarInAddNewItemsPage() throws Exception {
+		/*
+		 * @author:hemanth.sridhar
+		 * 
+		 */
+		landingPage()
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+		.clickOnLogin()
+		.homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.clickOnAddNewItem()
+		.addNewItemPage()
+		.verifyEnableAndDisableOfTabs()
+		.verifyAllMandatoryFields(data.getAllMandatoryFieldsInAddNewItemsPage().split(","))
+		//.homePage()
+		//.clickOnRightNavigationBar()
+		//.addNewItemPage()
+		.verifyAttributtesInTheRightNavigationBar(data.getAttributesInRightNavigationBarOfAddNewItemsPage().split(","));
+	}
+	
+	 @Features(value = {"Items Module"})
+	 @Description("This is a test case which verifies adding new items")
+	 @TestCaseId("TC_ITEMS_024")
+	 @Test(groups={"regression"})
+		public void verifyAddingNewItem() throws Exception
+		{
+		 /*
+		  * @author:hemanth.sridhar
+		  * 
+		  */
+		  landingPage()
+		   .enterUsername( data.getUserName())
+		   .enterPassword(data.getPassword())
+		   .clickOnLogin()
+		   .homePage()
+		   .clickOnItemsLink()
+		   .itemsPage()
+		   .clickOnAddNewItem()
+		   .addNewItemPage()
+		   .clickOnManufacturerDropdown()
+		   .selectManufacturerField(data.getmanufacturername())
+		   .enterPartNumberField(data.getPartNumberField())
+		   .clickOnBrandDropdown()
+		   .selectBrandField(data.getBrnadName())
+		   .clickOnSaveButtonLink()
+		   .verifyItemSavedSuccessfulMessage(data.getItemSavedSuccessfulMessage()); 
+		} 
+	
+	
+	@Features(value = {"Items Module"})
+	@Description("This is a test case which verifies the error message when save is clicked without entering details.")
+	@TestCaseId("{0}")
+	//TC_ITEMS_025,26,27
+	@Test(groups="regression",dataProvider="excelSheetDataRead",dataProviderClass=SearchData.class)
+	public void verifyErrorMessageWhenSaveIsClickedWithoutEnteringMandatoryFields(String testCaseId,@Parameter("manufacturer Part Number") String manufacturerPartNumber,@Parameter("Part Number")String partNumber,@Parameter("Brand") String brand,@Parameter("Error Message") String errorMessage) throws Exception {
+		/*
+		 * @author:hemanth.sridhar
+		 * 
+		 */
+		landingPage()
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+		.clickOnLogin()
+		.homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.clickOnAddNewItem()
+		.addNewItemPage()
+		.enterManufacturerPartNumber(manufacturerPartNumber)
+		.enterPartNumber(partNumber)
+		.enterBrand(brand)
+		.clickOnSave()
+		.verifyErrorMessage(errorMessage.split(","));
+	}
+	
+	@Features(value = {"Items Module"})
+	@Description("This is a test case which verifies Item status dropdown.")
+	@TestCaseId("{0}")
+	//TC_ITEMS_032
+	@Test(groups="regression",dataProvider="excelSheetDataRead",dataProviderClass=SearchData.class)
+	public void verifyItemStatusDropdown(String testCaseId,@Parameter("Item Status Options") String statusOptions,@Parameter("Corresponding values for each status") String valueForEachStatus) throws Exception {
+		/*
+		 * @author:hemanth.sridhar
+		 * 
+		 */
+		landingPage()
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+		.clickOnLogin()
+		.homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.clickOnAddNewItem()
+		.addNewItemPage()
+		.selectAndVerifyItemStatusOptions(statusOptions.split(","),valueForEachStatus.split(","));
+	}
+	
+	
+	@Features(value = {"Items Module"})
+	@Description("This is a test case which verifies the existence of display online,drop ship and print checkboxes.")
+	@TestCaseId("{0}")
+	//TC_ITEMS_033,TC_ITEMS_034,TC_ITEMS_035
+	@Test(groups="regression",dataProvider="excelSheetDataRead",dataProviderClass=SearchData.class)
+	public void verifyCheckboxesInAddNewItemsPage(String testcase,@Parameter("Checkbox under test")String checkbox) throws Exception {
+		/*
+		 * @author:hemanth.sridhar
+		 * 
+		 */
+		landingPage()
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+		.clickOnLogin()
+		.homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.clickOnAddNewItem()
+		.addNewItemPage()
+		.verifyCheckboxes(checkbox);
+	}
+	
+	@Features(value = {"Items Module"})
+	@Description("This is a test case which verifies that on clicking the results link in the right navigation bar of edit items page opens items list page.")
+	@TestCaseId("TC_ITEMS_053")
+	@Test(groups="regression")
+	public void verifyResultsLinkInEditItemsPage() throws Exception {
+		/*
+		 * @author:hemanth.sridhar
+		 * 
+		 */
+		landingPage()
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+		.clickOnLogin()
+		.homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.clickOnSpecificEditButton(1)
+		.homePage()
+		.clickOnRightNavigationBar()
+		.editItemsPage()
+		.clickOnResultsLink()
+		.itemsPage()
+		.verifyItemsPageBreadCrump();
+	}
 	
 	@Features(value = {"Items Module"})
 	@Description("This Test case verifies Select Workbook drop down")
@@ -346,7 +714,30 @@ public class ItemsModuleTest extends PageFactoryInitializer {
 		.deleteItem(data.getPartNumberField());	
 	}
 	
-	
+	@Features(value = {"Items Module"})
+	@Description("This is a test case which verifies that on clicking the item link in the right navigation bar of edit items page opens edit items list page.")
+	@TestCaseId("TC_ITEMS_054")
+	@Test(groups="regression")
+	public void verifyItemLinkInEditItemsPage() throws Exception {
+	String itemId =	landingPage()
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+		.clickOnLogin()
+		.homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.clickOnSpecificEditButton(1)
+		.editItemsPage()
+		.getCimmItemId();
+		String getBreadCrump = editItemsPage()
+		.getEditItemsBreadCrump();
+		homePage()
+		.clickOnRightNavigationBar()
+		.editItemsPage()
+		.clickOnItemLink()
+		.editItemsPage()
+		.verifyEditItemsBreadCrumbAndCimmItemIdValue(getBreadCrump,itemId);
+	}
 		
 	@Features(value = {"Items Module"})
 	@Description("This Test case verifies the general info tab in edit item page")
@@ -453,7 +844,26 @@ public class ItemsModuleTest extends PageFactoryInitializer {
 		.itemsPage()
 		.deleteItem(data.getPartNumberField());	
 	}
-	
+	@Features(value = {"Items Module"})
+	@Description("This is a test case which verifies history link. ")
+	@TestCaseId("TC_ITEMS_61")
+	@Test(groups="regression")
+	public void verifyHistoryLink() throws Exception {
+		landingPage()
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+		.clickOnLogin()
+		.homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.clickOnSpecificEditButton(1)
+		.editItemsPage()
+		.clickOnHistoryLink()
+		.verifyAlertMsg(data.getAlertTextWhenHistoryIsClicked());
+		TestUtility.switchToRecentWindow();
+		historyPage()
+		.verifyPageTitle(data.getExpectedHistoryPageTitle());
+	}
 	@Features(value = {"Items Module"})
 	@Description("This Test case verifies contents in Description tab in item edit")
 	@TestCaseId("TC_ITEMS_62")
@@ -1413,9 +1823,73 @@ public class ItemsModuleTest extends PageFactoryInitializer {
 	}
 	
 	
-
+	@Features(value = {"Items Module"})
+	@Description("This is a test case which verifies 3 tabs - Setup Linked items, Available Linked items,List Item Link Types. ")
+	@TestCaseId("TC_ITEMS_103")
+	@Test(groups="regression")
+	public void verifyTabsUnderLinkedItems() throws Exception {
+		/*
+		 * @author:hemanth.sridhar,yogish.mt
+		 * 
+		 */
+		landingPage()
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+		.clickOnLogin()
+		 .homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.clickOnAddNewItem()
+		.addNewItemPage()
+		.clickOnManufacturerDropdown()
+		.selectManufacturerField(data.getmanufacturername())
+		.enterPartNumberField(data.getPartNumberField())
+		.clickOnBrandDropdown()
+		.selectBrandField(data.getBrnadName())
+		.clickOnSaveButtonLink()
+		.verifyItemSavedSuccessfulMessage(data.getItemSavedSuccessfulMessage())
+		.editItemsPage()
+		.clickOnLinkedItemsTab()
+		.verifyTabsUnderLinkedItemsTab()
+		.homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.deleteItem(data.getPartNumberField());
+	}
 	
-	
+	@Features(value = {"Items Module"})
+	@Description("This is a test case which verifies set up linked items tab. ")
+	@TestCaseId("TC_ITEMS_104")
+	@Test(groups="regression")
+	public void verifyTabsSetUpLinkedItemsTab() throws Exception {
+		/*
+		 * @author:hemanth.sridhar,yogish.mt
+		 * 
+		 */
+		landingPage()
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+		.clickOnLogin()
+		 .homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.clickOnAddNewItem()
+		.addNewItemPage()
+		.clickOnManufacturerDropdown()
+		.selectManufacturerField(data.getmanufacturername())
+		.enterPartNumberField(data.getPartNumberField())
+		.clickOnBrandDropdown()
+		.selectBrandField(data.getBrnadName())
+		.clickOnSaveButtonLink()
+		.verifyItemSavedSuccessfulMessage(data.getItemSavedSuccessfulMessage())
+		.editItemsPage()
+		.clickOnLinkedItemsTab()
+		.verifySetUpLinkedItemsTab(data.getExepectedSearchInDropdownValues().split(","))
+		.homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.deleteItem(data.getPartNumberField());
+	}
 	
 	@Features(value = {"Items Module"})
 	@Description("This is a test case which verifies the content in Available Linked Items tab in lineked list items tab")
@@ -1565,7 +2039,8 @@ public class ItemsModuleTest extends PageFactoryInitializer {
 		.deleteItem(data.getPartNumberField());
 	}
 	
-
+	
+	
 	@Features(value = {"Items Module"})
 	@Description("This Test case verifies add item to subset and validating all fields in custom prices tab")
 	@TestCaseId("TC_ITEMS_118,")
@@ -1600,413 +2075,199 @@ public class ItemsModuleTest extends PageFactoryInitializer {
 		.deleteItem(data.getPartNumberField());
 	}
 	
-	
-	
 	@Features(value = {"Items Module"})
-	@Description("This is a test case which verifies display of records per page based on the filter chosen. 25,50,75,100 are the filter values.")
-	@TestCaseId("TC_ITEMS_002")
-	@Test(groups={"smoke","regression"})
-	public void verifyDisplayOfNumberRecordsChosen() throws Exception{
-	
-		data.setNumberOfRecordsToDisplay("10");
+	@Description("This Test case verifies fields in attributes tab")
+	@TestCaseId("TC_ITEMS_115,")
+	@Test(groups="regression")
+	public void ItemAttributesTab() throws Exception {
+		/*
+		 * @author:yogish.mt
+		 * 
+		 */
 		landingPage()
 		.enterUsername(data.getUserName())
 		.enterPassword(data.getPassword())
 		.clickOnLogin()
-		.homePage()
-		.clickOnItemsLink()
-		.itemsPage()
-		.selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
-		.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
-		data.setNumberOfRecordsToDisplay("25");
-		itemsPage().selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
-		.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
-		data.setNumberOfRecordsToDisplay("50");
-		itemsPage().selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
-		.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
-		data.setNumberOfRecordsToDisplay("75");
-		itemsPage().selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
-		.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
-		data.setNumberOfRecordsToDisplay("100");
-		itemsPage().selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
-		.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
-	}
-
-	@Features(value = {"Items Module"})
-	@Description("This is a test case which verifies the fields in items page when we click show fields under the settings button.")
-	@TestCaseId("TC_ITEMS_003")
-	@Test(groups="regression")
-	public void verifyShowFieldsInItemsPage() throws Exception{
-		String [] dynamicSettingsTableHeadings = data.getDynamicSettingsTableHeadings().split(",");
-		String [] dynamicSettingsTableFieldNames = data.getDynamicSettingsTableFieldNames().split(",");
-		String [] displayNamesInDynamicSettingsTableLocator = data.getDisplayNamesInDynamicSettingsTableLocator().split(",");
-		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
-		.clickOnLogin()
-		.homePage()
-		.clickOnItemsLink()
-		.itemsPage()
-		.clickOnSettingsIcon()
-		.clickShowFields()
-		.verifyShowFieldsTableHeadingsInItemsPage(dynamicSettingsTableHeadings)
-		.verifyFieldNames(dynamicSettingsTableFieldNames)
-		.verifyDisplayNames(displayNamesInDynamicSettingsTableLocator);
-	}
-
-	@Features(value = {"Items Module"})
-	@Description("This is a test case which verifies the field that is selected is getting displayed as a column in the items list page. It also verifies that when the field is deselected the column should not get displayed.")
-	@TestCaseId("TC_ITEMS_004")
-	@Test(groups="regression")
-	public void verifySelectedFieldIsDisplayedInItemsPage() throws Exception {
-		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
-		.clickOnLogin()
-		.homePage()
-		.clickOnItemsLink()
-		.itemsPage()
-		.clickOnSettingsIcon()
-		.clickShowFields()
-		.selectCheckboxOfManufacturerPartNumberInDesktopViewForAdding()
-		.clickOnSaveButton()
-		.verifyDisplayOfManufacturerPartNumberColumn()
-		.clickShowFields()
-		.selectCheckboxOfManufacturerPartNumberInDesktopViewForRemoving()
-		.clickOnSaveButton()
-		.verifyManufacturerPartNumberColumnIsNotDisplayed();
-	}
-	
-	@Features(value = {"Items Module"})
-	@Description("This is a test case which verifies the taxonomy tree in the left side of the items list page")
-	@TestCaseId("TC_ITEMS_006")
-	@Test(groups="regression")
-	public void verifyAttributesInTaxonomyTree() throws Exception {
-		String defaultTaxonomy = landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
-		.clickOnLogin()
-		.homePage()
-		.clickOnItemsLink()
-		.homePage()
-		.clickOnLeftNavigationbar()
-		.itemsPage()
-		.verifySearchTextboxInLeftNavigationbar()
-		.verifyEditTaxonomyTree()
-		.verifyFilterTaxonomyTree()
-		.verifyClearTaxonomyTree()
-		.verifyCollapseTaxonomyTree()
-		.verifyRefreshTaxonomyTree()
-		.verifySearchIconTaxonomyTree()
-		.verifyDisplayOfLevelOneCategories()
-		.homePage()
-		.clickOnSystemSettingsLink()
-		.systemSettingsPage()
-		.getDefaultTaxonomy();
-		homePage()
-		.clickOnItemsLink()
-		.homePage()
-		.clickOnLeftNavigationbar()
-		.itemsPage()
-		.verifyDefaultTaxonomyInTaxonomyTree(defaultTaxonomy);
-	}
-	
-	@Features(value = {"Items Module"})
-	@Description("This is a test case which verifies the search functionality in the taxonomy tree.")
-	@TestCaseId("TC_ITEMS_007")
-	@Test(groups="regression")
-	public void verifySearchInTaxonomyTree() throws Exception {
-		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
-		.clickOnLogin()
-		.homePage()
-		.clickOnItemsLink()
-		.homePage()
-		.clickOnLeftNavigationbar()
-		.itemsPage()
-		.enterSearchCategory(data.getCategoryToSearch())
-		.clickOnSearchCategory()
-		.verifyWhetherSearchedTaxonomyStyleIsGreen(data.getCategoryToSearch());
-	}
-	
-	@Features(value = {"Items Module"})
-	@Description("This is a test case which verifies the refresh functionality in the taxonomy tree.")
-	@TestCaseId("TC_ITEMS_008")
-	@Issues(value = { @Issue(value = "CIM-901") })
-	@Test(groups="regression")
-	public void verifyRefreshInTaxonomyTree() throws Exception {
-		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
-		.clickOnLogin()
-		.homePage()
-		.clickOnItemsLink()
-		.homePage()
-		.clickOnLeftNavigationbar()
-		.itemsPage()
-		.enterSearchCategory(data.getCategoryToSearch())
-		.clickOnSearchCategory()
-		.verifyWhetherSearchedTaxonomyStyleIsGreen(data.getCategoryToSearch())
-		.verifyWhetherValueContainsTextInsideTheTextbox(data.getCategoryToSearch())
-		.clickOnRefresh()
-		.verifyWhetherSearchedTaxonomyStyleIsNotGreen(data.getCategoryToSearch())
-		.verifyClearingOfSearchTextbox(data.getCategoryToSearch());
-	}
-	
-	@Features(value = {"Items Module"})
-	@Description("This is a test case which verifies adding and clearing filter functionality in the taxonomy tree completely.")
-	@TestCaseId("TC_ITEMS_013,TC_ITEMS_014")
-	@Test(groups="regression")
-	public void verifyAddingAndClearingOfFilter() throws Exception {
-		 landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
-		.clickOnLogin()
-		.homePage()
-		.clickOnItemsLink()
-		.homePage()
-		.clickOnLeftNavigationbar()
-		.itemsPage()
-		.clickOnSpecificCategory(data.getCategoryToSearch())
-		.clickOnFilter()
-		.homePage()
-		.clickOnLeftNavigationbar()
-		.itemsPage()
-		.verifyCategoryChosenIsSelected(data.getCategoryToSearch())
-		.homePage().clickOnLeftNavigationbar()
-		.itemsPage()
-		.clickOnRemoveFilter()
-		.homePage()
-		.clickOnLeftNavigationbar()
-		.itemsPage()
-		.verifyCategoryChosenIsNotSelected(data.getCategoryToSearch())
-		.homePage()
-		.clickOnLeftNavigationbar()
-		.itemsPage()
-		.clickOnSpecificCategory(data.getCategoryToSearch())
-		.clickOnFilter()
-		.clickOnSpecificEditButton(1)
-		.editItemsPage()
-		.clickOnCategorizationTab()
-		.verifyWhetherTheProductBelongsToTheCategory(data.getCategoryToSearch())
-		.homePage()
-		.clickOnLeftNavigationbar()
-		.itemsPage()
-		.verifyWhetherTheCategoryIsHighLighted(data.getCategoryToSearch());
-	}
-	
-	
-	
-	@Features(value = {"Items Module"})
-	@Description("This is a test case which verifies add new items page.")
-	@TestCaseId("TC_ITEMS_023")
-	@Test(groups="regression")
-	public void verifyRightNavigationBarInAddNewItemsPage() throws Exception {
-		
-		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
-		.clickOnLogin()
-		.homePage()
+		 .homePage()
 		.clickOnItemsLink()
 		.itemsPage()
 		.clickOnAddNewItem()
 		.addNewItemPage()
-		.verifyEnableAndDisableOfTabs()
-		.verifyAllMandatoryFields(data.getAllMandatoryFieldsInAddNewItemsPage().split(","))
+		.clickOnManufacturerDropdown()
+		.selectManufacturerField(data.getmanufacturername())
+		.enterPartNumberField(data.getPartNumberField())
+		.clickOnBrandDropdown()
+		.selectBrandField(data.getBrnadName())
+		.clickOnSaveButtonLink()
+		.verifyItemSavedSuccessfulMessage(data.getItemSavedSuccessfulMessage())
+		.editItemsPage()
+		.clickOnAttributesTab()
+		.verifyAttributesTabFileds()
 		.homePage()
-		.clickOnRightNavigationBar()
-		.addNewItemPage()
-		.verifyAttributtesInTheRightNavigationBar(data.getAttributesInRightNavigationBarOfAddNewItemsPage().split(","));
+		.clickOnItemsLink()
+		.itemsPage()
+		.deleteItem(data.getPartNumberField());
 	}
 	
-	 @Features(value = {"Items Module"})
-	 @Description("This is a test case which verifies adding new items")
-	 @TestCaseId("TC_ITEMS_024")
-	 @Test(groups={"regression"})
-		public void verifyAddingNewItem() throws Exception
-		{
-		  
-		  landingPage()
-		   .enterUsername( data.getUserName())
-		   .enterPassword(data.getPassword())
-		   .clickOnLogin()
-		   .homePage()
-		   .clickOnItemsLink()
-		   .itemsPage()
-		   .clickOnAddNewItem()
-		   .addNewItemPage()
-		   .clickOnManufacturerDropdown()
-		   .selectManufacturerField(data.getManufacturerDropdownValue())
-		   .enterPartNumberField(data.getPartNumberField())
-		   .clickOnBrandDropdown()
-		   .selectBrandField(data.getBrandDropDownValue())
-		   .clickOnSaveButtonLink()
-		   .verifyItemSavedSuccessfulMessage(data.getItemSavedSuccessfulMessage()); 
-		} 
-	
-	
 	@Features(value = {"Items Module"})
-	@Description("This is a test case which verifies the error message when save is clicked without entering details.")
-	@TestCaseId("{0}")
-	@Test(groups="regression",dataProvider="excelSheetDataRead",dataProviderClass=SearchData.class)
-	public void verifyErrorMessageWhenSaveIsClickedWithoutEnteringMandatoryFields(String testCaseId,@Parameter("Manufacturer Part Number") String manufacturerPartNumber,@Parameter("Part Number")String partNumber,@Parameter("Brand") String brand,@Parameter("Error Message") String errorMessage) throws Exception {
-		
+	@Description("This Test case verifies adding and assinging attributes values tab")
+	@TestCaseId("TC_ITEMS_116,")
+	@Test(groups="regression")
+	public void AddingAttributeValue() throws Exception {
+		/*
+		 * @author:yogish.mt
+		 * 
+		 */
 		landingPage()
 		.enterUsername(data.getUserName())
 		.enterPassword(data.getPassword())
 		.clickOnLogin()
-		.homePage()
+		 .homePage()
 		.clickOnItemsLink()
 		.itemsPage()
 		.clickOnAddNewItem()
 		.addNewItemPage()
-		.enterManufacturerPartNumber(manufacturerPartNumber)
-		.enterPartNumber(partNumber)
-		.enterBrand(brand)
-		.clickOnSave()
-		.verifyErrorMessage(errorMessage.split(","));
+		.clickOnManufacturerDropdown()
+		.selectManufacturerField(data.getmanufacturername())
+		.enterPartNumberField(data.getPartNumberField())
+		.clickOnBrandDropdown()
+		.selectBrandField(data.getBrnadName())
+		.clickOnSaveButtonLink()
+		.verifyItemSavedSuccessfulMessage(data.getItemSavedSuccessfulMessage())
+		.editItemsPage()
+		.clickOnAttributesTab()
+		.AddingValueToAttributes(data.getAttributeValue(),data.getattributeUOM(),data.getattributegroup())
+		.VerifyAttributeValueMsg(data.getattributesaveMsg())
+		.homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.deleteItem(data.getPartNumberField());
 	}
 	
 	@Features(value = {"Items Module"})
-	@Description("This is a test case which verifies Item status dropdown.")
-	@TestCaseId("{0}")
-	@Test(groups="regression",dataProvider="excelSheetDataRead",dataProviderClass=SearchData.class)
-	public void verifyItemStatusDropdown(String testCaseId,@Parameter("Item Status Options") String statusOptions,@Parameter("Corresponding values for each status") String valueForEachStatus) throws Exception {
+	@Description("This Test case verifies adding data to all the fileds in custom prices tab")
+	@TestCaseId("TC_ITEMS_119,120.121,122,123,124,125,126,127,128,129,130")
+	@Test(groups="regression")
+	public void CustomPricesdataVerificationTab() throws Exception {
+		/*
+		 * @author:yogish.mt
+		 * 
+		 */
 		landingPage()
 		.enterUsername(data.getUserName())
 		.enterPassword(data.getPassword())
 		.clickOnLogin()
-		.homePage()
+		 .homePage()
 		.clickOnItemsLink()
 		.itemsPage()
 		.clickOnAddNewItem()
 		.addNewItemPage()
-		.selectAndVerifyItemStatusOptions(statusOptions.split(","),valueForEachStatus.split(","));
+		.clickOnManufacturerDropdown()
+		.selectManufacturerField(data.getmanufacturername())
+		.enterPartNumberField(data.getPartNumberField())
+		.clickOnBrandDropdown()
+		.selectBrandField(data.getBrnadName())
+		.clickOnSaveButtonLink()
+		.verifyItemSavedSuccessfulMessage(data.getItemSavedSuccessfulMessage())
+		.editItemsPage()
+		.clickOnCustomPricesTab()
+		.CheckuncheckOverpricecheckbox()
+		.CheckuncheckIFPcheckbox()
+		.EnterNetPrice(data.getItemNetPrice())
+		.EnterpackageDescription(data.getitemPackDesc())
+		.EnterItemUOM(data.getitemUom())
+		.EnterPricePer(data.getPricePer())
+		.EnterMinorderQTY(data.getminorderQty())
+		.EnterQtyInteral(data.getQtyinterval())
+		.EnterCPN(data.getCPN())
+		.EnterMaterialGroup(data.getMaterialGroup())
+		.EnterMaterialNumber(data.getMaterialNumber())
+		.EnterUnspsc(data.getUnspsc())
+		.homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.deleteItem(data.getPartNumberField());
 	}
 	
-	
 	@Features(value = {"Items Module"})
-	@Description("This is a test case which verifies the existence of display online,drop ship and print checkboxes.")
-	@TestCaseId("{0}")
-	//TC_ITEMS_033,TC_ITEMS_034,TC_ITEMS_035
-	@Test(groups="regression",dataProvider="excelSheetDataRead",dataProviderClass=SearchData.class)
-	public void verifyCheckboxesInAddNewItemsPage(String testcase,@Parameter("Checkbox under test")String checkbox) throws Exception {
+	@Description("This Test case verifies selecting item status in custom prices tab")
+	@TestCaseId("TC_ITEMS_131,132,133,134")
+	@Test(groups="regression")
+	public void AddingItemToSubset() throws Exception {
+		/*
+		 * @author:yogish.mt
+		 * 
+		 */
 		landingPage()
 		.enterUsername(data.getUserName())
 		.enterPassword(data.getPassword())
 		.clickOnLogin()
-		.homePage()
+		 .homePage()
 		.clickOnItemsLink()
 		.itemsPage()
 		.clickOnAddNewItem()
 		.addNewItemPage()
-		.verifyCheckboxes(checkbox);
+		.clickOnManufacturerDropdown()
+		.selectManufacturerField(data.getmanufacturername())
+		.enterPartNumberField(data.getPartNumberField())
+		.clickOnBrandDropdown()
+		.selectBrandField(data.getBrnadName())
+		.clickOnSaveButtonLink()
+		.verifyItemSavedSuccessfulMessage(data.getItemSavedSuccessfulMessage())
+		.editItemsPage()
+		.clickOnCustomPricesTab()
+		.selectingItemStatus(data.getItemStatus())
+		.ClickonAddsubsetItem()
+		.verifysucessmsg()
+		.verifyaddandDeleteIcons()
+		.EnterCPN(data.getCPN())
+		.clickonSaveButtonCustomPrices()
+		.VerifyUpdateitemSuccessMsg()
+		.deleteItemFromSubset()
+		.homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.deleteItem(data.getPartNumberField());
 	}
 	
 	@Features(value = {"Items Module"})
-	@Description("This is a test case which verifies that on clicking the results link in the right navigation bar of edit items page opens items list page.")
-	@TestCaseId("TC_ITEMS_053")
+	@Description("This is a test case which verifies history link of Custom prices tab ")
+	@TestCaseId("TC_ITEMS_135")
 	@Test(groups="regression")
-	public void verifyResultsLinkInEditItemsPage() throws Exception {
+	public void verifyHistoryLinkCustomPrices() throws Exception {
 		landingPage()
 		.enterUsername(data.getUserName())
 		.enterPassword(data.getPassword())
 		.clickOnLogin()
-		.homePage()
+		 .homePage()
 		.clickOnItemsLink()
 		.itemsPage()
-		.clickOnSpecificEditButton(1)
-		.homePage()
-		.clickOnRightNavigationBar()
+		.clickOnAddNewItem()
+		.addNewItemPage()
+		.clickOnManufacturerDropdown()
+		.selectManufacturerField(data.getmanufacturername())
+		.enterPartNumberField(data.getPartNumberField())
+		.clickOnBrandDropdown()
+		.selectBrandField(data.getBrnadName())
+		.clickOnSaveButtonLink()
+		.verifyItemSavedSuccessfulMessage(data.getItemSavedSuccessfulMessage())
 		.editItemsPage()
-		.clickOnResultsLink()
-		.itemsPage()
-		.verifyItemsPageBreadCrump();
-	}
-	
-	
-	@Features(value = {"Items Module"})
-	@Description("This is a test case which verifies that on clicking the item link in the right navigation bar of edit items page opens edit items list page.")
-	@TestCaseId("TC_ITEMS_054")
-	@Test(groups="regression")
-	public void verifyItemLinkInEditItemsPage() throws Exception {
-	String itemId =	landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
-		.clickOnLogin()
-		.homePage()
-		.clickOnItemsLink()
-		.itemsPage()
-		.clickOnSpecificEditButton(1)
-		.editItemsPage()
-		.getCimmItemId();
-		String getBreadCrump = editItemsPage()
-		.getEditItemsBreadCrump();
-		homePage()
-		.clickOnRightNavigationBar()
-		.editItemsPage()
-		.clickOnItemLink()
-		.editItemsPage()
-		.verifyEditItemsBreadCrumbAndCimmItemIdValue(getBreadCrump,itemId);
-	}
-	
-	@Features(value = {"Items Module"})
-	@Description("This is a test case which verifies 3 tabs - Setup Linked items, Available Linked items,List Item Link Types. ")
-	@TestCaseId("TC_ITEMS_103")
-	@Test(groups="regression")
-	public void verifyTabsUnderLinkedItems() throws Exception {
-		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
-		.clickOnLogin()
-		.homePage()
-		.clickOnItemsLink()
-		.itemsPage()
-		.clickOnSpecificEditButton(1)
-		.editItemsPage()
-		.clickOnLinkedItemsTab()
-		.verifyTabsUnderLinkedItemsTab();
-	}
-	
-	@Features(value = {"Items Module"})
-	@Description("This is a test case which verifies set up linked items tab. ")
-	@TestCaseId("TC_ITEMS_104")
-	@Test(groups="regression")
-	public void verifyTabsSetUpLinkedItemsTab() throws Exception {
-		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
-		.clickOnLogin()
-		.homePage()
-		.clickOnItemsLink()
-		.itemsPage()
-		.clickOnSpecificEditButton(1)
-		.editItemsPage()
-		.clickOnLinkedItemsTab()
-		.verifySetUpLinkedItemsTab(data.getExepectedSearchInDropdownValues().split(","));
-	}
-	
-	@Features(value = {"Items Module"})
-	@Description("This is a test case which verifies history link. ")
-	@TestCaseId("TC_ITEMS_61")
-	@Test(groups="regression")
-	public void verifyHistoryLink() throws Exception {
-		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
-		.clickOnLogin()
-		.homePage()
-		.clickOnItemsLink()
-		.itemsPage()
-		.clickOnSpecificEditButton(1)
-		.editItemsPage()
-		.clickOnHistoryLink()
+		.clickOnCustomPricesTab()
+		.ClickonAddsubsetItem()
+		.verifysucessmsg()
+		.verifyaddandDeleteIcons()
+		.clickOnCPhistoryLink()
 		.verifyAlertMsg(data.getAlertTextWhenHistoryIsClicked());
+		Thread.sleep(3000);
 		TestUtility.switchToRecentWindow();
 		historyPage()
-		.verifyPageTitle(data.getExpectedHistoryPageTitle());
+		.verifyPageTitle(data.getCPHistoryTitle())
+		.editItemsPage()
+		.removeAssignedDocument(data.getdocumentremoveMsg())
+		.homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.deleteItem(data.getPartNumberField());
 	}
 	
 }

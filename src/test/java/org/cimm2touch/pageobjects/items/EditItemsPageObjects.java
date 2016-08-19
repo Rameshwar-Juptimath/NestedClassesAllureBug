@@ -514,6 +514,9 @@ private WebElement EditFormlinktypeCloseLocator;
 @FindBy(xpath="//td[@id='CPTab_lbl']")
 private WebElement customPricesLink;
 
+@FindBy(xpath="//td[@id='AttrTab_lbl']")
+private WebElement attributesLink;
+
 @FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[4]/div/input")
 private WebElement OverPriceCheckboxLocator;
 @FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[5]/div/input")
@@ -526,18 +529,55 @@ private WebElement addTocartCheckboxLocator;
 private WebElement clearanceItemLocator;
 @FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[9]/div/input")
 private WebElement imapIdItemLocator;
-
-
 @FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[10]/input")
-private WebElement IMAPPriceTextFieldLocator;
+private WebElement imapPriceTextfieldLocator;
+
 @FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[12]/input")
-private WebElement NetPriceTextFieldLocator;
+private WebElement netPriceTextfieldLocator;
+
+@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[13]/input")
+private WebElement PackDescTextfieldLocator;
+
+@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[14]/input")
+private WebElement SSalesUOMTextfieldLocator;
+
+@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[15]/input")
+private WebElement PricePerTextfieldLocator;
+
+@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[16]/input")
+private WebElement MinOrderQTYTextfieldLocator;
+
+@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[17]/input")
+private WebElement OrderQtyntervalTextfieldLocator;
+
+@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[18]/input")
+private WebElement materialGroupTextfieldLocator;
+
+@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[19]/input")
+private WebElement materialNumberTextfieldLocator;
 
 
+@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[20]/input")
+private WebElement unspscTextfieldLocator;
 
 
+@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[21]/input")
+private WebElement CustomerPNTextfieldLocator;
 
 
+@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[22]/input")
+private WebElement CustomerPartNumberWPrefixTextfieldLocator;
+
+
+@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[23]/input")
+private WebElement DescTextfieldLocator;
+
+@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[3]/select/option[@value='A']")
+private WebElement ItemstatusCP;
+
+
+@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[1]/input")
+private WebElement AddItemToSubset;
 
 
 
@@ -1290,6 +1330,13 @@ private WebElement NetPriceTextFieldLocator;
 		customPricesLink.click();
 		return this;
 	}
+	
+	@Step("click on Attributes link")
+	public EditItemsPageObjects clickOnAttributesTab() {
+		attributesLink.click();
+		return this;
+	}
+	
 	@Step("Verifying custom fields in custom prices tab")
 	public EditItemsPageObjects verifyCustomPricesTabFields() {
 		Assert.assertTrue(OverPriceCheckboxLocator.isDisplayed(), "Over price checkbox is not diaplayed");
@@ -1298,11 +1345,215 @@ private WebElement NetPriceTextFieldLocator;
 		Assert.assertTrue(displayPricingCheckboxLocator.isDisplayed(), "addTocart checkbox is not diaplayed");
 		Assert.assertTrue(clearanceItemLocator.isDisplayed(), "clearance checkbox is not diaplayed");
 		Assert.assertTrue(imapIdItemLocator.isDisplayed(), "Imap checkbox is not diaplayed");
+		Assert.assertTrue(imapPriceTextfieldLocator.isDisplayed(), "Imap price text field is not diaplayed");
+		Assert.assertTrue(netPriceTextfieldLocator.isDisplayed(), "net price text field is not diaplayed");
+		Assert.assertTrue(PackDescTextfieldLocator.isDisplayed(), "pack description text field is not diaplayed");
+		Assert.assertTrue(SSalesUOMTextfieldLocator.isDisplayed(), "Sales UOM text field is not diaplayed");
+		Assert.assertTrue(PricePerTextfieldLocator.isDisplayed(), "price per text field is not diaplayed");
+		Assert.assertTrue(MinOrderQTYTextfieldLocator.isDisplayed(), "min order qty text field is not diaplayed");
+		Assert.assertTrue(OrderQtyntervalTextfieldLocator.isDisplayed(), "Qty interval text field is not diaplayed");
+		Assert.assertTrue(materialGroupTextfieldLocator.isDisplayed(), "material group text field is not diaplayed");
+		Assert.assertTrue(materialNumberTextfieldLocator.isDisplayed(), "material number text field is not diaplayed");
+		Assert.assertTrue(unspscTextfieldLocator.isDisplayed(), "Unspc text field is not diaplayed");
+		Assert.assertTrue(CustomerPNTextfieldLocator.isDisplayed(), "Customer Part number text field is not diaplayed");
+		Assert.assertTrue(CustomerPartNumberWPrefixTextfieldLocator.isDisplayed(), "Customer part number w prefix text field is not diaplayed");
+		Assert.assertTrue(DescTextfieldLocator.isDisplayed(), "Description text field is not diaplayed");
 		return this;
 	}
+	
+	@Step("checking and unchecking overprice item checkbox")
+	public EditItemsPageObjects CheckuncheckOverpricecheckbox() throws InterruptedException {
+		OverPriceCheckboxLocator.click();
+		Thread.sleep(2000);
+		OverPriceCheckboxLocator.click();
+		return this;
+	}
+	@Step("checking and unchecking IFP item checkbox")
+	public EditItemsPageObjects CheckuncheckIFPcheckbox(){
+		featuredProductCheckboxLocator.click();
+		//Thread.sleep(2000);
+		featuredProductCheckboxLocator.click();
+		return this;
+	}
+	@Step("Enter the data to net price field")
+	public EditItemsPageObjects EnterNetPrice(String itemNetPrice) {
+		netPriceTextfieldLocator.sendKeys(itemNetPrice);
+		return this;
+	}
+	@Step("Enter the data to package description field")
+	public EditItemsPageObjects EnterpackageDescription(String getitemPackDesc) {
+		PackDescTextfieldLocator.sendKeys(getitemPackDesc);
+		return this;
+	}
+	@Step("Enter the data to sales UOM field")
+	public EditItemsPageObjects EnterItemUOM(String getitemUom) {
+		SSalesUOMTextfieldLocator.sendKeys(getitemUom);
+		return this;
+	}
+	@Step("Enter the data to sales UOM field")
+	public EditItemsPageObjects EnterPricePer(String pricePer) {
+		PricePerTextfieldLocator.sendKeys(pricePer);
+		return this;
+	}
+	@Step("Enter the data in min order qty field")
+	public EditItemsPageObjects EnterMinorderQTY(String getminorderQty) {
+		MinOrderQTYTextfieldLocator.sendKeys(getminorderQty);
+		return this;
+	}
+	@Step("Enter the data to qty interval field")
+	public EditItemsPageObjects EnterQtyInteral(String qtyinterval) {
+		OrderQtyntervalTextfieldLocator.sendKeys(qtyinterval);
+		return this;
+	}
+	@Step("Enter the CPN to CPN field")
+	public EditItemsPageObjects EnterCPN(String cpn) {
+		CustomerPNTextfieldLocator.sendKeys(cpn);
+		return this;
+	}
+	@Step("Enter data to material group field")
+	public EditItemsPageObjects EnterMaterialGroup(String getMaterialGroup) {
+		materialGroupTextfieldLocator.sendKeys(getMaterialGroup);
+		return this;
+	}
+	@Step("Enter data to material number field")
+	public EditItemsPageObjects EnterMaterialNumber(String materialNumber) {
+		materialNumberTextfieldLocator.sendKeys(materialNumber);
+		return this;
+	}
+	@Step("Enter data to Unspsc field")
+	public EditItemsPageObjects EnterUnspsc(String unspsc) {
+		unspscTextfieldLocator.sendKeys(unspsc);
+		return this;
+	}
+	
+
+	@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[10]/input")
+	private WebElement IMAPPriceTextFieldLocator;
+	@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[12]/input")
+	private WebElement NetPriceTextFieldLocator;
+	
+	@FindBy(xpath="(//input[@alt='Assign'])[1]")
+	private WebElement assignItemLocator;
+	
+	@FindBy(xpath="//table[@id='attributePanelIdContentTable']/tbody/tr[2]/td/form/table/tbody/tr[3]/td/div/input[1]")
+	private WebElement assignItemAttributeLocator;
+	
+	@FindBy(xpath="//input[@id='atf:atdt:0:colAVD']")
+	private WebElement AttributeValueLocator;
+	
+	@FindBy(xpath="//input[@id='atf:atdt:0:colUOMD']")
+	private WebElement AttributeUOMLocator;
+	
+	@FindBy(xpath="//input[@id='atf:atdt:0:colVGD']")
+	private WebElement AttributeValueGroupLocator;
+	
+	@FindBy(xpath="//input[@id='atf:savBtnId']")
+	private WebElement attributevaluesavelocator;
+	
+	@FindBy(xpath="//span[@id='atf:saveMsgIdAT']")
+	private WebElement attributevaluesaveMsglocator;
+	
+	
+	
+	@Step("Verifying attribute fields in attribute tab")
+	public EditItemsPageObjects verifyAttributesTabFileds() throws InterruptedException {
+		assignItemLocator.click();
+		assignItemAttributeLocator.click();
+		Thread.sleep(3000);
+		Assert.assertTrue(AttributeValueLocator.isDisplayed(), "Attribute value text field is not diaplayed");
+		Assert.assertTrue(AttributeUOMLocator.isDisplayed(), "Attribute UOM text field is not diaplayed");
+		Assert.assertTrue(AttributeValueGroupLocator.isDisplayed(), "Attribute value group text field is not diaplayed");
+		return this;
+	}
+	@Step("Entering value to assigned attribute")
+	public EditItemsPageObjects AddingValueToAttributes(String attributeValue, String getattributeUOM,
+			String getattributegroup) throws InterruptedException {
+		AttributeValueLocator.sendKeys(attributeValue);
+		AttributeUOMLocator.sendKeys(getattributeUOM);
+		AttributeValueGroupLocator.sendKeys(getattributegroup);
+		attributevaluesavelocator.click();
+		Thread.sleep(2000);
+		return this;
+	}
+	
+	public EditItemsPageObjects VerifyAttributeValueMsg(String getattributesaveMsg) {
+	Assert.assertEquals(attributevaluesaveMsglocator.getText().trim(), getattributesaveMsg);
+		return this;
+	}
+	@Step("selecting item status")
+	public EditItemsPageObjects selectingItemStatus(String itemStatus) {
+		ItemstatusCP.sendKeys(itemStatus);
+		return this;
+	}
+	@Step("click on add item to subset")
+	public EditItemsPageObjects ClickonAddsubsetItem() {
+		AddItemToSubset.click();
+		return this;
+	}
+
+@FindBy(xpath="//span[@id='CPsaveMsgId']")
+private WebElement custompricessuccessmsgx;
+
+@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[1]/input[1]")
+private WebElement saveMsgbuttonLocator;
+@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[1]/input[2]")
+private WebElement DeleteButtonCFLocator;
+
+@Step("Verifying the subset after click on dave button")
+public EditItemsPageObjects verifysucessmsg() {
+	Assert.assertTrue(custompricessuccessmsgx.getText().trim().contains("Item added to Subset"), "item is not added successfully to the subset");
+	return this;
+}
+@Step("Verifying add and delete buttons in custom prices tab")
+public EditItemsPageObjects verifyaddandDeleteIcons() {
+	Assert.assertTrue(saveMsgbuttonLocator.isDisplayed(), "Save button is not diaplayed");
+	Assert.assertTrue(DeleteButtonCFLocator.isDisplayed(), "Reset button is not diaplayed");
+	return this;
+}
+@Step("click on item save button in custom prices tab")
+public EditItemsPageObjects clickonSaveButtonCustomPrices() throws InterruptedException {
+	saveMsgbuttonLocator.click();
+	Thread.sleep(2000);
+	return this;
+}
+@Step("Verifying item update success message in custom prices tab")
+public EditItemsPageObjects VerifyUpdateitemSuccessMsg() {
+	Assert.assertTrue(custompricessuccessmsgx.getText().trim().contains(" Item Updated Successfully"), "item is not updated successfully to the subset");
+	return this;
+}
+@Step("Verifying item update success message in custom prices tab")
+public EditItemsPageObjects deleteItemFromSubset() {
+	DeleteButtonCFLocator.click();
+	TestUtility.alertAccept();
+	return this;
+}
+
+@FindBy(xpath="//img[@src='/CIMM2Touch/images/small/history.png']")
+private WebElement CustomPricesHistoryLocator;
+
+
+@Step("click on history in custom prices tab")
+public EditItemsPageObjects clickOnCPhistoryLink() throws InterruptedException {
+	CustomPricesHistoryLocator.click();
+	Thread.sleep(2000);
+	return this;
+}
+
+	
+
+	
+
+	
+
+	
+	
+
+	
+
+	
 
 	
 
 
-
+	
 	}
