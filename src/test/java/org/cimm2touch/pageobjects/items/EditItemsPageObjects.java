@@ -1,7 +1,5 @@
 package org.cimm2touch.pageobjects.items;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.cimm2touch.maincontroller.PageFactoryInitializer;
 import org.cimm2touch.utils.TestUtility;
@@ -11,608 +9,673 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
-import org.testng.annotations.Test;
 
 import ru.yandex.qatools.allure.annotations.Step;
 
-public class EditItemsPageObjects extends PageFactoryInitializer{
-		
-	
-@FindBy(xpath="//td[contains(text(),'Categorization')]")
-private WebElement categorizationTabLocator;
+public class EditItemsPageObjects extends PageFactoryInitializer
+{
+	TestUtility tu = new TestUtility();
 
-@FindBy(xpath="//span[contains(text(),'Results')]")
-private WebElement resultsLinkLocator;
 
-@FindBy(xpath="//div[@class='tabContentTopStrip']/descendant::span[contains(@id,'itemIdValueDisplayId')]")
-private WebElement cimmItemIdValueLocator;
+	@FindBy(xpath="//td[contains(text(),'Categorization')]")
+	private WebElement categorizationTabLocator;
 
-@FindBy(xpath="//span[contains(text(),'Edit Item')]")
-private WebElement editItemsBreadcrumbLocator;
+	@FindBy(xpath="//span[contains(text(),'Results')]")
+	private WebElement resultsLinkLocator;
 
-@FindBy(xpath="//a[text()='Item']")
-private WebElement itemLinkLocator;
+	@FindBy(xpath="//div[@class='tabContentTopStrip']/descendant::span[contains(@id,'itemIdValueDisplayId')]")
+	private WebElement cimmItemIdValueLocator;
 
-@FindBy(xpath="//td[contains(text(),'Linked Items')]")
-private WebElement linkedItemsTabLocator;
+	@FindBy(xpath="//span[contains(text(),'Edit Item')]")
+	private WebElement editItemsBreadcrumbLocator;
 
-@FindBy(xpath="//td[contains(text(),'Setup Linked Items')]")
-private WebElement setUpLinkedItemsLocator;
+	@FindBy(xpath="//a[text()='Item']")
+	private WebElement itemLinkLocator;
 
-@FindBy(xpath="//td[contains(text(),'Available Linked Items')]")
-private WebElement availableLinkedItemsLocator;
+	@FindBy(xpath="//td[contains(text(),'Linked Items')]")
+	private WebElement linkedItemsTabLocator;
 
-@FindBy(xpath="//td[contains(text(),'List Item Link Types')]")
-private WebElement listItemLinkTypesLocator;
-	
-@FindBy(xpath="//span[contains(text(),'Search Items for Item LinkType')]")
-private WebElement searchItemsForItemLinkTypeTabNameLocator;
+	@FindBy(xpath="//td[contains(text(),'Setup Linked Items')]")
+	private WebElement setUpLinkedItemsLocator;
 
-@FindBy(xpath="//input[@placeholder='Search Item LinkType']")
-private WebElement searchItemLinkTypeSearchTextboxLocator;
+	@FindBy(xpath="//td[contains(text(),'Available Linked Items')]")
+	private WebElement availableLinkedItemsLocator;
 
-@FindBy(xpath="//span[contains(text(),'Search Items for Item LinkType')]/ancestor::div/following-sibling::div/descendant::a[contains(@id,'goBtn')]")
-private WebElement searchButtonLocator;
+	@FindBy(xpath="//td[contains(text(),'List Item Link Types')]")
+	private WebElement listItemLinkTypesLocator;
 
-@FindAll(value={@FindBy(xpath="//select[@id='lnkditmSrchIdf:searchInId']/option")})
-private List<WebElement> searchInDropdownValuesLocator;
+	@FindBy(xpath="//span[contains(text(),'Search Items for Item LinkType')]")
+	private WebElement searchItemsForItemLinkTypeTabNameLocator;
 
-@FindBy(xpath="//input[contains(@id,'manufacturerListComboIdcomboboxField')]")
-private WebElement manufacturerDropdownLocator;
+	@FindBy(xpath="//input[@placeholder='Search Item LinkType']")
+	private WebElement searchItemLinkTypeSearchTextboxLocator;
 
-@FindBy(xpath="//input[contains(@id,'brandListComboIdcomboboxField')]")
-private WebElement brandDropdownLocator;
+	@FindBy(xpath="//span[contains(text(),'Search Items for Item LinkType')]/ancestor::div/following-sibling::div/descendant::a[contains(@id,'goBtn')]")
+	private WebElement searchButtonLocator;
 
-@FindBy(xpath="//input[contains(@id,'linkedItemsComboIdcomboboxField')]")
-private WebElement itemLinkTypeDropdownLocator;
+	@FindAll(value={@FindBy(xpath="//select[@id='lnkditmSrchIdf:searchInId']/option")})
+	private List<WebElement> searchInDropdownValuesLocator;
 
-@FindBy(xpath="//a[@title='History']")
-private WebElement historyLinkLocator;
+	@FindBy(xpath="//input[contains(@id,'manufacturerListComboIdcomboboxField')]")
+	private WebElement manufacturerDropdownLocator;
 
+	@FindBy(xpath="//input[contains(@id,'brandListComboIdcomboboxField')]")
+	private WebElement brandDropdownLocator;
 
-@FindBy(xpath="//td[@id='KWTab_lbl']")
-private WebElement keyWordsTabLocator;
+	@FindBy(xpath="//input[contains(@id,'linkedItemsComboIdcomboboxField')]")
+	private WebElement itemLinkTypeDropdownLocator;
 
-@FindBy(xpath="//td[@id='CpnumTab_lbl']")
-private WebElement cpnTabLocator;
+	@FindBy(xpath="//a[@title='History']")
+	private WebElement historyLinkLocator;
 
-@FindBy(xpath="//tr[@class='tabContentTopStrip']/td/input")
-private WebElement addNewCpnLocator;
 
+	@FindBy(xpath="//td[@id='KWTab_lbl']")
+	private WebElement keyWordsTabLocator;
 
-@FindBy(xpath="//input[contains(@id,'buyingCompanyId')]")
-private WebElement addNewCpnTextboxLocator;
+	@FindBy(xpath="//td[@id='CpnumTab_lbl']")
+	private WebElement cpnTabLocator;
 
+	@FindBy(xpath="//tr[@class='tabContentTopStrip']/td/input")
+	private WebElement addNewCpnLocator;
 
-@FindBy(xpath=".//*[@id='custPrtNumFormId:CPNFormId:addNewcstPnumId']")
-private WebElement addNewNumber;
 
-@FindBy(xpath="//input[@id='custPrtNumFormId:CPNFormId:cstTable:0:cstpNumId']")
-private WebElement enterNewNumberLocator;
+	@FindBy(xpath="//input[contains(@id,'buyingCompanyId')]")
+	private WebElement addNewCpnTextboxLocator;
 
-@FindBy(xpath=".//*[@id='custPrtNumFormId:CPNFormId:savecstPnumId']")
-private WebElement saveNewCpn;
 
-@FindBy(xpath=".//*[@id='custPrtNumFormId:CPNFormId:insertMsg']")
-private WebElement cpnSuccessMessageLocator;
+	@FindBy(xpath=".//*[@id='custPrtNumFormId:CPNFormId:addNewcstPnumId']")
+	private WebElement addNewNumber;
 
-@FindBy(xpath="//input[@id='generalInfoFormId:btnReset']")
-private WebElement resetButtonLocator;
+	@FindBy(xpath="//input[@id='custPrtNumFormId:CPNFormId:cstTable:0:cstpNumId']")
+	private WebElement enterNewNumberLocator;
 
-@FindBy(xpath="//a[@title='History']")
-private WebElement historyButtonLocator;
+	@FindBy(xpath=".//*[@id='custPrtNumFormId:CPNFormId:savecstPnumId']")
+	private WebElement saveNewCpn;
 
-@FindBy(xpath="//form[@id='generalInfoFormId']/div[1]/ul/span/li[1]/input")
-private WebElement itemUpdateButtonLocator;
+	@FindBy(xpath=".//*[@id='custPrtNumFormId:CPNFormId:insertMsg']")
+	private WebElement cpnSuccessMessageLocator;
 
-@FindBy(xpath="//form[@id='itemDtlFm']/table/tbody/tr[2]/td[3]")
-private WebElement itemEditRightMPNLocator;
+	@FindBy(xpath="//input[@id='generalInfoFormId:btnReset']")
+	private WebElement resetButtonLocator;
 
-@FindBy(xpath="//form[@id='itemDtlFm']/table/tbody/tr[3]/td[3]")
-private WebElement itemEditRightPNLocator;
+	@FindBy(xpath="//a[@title='History']")
+	private WebElement historyButtonLocator;
 
-@FindBy(xpath="//form[@id='itemDtlFm']/table/tbody/tr[4]/td[3]")
-private WebElement itemEditRightListPriceLocator;
+	@FindBy(xpath="//form[@id='generalInfoFormId']/div[1]/ul/span/li[1]/input")
+	private WebElement itemUpdateButtonLocator;
 
-@FindBy(xpath="//form[@id='itemDtlFm']/table/tbody/tr[5]/td[3]")
-private WebElement itemEditRightCostPriceLocator;
+	@FindBy(xpath="//form[@id='itemDtlFm']/table/tbody/tr[2]/td[3]")
+	private WebElement itemEditRightMPNLocator;
 
-@FindBy(xpath="//form[@id='itemDtlFm']/table/tbody/tr[6]/td[1]/strong")
-private WebElement itemEditRightUserRatingLocator;
+	@FindBy(xpath="//form[@id='itemDtlFm']/table/tbody/tr[3]/td[3]")
+	private WebElement itemEditRightPNLocator;
 
-@FindBy(xpath="//form[@id='itemDtlFm']/table/tbody/tr[7]/td[1]/strong")
-private WebElement itemEditRightHitsgLocator;
+	@FindBy(xpath="//form[@id='itemDtlFm']/table/tbody/tr[4]/td[3]")
+	private WebElement itemEditRightListPriceLocator;
 
-@FindBy(xpath="//form[@id='itemDtlFm']/table/tbody/tr[8]/td[1]/strong")
-private WebElement itemEditRightPopularityLocator;  
+	@FindBy(xpath="//form[@id='itemDtlFm']/table/tbody/tr[5]/td[3]")
+	private WebElement itemEditRightCostPriceLocator;
 
-@FindBy(xpath="//a[@title='Goto PreviousPage']/span")
-private WebElement itemEditRightResultButtonLocator; 
+	@FindBy(xpath="//form[@id='itemDtlFm']/table/tbody/tr[6]/td[1]/strong")
+	private WebElement itemEditRightUserRatingLocator;
 
-@FindBy(xpath="//a[@class='resultBtnLabel']")
-private WebElement itemEditRightItemButtonLocator; 
+	@FindBy(xpath="//form[@id='itemDtlFm']/table/tbody/tr[7]/td[1]/strong")
+	private WebElement itemEditRightHitsgLocator;
 
-@FindBy(xpath="//form[@id='itemNavigateForm']/div/input[1]")
-private WebElement itemEditRightSearchButtonLocator; 
+	@FindBy(xpath="//form[@id='itemDtlFm']/table/tbody/tr[8]/td[1]/strong")
+	private WebElement itemEditRightPopularityLocator;  
 
-@FindBy(xpath="//input[@id='itemNavigateForm:previousItemIcon']")
-private WebElement itemEditRightpreviousButtonLocator; 
+	@FindBy(xpath="//a[@title='Goto PreviousPage']/span")
+	private WebElement itemEditRightResultButtonLocator; 
 
-@FindBy(xpath="//input[@id='itemNavigateForm:nextItemIcon']")
-private WebElement itemEditRightnextButtonLocator; 
+	@FindBy(xpath="//a[@class='resultBtnLabel']")
+	private WebElement itemEditRightItemButtonLocator; 
 
-@FindBy(xpath="//span[contains(text(),'Updated Successfully')]")
-private WebElement itemupdatemsgLocator; 
+	@FindBy(xpath="//form[@id='itemNavigateForm']/div/input[1]")
+	private WebElement itemEditRightSearchButtonLocator; 
 
-@FindBy(xpath="//td[@id='DescTab_lbl']")
-private WebElement itemDescriptionLocator; 
+	@FindBy(xpath="//input[@id='itemNavigateForm:previousItemIcon']")
+	private WebElement itemEditRightpreviousButtonLocator; 
 
-@FindBy(xpath="//select[@id='itemDescFormId:locidDesc']")
-private WebElement langDescriptionLocator;
+	@FindBy(xpath="//input[@id='itemNavigateForm:nextItemIcon']")
+	private WebElement itemEditRightnextButtonLocator; 
 
-@FindBy(xpath="//div[@class='tab_descriptionForm']/div[1]/span[1]/div[1]")
-private WebElement pageTitleDescriptionLocator; 
+	@FindBy(xpath="//span[contains(text(),'Updated Successfully')]")
+	private WebElement itemupdatemsgLocator; 
 
-@FindBy(xpath="//div[@class='tab_descriptionForm']/div[1]/span[2]/div[1]")
-private WebElement shortDescriptionLocator; 
+	@FindBy(xpath="//td[@id='DescTab_lbl']")
+	private WebElement itemDescriptionLocator; 
 
-@FindBy(xpath="//div[@class='tab_descriptionForm']/div[1]/span[3]/div[1]")
-private WebElement Long1DescriptionLocator; 
+	@FindBy(xpath="//select[@id='itemDescFormId:locidDesc']")
+	private WebElement langDescriptionLocator;
 
-@FindBy(xpath="//div[@class='tab_descriptionForm']/div[1]/span[4]/div[1]")
-private WebElement Long2DescriptionLocator; 
+	@FindBy(xpath="//div[@class='tab_descriptionForm']/div[1]/span[1]/div[1]")
+	private WebElement pageTitleDescriptionLocator; 
 
-@FindBy(xpath="//div[@class='tab_descriptionForm']/div[1]/span[5]/div[1]")
-private WebElement itemFeaturesDescriptionLocator; 
+	@FindBy(xpath="//div[@class='tab_descriptionForm']/div[1]/span[2]/div[1]")
+	private WebElement shortDescriptionLocator; 
 
-@FindBy(xpath="//div[@class='tab_descriptionForm']/div[1]/span[6]/div[1]")
-private WebElement MetaDescriptionLocator; 
+	@FindBy(xpath="//div[@class='tab_descriptionForm']/div[1]/span[3]/div[1]")
+	private WebElement Long1DescriptionLocator; 
 
-@FindBy(xpath="//div[@class='tab_descriptionForm']/div[1]/span[7]/div[1]")
-private WebElement InvoiceDescriptionLocator; 
+	@FindBy(xpath="//div[@class='tab_descriptionForm']/div[1]/span[4]/div[1]")
+	private WebElement Long2DescriptionLocator; 
 
-@FindBy(xpath="//div[@class='tab_descriptionForm']/div[1]/span[8]/div[1]")
-private WebElement ItemMarketDescriptionLocator; 
+	@FindBy(xpath="//div[@class='tab_descriptionForm']/div[1]/span[5]/div[1]")
+	private WebElement itemFeaturesDescriptionLocator; 
 
-@FindBy(xpath="(//div[@id='noEditor'])[1]")
-private WebElement ItemPageTitleDescriptionLocator;
+	@FindBy(xpath="//div[@class='tab_descriptionForm']/div[1]/span[6]/div[1]")
+	private WebElement MetaDescriptionLocator; 
 
-@FindBy(xpath="//div[@id='shortDescriptionEditor']")
-private WebElement ItemshortDescriptionLocator; 
+	@FindBy(xpath="//div[@class='tab_descriptionForm']/div[1]/span[7]/div[1]")
+	private WebElement InvoiceDescriptionLocator; 
 
-@FindBy(xpath="//div[@id='longDescEditor']")
-private WebElement Itemlong1DescriptionLocator; 
+	@FindBy(xpath="//div[@class='tab_descriptionForm']/div[1]/span[8]/div[1]")
+	private WebElement ItemMarketDescriptionLocator; 
 
-@FindBy(xpath="//div[@id='longDesc2Editor']")
-private WebElement ItemLongDescription2TextboxLocator; 
+	@FindBy(xpath="(//div[@id='noEditor'])[1]")
+	private WebElement ItemPageTitleDescriptionLocator;
 
-@FindBy(xpath="//div[@id='itemFeatureEditor']")
-private WebElement ItemItemFeaturesDescriptionTextboxLocator; 
+	@FindBy(xpath="//div[@id='shortDescriptionEditor']")
+	private WebElement ItemshortDescriptionLocator; 
 
-@FindBy(xpath="(//div[@id='noEditor'])[2]")
-private WebElement ItemMetaDescriptionTextboxLocator; 
+	@FindBy(xpath="//div[@id='longDescEditor']")
+	private WebElement Itemlong1DescriptionLocator; 
 
-@FindBy(xpath="//div[@id='invoiceEditor']")
-private WebElement IteminvoiceDescriptionTextboxLocator; 
+	@FindBy(xpath="//div[@id='longDesc2Editor']")
+	private WebElement ItemLongDescription2TextboxLocator; 
 
-@FindBy(xpath="//div[@id='marketEditor']")
-private WebElement ItemMarketDescriptionTextboxLocator; 
+	@FindBy(xpath="//div[@id='itemFeatureEditor']")
+	private WebElement ItemItemFeaturesDescriptionTextboxLocator; 
 
-@FindBy(xpath="//span[@id='descFormId:discEditPanel']/a/img")
-private WebElement ItemSaveDescriptionLocator; 
+	@FindBy(xpath="(//div[@id='noEditor'])[2]")
+	private WebElement ItemMetaDescriptionTextboxLocator; 
 
-@FindBy(xpath="//span[@id='descFormId:saveMessageId2']")
-private WebElement ItemSaveDescriptionMSGLocator; 
+	@FindBy(xpath="//div[@id='invoiceEditor']")
+	private WebElement IteminvoiceDescriptionTextboxLocator; 
 
-@FindBy(xpath="(//div[@role='application'])[1]")
-private WebElement ShortTinyMCEeditorLocator; 
+	@FindBy(xpath="//div[@id='marketEditor']")
+	private WebElement ItemMarketDescriptionTextboxLocator; 
 
-@FindBy(xpath="(//div[@role='application'])[2]")
-private WebElement long1TinyMCEeditorLocator; 
+	@FindBy(xpath="//span[@id='descFormId:discEditPanel']/a/img")
+	private WebElement ItemSaveDescriptionLocator; 
 
-@FindBy(xpath="(//div[@role='application'])[3]")
-private WebElement long2TinyMCEeditorLocator; 
+	@FindBy(xpath="//span[@id='descFormId:saveMessageId2']")
+	private WebElement ItemSaveDescriptionMSGLocator; 
 
-@FindBy(xpath="(//div[@role='application'])[4]")
-private WebElement itemFeaturesTinyMCEeditorLocator; 
+	@FindBy(xpath="(//div[@role='application'])[1]")
+	private WebElement ShortTinyMCEeditorLocator; 
 
-@FindBy(xpath="(//div[@role='application'])[5]")
-private WebElement InvoiceTinyMCEeditorLocator; 
+	@FindBy(xpath="(//div[@role='application'])[2]")
+	private WebElement long1TinyMCEeditorLocator; 
 
-@FindBy(xpath="(//div[@role='application'])[6]")
-private WebElement ItemMarketingTinyMCEeditorLocator; 
+	@FindBy(xpath="(//div[@role='application'])[3]")
+	private WebElement long2TinyMCEeditorLocator; 
 
-@FindBy(xpath="//td[@id='PROTab_lbl']")
-private WebElement productslinkLocator; 
+	@FindBy(xpath="(//div[@role='application'])[4]")
+	private WebElement itemFeaturesTinyMCEeditorLocator; 
 
-@FindBy(xpath="//span[@id='productDetailsFormId:prodDetailsId']/div[1]/table/tbody/tr[1]/td[1]")
-private WebElement productNameFieldLocator;
+	@FindBy(xpath="(//div[@role='application'])[5]")
+	private WebElement InvoiceTinyMCEeditorLocator; 
 
-@FindBy(xpath="//span[@id='productDetailsFormId:prodDetailsId']/div[1]/table/tbody/tr[2]/td[1]")
-private WebElement productNumberFieldLocator;
+	@FindBy(xpath="(//div[@role='application'])[6]")
+	private WebElement ItemMarketingTinyMCEeditorLocator; 
 
-@FindBy(xpath="//span[@id='productDetailsFormId:prodDetailsId']/div[1]/table/tbody/tr[3]/td[1]")
-private WebElement productdescFieldLocator;
+	@FindBy(xpath="//td[@id='PROTab_lbl']")
+	private WebElement productslinkLocator; 
 
-@FindBy(xpath="//span[@id='productDetailsFormId:prodDetailsId']/div[3]")
-private WebElement productDelinkLocator;
+	@FindBy(xpath="//span[@id='productDetailsFormId:prodDetailsId']/div[1]/table/tbody/tr[1]/td[1]")
+	private WebElement productNameFieldLocator;
 
-@FindBy(xpath="//input[@id='listProductForm:searchKeywordId']")
-private WebElement productSearchFieldLocator;
+	@FindBy(xpath="//span[@id='productDetailsFormId:prodDetailsId']/div[1]/table/tbody/tr[2]/td[1]")
+	private WebElement productNumberFieldLocator;
 
-@FindBy(xpath="//a[@id='listProductForm:goBtn']/i")
-private WebElement productSearchButtonLocator;
+	@FindBy(xpath="//span[@id='productDetailsFormId:prodDetailsId']/div[1]/table/tbody/tr[3]/td[1]")
+	private WebElement productdescFieldLocator;
 
-@FindBy(xpath="//span[@id='listProductForm:productTableID:ACTION']")
-private WebElement productActionLabelLocator;
+	@FindBy(xpath="//span[@id='productDetailsFormId:prodDetailsId']/div[3]")
+	private WebElement productDelinkLocator;
 
-@FindBy(xpath="//span[@id='listProductForm:productTableID:ITMIMGH']")
-private WebElement productNameImageLabelLocator;
+	@FindBy(xpath="//input[@id='listProductForm:searchKeywordId']")
+	private WebElement productSearchFieldLocator;
 
-@FindBy(xpath="//table[@id='listProductForm:productTableID']/thead/tr/th[3]")
-private WebElement productDescLocator;
+	@FindBy(xpath="//a[@id='listProductForm:goBtn']/i")
+	private WebElement productSearchButtonLocator;
 
-@FindBy(xpath="//td[@id='KWTab_lbl']")
-private WebElement keywordlinkLocator;
+	@FindBy(xpath="//span[@id='listProductForm:productTableID:ACTION']")
+	private WebElement productActionLabelLocator;
 
+	@FindBy(xpath="//span[@id='listProductForm:productTableID:ITMIMGH']")
+	private WebElement productNameImageLabelLocator;
 
-@FindBy(xpath="//form[@id='keywordsFormId']/div[2]/div/span[1]/div[1]")
-private WebElement CustomkeywordlinkLocator;
+	@FindBy(xpath="//table[@id='listProductForm:productTableID']/thead/tr/th[3]")
+	private WebElement productDescLocator;
 
-@FindBy(xpath="//form[@id='keywordsFormId']/div[2]/div/span[2]/div[1]")
-private WebElement MetakeywordlinkLocator;
+	@FindBy(xpath="//td[@id='KWTab_lbl']")
+	private WebElement keywordlinkLocator;
 
-@FindBy(xpath="//form[@id='keywordsFormId']/div[2]/div/span[3]/div[1]")
-private WebElement keywordautomgeneratedlinkLocator;
 
+	@FindBy(xpath="//form[@id='keywordsFormId']/div[2]/div/span[1]/div[1]")
+	private WebElement CustomkeywordlinkLocator;
 
-@FindBy(xpath="//form[@id='keywordsFormId']/div[2]/div/span[4]/div[1]")
-private WebElement PartNumberKeywordslinkLocator;
+	@FindBy(xpath="//form[@id='keywordsFormId']/div[2]/div/span[2]/div[1]")
+	private WebElement MetakeywordlinkLocator;
 
-@FindBy(xpath="//textarea[@id='keywordsFormId:customKeywordsId']")
-private WebElement CustomKeywordsTextboxLocator;
+	@FindBy(xpath="//form[@id='keywordsFormId']/div[2]/div/span[3]/div[1]")
+	private WebElement keywordautomgeneratedlinkLocator;
 
-@FindBy(xpath="//textarea[@id='keywordsFormId:metaKeywordId']")
-private WebElement MetaKeywordsTextboxLocator;
 
-@FindBy(xpath="//input[@id='keywordsFormId:keywordSaveBtn' and @title='Action Buttons']")
-private WebElement KeywordsSaveLocator;
+	@FindBy(xpath="//form[@id='keywordsFormId']/div[2]/div/span[4]/div[1]")
+	private WebElement PartNumberKeywordslinkLocator;
 
-@FindBy(xpath="//span[@id='keywordsFormId:saveMessageId']")
-private WebElement keywordsSuccessMsgLocator;
+	@FindBy(xpath="//textarea[@id='keywordsFormId:customKeywordsId']")
+	private WebElement CustomKeywordsTextboxLocator;
 
+	@FindBy(xpath="//textarea[@id='keywordsFormId:metaKeywordId']")
+	private WebElement MetaKeywordsTextboxLocator;
 
-@FindBy(xpath="//ul[@class='buttonList']/li[2]/a[@title='Revision History Link']")
-private WebElement KeywordsRevisionLocator;
+	@FindBy(xpath="//input[@id='keywordsFormId:keywordSaveBtn' and @title='Action Buttons']")
+	private WebElement KeywordsSaveLocator;
 
-@FindBy(xpath="//td[@id='DocTab_lbl']")
-private WebElement DocumentsLinkLocator;
+	@FindBy(xpath="//span[@id='keywordsFormId:saveMessageId']")
+	private WebElement keywordsSuccessMsgLocator;
 
-@FindBy(xpath="//td[@id='ImgTab_lbl']")
-private WebElement imagesLinkLocator;
 
-@FindBy(xpath="//select[@id='solrForm:locidDoc']")
-private WebElement DocumentLangLocator;
+	@FindBy(xpath="//ul[@class='buttonList']/li[2]/a[@title='Revision History Link']")
+	private WebElement KeywordsRevisionLocator;
 
-@FindBy(xpath="//div[@class='cimmDocInstruction']")
-private WebElement DocumentindtructionLocator;
+	@FindBy(xpath="//td[@id='DocTab_lbl']")
+	private WebElement DocumentsLinkLocator;
 
-@FindBy(xpath="(//select[@class='cimmDocInputText'])[2]")
-private WebElement DocumentcatdropdownLocator;
+	@FindBy(xpath="//td[@id='ImgTab_lbl']")
+	private WebElement imagesLinkLocator;
 
-@FindBy(xpath="//input[@id='addDocumentId']")
-private WebElement DocumentAddlinkLocator;
+	@FindBy(xpath="//select[@id='solrForm:locidDoc']")
+	private WebElement DocumentLangLocator;
 
-@FindBy(xpath="//a[@title='Revision History Link']")
-private WebElement DocumentRevisionHistorylinkLocator;
+	@FindBy(xpath="//div[@class='cimmDocInstruction']")
+	private WebElement DocumentindtructionLocator;
 
-@FindAll(value={@FindBy(xpath="(//select[@class='cimmDocInputText'])[2]")})
-private List<WebElement> documentCatDropdownLocator;
+	@FindBy(xpath="(//select[@class='cimmDocInputText'])[2]")
+	private WebElement DocumentcatdropdownLocator;
 
-@FindBy(xpath="//select[@id='documentUploadFormId:categoryList']")
-private WebElement AddnewDocumentcatdropdownLocator;
+	@FindBy(xpath="//input[@id='addDocumentId']")
+	private WebElement DocumentAddlinkLocator;
 
-@FindBy(xpath="//a[@id='documentUploadFormId:link']")
-private WebElement AddnewDocumentcatlinkLocator;
+	@FindBy(xpath="//a[@title='Revision History Link']")
+	private WebElement DocumentRevisionHistorylinkLocator;
 
-@FindBy(xpath="//input[@id='documentUploadFormId:captionId']")
-private WebElement AddnewDocumentcaptionLocator;
+	@FindAll(value={@FindBy(xpath="(//select[@class='cimmDocInputText'])[2]")})
+	private List<WebElement> documentCatDropdownLocator;
 
-@FindBy(xpath="//input[@id='documentUploadFormId:addDocUrl']")
-private WebElement AddnewDocumentURLLocator;
+	@FindBy(xpath="//select[@id='documentUploadFormId:categoryList']")
+	private WebElement AddnewDocumentcatdropdownLocator;
 
-@FindBy(xpath="//div[@id='documentUploadFormId:itemDocumentUploadId']/table/tbody/tr/td")
-private WebElement AddnewDocumentuploadIconLocator;
+	@FindBy(xpath="//a[@id='documentUploadFormId:link']")
+	private WebElement AddnewDocumentcatlinkLocator;
 
-@FindBy(xpath="//input[@id='documentUploadFormId:docOwId']")
-private WebElement AddnewDocumentOverwritecheckLocator;
+	@FindBy(xpath="//input[@id='documentUploadFormId:captionId']")
+	private WebElement AddnewDocumentcaptionLocator;
 
-@FindBy(xpath="//input[@title='Save URL']")
-private WebElement AddnewDocumentSaveButtonLocator;
+	@FindBy(xpath="//input[@id='documentUploadFormId:addDocUrl']")
+	private WebElement AddnewDocumentURLLocator;
 
-@FindBy(xpath="//input[@id='documentUploadFormId:btnReset']")
-private WebElement AddnewDocumentResetButtonLocator;
+	@FindBy(xpath="//div[@id='documentUploadFormId:itemDocumentUploadId']/table/tbody/tr/td")
+	private WebElement AddnewDocumentuploadIconLocator;
 
-@FindBy(xpath="//span[@id='errorImageNameForDoc']")
-private WebElement DocumentSuccessMsgLocator;
+	@FindBy(xpath="//input[@id='documentUploadFormId:docOwId']")
+	private WebElement AddnewDocumentOverwritecheckLocator;
 
-@FindBy(xpath="//span[@id='listDocFromId:panalDocId']/table/tbody/tr[1]/td[1]/table/tbody/tr[1]/td[2]/input")
-private WebElement DocumentURLcheckboxLocator;
+	@FindBy(xpath="//input[@title='Save URL']")
+	private WebElement AddnewDocumentSaveButtonLocator;
 
-@FindBy(xpath="//input[@id='listDocFromId:mainDocRemoveAll']")
-private WebElement DocumentdeleteButtonLocator;
+	@FindBy(xpath="//input[@id='documentUploadFormId:btnReset']")
+	private WebElement AddnewDocumentResetButtonLocator;
 
-@FindBy(xpath="//input[@title='Edit Caption']")
-private WebElement EditAssignedDocumentLocator;
+	@FindBy(xpath="//span[@id='errorImageNameForDoc']")
+	private WebElement DocumentSuccessMsgLocator;
 
-@FindBy(xpath="//input[@id='editCaptionFormID:editCaptionId']")
-private WebElement EditDocumentCapLocator;
+	@FindBy(xpath="//span[@id='listDocFromId:panalDocId']/table/tbody/tr[1]/td[1]/table/tbody/tr[1]/td[2]/input")
+	private WebElement DocumentURLcheckboxLocator;
 
-@FindBy(xpath="//input[@title='Update Caption']")
-private WebElement UpdateDocumentCapLocator;
+	@FindBy(xpath="//input[@id='listDocFromId:mainDocRemoveAll']")
+	private WebElement DocumentdeleteButtonLocator;
 
-@FindBy(xpath="//span[@id='editCaptionFormID:updateCaptionNameId']")
-private WebElement UpdateDocumentCapSuccessMsgLocator;
+	@FindBy(xpath="//input[@title='Edit Caption']")
+	private WebElement EditAssignedDocumentLocator;
 
-@FindBy(xpath="//img[@id='hideEditDoc']")
-private WebElement UpdateDocumentCapCancelLocator;
+	@FindBy(xpath="//input[@id='editCaptionFormID:editCaptionId']")
+	private WebElement EditDocumentCapLocator;
 
-@FindBy(xpath="//a[@id='documentUploadFormId:link']")
-private WebElement DocumentCatPopupLocator;
+	@FindBy(xpath="//input[@title='Update Caption']")
+	private WebElement UpdateDocumentCapLocator;
 
-@FindBy(xpath="//img[@id='hidelink']")
-private WebElement DocumentCatCloseLocator;
+	@FindBy(xpath="//span[@id='editCaptionFormID:updateCaptionNameId']")
+	private WebElement UpdateDocumentCapSuccessMsgLocator;
 
-@FindBy(xpath="//input[contains(@id,'docCategoryName')]")
-private WebElement DocumentCatnameLocator;
+	@FindBy(xpath="//img[@id='hideEditDoc']")
+	private WebElement UpdateDocumentCapCancelLocator;
 
-@FindBy(xpath="//textarea[contains(@id,'docDesc')]")
-private WebElement DocumentCatdescriptionLocator;
+	@FindBy(xpath="//a[@id='documentUploadFormId:link']")
+	private WebElement DocumentCatPopupLocator;
 
-@FindBy(xpath="//input[@title='Save Category ']")
-private WebElement DocumentCatSaveLocator;
+	@FindBy(xpath="//img[@id='hidelink']")
+	private WebElement DocumentCatCloseLocator;
 
-@FindBy(xpath="//span[contains(@id,'docatNamsg')]")
-private WebElement DocumentCatSaveErrorMsgLocator;
+	@FindBy(xpath="//input[contains(@id,'docCategoryName')]")
+	private WebElement DocumentCatnameLocator;
 
-@FindBy(xpath="//span[@id='documentUploadFormId:captionMsgId']")
-private WebElement DocumentCaptionErrorMsgLocator;
+	@FindBy(xpath="//textarea[contains(@id,'docDesc')]")
+	private WebElement DocumentCatdescriptionLocator;
 
-@FindBy(xpath="//ul[@class='buttonList']/li[2]/form/a[@title='Revision History Link']")
-private WebElement DocumentHistoryLocator;
+	@FindBy(xpath="//input[@title='Save Category ']")
+	private WebElement DocumentCatSaveLocator;
 
-@FindBy(xpath="//td[@id='VideoTab_lbl']")
-private WebElement VideosTablinkLocator;
+	@FindBy(xpath="//span[contains(@id,'docatNamsg')]")
+	private WebElement DocumentCatSaveErrorMsgLocator;
 
-@FindBy(xpath="//form[@id = 'listVideoFromId']/div[1]/b")
-private WebElement AssignedvideoLocator;
+	@FindBy(xpath="//span[@id='documentUploadFormId:captionMsgId']")
+	private WebElement DocumentCaptionErrorMsgLocator;
 
-@FindBy(xpath="//form[@id = 'listVideoFromId']/span/table/thead/tr/th[1]/div")
-private WebElement AssignedActionLocator;
+	@FindBy(xpath="//ul[@class='buttonList']/li[2]/form/a[@title='Revision History Link']")
+	private WebElement DocumentHistoryLocator;
 
-@FindBy(xpath="//form[@id = 'listVideoFromId']/span/table/thead/tr/th[3]/div")
-private WebElement AssignedItemVideoLabelLocator;
+	@FindBy(xpath="//td[@id='VideoTab_lbl']")
+	private WebElement VideosTablinkLocator;
 
-@FindBy(xpath="//form[@id = 'listVideoFromId']/span/table/thead/tr/th[4]/div")
-private WebElement AssignedItemVideoURLLabelLocator;
+	@FindBy(xpath="//form[@id = 'listVideoFromId']/div[1]/b")
+	private WebElement AssignedvideoLocator;
 
-@FindBy(xpath="//div[@class='tab-title']/div/b")
-private WebElement VideoLibraryLabelLocator;
+	@FindBy(xpath="//form[@id = 'listVideoFromId']/span/table/thead/tr/th[1]/div")
+	private WebElement AssignedActionLocator;
 
-@FindBy(xpath="//input[contains(@id,'vidInfoId:input')]")
-private WebElement VideoLibrarySearchFieldLocator;
+	@FindBy(xpath="//form[@id = 'listVideoFromId']/span/table/thead/tr/th[3]/div")
+	private WebElement AssignedItemVideoLabelLocator;
 
-@FindBy(xpath="//a[contains(@id,'vidInfoId:searchAtt')]")
-private WebElement VideoLibrarySearchButtonLocator;
+	@FindBy(xpath="//form[@id = 'listVideoFromId']/span/table/thead/tr/th[4]/div")
+	private WebElement AssignedItemVideoURLLabelLocator;
 
-@FindBy(xpath="//input[@id='addVideo']")
-private WebElement addNewVideoButtonLocator;
+	@FindBy(xpath="//div[@class='tab-title']/div/b")
+	private WebElement VideoLibraryLabelLocator;
 
-@FindBy(xpath="//input[@id='videoFormId:vcaptionId']")
-private WebElement AddVideoCaptionFieldLocator;
+	@FindBy(xpath="//input[contains(@id,'vidInfoId:input')]")
+	private WebElement VideoLibrarySearchFieldLocator;
 
-@FindBy(xpath="//input[@id='videoFormId:vurlId']")
-private WebElement AddVideoURLFieldLocator;
+	@FindBy(xpath="//a[contains(@id,'vidInfoId:searchAtt')]")
+	private WebElement VideoLibrarySearchButtonLocator;
 
-@FindBy(xpath="//input[@title='Save URL']")
-private WebElement AddVideoSaveButtonLocator;
+	@FindBy(xpath="//input[@id='addVideo']")
+	private WebElement addNewVideoButtonLocator;
 
-@FindBy(xpath="//input[@title='Reset']")
-private WebElement AddVideoResetButtonLocator;
+	@FindBy(xpath="//input[@id='videoFormId:vcaptionId']")
+	private WebElement AddVideoCaptionFieldLocator;
 
-@FindBy(xpath="//*[@id='videoFormId']/div/div[1]/img")
-private WebElement AddVideoClosebuttonLocator;
+	@FindBy(xpath="//input[@id='videoFormId:vurlId']")
+	private WebElement AddVideoURLFieldLocator;
 
-@FindBy(xpath="//span[@id='videoFormId:itemVideoSavemessage']")
-private WebElement VideomsgVerifyLocator;
+	@FindBy(xpath="//input[@title='Save URL']")
+	private WebElement AddVideoSaveButtonLocator;
 
-@FindBy(xpath="//input[@id='listVideoFromId:mainVideoRemoveAll']")
-private WebElement DeleteAllVideoLocator;
+	@FindBy(xpath="//input[@title='Reset']")
+	private WebElement AddVideoResetButtonLocator;
 
-@FindBy(xpath="//span[@id='deleteVidMsgId']")
-private WebElement DeleteVideoAlertMsgLocator;
+	@FindBy(xpath="//*[@id='videoFormId']/div/div[1]/img")
+	private WebElement AddVideoClosebuttonLocator;
 
-@FindBy(xpath="//form[@id = 'listVideoFromId']/span/table/tbody/tr/td[2]/div/input")
-private WebElement assignedVideoCheckboxLocator;
+	@FindBy(xpath="//span[@id='videoFormId:itemVideoSavemessage']")
+	private WebElement VideomsgVerifyLocator;
 
-@FindBy(xpath="//form[@id = 'listVideoFromId']/span/table/tbody/tr/td[1]/div/input[2]")
-private WebElement assignedVideoDeleteButtonLocator;
+	@FindBy(xpath="//input[@id='listVideoFromId:mainVideoRemoveAll']")
+	private WebElement DeleteAllVideoLocator;
 
-@FindBy(xpath="//td[contains(text(),'Available Linked Items')]")
-private WebElement AvailableLinkedItemsLinkLocator;
-@FindBy(xpath="//table[@id='listForm:assignedItemsTable3']/thead/tr[1]/th[1]/span")
-private WebElement AvailableLinkedItemsItemIdLocator;
-@FindBy(xpath="//table[@id='listForm:assignedItemsTable3']/thead/tr[1]/th[2]/div/span")
-private WebElement AvailableLinkedItemsItemImageLocator;
+	@FindBy(xpath="//span[@id='deleteVidMsgId']")
+	private WebElement DeleteVideoAlertMsgLocator;
 
-@FindBy(xpath="//table[@id='listForm:assignedItemsTable3']/thead/tr[1]/th[3]/span")
-private WebElement AvailableLinkedItemsPartNumberLocator;
+	@FindBy(xpath="//form[@id = 'listVideoFromId']/span/table/tbody/tr/td[2]/div/input")
+	private WebElement assignedVideoCheckboxLocator;
 
+	@FindBy(xpath="//form[@id = 'listVideoFromId']/span/table/tbody/tr/td[1]/div/input[2]")
+	private WebElement assignedVideoDeleteButtonLocator;
 
-@FindBy(xpath="//table[@id='listForm:assignedItemsTable3']/thead/tr[1]/th[4]/span")
-private WebElement AvailableLinkedItemsMPNLocator;
+	@FindBy(xpath="//td[contains(text(),'Available Linked Items')]")
+	private WebElement AvailableLinkedItemsLinkLocator;
+	@FindBy(xpath="//table[@id='listForm:assignedItemsTable3']/thead/tr[1]/th[1]/span")
+	private WebElement AvailableLinkedItemsItemIdLocator;
+	@FindBy(xpath="//table[@id='listForm:assignedItemsTable3']/thead/tr[1]/th[2]/div/span")
+	private WebElement AvailableLinkedItemsItemImageLocator;
 
-@FindBy(xpath="//table[@id='listForm:assignedItemsTable3']/thead/tr[1]/th[5]/span")
-private WebElement AvailableLinkedItemsItemStatusLocator;
+	@FindBy(xpath="//table[@id='listForm:assignedItemsTable3']/thead/tr[1]/th[3]/span")
+	private WebElement AvailableLinkedItemsPartNumberLocator;
 
-@FindBy(xpath="//table[@id='listForm:assignedItemsTable3']/thead/tr[1]/th[6]/span")
-private WebElement AvailableLinkedItemsDisplayOnlineLocator;
 
-@FindBy(xpath="//table[@id='listForm:assignedItemsTable3']/thead/tr[1]/th[7]/span")
-private WebElement AvailableLinkedItemsLinkeditemsQTYLocator;
+	@FindBy(xpath="//table[@id='listForm:assignedItemsTable3']/thead/tr[1]/th[4]/span")
+	private WebElement AvailableLinkedItemsMPNLocator;
 
-@FindBy(xpath="//table[@id='linkdtabsid:itemLinkTypeTableId']/thead/tr[1]/th[1]/div/span")
-private WebElement ListItemLinkTypesActionLabelLocator;
-@FindBy(xpath="//table[@id='linkdtabsid:itemLinkTypeTableId']/thead/tr[1]/th[2]/span")
-private WebElement ListItemLinkTypesSLLabelLocator;
-@FindBy(xpath="//table[@id='linkdtabsid:itemLinkTypeTableId']/thead/tr[1]/th[3]/div/span")
-private WebElement ListItemLinkTypesNameLabelLocator;
-@FindBy(xpath="//table[@id='linkdtabsid:itemLinkTypeTableId']/thead/tr[1]/th[4]/div/span")
-private WebElement ListItemLinkTypesDescriptionLabelLocator;
-@FindBy(xpath="//a[@title='Add New Item Link Type']")
-private WebElement AddNewLinkTypeLocator;
+	@FindBy(xpath="//table[@id='listForm:assignedItemsTable3']/thead/tr[1]/th[5]/span")
+	private WebElement AvailableLinkedItemsItemStatusLocator;
 
-@FindBy(xpath="//input[@id='addNewItemLinkTypeForm:lNameId']")
-private WebElement LinkTypeNameFieldLocator;
-@FindBy(xpath="//textarea[@id='addNewItemLinkTypeForm:linkId']")
-private WebElement LinkTypeDescriptionFieldLocator;
-@FindBy(xpath="//input[@title='Save New Item Link Type']")
-private WebElement saveLinkTypeLocator;
-@FindBy(xpath="//input[@id='addNewItemLinkTypeForm:btnReset']")
-private WebElement resetLinkTypeLocator;
-@FindBy(xpath="//form[@id='addNewItemLinkTypeForm']/div[2]/img")
-private WebElement closeLinkTypeForm;
+	@FindBy(xpath="//table[@id='listForm:assignedItemsTable3']/thead/tr[1]/th[6]/span")
+	private WebElement AvailableLinkedItemsDisplayOnlineLocator;
 
-@FindBy(xpath="//span[@id='msg']")
-private WebElement linktypeSuccessMsg;
+	@FindBy(xpath="//table[@id='listForm:assignedItemsTable3']/thead/tr[1]/th[7]/span")
+	private WebElement AvailableLinkedItemsLinkeditemsQTYLocator;
 
-@FindBy(xpath="//span[@id='msg2']")
-private WebElement linktypeDeleteMsg;
+	@FindBy(xpath="//table[@id='linkdtabsid:itemLinkTypeTableId']/thead/tr[1]/th[1]/div/span")
+	private WebElement ListItemLinkTypesActionLabelLocator;
+	@FindBy(xpath="//table[@id='linkdtabsid:itemLinkTypeTableId']/thead/tr[1]/th[2]/span")
+	private WebElement ListItemLinkTypesSLLabelLocator;
+	@FindBy(xpath="//table[@id='linkdtabsid:itemLinkTypeTableId']/thead/tr[1]/th[3]/div/span")
+	private WebElement ListItemLinkTypesNameLabelLocator;
+	@FindBy(xpath="//table[@id='linkdtabsid:itemLinkTypeTableId']/thead/tr[1]/th[4]/div/span")
+	private WebElement ListItemLinkTypesDescriptionLabelLocator;
+	@FindBy(xpath="//a[@title='Add New Item Link Type']")
+	private WebElement AddNewLinkTypeLocator;
 
-@FindBy(xpath="//span[contains(text(),'Test_New_link1')]/ancestor::td/preceding-sibling::td/descendant::input[@title='Remove']")
-private WebElement deleteButtonLinkType;
+	@FindBy(xpath="//input[@id='addNewItemLinkTypeForm:lNameId']")
+	private WebElement LinkTypeNameFieldLocator;
 
-@FindBy(xpath="//span[contains(text(),'Test_New_link1')]/ancestor::td/preceding-sibling::td/descendant::input[@title='Edit Item Link Type']")
-private WebElement linkTypeEditbutton;
+	@FindBy(xpath="//textarea[@id='addNewItemLinkTypeForm:linkId']")
+	private WebElement LinkTypeDescriptionFieldLocator;
 
-@FindBy(xpath="//input[@id='EditItemLinkTypeForm:lNameId']")
-private WebElement EditFormlinktypeNameLocator;
-@FindBy(xpath="//textarea[@id='EditItemLinkTypeForm:linkDesc']")
-private WebElement EditFormlinktypeDescLocator;
-@FindBy(xpath="//input[@title='Update']")
-private WebElement EditFormlinktypeSaveLocator;
-@FindBy(xpath="//input[@id='EditItemLinkTypeForm:btnReset']")
-private WebElement EditFormlinktypeResetLocator;
+	@FindBy(xpath="//input[@title='Save New Item Link Type']")
+	private WebElement saveLinkTypeLocator;
 
-@FindBy(xpath="//form[@id='EditItemLinkTypeForm']/div[2]/img")
-private WebElement EditFormlinktypeCloseLocator;
+	@FindBy(xpath="//input[@id='addNewItemLinkTypeForm:btnReset']")
+	private WebElement resetLinkTypeLocator;
 
-//form[@id='EditItemLinkTypeForm']/div[2]/img
+	@FindBy(xpath="//form[@id='addNewItemLinkTypeForm']/div[2]/img")
+	private WebElement closeLinkTypeForm;
 
-@FindBy(xpath="//td[@id='CPTab_lbl']")
-private WebElement customPricesLink;
+	@FindBy(xpath="//span[@id='msg']")
+	private WebElement linktypeSuccessMsg;
 
-@FindBy(xpath="//td[@id='AttrTab_lbl']")
-private WebElement attributesLink;
+	@FindBy(xpath="//span[@id='msg2']")
+	private WebElement linktypeDeleteMsg;
 
-@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[4]/div/input")
-private WebElement OverPriceCheckboxLocator;
-@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[5]/div/input")
-private WebElement featuredProductCheckboxLocator;
-@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[6]/div/input")
-private WebElement displayPricingCheckboxLocator;
-@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[7]/div/input")
-private WebElement addTocartCheckboxLocator;
-@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[8]/div/div/input")
-private WebElement clearanceItemLocator;
-@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[9]/div/input")
-private WebElement imapIdItemLocator;
-@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[10]/input")
-private WebElement imapPriceTextfieldLocator;
+	@FindBy(xpath="//span[contains(text(),'Test_New_link1')]/ancestor::td/preceding-sibling::td/descendant::input[@title='Remove']")
+	private WebElement deleteButtonLinkType;
 
-@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[12]/input")
-private WebElement netPriceTextfieldLocator;
+	@FindBy(xpath="//span[contains(text(),'Test_New_link1')]/ancestor::td/preceding-sibling::td/descendant::input[@title='Edit Item Link Type']")
+	private WebElement linkTypeEditbutton;
 
-@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[13]/input")
-private WebElement PackDescTextfieldLocator;
+	@FindBy(xpath="//input[@id='EditItemLinkTypeForm:lNameId']")
+	private WebElement EditFormlinktypeNameLocator;
 
-@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[14]/input")
-private WebElement SSalesUOMTextfieldLocator;
+	@FindBy(xpath="//textarea[@id='EditItemLinkTypeForm:linkDesc']")
+	private WebElement EditFormlinktypeDescLocator;
 
-@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[15]/input")
-private WebElement PricePerTextfieldLocator;
+	@FindBy(xpath="//input[@title='Update']")
+	private WebElement EditFormlinktypeSaveLocator;
 
-@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[16]/input")
-private WebElement MinOrderQTYTextfieldLocator;
+	@FindBy(xpath="//input[@id='EditItemLinkTypeForm:btnReset']")
+	private WebElement EditFormlinktypeResetLocator;
 
-@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[17]/input")
-private WebElement OrderQtyntervalTextfieldLocator;
+	@FindBy(xpath="//form[@id='EditItemLinkTypeForm']/div[2]/img")
+	private WebElement EditFormlinktypeCloseLocator;
 
-@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[18]/input")
-private WebElement materialGroupTextfieldLocator;
+	//form[@id='EditItemLinkTypeForm']/div[2]/img
 
-@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[19]/input")
-private WebElement materialNumberTextfieldLocator;
+	@FindBy(xpath="//td[@id='CPTab_lbl']")
+	private WebElement customPricesLink;
 
+	@FindBy(xpath="//td[@id='AttrTab_lbl']")
+	private WebElement attributesLink;
 
-@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[20]/input")
-private WebElement unspscTextfieldLocator;
+	@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[4]/div/input")
+	private WebElement OverPriceCheckboxLocator;
 
+	@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[5]/div/input")
+	private WebElement featuredProductCheckboxLocator;
 
-@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[21]/input")
-private WebElement CustomerPNTextfieldLocator;
+	@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[6]/div/input")
+	private WebElement displayPricingCheckboxLocator;
 
+	@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[7]/div/input")
+	private WebElement addTocartCheckboxLocator;
 
-@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[22]/input")
-private WebElement CustomerPartNumberWPrefixTextfieldLocator;
+	@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[8]/div/div/input")
+	private WebElement clearanceItemLocator;
 
+	@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[9]/div/input")
+	private WebElement imapIdItemLocator;
 
-@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[23]/input")
-private WebElement DescTextfieldLocator;
+	@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[10]/input")
+	private WebElement imapPriceTextfieldLocator;
 
-@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[3]/select/option[@value='A']")
-private WebElement ItemstatusCP;
+	@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[12]/input")
+	private WebElement netPriceTextfieldLocator;
 
+	@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[13]/input")
+	private WebElement PackDescTextfieldLocator;
 
-@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[1]/input")
-private WebElement AddItemToSubset;
+	@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[14]/input")
+	private WebElement SSalesUOMTextfieldLocator;
 
+	@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[15]/input")
+	private WebElement PricePerTextfieldLocator;
 
+	@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[16]/input")
+	private WebElement MinOrderQTYTextfieldLocator;
 
-@Step("click on categorization tab")
-	public EditItemsPageObjects clickOnCategorizationTab(){
-			Waiting.explicitWaitVisibilityOfElement(categorizationTabLocator, 14);
-			categorizationTabLocator.click();
-			return this;
-	}
+	@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[17]/input")
+	private WebElement OrderQtyntervalTextfieldLocator;
 
-@Step("verify whether the product has the category {0}")
+	@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[18]/input")
+	private WebElement materialGroupTextfieldLocator;
+
+	@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[19]/input")
+	private WebElement materialNumberTextfieldLocator;
+
+	@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[20]/input")
+	private WebElement unspscTextfieldLocator;
+
+	@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[21]/input")
+	private WebElement CustomerPNTextfieldLocator;
+
+	@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[22]/input")
+	private WebElement CustomerPartNumberWPrefixTextfieldLocator;
+
+	@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[23]/input")
+	private WebElement DescTextfieldLocator;
+
+	@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[3]/select/option[@value='A']")
+	private WebElement ItemstatusCP;
+
+	@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[1]/input")
+	private WebElement AddItemToSubset;
+
+	@FindBy(id="DescTab_lbl")
+	private WebElement descriptionTab;
+
+	@FindBy(id="longDescEditor")
+	private WebElement longDescription;
+
+	@FindBy(id="longDesc2Editor")
+	private WebElement longDescription2;
+
+	@FindBy(xpath="//a[@title='Save']")
+	private WebElement saveDescription;
+
+	@FindBy(id="ImgTab_lbl")
+	private WebElement imagesTab;
+
+	@FindBy(xpath="//input[@title='Add New Item Image ']")
+	private WebElement addNewImageButton;
+
+	@FindBy(id="imageUploadFormId:itemImageInput1")
+	private WebElement enterImageURL;
+
+	@FindBy(xpath = "//input[@id='imageUploadFormId:captionId']")
+	private WebElement imageCaption;
+
+	@FindBy(xpath="//input[@title='Save URL']")
+	private WebElement saveImageURL;
+
+	@FindBy(id="DocTab_lbl")
+	private WebElement documentsTab;
+
+	@FindBy(xpath = "//input[@id='addDocumentId']")// or @title='Add New Item Document'
+	private WebElement addNewDocumentButton;
+
+	@FindBy(xpath = "//input[@id='documentUploadFormId:captionId' and @type='text']")
+	private WebElement documentCaption;
+
+	@FindBy(xpath = "//td//div[@id='documentUploadFormId:itemDocumentUploadId:add1']")
+	private WebElement addDocumentButton;
+
+	@FindBy(xpath = "//td//div[@id='documentUploadFormId:itemDocumentUploadId:upload1']")
+	private WebElement uploadDocumentButton;
+
+	@FindBy(xpath = "//input[@title='Assign']")
+	private WebElement assignDocument;
+
+	@FindBy(xpath = "//div[@id='longDescEditor']/*[string-length(//div[@id='longDescEditor']) > 1]")
+	private WebElement longDescription_SubFilter;
+
+	@FindBy(xpath = "//div[@id='longDescEditor']/*[string-length(//div[@id='longDescEditor']) = 0]")
+	private WebElement noLongDescription_SubFilter;
+
+	@FindBy(xpath = "//div[@id='longDescEditor']/*[string-length(//div[@id='longDescEditor']) = 0 or 1]")
+	private WebElement ignoreLongDescription_SubFilter;
+
+	@FindBy(xpath = "//input[@id=('itemNavigateForm:nextItemIcon')]")
+	private WebElement clickOnNextItem_EditPage;
+
+
+/*	@Step("click on categorization tab")
+	public EditItemsPageObjects clickOnCategorizationTab()
+	{
+		Waiting.explicitWaitVisibilityOfElement(categorizationTabLocator, 14);
+		categorizationTabLocator.click();
+		return this;
+	}*/
+
+	@Step("verify whether the product has the category {0}")
 	public EditItemsPageObjects verifyWhetherTheProductBelongsToTheCategory(String categoryToSearch) {
-		
-	try {
-		Thread.sleep(2000);
-	} catch (InterruptedException e) {
-		
-		e.printStackTrace();
-	}
 
-	
-	Assert.assertTrue(driver.findElement(By.xpath("//table[@id='tabs']/descendant::span[text()='"+categoryToSearch+"']")).isDisplayed(),"The item does not belong to the category that was filtered.");
-	return this;
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+
+			e.printStackTrace();
+		}
+
+
+		Assert.assertTrue(driver.findElement(By.xpath("//table[@id='tabs']/descendant::span[text()='"+categoryToSearch+"']")).isDisplayed(),"The item does not belong to the category that was filtered.");
+		return this;
 	}
 
 	@Step("click on results link.")
 	public EditItemsPageObjects clickOnResultsLink() {
-	Waiting.explicitWaitVisibilityOfElement(resultsLinkLocator, 6);
-	resultsLinkLocator.click();
-	return this;	
+		Waiting.explicitWaitVisibilityOfElement(resultsLinkLocator, 6);
+		resultsLinkLocator.click();
+		return this;	
 	}
 
 	@Step("store the edit items breadcrumb")
 	public String getCimmItemId() {
-		
+
 		return cimmItemIdValueLocator.getText().trim();
 	}
 
@@ -621,14 +684,14 @@ private WebElement AddItemToSubset;
 		return editItemsBreadcrumbLocator.getText().trim();
 	}
 
-	
+
 	@Step("click on item link in the right navigation bar")
 	public EditItemsPageObjects clickOnItemLink() {
 		Waiting.explicitWaitVisibilityOfElement(itemLinkLocator, 6);
 		itemLinkLocator.click();
 		return this;
 	}
-	
+
 	@Step("verify whether the cimmBreadcrump {0} that was taken before clicking on Item link is the same as {1} ")
 	public boolean assertEditItemsBreadCrumb(String actualBreadCrump, String expectedBreadCrump) {
 		return actualBreadCrump.equals(expectedBreadCrump);
@@ -638,7 +701,7 @@ private WebElement AddItemToSubset;
 	public boolean assertEditItemsCimmItemIdValue(String actualCimmItemIdValue, String expectedCimmItemIdValue) {
 		return actualCimmItemIdValue.equals(expectedCimmItemIdValue);
 	}
-	
+
 
 	public EditItemsPageObjects verifyEditItemsBreadCrumbAndCimmItemIdValue(String getBreadCrump, String itemId) {
 		Waiting.explicitWaitVisibilityOfElement(cimmItemIdValueLocator, 10);
@@ -666,7 +729,7 @@ private WebElement AddItemToSubset;
 	}
 
 	@Step("verify tabs under Linked Items tab to be setUpLinkedItemsLocator,availableLinkedItemsLocator,listItemLinkTypesLocator.")
-	
+
 	public EditItemsPageObjects verifySetUpLinkedItemsTab(String [] getExepectedSearchInDropdownValues) {
 		Waiting.explicitWaitVisibilityOfElement(searchItemsForItemLinkTypeTabNameLocator, 10);
 		Assert.assertTrue(searchItemsForItemLinkTypeTabNameLocator.isDisplayed(),"Search Items For LinkType tab name is not displayed.");
@@ -687,14 +750,14 @@ private WebElement AddItemToSubset;
 		((JavascriptExecutor) driver).executeScript("arguments[0].click();",historyLinkLocator);
 		return this;
 	}
-	
-	
+
+
 	public boolean assertAlertMsg(String alertText) {
 		boolean t = TestUtility.getAlertText().trim().equals(alertText.trim());
 		TestUtility.alertAccept();
 		return t;
 	}
-	
+
 	public EditItemsPageObjects verifyAlertMsg(String alertText) {
 		Assert.assertTrue(assertAlertMsg(alertText));
 		return this;
@@ -706,35 +769,37 @@ private WebElement AddItemToSubset;
 		return this;
 	}
 
-	public EditItemsPageObjects enterMetaKeyword(String metaKeywordText) {
+	public EditItemsPageObjects enterMetaKeyword(String metaKeywordText) 
+	{
 		// TODO Auto-generated method stub
 		return this;
 	}
-	
+
 	@Step("click on CPN tab")
-	public EditItemsPageObjects clickonCpnTab() {
+	public EditItemsPageObjects clickonCpnTab() 
+	{
 		Waiting.explicitWaitVisibilityOfElement(cpnTabLocator, 10);
 		cpnTabLocator.click();
 		return this;
-		
+
 	}
-	
+
 	@Step("click on add button")
 	public EditItemsPageObjects clickOnAddNewCpn() {
 		Waiting.explicitWaitVisibilityOfElement(addNewCpnLocator, 10);
 		addNewCpnLocator.click();
 		return this;
 
-		
+
 	}
-	
+
 	@Step("enter customer name")
 	public EditItemsPageObjects enterNewCpn(String cpnTextEnter) {
 		Waiting.explicitWaitVisibilityOfElement(addNewCpnTextboxLocator, 3);
 		addNewCpnTextboxLocator.sendKeys(cpnTextEnter);
 		return this;
 		// TODO Auto-generated method stub
-		
+
 	}
 
 
@@ -743,7 +808,7 @@ private WebElement AddItemToSubset;
 		Waiting.explicitWaitVisibilityOfElement(addNewNumber, 3);
 		addNewNumber.click();
 		return this;
-		
+
 	}
 
 	@Step("enter new CPN")
@@ -751,14 +816,14 @@ private WebElement AddItemToSubset;
 		Waiting.explicitWaitVisibilityOfElement(enterNewNumberLocator, 5);
 		enterNewNumberLocator.sendKeys(cpnNumberEnter);
 		return this;
-		
+
 	}
 
 	@Step("click on save new cpn")
 	public EditItemsPageObjects clickOnSaveCpn() {
 		saveNewCpn.click();
 		return this;
-		
+
 	}
 
 	@Step("verify the success message")
@@ -767,7 +832,7 @@ private WebElement AddItemToSubset;
 		Assert.assertEquals(cpnSuccessMessageLocator.getText().trim(), "Customer Part Numbers Saved Successfully .");
 		return this;
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public EditItemsPageObjects VerifyPartnumber(String partNumberField) {
@@ -776,15 +841,15 @@ private WebElement AddItemToSubset;
 	}
 
 	public EditItemsPageObjects verifSaveResethistory() throws InterruptedException {
-	Thread.sleep(2000);
-	Assert.assertTrue(itemUpdateButtonLocator.isDisplayed(), "Save button is not displayed");
-	Assert.assertTrue(resetButtonLocator.isDisplayed(), "reset button is not displayed");
-	Assert.assertTrue(historyButtonLocator.isDisplayed(), "history button is not displayed");
-	return this;	
+		Thread.sleep(2000);
+		Assert.assertTrue(itemUpdateButtonLocator.isDisplayed(), "Save button is not displayed");
+		Assert.assertTrue(resetButtonLocator.isDisplayed(), "reset button is not displayed");
+		Assert.assertTrue(historyButtonLocator.isDisplayed(), "history button is not displayed");
+		return this;	
 	}
 
 	public EditItemsPageObjects verifyRightPanelItemFieds(String getmanufacturerPartNumber,String partNumberField,
-		String getlistPrice, String getcostPrice, String getuserrating, String hits, String popularity) throws InterruptedException {
+			String getlistPrice, String getcostPrice, String getuserrating, String hits, String popularity) throws InterruptedException {
 		Thread.sleep(3000);
 		Assert.assertEquals(itemEditRightMPNLocator.getText().trim(), getmanufacturerPartNumber);
 		Assert.assertEquals(itemEditRightPNLocator.getText().trim(), partNumberField);
@@ -870,38 +935,38 @@ private WebElement AddItemToSubset;
 		Thread.sleep(2000);
 		return this;
 	}
-	
+
 	public EditItemsPageObjects verificationOfDescription(String descOptions, String testData) throws Exception {
-	switch(descOptions){
-	case "Page Title":
-		ItemPageTitleDescriptionLocator.sendKeys(testData);
-		break;
-	case "Short Description":
-		ItemshortDescriptionLocator.sendKeys(testData);
-		break;
-	case "Long Description":
-		Itemlong1DescriptionLocator.clear();
-		Itemlong1DescriptionLocator.sendKeys(testData);
-		Thread.sleep(4000);
-		break;
-	case "Long Description 2":
-		ItemLongDescription2TextboxLocator.sendKeys(testData);
-		break;
-	case "Item Features":
-		ItemItemFeaturesDescriptionTextboxLocator.sendKeys(testData);
-		break;
-	case "Meta Description":
-		ItemMetaDescriptionTextboxLocator.sendKeys(testData);
-		break;
-	case "Invoice Description":
-		IteminvoiceDescriptionTextboxLocator.sendKeys(testData);
-		break;
-	case "Item Market Description":
-		ItemMarketDescriptionTextboxLocator.sendKeys(testData);
-		break;
-	default: throw new Exception("invalid input");
-	
-	}
+		switch(descOptions){
+		case "Page Title":
+			ItemPageTitleDescriptionLocator.sendKeys(testData);
+			break;
+		case "Short Description":
+			ItemshortDescriptionLocator.sendKeys(testData);
+			break;
+		case "Long Description":
+			Itemlong1DescriptionLocator.clear();
+			Itemlong1DescriptionLocator.sendKeys(testData);
+			Thread.sleep(4000);
+			break;
+		case "Long Description 2":
+			ItemLongDescription2TextboxLocator.sendKeys(testData);
+			break;
+		case "Item Features":
+			ItemItemFeaturesDescriptionTextboxLocator.sendKeys(testData);
+			break;
+		case "Meta Description":
+			ItemMetaDescriptionTextboxLocator.sendKeys(testData);
+			break;
+		case "Invoice Description":
+			IteminvoiceDescriptionTextboxLocator.sendKeys(testData);
+			break;
+		case "Item Market Description":
+			ItemMarketDescriptionTextboxLocator.sendKeys(testData);
+			break;
+		default: throw new Exception("invalid input");
+
+		}
 		return this;
 	}
 
@@ -948,7 +1013,7 @@ private WebElement AddItemToSubset;
 		Assert.assertTrue(PartNumberKeywordslinkLocator.isDisplayed(), "part Number auto genrated keywords label is not displayed");
 		return this;
 	}
-	
+
 	@Step("click on custom keyword field and entering the data")
 	public EditItemsPageObjects enterDataToCustomKeywordsField(String getcustomKeyword) throws InterruptedException {
 		Thread.sleep(2000);
@@ -956,7 +1021,7 @@ private WebElement AddItemToSubset;
 		CustomKeywordsTextboxLocator.sendKeys(getcustomKeyword);
 		return this;
 	}
-	
+
 	@Step("click on meta keyword field and entering the data")
 	public EditItemsPageObjects enterDataToMetaKeywordsField(String metaKeywordText) throws InterruptedException {
 		Thread.sleep(2000);
@@ -964,33 +1029,33 @@ private WebElement AddItemToSubset;
 		MetaKeywordsTextboxLocator.sendKeys(metaKeywordText);
 		return this;
 	}
-	
+
 	@Step("click on keyword save icon")
 	public EditItemsPageObjects clickOnKeywordSaveIcon() throws InterruptedException {
 		KeywordsSaveLocator.click();
 		Thread.sleep(2000);
 		return this;
 	}
-	
+
 	@Step("Verify item Update success message")
 	public EditItemsPageObjects VerifyItemupdateSuccessMsg(String itemUpdateMSG) throws InterruptedException {
 		Thread.sleep(2000);
-	Assert.assertEquals(keywordsSuccessMsgLocator.getText().trim(), itemUpdateMSG);
+		Assert.assertEquals(keywordsSuccessMsgLocator.getText().trim(), itemUpdateMSG);
 		return this;
 	}
-	
+
 	@Step("click on revision history link")
 	public EditItemsPageObjects clickOnHistoryLinkInKeywordsTab() {
 		KeywordsRevisionLocator.click();
 		return this;
 	}
-	
+
 	@Step("click on documents tab link")
 	public EditItemsPageObjects clickOnDoucmentsTabLink() {
 		DocumentsLinkLocator.click();
 		return this;
 	}
-	
+
 	@Step("Verify the fields present in documents tab")
 	public EditItemsPageObjects verifyDocumentTabFields() throws InterruptedException {
 		Thread.sleep(3000);
@@ -1003,7 +1068,7 @@ private WebElement AddItemToSubset;
 		Thread.sleep(5000);
 		return this;
 	}
-	
+
 	@Step("Selecting document category from document category drop down in documents tab")
 	public EditItemsPageObjects verifySelectingDocumentCategory(String getdocumentcategory) throws InterruptedException {
 		Thread.sleep(3000);
@@ -1017,14 +1082,14 @@ private WebElement AddItemToSubset;
 		}
 		return this;
 	}
-	
+
 	@Step("Click on add new document button in documents tab")
 	public EditItemsPageObjects clickOnAddnewDocumentIcon() throws InterruptedException {
 		Thread.sleep(3000);
 		DocumentAddlinkLocator.click();		
 		return this;
 	}
-	
+
 	@Step("Verify the fields present in add new document form")
 	public EditItemsPageObjects verifyAddnewDocumentFormFields() throws InterruptedException {
 		Thread.sleep(2000);
@@ -1038,7 +1103,7 @@ private WebElement AddItemToSubset;
 		Assert.assertTrue(AddnewDocumentResetButtonLocator.isDisplayed(),"Document reset button is not displayed");
 		return this;
 	}
-	
+
 	@Step("uploading an document using Document URL in documents tab ")
 	public EditItemsPageObjects addNewDocumentURL(String documentCaption,String getdocumentURL) {
 		AddnewDocumentcaptionLocator.sendKeys(documentCaption);
@@ -1046,14 +1111,14 @@ private WebElement AddItemToSubset;
 		AddnewDocumentSaveButtonLocator.click();
 		return this;
 	}
-	
+
 	@Step("verify success message after uploading an documents in documents tab ")
 	public EditItemsPageObjects verifySuccessMSG(String getdocumentSuccessmsg) throws InterruptedException {
 		Thread.sleep(3000);
 		Assert.assertEquals(DocumentSuccessMsgLocator.getText().trim(), getdocumentSuccessmsg);
 		return this;
 	}
-	
+
 	@Step("Remove assigned document from the assigned documents tab ")
 	public PageFactoryInitializer removeAssignedDocument(String documentremoveMsg) throws InterruptedException {
 		DocumentURLcheckboxLocator.click();
@@ -1063,34 +1128,34 @@ private WebElement AddItemToSubset;
 		Assert.assertEquals(DocumentSuccessMsgLocator.getText().trim(), documentremoveMsg);
 		return this;
 	}
-	
+
 	@Step("click on edit button in assigned document")
 	public EditItemsPageObjects clickOnEditCaption() throws InterruptedException {
 		EditAssignedDocumentLocator.click();
 		Thread.sleep(2000);
 		return this;
 	}
-	
+
 	@Step("enter document caption for update")
 	public EditItemsPageObjects updateDocumentCaption(String updateddocumentCaption) {
 		EditDocumentCapLocator.clear();
 		EditDocumentCapLocator.sendKeys(updateddocumentCaption);
 		return this;
 	}
-	
+
 	@Step("click on Update caption save button")
 	public EditItemsPageObjects clickOnUpdateDocumentButton() throws InterruptedException {
 		UpdateDocumentCapLocator.click();
 		Thread.sleep(2000);
 		return this;
 	}
-	
+
 	@Step("Verify Success message of update document caption")
 	public EditItemsPageObjects verifySuccessMSgDocumentUpdate(String getupdateDocumentCaptionMsg) {
 		Assert.assertEquals(UpdateDocumentCapSuccessMsgLocator.getText().trim(), getupdateDocumentCaptionMsg);
 		return this;
 	}
-		
+
 	@Step("Click on cancel button in document caption update form")
 	public EditItemsPageObjects clickCancelButton() throws InterruptedException {
 		UpdateDocumentCapCancelLocator.click();
@@ -1152,7 +1217,7 @@ private WebElement AddItemToSubset;
 		Thread.sleep(2000);
 		return this;
 	}
-	
+
 	@Step("clicking on videos tab link")
 	public EditItemsPageObjects clickonVideosTabLink() throws InterruptedException {
 		VideosTablinkLocator.click();
@@ -1302,12 +1367,12 @@ private WebElement AddItemToSubset;
 	public EditItemsPageObjects verifyLinkTypeDeleteSuccessMsg(String getlinktypename) throws InterruptedException {
 		Thread.sleep(3000);
 		Assert.assertEquals(linktypeDeleteMsg.getText().trim(), "ItemLinkType - : '"+getlinktypename+"' removed Successfully");
-			return this;
-		}
+		return this;
+	}
 	@Step("clicking on edit link type form")
 	public EditItemsPageObjects verificationEditingLinkTypeForm() {
 		linkTypeEditbutton.click();
-		
+
 		return this;
 	}
 	@Step("verifying and updateing created link type")
@@ -1330,13 +1395,13 @@ private WebElement AddItemToSubset;
 		customPricesLink.click();
 		return this;
 	}
-	
+
 	@Step("click on Attributes link")
 	public EditItemsPageObjects clickOnAttributesTab() {
 		attributesLink.click();
 		return this;
 	}
-	
+
 	@Step("Verifying custom fields in custom prices tab")
 	public EditItemsPageObjects verifyCustomPricesTabFields() {
 		Assert.assertTrue(OverPriceCheckboxLocator.isDisplayed(), "Over price checkbox is not diaplayed");
@@ -1360,7 +1425,7 @@ private WebElement AddItemToSubset;
 		Assert.assertTrue(DescTextfieldLocator.isDisplayed(), "Description text field is not diaplayed");
 		return this;
 	}
-	
+
 	@Step("checking and unchecking overprice item checkbox")
 	public EditItemsPageObjects CheckuncheckOverpricecheckbox() throws InterruptedException {
 		OverPriceCheckboxLocator.click();
@@ -1425,36 +1490,36 @@ private WebElement AddItemToSubset;
 		unspscTextfieldLocator.sendKeys(unspsc);
 		return this;
 	}
-	
+
 
 	@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[10]/input")
 	private WebElement IMAPPriceTextFieldLocator;
 	@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[12]/input")
 	private WebElement NetPriceTextFieldLocator;
-	
+
 	@FindBy(xpath="(//input[@alt='Assign'])[1]")
 	private WebElement assignItemLocator;
-	
+
 	@FindBy(xpath="//table[@id='attributePanelIdContentTable']/tbody/tr[2]/td/form/table/tbody/tr[3]/td/div/input[1]")
 	private WebElement assignItemAttributeLocator;
-	
+
 	@FindBy(xpath="//input[@id='atf:atdt:0:colAVD']")
 	private WebElement AttributeValueLocator;
-	
+
 	@FindBy(xpath="//input[@id='atf:atdt:0:colUOMD']")
 	private WebElement AttributeUOMLocator;
-	
+
 	@FindBy(xpath="//input[@id='atf:atdt:0:colVGD']")
 	private WebElement AttributeValueGroupLocator;
-	
+
 	@FindBy(xpath="//input[@id='atf:savBtnId']")
 	private WebElement attributevaluesavelocator;
-	
+
 	@FindBy(xpath="//span[@id='atf:saveMsgIdAT']")
 	private WebElement attributevaluesaveMsglocator;
-	
-	
-	
+
+
+
 	@Step("Verifying attribute fields in attribute tab")
 	public EditItemsPageObjects verifyAttributesTabFileds() throws InterruptedException {
 		assignItemLocator.click();
@@ -1475,9 +1540,9 @@ private WebElement AddItemToSubset;
 		Thread.sleep(2000);
 		return this;
 	}
-	
+
 	public EditItemsPageObjects VerifyAttributeValueMsg(String getattributesaveMsg) {
-	Assert.assertEquals(attributevaluesaveMsglocator.getText().trim(), getattributesaveMsg);
+		Assert.assertEquals(attributevaluesaveMsglocator.getText().trim(), getattributesaveMsg);
 		return this;
 	}
 	@Step("selecting item status")
@@ -1491,69 +1556,334 @@ private WebElement AddItemToSubset;
 		return this;
 	}
 
-@FindBy(xpath="//span[@id='CPsaveMsgId']")
-private WebElement custompricessuccessmsgx;
+	@FindBy(xpath="//span[@id='CPsaveMsgId']")
+	private WebElement custompricessuccessmsgx;
 
-@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[1]/input[1]")
-private WebElement saveMsgbuttonLocator;
-@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[1]/input[2]")
-private WebElement DeleteButtonCFLocator;
+	@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[1]/input[1]")
+	private WebElement saveMsgbuttonLocator;
+	@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[1]/input[2]")
+	private WebElement DeleteButtonCFLocator;
 
-@Step("Verifying the subset after click on dave button")
-public EditItemsPageObjects verifysucessmsg() {
-	Assert.assertTrue(custompricessuccessmsgx.getText().trim().contains("Item added to Subset"), "item is not added successfully to the subset");
-	return this;
-}
-@Step("Verifying add and delete buttons in custom prices tab")
-public EditItemsPageObjects verifyaddandDeleteIcons() {
-	Assert.assertTrue(saveMsgbuttonLocator.isDisplayed(), "Save button is not diaplayed");
-	Assert.assertTrue(DeleteButtonCFLocator.isDisplayed(), "Reset button is not diaplayed");
-	return this;
-}
-@Step("click on item save button in custom prices tab")
-public EditItemsPageObjects clickonSaveButtonCustomPrices() throws InterruptedException {
-	saveMsgbuttonLocator.click();
-	Thread.sleep(2000);
-	return this;
-}
-@Step("Verifying item update success message in custom prices tab")
-public EditItemsPageObjects VerifyUpdateitemSuccessMsg() {
-	Assert.assertTrue(custompricessuccessmsgx.getText().trim().contains(" Item Updated Successfully"), "item is not updated successfully to the subset");
-	return this;
-}
-@Step("Verifying item update success message in custom prices tab")
-public EditItemsPageObjects deleteItemFromSubset() {
-	DeleteButtonCFLocator.click();
-	TestUtility.alertAccept();
-	return this;
-}
-
-@FindBy(xpath="//img[@src='/CIMM2Touch/images/small/history.png']")
-private WebElement CustomPricesHistoryLocator;
-
-
-@Step("click on history in custom prices tab")
-public EditItemsPageObjects clickOnCPhistoryLink() throws InterruptedException {
-	CustomPricesHistoryLocator.click();
-	Thread.sleep(2000);
-	return this;
-}
-
-	
-
-	
-
-	
-
-	
-	
-
-	
-
-	
-
-	
-
-
-	
+	@Step("Verifying the subset after click on dave button")
+	public EditItemsPageObjects verifysucessmsg() {
+		Assert.assertTrue(custompricessuccessmsgx.getText().trim().contains("Item added to Subset"), "item is not added successfully to the subset");
+		return this;
 	}
+	@Step("Verifying add and delete buttons in custom prices tab")
+	public EditItemsPageObjects verifyaddandDeleteIcons() {
+		Assert.assertTrue(saveMsgbuttonLocator.isDisplayed(), "Save button is not diaplayed");
+		Assert.assertTrue(DeleteButtonCFLocator.isDisplayed(), "Reset button is not diaplayed");
+		return this;
+	}
+	@Step("click on item save button in custom prices tab")
+	public EditItemsPageObjects clickonSaveButtonCustomPrices() throws InterruptedException {
+		saveMsgbuttonLocator.click();
+		Thread.sleep(2000);
+		return this;
+	}
+	@Step("Verifying item update success message in custom prices tab")
+	public EditItemsPageObjects VerifyUpdateitemSuccessMsg() {
+		Assert.assertTrue(custompricessuccessmsgx.getText().trim().contains(" Item Updated Successfully"), "item is not updated successfully to the subset");
+		return this;
+	}
+	@Step("Verifying item update success message in custom prices tab")
+	public EditItemsPageObjects deleteItemFromSubset() {
+		DeleteButtonCFLocator.click();
+		TestUtility.alertAccept();
+		return this;
+	}
+
+	@FindBy(xpath="//img[@src='/CIMM2Touch/images/small/history.png']")
+	private WebElement CustomPricesHistoryLocator;
+
+
+	@Step("click on history in custom prices tab")
+	public EditItemsPageObjects clickOnCPhistoryLink() throws InterruptedException {
+		CustomPricesHistoryLocator.click();
+		Thread.sleep(2000);
+		return this;
+	}
+
+	@Step("To Edit the Long Description in the Descriptions Tab")
+	public EditItemsPageObjects editLongDescription(String longdesc)
+	{
+		longDescription.clear();
+		longDescription.sendKeys(longdesc);
+		return this;
+	}
+
+	@Step("To Edit the Long Description2 in the Descriptions Tab")
+	public EditItemsPageObjects editLongDescription2(String longdesc)
+	{
+		longDescription2.clear();
+		longDescription2.sendKeys(longdesc);
+		return this;
+	}
+
+	@Step("To Save the Descriptions in the Edit Items Page")
+	public EditItemsPageObjects saveDescription()
+	{
+		saveDescription.click();
+		return this;
+	}
+	@Step("To Click On Images Tab")
+	public EditItemsPageObjects clickOnImagesTab()
+	{
+		imagesTab.click();
+		return this;
+	}
+
+	@Step("To Click on 'Add New Image' Button in the Images Tab")
+	public EditItemsPageObjects clickOnAddNewImageButton()  throws Exception
+	{
+		Thread.sleep(2000);
+		addNewImageButton.click();
+		return this;
+	}
+
+	@Step("To Enter the URL of the Image in the Image Tab")
+	public EditItemsPageObjects enterImageURL(String imageURL)
+	{
+		enterImageURL.sendKeys(imageURL);
+		return this;
+	}
+
+	@Step("To Click on 'Save Image URL' ")
+	public EditItemsPageObjects clickSaveImageURL() throws Exception
+	{
+		saveImageURL.click();
+		Thread.sleep(5000);
+		return this;
+	}
+
+	@Step("To Enter the 'Image Caption' in the Images Tab")
+	public EditItemsPageObjects enterImageCaption()
+	{
+		imageCaption.clear();
+		imageCaption.sendKeys("Image Caption");
+		return this;
+	}
+
+	@Step("To Click on 'Documents' Tab")
+	public EditItemsPageObjects clickOnDocumentsTab() throws Exception
+	{
+		documentsTab.click();
+		Thread.sleep(5000);
+		return this;
+	}
+
+	@Step("To Click on 'Add New Document Button' in 'Documents' Tab")
+	public EditItemsPageObjects clickOnAddNewDocumentButton()
+	{
+		addNewDocumentButton.click();
+		return this;
+	}
+
+	@Step("To Enter the 'Document Caption' in 'Documents' Tab")
+	public EditItemsPageObjects enterDocumentCaption()
+	{
+		documentCaption.sendKeys("Document Caption");
+		return this;
+	}
+
+	@Step("To Upload a Document from Specified Location in 'Documents' Tab")
+	@SuppressWarnings("static-access")
+	public EditItemsPageObjects UploadDocument(String fileToUpload) throws Exception
+	{
+		addDocumentButton.click();
+		tu.fileUpload(fileToUpload);
+		return this;
+	}
+
+	@Step("To Assign a Document")
+	public EditItemsPageObjects assignDocument() throws Exception
+	{
+		Thread.sleep(3000);
+		assignDocument.click();
+		return this;
+
+
+	}
+
+	@Step("To Verify the Long Descriptions in the 'Descriptions' Tab")
+	@SuppressWarnings("static-access")
+	public EditItemsPageObjects verifyLongDescription() throws Exception
+	{
+		Thread.sleep(2000);
+		tu.assertElementPresent(longDescription_SubFilter);
+		return this;
+	}
+
+	@Step("To Verify that the Long Descriptions is not present in the 'Descriptions' Tab")
+	public EditItemsPageObjects verifyNoLongDescription() throws Exception
+	{
+		Assert.assertEquals(((JavascriptExecutor) driver).executeScript("return $x('boolean(//div[@id=\"longDescEditor\"]/*[string-length(//div[@id=\"longDescEditor\"]) > 0])');"),true,"remember me checkbox is not checked");
+		/*Thread.sleep(2000);
+	tu.assertElementPresent(noLongDescription_SubFilter);*/
+		return this;
+	}
+
+
+	@Step("To Verify after ignoring Long Descriptions 'Descriptions' Tab")
+	@SuppressWarnings("static-access")
+	public EditItemsPageObjects verifyIgnorelongDescPartNumbers() throws Exception
+	{
+		Thread.sleep(2000);
+		tu.assertElementPresent(longDescription);
+		return this;
+
+	}
+
+	@Step("verification of Attributes dropdown - Attributes ")
+	public boolean verifyadvse030() throws Exception 
+	{
+		boolean bool1=true;
+		boolean bool2=true;
+		boolean bool3=true;
+
+		int var = 5;
+		for(int i=0;i<=var;i++)
+		{
+
+			try 
+			{
+				bool1=TestUtility.assertElementPresent(driver.findElement(By.xpath("//span/table/tbody/tr/td/table/tbody/tr[*]/td[4]/input[@value])")));
+			}
+			catch(Exception e)
+			{
+				bool1=false;
+			}
+
+			try {
+				bool2=TestUtility.assertElementPresent(driver.findElement(By.xpath("//span/table/tbody/tr/td/table/tbody/tr[*]/td[5]/input[@value])")));
+			}
+
+			catch(Exception e)
+			{
+				bool2=false;
+			}
+
+			try {
+				bool3=TestUtility.assertElementPresent(driver.findElement(By.xpath("//span/table/tbody/tr/td/table/tbody/tr[*]/td[6]/input[@value])")));
+			}
+
+			catch(Exception e)
+			{
+				bool3=false;
+			}
+
+
+			if(bool1 || bool2 || bool3 == true) 
+			{
+				return true;
+			}
+			clickOnNextItem_EditPage.click();
+			clickOnAttributesTab();
+
+		}
+		return false;
+	}
+
+	@Step("verification of Attributes dropdown - No Attributes ")
+	public boolean verifyadvse031() throws Exception 
+	{
+		boolean bool1=true;
+		boolean bool2=true;
+		boolean bool3=true;
+
+		int var = 5;
+		for(int i=0;i<=var;i++)
+		{
+
+			try 
+			{
+				bool1=TestUtility.assertElementPresent(driver.findElement(By.xpath("//span/table/tbody/tr/td/table/tbody/tr[*]/td[4]/input[@value])")));
+			}
+			catch(Exception e)
+			{
+				bool1=false;
+			}
+
+			try {
+				bool2=TestUtility.assertElementPresent(driver.findElement(By.xpath("//span/table/tbody/tr/td/table/tbody/tr[*]/td[5]/input[@value])")));
+			}
+
+			catch(Exception e)
+			{
+				bool2=false;
+			}
+
+			try {
+				bool3=TestUtility.assertElementPresent(driver.findElement(By.xpath("//span/table/tbody/tr/td/table/tbody/tr[*]/td[6]/input[@value])")));
+			}
+
+			catch(Exception e)
+			{
+				bool3=false;
+			}
+
+
+			if(bool1&& bool2 && bool3 == false) 
+			{
+				return true;
+			}
+			clickOnNextItem_EditPage.click();
+			clickOnAttributesTab();
+		}
+		return false;
+	}
+
+	@Step("click on categorization tab")
+	public EditItemsPageObjects clickOnCategorizationTab() throws InterruptedException{
+		Thread.sleep(5000);
+		categorizationTabLocator.click();
+		Thread.sleep(5000);
+		return this;
+	}
+
+	@Step("verification of Categorized dropdown - Categorized ")
+	public EditItemsPageObjects verifyadvse042() throws InterruptedException 
+	{
+		int var = 5;
+		for(int i=0;i<=var;i++)
+		{
+			try 
+			{
+				Thread.sleep(2000);
+			} 
+			catch(Exception e)
+			{
+
+				System.out.println("continue to next item");
+			}
+
+
+			Assert.assertTrue(driver.findElement(By.xpath("//tbody[@id='itemCategoryFormId:categoryListTableId:tb']/tr/td[3]")).isDisplayed());
+
+		}
+
+		clickOnNextItem_EditPage.click();
+		//@Step(value= "clickOnCategorizationTab")
+		clickOnCategorizationTab();
+
+		return this;
+	}	
+
+
+	@Step("verification of categorized dropdown ")
+	public EditItemsPageObjects verifyadvse043() throws InterruptedException {
+		int var = 5;
+		for(int i=0;i<=var;i++)
+		{
+			//String count="count(//table[@id='searchFormId:itemListTableId']/thead/tr/th/div/span/span[text()='Display Online']/../../../preceding-sibling::*)+1";
+			String xpath="//table[@id='itemCategoryFormId:categoryListTableId']/tbody[not(tr)]";
+
+
+			Assert.assertFalse(driver.findElement(By.xpath(xpath)).isDisplayed());
+		}
+		clickOnNextItem_EditPage.click();
+		clickOnCategorizationTab();
+
+		return this;
+	}
+}

@@ -76,7 +76,8 @@ public class TestUtility extends MainController {
 	    driver.switchTo().window(driver.getWindowHandle());
 	    
 	}
-	public static void switchToRecentWindow(){
+	public static void switchToRecentWindow()
+	{
 		//String winHandleBefore = driver.getWindowHandle();
 		ArrayList<String> tabs = new ArrayList<String> (driver.getWindowHandles());
 	    driver.switchTo().window(tabs.get(1));

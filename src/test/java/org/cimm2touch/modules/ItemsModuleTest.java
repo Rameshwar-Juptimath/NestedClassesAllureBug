@@ -2,10 +2,8 @@ package org.cimm2touch.modules;
 import org.cimm2touch.dataprovider.SearchData;
 import org.cimm2touch.maincontroller.PageFactoryInitializer;
 import org.cimm2touch.utils.ApplicationSetUpPropertyFile;
-import org.cimm2touch.utils.RandomNumberGenerator;
 import org.cimm2touch.utils.SearchDataPropertyFile;
 import org.cimm2touch.utils.TestUtility;
-import org.cimm2touch.utils.Waiting;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -16,7 +14,8 @@ import ru.yandex.qatools.allure.annotations.Issues;
 import ru.yandex.qatools.allure.annotations.Parameter;
 import ru.yandex.qatools.allure.annotations.TestCaseId;
 
-public class ItemsModuleTest extends PageFactoryInitializer {
+public class ItemsModuleTest extends PageFactoryInitializer 
+{
 	
 	SearchDataPropertyFile data = new SearchDataPropertyFile();
 	ApplicationSetUpPropertyFile setUp = new ApplicationSetUpPropertyFile();
@@ -26,7 +25,8 @@ public class ItemsModuleTest extends PageFactoryInitializer {
 	@Description("This is a test case which verifies display of records per page based on the filter chosen. 25,50,75,100 are the filter values.")
 	@TestCaseId("TC_ITEMS_002")
 	@Test(groups={"smoke","regression"})
-	public void verifyDisplayOfNumberRecordsChosen() throws Exception{
+	public void verifyDisplayOfNumberRecordsChosen() throws Exception
+	{
 		/*
 		 * @author:hemanth.sridhar
 		 * 

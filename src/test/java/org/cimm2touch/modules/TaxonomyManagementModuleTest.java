@@ -93,7 +93,7 @@ public class TaxonomyManagementModuleTest extends PageFactoryInitializer{
 		
 	}
 	
-	@Features(value = {"Taxonomy Management Module"})
+/*	@Features(value = {"Taxonomy Management Module"})
 	@Description("This is a test case which verifies the pagination functionality in T-Management")
 	@TestCaseId("TC_T-Mgmt_35_36_37_38")
 	@Test(groups={"regression"})
@@ -104,7 +104,7 @@ public class TaxonomyManagementModuleTest extends PageFactoryInitializer{
 		.clickOnTaxonomyLink()
 		.taxonomyPage()
 		.verifyPagination();
-	}
+	}*/
 	
 	@Features(value = {"Taxonomy Management Module"})
 	@Description("This is a test case which gives Verification of 'Display Records' in Taxonomy page")
