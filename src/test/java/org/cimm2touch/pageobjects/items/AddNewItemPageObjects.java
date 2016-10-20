@@ -3,7 +3,7 @@ import java.util.List;
 
 import org.cimm2touch.maincontroller.PageFactoryInitializer;
 import org.cimm2touch.pageobjects.homepage.HomePageObjects;
-import org.cimm2touch.utils.RandomNumberGenerator;
+import org.cimm2touch.utils.RandomGenerator;
 import org.cimm2touch.utils.Waiting;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
@@ -247,7 +247,6 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 			Waiting.explicitWaitVisibilityOfElement(partNumberTextBoxLocator, 15);
 			partNumberTextBoxLocator.sendKeys(textToBeEnterInTheTextbox);
 			Assert.assertEquals(partNumberTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)));
-			System.out.println("Texts are "  +textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)));
 			break;
 			
 		case "Manufacturer Part Number":
@@ -488,7 +487,7 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 	 
 	 public AddNewItemPageObjects enterPartNumberField(String partNumberField) {
 		 Waiting.explicitWaitVisibilityOfElement(enterPartNumberLocator, 30);
-		 enterPartNumberLocator.sendKeys(partNumberField+RandomNumberGenerator.generateEightRandomNumbers());
+		 enterPartNumberLocator.sendKeys(partNumberField+RandomGenerator.PermittedCharacters.NUMERIC);
 			return this;
 		}
 	 

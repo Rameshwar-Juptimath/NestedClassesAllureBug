@@ -200,9 +200,8 @@ public class MainController implements IHookable {
 	}
 
 	@AfterSuite(alwaysRun = true)
-	public void tearDownClass() {
+	public void tearDown() {
 		System.out.println("Ending Test Suite");
-		driver.close();
 		driver.quit();
 
 	}

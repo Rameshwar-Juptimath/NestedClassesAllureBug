@@ -120,7 +120,7 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 	}
 
 
-	public TaxonomyPageObjects verifysearchfunctionalityforValidAndInvalidKey() 
+	public TaxonomyPageObjects verifysearchfunctionalityforValidAndInvalidKey(String expectedErrorMessage) 
 	{
 		Waiting.explicitWaitVisibilityOfElement(searchsuccesfullMessageLocator, 8);
 		Assert.assertEquals(searchsuccesfullMessageLocator.getText().trim(), "Manufacturer Name required");
@@ -296,6 +296,8 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 		taxonomySearchButton.click();
 		return this;
 	}
+	
+	
 
 	@Step("click on manage taxonomy link.")
 	public TaxonomyPageObjects clickOnManageTaxonomy() throws InterruptedException{
@@ -341,7 +343,7 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 
 	@Step("selecting {0} number of records to display.")
 	public TaxonomyPageObjects selectNumberOfRecordsToDisplayInThePage(String selectNumberOfRecordsToDisplay) throws Exception{
-
+		Waiting.explicitWaitVisibilityOfElement(selectRecordsDropdownInTaxonomyLocator, 15);
 		Select select = new Select(selectRecordsDropdownInTaxonomyLocator);
 		select.selectByVisibleText(selectNumberOfRecordsToDisplay);
 		Thread.sleep(3000);

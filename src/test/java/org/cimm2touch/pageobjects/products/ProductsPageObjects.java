@@ -2,7 +2,8 @@ package org.cimm2touch.pageobjects.products;
 
 import java.util.List;
 
-import org.cimm2touch.utils.RandomNumberGenerator;
+import org.cimm2touch.utils.RandomGenerator;
+import org.cimm2touch.utils.RandomGenerator.PermittedCharacters;
 import org.cimm2touch.utils.SearchDataPropertyFile;
 import org.cimm2touch.maincontroller.PageFactoryInitializer;
 import org.cimm2touch.pageobjects.items.EditItemsPageObjects;
@@ -208,7 +209,7 @@ public class ProductsPageObjects extends PageFactoryInitializer {
 		@Step("enter product number {0}")
 		public ProductsPageObjects enterProductNumberField(String textToBeEnterInTheProductNumberTextbox) {
 			 Waiting.explicitWaitVisibilityOfElement(productNumberTextBoxLocator, 15);
-			 productNumberTextBoxLocator.sendKeys(textToBeEnterInTheProductNumberTextbox+RandomNumberGenerator.generateEightRandomNumbers());
+			 productNumberTextBoxLocator.sendKeys(textToBeEnterInTheProductNumberTextbox+RandomGenerator.random(8, PermittedCharacters.NUMERIC));
 			 
 			 return this;
 		}

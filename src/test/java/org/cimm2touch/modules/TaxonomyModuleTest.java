@@ -52,7 +52,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 	@Features(value = {"Taxonomy Module"})
 	@Description("This Method is used to Create Categoryies {0}")
 	@Test(enabled=false, groups={"regression"},dataProvider="TaxonomyModuleTest",dataProviderClass=SearchData.class)
-	public void createCategories(String testCaseNo, String categoryCode, String categoryName,String displaySequence) throws Exception
+	public void createCategories(String testCaseNo, String categoryCode, String categoryName,String displaySequence, String expectedSuccesfulMessageForNewCategoryCreation) throws Exception
 	{
 		landingPage()
 		.enterUsername(data.getUserName())
@@ -69,7 +69,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 		.clickOnAddNewCategory()
 		.addNewCategory(categoryCode, categoryName, displaySequence)
 		.saveNewCategory()
-		.verifySuccessMessageAfterSavingCategory();
+		.verifySuccessMessageAfterSavingCategory(expectedSuccesfulMessageForNewCategoryCreation);
 	}
 
 	@Features(value = {"Taxonomy Module"})
@@ -505,7 +505,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 	@TestCaseId("TC_T-Mgmt_40")
 	@Test(groups={"regression"},dataProvider="TaxonomyModuleTest",dataProviderClass=SearchData.class)
 	public void TC_TaxMgt_40(String testCaseID, String taxonomyName, String categoryName, String childCategoryCode, 
-			String childCategoryName, String displaySequence) throws Exception
+			String childCategoryName, String displaySequence, String expectedSuccesfulMessageForNewCategoryCreation) throws Exception
 	{
 		landingPage()
 		.enterUsername(data.getUserName())
@@ -524,7 +524,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 		.verifyChildCategoryFields()
 		.addNewChildCategory(childCategoryCode, childCategoryName, displaySequence)
 		.saveNewCategory()
-		.verifySuccessMessageAfterSavingCategory();
+		.verifySuccessMessageAfterSavingCategory(expectedSuccesfulMessageForNewCategoryCreation);
 	}
 	
 	@Features(value = {"Taxonomy Module"})
@@ -609,7 +609,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 	@Description("This Test Case is to Verify the 500 Characters Limit in Marketing Description Field On Editing in Manage Taxonomy page.")
 	@TestCaseId("TC_T-Mgmt_51")
 	@Test(groups={"regression"},dataProvider="TaxonomyModuleTest",dataProviderClass=SearchData.class)
-	public void TC_TaxMgt_51_1(String testCaseID, String taxonomyName, String categoryName) throws Exception
+	public void TC_TaxMgt_51_1(String testCaseID, String taxonomyName, String categoryName,String numberOfCharactersAcceptedInTheTextbox) throws Exception
 	{
 		landingPage()
 		.enterUsername(data.getUserName())
@@ -628,10 +628,10 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 	}
 	
 	@Features(value = {"Taxonomy Module"})
-	@Description("This Test Case is to Save a Category and Verify the Success Message in Manage Taxonomy page.")
+	@Description("This Test Case is to Save a Category and Verify the SuccessMessage in Manage Taxonomy page.")
 	@TestCaseId("TC_T-Mgmt_52")
 	@Test(groups={"regression"},dataProvider="TaxonomyModuleTest",dataProviderClass=SearchData.class)
-	public void TC_TaxMgt_52(String testCaseID, String taxonomyName, String categoryCode, String categoryName, String displaySequence) throws Exception
+	public void TC_TaxMgt_52(String testCaseID, String taxonomyName, String categoryCode, String categoryNameForAddNewCategoryClick, String categoryName, String displaySequence, String expectedSuccesfulMessageForNewCategoryCreation) throws Exception
 	{
 		landingPage()
 		.enterUsername(data.getUserName())
@@ -645,10 +645,10 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 		.clickOnManageTaxonomy()
 		.manageTaxonomyPage()
 		.verifyLeftPanelTaxonomyName(taxonomyName)
-		.clickOnAddNewCategory()
+		.clickOnAddNewCategory(categoryNameForAddNewCategoryClick)
 		.addNewCategory(categoryCode, categoryName, displaySequence)
 		.saveNewCategory()
-		.verifySuccessMessageAfterSavingCategory();
+		.verifySuccessMessageAfterSavingCategory(expectedSuccesfulMessageForNewCategoryCreation); 
 	}
 	
 	@Features(value = {"Taxonomy Module"})

@@ -258,6 +258,9 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//img[@title='Close']")
 	private WebElement attributeGroupFormCloseButton;
 
+	@FindBy(xpath="//div[@class='leftSliderToggleImg']/div")
+	private WebElement leftSliderToggleImgLocator;
+	
 	public ManageTaxonomyPageObjects verifyTabsPresentInManageTaxonomyPage() throws InterruptedException 
 	{
 		Assert.assertTrue(categoryandattributesLocator.isDisplayed());
@@ -506,8 +509,10 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 		return this;	
 	}
 
-	public ManageTaxonomyPageObjects verifyLeftPanelTaxonomyName(String taxonomyname) 
+	public ManageTaxonomyPageObjects verifyLeftPanelTaxonomyName(String taxonomyname) throws InterruptedException 
 	{
+
+		Thread.sleep(2000);
 		WebElement ele = driver.findElement(By.xpath("//div[@class='editTaxonomyWrap']/ul/li/div/div/div/div/input[contains(@value,'"+taxonomyname+"')]"));
 		Assert.assertTrue(ele.isDisplayed(), "Taxonomy "+taxonomyname+" is not Present in the Left Side Panel");
 		return this;
@@ -520,6 +525,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 		{
 			WebElement ele = driver.findElement(By.xpath("//span[contains(text(),'CARS')]"));
 			ele.click();
+			
 		}
 		catch (Exception e)
 		{
@@ -535,16 +541,32 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	public ManageTaxonomyPageObjects addNewCategory(String categoryCodeforParentCategory, String categoryNameforParentCategory,  
 			String displaySequenceforParentCategory) throws Exception 
 	{	
+		enterParentCategoryCode(categoryCodeforParentCategory);
+		enterParentCategoryName(categoryNameforParentCategory);
+		enterDisplaySequenceOfParentCategory(displaySequenceforParentCategory);
+		return this;
+	}
+	@Step("enter parent category code {0}")
+	public ManageTaxonomyPageObjects enterParentCategoryCode(String categoryCodeforParentCategory) throws InterruptedException{
 		Thread.sleep(5000);
 		categoryCode.clear();
 		categoryCode.sendKeys(categoryCodeforParentCategory);
+		return this;
+	}
+	@Step("enter parent category name {0}")
+	public ManageTaxonomyPageObjects enterParentCategoryName(String categoryNameforParentCategory) throws InterruptedException{
+		Thread.sleep(5000);
 		categoryName.clear();
 		categoryName.sendKeys(categoryNameforParentCategory);
+		return this;
+	}
+	@Step("enter parent category name {0}")
+	public ManageTaxonomyPageObjects enterDisplaySequenceOfParentCategory(String displaySequenceforParentCategory) throws InterruptedException{
 		displaySequence.clear();
 		displaySequence.sendKeys(displaySequenceforParentCategory);
 		return this;
 	}
-
+	
 	public ManageTaxonomyPageObjects clickOnAddNewChildCategory() throws Exception 
 	{
 		Thread.sleep(5000);
@@ -574,7 +596,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	@Step("To Save Category")
 	public ManageTaxonomyPageObjects saveNewCategory() 
 	{
-		saveCategory.click();
+		((JavascriptExecutor) driver).executeScript("arguments[0].click();",saveCategory);
 		return this;		
 	}
 
@@ -624,10 +646,10 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	}
 
 	@Step("To Verify the Message Displayed after succesfully saving a Category")
-	public ManageTaxonomyPageObjects verifySuccessMessageAfterSavingCategory() throws Exception 
+	public ManageTaxonomyPageObjects verifySuccessMessageAfterSavingCategory(String expectedNewSavedCategorySuccesfulMessage) throws Exception 
 	{
 		Thread.sleep(5000);
-		Assert.assertTrue(driver.findElement(By.xpath("//*[@id='categoryid:ctgMsgId' and contains(text(),'New Category Saved Successfully')]")).isDisplayed());
+		Assert.assertTrue(driver.findElement(By.xpath("//*[@id='categoryid:ctgMsgId' and contains(text(),'"+expectedNewSavedCategorySuccesfulMessage+"')]")).isDisplayed());
 		return this;
 	}
 
@@ -1253,6 +1275,24 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 		Assert.assertTrue(driver.findElement(By.xpath("//span[contains(@style,'bold') and contains(.,'"+attributeGroupName+"')]")).isDisplayed());
 		Thread.sleep(5000);
 		tu.switchBackToFirstWindow();
+		return this;
+	}
+
+	public ManageTaxonomyPageObjects clickOnAddNewCategory(String categoryNameForAddNewCategoryClick) throws InterruptedException {
+		Thread.sleep(5000);
+		try
+		{
+			WebElement ele = driver.findElement(By.xpath("//span[contains(text(),'"+categoryNameForAddNewCategoryClick+"')]"));
+			ele.click();
+			
+		}
+		catch (Exception e)
+		{
+			System.out.println(e);
+		}
+		Thread.sleep(5000);
+		addNewCategoryButton.click();
+		Thread.sleep(5000);
 		return this;
 	}
 
