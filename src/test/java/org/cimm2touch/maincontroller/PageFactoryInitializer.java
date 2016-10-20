@@ -1,5 +1,7 @@
 package org.cimm2touch.maincontroller;
 import org.cimm2touch.pageobjects.landingpage.LandingPageObjects;
+import org.cimm2touch.pageobjects.manufacturer.EditBrandsPageObjects;
+import org.cimm2touch.pageobjects.manufacturer.EditManufacturerPageObjects;
 import org.cimm2touch.pageobjects.manufacturer.ManufacturerPageObjects;
 import org.cimm2touch.pageobjects.products.AddNewProductPageObjects;
 import org.cimm2touch.pageobjects.products.ProductEditPageObjects;
@@ -15,7 +17,8 @@ import org.cimm2touch.pageobjects.products.EditProductsPageObjects;
 import org.cimm2touch.pageobjects.products.ProductsPageObjects;
 import org.cimm2touch.pageobjects.subset.SubsetPageObjects;
 import org.cimm2touch.pageobjects.taxonomymanagement.TaxonomyPageObjects;
-import org.cimm2touch.pageobjects.vendors.VendorPageObjects;
+import org.cimm2touch.pageobjects.vendors.EditVendorsPageObjects;
+import org.cimm2touch.pageobjects.vendors.VendorsPageObjects;
 import org.cimm2touch.pageobjects.taxonomymanagement.AttributeGroupsPageObjects;
 import org.cimm2touch.pageobjects.taxonomymanagement.AttributesPageObjects;
 import org.cimm2touch.pageobjects.taxonomymanagement.CategoryAndAttributesPageObjects;
@@ -92,17 +95,31 @@ public class PageFactoryInitializer extends MainController
 		return editProductsPage;
 	}
 
-	public ManufacturerPageObjects manufacturerPage()
+	public ManufacturerPageObjects manufacturersAndBrandsPage()
 	{
 		ManufacturerPageObjects manufacturerPage = PageFactory.initElements(driver,ManufacturerPageObjects.class);
 		return manufacturerPage;
 	}
+	
+	public EditManufacturerPageObjects editManufacturersPage()
+	{
+		EditManufacturerPageObjects editManufacturersPage = PageFactory.initElements(driver,EditManufacturerPageObjects.class);
+		return editManufacturersPage;
+	}
+	
+	public EditBrandsPageObjects editBrandsPage()
+	{
+		EditBrandsPageObjects editBrandsPage = PageFactory.initElements(driver,EditBrandsPageObjects.class);
+		return editBrandsPage;
+	}
+	
 
 	public AddNewProductPageObjects addNewProductPage(){
 
 		AddNewProductPageObjects addNewProductPage=PageFactory.initElements(driver,AddNewProductPageObjects.class);
 		return addNewProductPage;
 	}
+	
 	public ProductEditPageObjects editProductPage()
 	{
 		ProductEditPageObjects editProductPage=PageFactory.initElements(driver,ProductEditPageObjects.class);
@@ -169,10 +186,16 @@ public class PageFactoryInitializer extends MainController
 		return imageUploadPage;
 	}
 
-	public VendorPageObjects vendorsPage()
+	public VendorsPageObjects vendorsPage()
 	{
-		VendorPageObjects vendorPage=PageFactory.initElements(driver,VendorPageObjects.class);
+		VendorsPageObjects vendorPage=PageFactory.initElements(driver,VendorsPageObjects.class);
 		return vendorPage;
+	}
+	
+	public EditVendorsPageObjects editVendorsPage()
+	{
+		EditVendorsPageObjects editVendorsPage=PageFactory.initElements(driver,EditVendorsPageObjects.class);
+		return editVendorsPage;
 	}
 
 }

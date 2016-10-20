@@ -1,7 +1,5 @@
 package org.cimm2touch.pageobjects.taxonomymanagement;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-
 import java.util.List;
 
 import org.cimm2touch.maincontroller.PageFactoryInitializer;
@@ -160,10 +158,105 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 
 	@FindBy(xpath="//input[@title='Delete Category']")
 	private WebElement deleteCategory;
-	
+
 	@FindBy(xpath="//input[@title='History']")
 	private WebElement viewHistoryButton;
 
+	@FindBy(xpath="//td[@id='attributes_lbl']")
+	private WebElement attributesTab;
+
+	@FindBy(xpath="//td[@id='attributeGroups_lbl']")
+	private WebElement attributesGroupsTab;
+
+	@FindBy(xpath="//input[@title='New Attribute']")
+	private WebElement addNewAttributesButton;
+
+	@FindBy(xpath="//form[@id='addnewAttribute']/div/div[contains(.,'Attribute Name')]//following::input[contains(@id,'attrName')]")
+	private WebElement attributeNameField;
+
+	@FindBy(xpath="//form[@id='addnewAttribute']//textarea[contains(@id,'attrbuteDesc')]")
+	private WebElement attributeDescField;
+
+	@FindBy(xpath="//input[contains(@id,'searchKeywordId') and @placeholder='Enter Attribute Name to Search ']")
+	private WebElement attributeSearchBox;
+
+	@FindBy(xpath="//input[contains(@id,'searchKeywordId') and @placeholder='Enter Attribute Name to Search ']//following::a[contains(@id,'goBtn')]")
+	private WebElement attributeSearchIcon;
+
+	@FindBy(xpath="//form[@id='addnewAttribute']//select[contains(@id,'attrType')]")
+	private WebElement attributeTypeSelector;
+
+	@FindBy(xpath="//form[@id='addnewAttribute']//div/img[@title='Close']")
+	private WebElement closeAttributesFormButton;
+
+	@FindBy(xpath="//form[@id='addnewAttribute']//input[@title='Save Attribute']")
+	private WebElement saveAttributesButton;
+
+	@FindBy(xpath="//form[@id='addnewAttribute']//input[@title='Reset']")
+	private WebElement resetAttributesButton;
+
+	@FindBy(xpath="//td/span[@id='listAttribute1:countVal']")
+	private WebElement attributesCount;
+
+	@FindBy(xpath="//table[contains(@id,'attributeDataTableId')]//tr[@class='rich-table-subheader ']")
+	private WebElement attributesTableHeader;
+
+	@FindBy(xpath="//a[@id='listAttribute1:nextBtnId']")
+	private WebElement attributesNextButton;
+
+	@FindBy(xpath="//a[@id='listAttribute1:prevBtnId']")
+	private WebElement attributesPreviousButton;
+
+	@FindBy(xpath="//a[@id='listAttribute1:firstBtnId']")
+	private WebElement attributesFirstButton;
+
+	@FindBy(xpath="//a[@id='listAttribute1:lastBtnId']")
+	private WebElement attributesLastButton;
+
+	@FindBy(xpath="//span[@id='listAttribute1:tnpId']")
+	private WebElement attributesTotalPagesCount;
+
+	@FindBy(xpath="//span[@id='listAttribute1:selectNo']")
+	private WebElement attributesCurrentPageCount;
+
+	@FindBy(xpath="//input[@id='addnewAttribute:attrName1']")
+	private WebElement editAttributeNameField;
+
+	@FindBy(xpath="//textarea[@id='addnewAttribute:attrbuteDesc1']")
+	private WebElement editAttributeDescField;
+
+	@FindBy(xpath="//input[@title='Update Attribute']")
+	private WebElement editAttributeSaveButton;
+
+	@FindBy(xpath="//form[@id='addnewAttribute']//a[@title='History']")
+	private WebElement editAttributeHistoryButton;
+
+	@FindBy(xpath="//input[@title='New Attribute Group']")
+	private WebElement addNewAttributesGroupButton;
+
+	@FindBy(xpath="//input[contains(@id,'searchKeywordId') and @placeholder='Enter Attribute Group Name to Search ']")
+	private WebElement attributesGroupSearchBox;
+
+	@FindBy(xpath="//input[contains(@id,'searchKeywordId') and @placeholder='Enter Attribute Group Name to Search ']//following::a[contains(@id,'goBtn')]")
+	private WebElement attributesGroupSearchIcon;
+
+	@FindBy(xpath="//tr[@class='rich-table-subheader ']")
+	private WebElement attributesGroupTableHeader;
+
+	@FindBy(xpath="//input[@id='addNewAttrGroup:attrgrpName']")
+	private WebElement attributeGroupNameField;
+
+	@FindBy(xpath="//textarea[@id='addNewAttrGroup:attrGrpTextArea']")
+	private WebElement attributeGroupDescField;
+
+	@FindBy(xpath="//input[@title='Save Attribute Group']")
+	private WebElement attributeGroupSaveButton;
+
+	@FindBy(xpath="//input[@title='Reset']")
+	private WebElement attributeGroupResetButton;
+
+	@FindBy(xpath="//img[@title='Close']")
+	private WebElement attributeGroupFormCloseButton;
 
 	public ManageTaxonomyPageObjects verifyTabsPresentInManageTaxonomyPage() throws InterruptedException 
 	{
@@ -185,16 +278,16 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 		Thread.sleep(2000);
 		TestUtility.doubleClick(categoryLocator.get(specificCategory-1));
 		return this;
-
-
 	}
-	public ManageTaxonomyPageObjects enterTheCategoryName(String categoryname) throws InterruptedException {
 
+	public ManageTaxonomyPageObjects enterTheCategoryName(String categoryname) throws InterruptedException 
+	{
 		Thread.sleep(3000);
 		CategorysearchfieldLocator.sendKeys(Keys.ENTER);
 		CategorysearchfieldLocator.sendKeys(categoryname);
 		return this;
 	}
+
 	public ManageTaxonomyPageObjects clickOnSearchIcon() {
 		Waiting.explicitWaitElementToBeClickable(searchiconlocator, 5);
 		categorysearchiconlocator.click();
@@ -396,7 +489,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 		Assert.assertTrue(editBottomBanner.isDisplayed());
 		return this;	
 	}
-	
+
 	@Step("To Verify the Fields Present Upon Clicking the 'Add New Child Category' Button")
 	public ManageTaxonomyPageObjects verifyChildCategoryFields() throws InterruptedException 
 	{
@@ -594,13 +687,574 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	}
 
 	@SuppressWarnings("static-access")
+	@Step("To Verify the Contents On clicking 'View History' Button opened on the New Tab.")
 	public ManageTaxonomyPageObjects switchToNewlyOpenedWindowAndVerifyCategoryName(String categoryName1) throws Exception 
 	{
 		Thread.sleep(5000);
 		tu.switchToRecentWindow();
 		Thread.sleep(5000);
 		Assert.assertTrue(driver.findElement(By.xpath("//td/span[contains(.,'"+categoryName1+"')]")).isDisplayed());
+		Thread.sleep(5000);
+		tu.switchBackToFirstWindow();
 		return this;
 	}
-	
+
+	@Step("To Click on 'Attributes' tab from the Manage Taxonomy Page.")
+	public ManageTaxonomyPageObjects clickOnAttributesTabFromManageTaxonomyPage() throws Exception 
+	{
+		Thread.sleep(5000);
+		attributesTab.click();
+		return this;
+	}
+
+	@Step("To Click on 'Add New Attribute' Button in the Attributes Page.")
+	public ManageTaxonomyPageObjects clickOnAddNewAttribute() throws Exception 
+	{
+		Thread.sleep(5000);
+		addNewAttributesButton.click();
+		return this;	
+	}
+
+	@Step("To Verify 'Add New Attributes' Form Items")
+	public ManageTaxonomyPageObjects verifyTheFieldsOfAddNewAttributeForm() throws Exception 
+	{
+		Thread.sleep(5000);
+		Assert.assertTrue(attributeNameField.isDisplayed());
+		Assert.assertTrue(attributeTypeSelector.isDisplayed());
+		Assert.assertTrue(attributeDescField.isDisplayed());
+		Assert.assertTrue(closeAttributesFormButton.isDisplayed());
+		Assert.assertTrue(saveAttributesButton.isDisplayed());
+		Assert.assertTrue(resetAttributesButton.isDisplayed());
+		return this;
+	}
+
+	@Step("To Verify 'Attributes' Page Items")
+	public ManageTaxonomyPageObjects verifyAttributesPageItems() throws Exception 
+	{
+		Thread.sleep(5000);
+		Assert.assertTrue(attributeSearchBox.isDisplayed());
+		Assert.assertTrue(attributeSearchIcon.isDisplayed());
+		Assert.assertTrue(attributesCount.isDisplayed());
+		Assert.assertTrue(attributesTableHeader.isDisplayed());
+		return this;
+	}
+
+	@Step("To Add a New 'Attribute'")
+	public ManageTaxonomyPageObjects addNewAttribute(String attributeName, String attributeDesc) throws Exception 
+	{
+		Thread.sleep(1000);
+		attributeNameField.clear();
+		attributeNameField.sendKeys(attributeName);
+		attributeDescField.clear();
+		attributeDescField.sendKeys(attributeDesc);
+		return this;
+	}
+
+	@Step("To Save a New 'Attribute'")
+	public ManageTaxonomyPageObjects saveAttributes() 
+	{
+		saveAttributesButton.click();
+		return this;
+	}
+
+	@Step("To Verify the Message Upon Saving a new 'Attribute''")
+	public ManageTaxonomyPageObjects verifyMessageAfterSavingAttributes(String saveMessage) throws Exception 
+	{
+		Thread.sleep(5000);
+		try
+		{
+			Assert.assertTrue(driver.findElement(By.xpath("//span[contains(.,'"+saveMessage+"') and contains(@style,'red')]")).isDisplayed());
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+		try
+		{
+			Assert.assertTrue(driver.findElement(By.xpath("//span[contains(@style,'green') and contains(.,'"+saveMessage+"')]")).isDisplayed());
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+		return this;
+	}
+
+	@Step("To Verify the Characters Limit of Attribute Name Field''")
+	public ManageTaxonomyPageObjects verifyCharactersLimitOfAttributeNameField() 
+	{
+		for(int i=0; i<60; i++)
+		{
+			attributeNameField.sendKeys("a");
+		}
+		String enteredText=attributeNameField.getAttribute("value");
+		int enteredTextLength=enteredText.length();
+		Assert.assertEquals(enteredTextLength, Integer.parseInt(attributeNameField.getAttribute("maxlength")));
+		return this;
+	}
+
+	@Step("To Verify the Characters Limit of Attribute Desc Field''")
+	public ManageTaxonomyPageObjects verifyCharactersLimitOfAttributeDescField() throws Exception 
+	{
+		SoftAssert softassert = new SoftAssert();
+		attributeDescField.clear();
+		for (int i=0; i< 525; i++)
+		{
+			attributeDescField.sendKeys("a");
+		}
+		Thread.sleep(2000);
+		String enteredText = attributeDescField.getAttribute("value");
+		int enteredTextLength = enteredText.length();
+		softassert.assertEquals(enteredTextLength, 500);
+		softassert.assertAll();
+		return this;
+	}
+
+	@Step("To Click on Next Page Option and Verify the Functionality.")
+	public ManageTaxonomyPageObjects verifytheWorkingOfTheNextPageOption() throws Exception 
+	{
+		int currentPageNumber1 = Integer.parseInt(attributesCurrentPageCount.getText());
+		attributesNextButton.click();
+		Thread.sleep(5000);
+		int currentPageNumber2 = Integer.parseInt(attributesCurrentPageCount.getText());
+		Assert.assertNotEquals(currentPageNumber1, currentPageNumber2);
+		return this;
+	}
+
+	@Step("To Click on Previous Page Option and Verify the Functionality.")
+	public ManageTaxonomyPageObjects verifytheWorkingOfThePreviousPageOption() throws Exception 
+	{
+		attributesNextButton.click();
+		Thread.sleep(5000);
+		int currentPageNumber1 =  Integer.parseInt(attributesCurrentPageCount.getText());
+		attributesPreviousButton.click();
+		Thread.sleep(5000);
+		int currentPageNumber2 =  Integer.parseInt(attributesCurrentPageCount.getText());
+		Assert.assertNotEquals(currentPageNumber1, currentPageNumber2);
+		return this;		
+	}
+
+	@Step("To Click on Last Page Option and Verify the Functionality.")
+	public ManageTaxonomyPageObjects verifytheWorkingOfTheLastPageOption() throws Exception
+	{
+		int totalPagesCount = Integer.parseInt(attributesTotalPagesCount.getText());
+		attributesLastButton.click();
+		Thread.sleep(5000);
+		int currentPageNumber =  Integer.parseInt(attributesCurrentPageCount.getText());
+		Assert.assertEquals(totalPagesCount, currentPageNumber);
+		return this;
+	}
+
+	@Step("To Click on First Page Option and Verify the Functionality.")
+	public ManageTaxonomyPageObjects verifytheWorkingOfTheFirstPageOption() throws Exception
+	{
+		attributesNextButton.click();
+		Thread.sleep(5000);
+		int currentPageNumber1 =  Integer.parseInt(attributesCurrentPageCount.getText());
+		attributesFirstButton.click();
+		Thread.sleep(5000);
+		int currentPageNumber2 =  Integer.parseInt(attributesCurrentPageCount.getText());
+		Assert.assertNotEquals(currentPageNumber1, currentPageNumber2);
+		return this;
+	}
+
+	@Step("To Click on 'NoOfItems Dropdown' and verify contents dispalyed.")
+	public ManageTaxonomyPageObjects verifyDisplayNoOfItemsDropdown() throws Exception
+	{
+		SoftAssert sa = new SoftAssert();
+
+		List<WebElement> itemsDisplayed = driver.findElements(By.xpath("(//div[@class='cimmAttributesColumn1']//tbody)[2]/tr"));
+		Assert.assertEquals(itemsDisplayed.size(), 10);
+
+		driver.findElement(By.xpath("//select[@id='listAttribute1:nrpp']/option[@value='25']")).click();
+		Thread.sleep(5000);
+		List<WebElement> itemsDisplayed1= driver.findElements(By.xpath("(//div[@class='cimmAttributesColumn1']//tbody)[2]/tr"));
+		sa.assertEquals(itemsDisplayed1.size(), 25);
+
+		driver.findElement(By.xpath("//select[@id='listAttribute1:nrpp']/option[@value='50']")).click();
+		Thread.sleep(10000);
+		List<WebElement> itemsDisplayed2 = driver.findElements(By.xpath("(//div[@class='cimmAttributesColumn1']//tbody)[2]/tr"));
+		sa.assertEquals(itemsDisplayed2.size(), 50);
+
+		driver.findElement(By.xpath("//select[@id='listAttribute1:nrpp']/option[@value='75']")).click();
+		Thread.sleep(10000);
+		List<WebElement> itemsDisplayed3 = driver.findElements(By.xpath("(//div[@class='cimmAttributesColumn1']//tbody)[2]/tr"));
+		sa.assertEquals(itemsDisplayed3.size(), 75);
+
+		driver.findElement(By.xpath("//select[@id='listAttribute1:nrpp']/option[@value='100']")).click();
+		Thread.sleep(10000);
+		List<WebElement> itemsDisplayed4 = driver.findElements(By.xpath("(//div[@class='cimmAttributesColumn1']//tbody)[2]/tr"));
+		sa.assertEquals(itemsDisplayed4.size(), 100);
+
+		driver.findElement(By.xpath("//select[@id='listAttribute1:nrpp']/option[@value='10']")).click();
+		Thread.sleep(10000);
+		List<WebElement> itemsDisplayed5 = driver.findElements(By.xpath("(//div[@class='cimmAttributesColumn1']//tbody)[2]/tr"));
+		sa.assertEquals(itemsDisplayed5.size(), 10);
+		sa.assertAll();
+		return this;
+	}
+
+	@Step("To Search for an Attribute.")
+	public ManageTaxonomyPageObjects searchForAnAttribute(String attributeName) throws Exception
+	{
+		attributeSearchBox.clear();
+		attributeSearchBox.sendKeys(attributeName);
+		attributeSearchIcon.click();
+		return this;
+	}
+
+	@Step("To verify an Attribute after Search.")
+	public ManageTaxonomyPageObjects verifyAfterAttributeSearch(String attributeName) throws Exception
+	{
+		Thread.sleep(5000);
+		Assert.assertTrue(driver.findElement(By.xpath("//td[contains(@id,'attributeNameCol') and contains(text(),'"+attributeName+"')]")).isDisplayed());
+		return this;
+	}
+
+	@Step("To Click on 'Edit' button of an Atribute")
+	public ManageTaxonomyPageObjects clickOnEditAttributeButton(String attributeName)throws Exception
+	{
+		driver.findElement(By.xpath("//td[contains(@id,'attributeNameCol') and contains(text(),'"+attributeName+"')]//preceding-sibling::td/div/input[@title='Edit Attribute']")).click();
+		return this;
+	}
+
+	@Step("To verify the Form Contents of Edit Attribute.")
+	public ManageTaxonomyPageObjects verifyEditAttributeFormItems() throws Exception
+	{
+		Thread.sleep(5000);
+		Assert.assertTrue(editAttributeNameField.isDisplayed());
+		Assert.assertTrue(editAttributeDescField.isDisplayed());
+		Assert.assertTrue(editAttributeSaveButton.isDisplayed());
+		return this;
+	}
+
+	@Step("To Edit Attribute.")
+	public ManageTaxonomyPageObjects editAnAttribute(String attributeName, String attributeDesc) 
+	{
+		editAttributeNameField.clear();
+		editAttributeNameField.sendKeys(attributeName);
+		editAttributeDescField.clear();
+		editAttributeDescField.sendKeys(attributeDesc);
+		return this;
+	}
+
+	@Step("To Save Edited Attribute.")
+	public ManageTaxonomyPageObjects saveEditedAttribute() 
+	{
+		editAttributeSaveButton.click();
+		return this;
+	}
+
+	@Step("To Verify the Message after Editing Attribute.")
+	public ManageTaxonomyPageObjects verifyMessageAfterEditingAnAttribute(String saveMessage) throws Exception
+	{
+		Thread.sleep(5000);
+		try
+		{
+			Assert.assertTrue(driver.findElement(By.xpath("//span[contains(.,'"+saveMessage+"') and contains(@style,'red')]")).isDisplayed());
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+		try
+		{
+			Assert.assertTrue(driver.findElement(By.xpath("//span[contains(@style,'green') and contains(.,'"+saveMessage+"')]")).isDisplayed());
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+		return this;
+	}
+
+	@Step("To Verify the Characters Limit in Edit Attributes Name Field.")
+	public ManageTaxonomyPageObjects verifyCharactersLimitOfEditAttributeNameField() throws Exception
+	{
+		Thread.sleep(5000);
+		for(int i=0; i<60; i++)
+		{
+			editAttributeNameField.sendKeys("a");
+		}
+		String enteredText=editAttributeNameField.getAttribute("value");
+		int enteredTextLength=enteredText.length();
+		Assert.assertEquals(enteredTextLength, Integer.parseInt(editAttributeNameField.getAttribute("maxlength")));
+		return this;
+	}
+
+	@Step("To Verify the Characters Limit in Edit Attributes Desc Field.")
+	public ManageTaxonomyPageObjects verifyCharactersLimitOfEditAttributeDescField() throws Exception
+	{
+		Thread.sleep(5000);
+		SoftAssert softassert = new SoftAssert();
+		editAttributeDescField.clear();
+		for (int i=0; i< 525; i++)
+		{
+			editAttributeDescField.sendKeys("a");
+		}
+		Thread.sleep(2000);
+		String enteredText = editAttributeDescField.getAttribute("value");
+		int enteredTextLength = enteredText.length();
+		softassert.assertEquals(enteredTextLength, 500);
+		softassert.assertAll();
+		return this;
+	}
+
+	@SuppressWarnings("static-access")
+	@Step("To Click on History Button in Edit Attribute Form.")
+	public ManageTaxonomyPageObjects clickOnViewAttributeHistoryButton() throws Exception
+	{
+		Thread.sleep(2000);
+		editAttributeHistoryButton.click();
+		tu.alertAccept();
+		return null;
+	}
+
+	@SuppressWarnings("static-access")
+	@Step("To Switch to Newly Opened Window and Verify the Presence of an Attribute.")
+	public ManageTaxonomyPageObjects switchToNewlyOpenedWindowAndVerifyAttributeName(String attributeName) throws Exception
+	{
+		Thread.sleep(5000);
+		tu.switchToRecentWindow();
+		Assert.assertTrue(driver.findElement(By.xpath("//td/span[contains(.,'"+attributeName+"')]")).isDisplayed());
+		Thread.sleep(5000);
+		tu.switchBackToFirstWindow();
+		return this;
+	}
+
+	@SuppressWarnings("static-access")
+	@Step("To Click on Delete of the Respective Attribute")
+	public ManageTaxonomyPageObjects clickOnDeleteAttributeButton(String attributeName) throws Exception
+	{
+		Thread.sleep(5000);
+		driver.findElement(By.xpath("//td[contains(@id,'attributeNameCol') and contains(text(),'"+attributeName+"')]//preceding-sibling::td/div/input[contains(@src,'delete')]")).click();
+		tu.alertAccept();
+		Thread.sleep(5000);
+		Assert.assertTrue(driver.findElement(By.xpath("//span[contains(@style,'green') and contains(.,'Attribute Removed Successfully')]")).isDisplayed());
+		return this;	
+	}
+
+	@Step("To Click on Attributes Group Tab from Manage Taxonomy Page")
+	public ManageTaxonomyPageObjects clickOnAttributesGroupsTabFromManageTaxonomyPage() throws Exception
+	{
+		Thread.sleep(5000);
+		attributesGroupsTab.click();
+		return this;
+	}
+
+	@Step("To Verify Page contents of Attributes Group Page")
+	public ManageTaxonomyPageObjects verifyAttrbuteGroupsPageItems() throws Exception
+	{
+		Thread.sleep(5000);
+		Assert.assertTrue(attributesGroupSearchBox.isDisplayed());
+		Assert.assertTrue(attributesGroupSearchIcon.isDisplayed());
+		Assert.assertTrue(attributesGroupTableHeader.isDisplayed());
+		Assert.assertTrue(addNewAttributesGroupButton.isDisplayed());
+		return this;
+	}
+
+	@Step("To Verify Form contents of 'Add New Attributes Group' Form.")
+	public ManageTaxonomyPageObjects verifyAddNewAttributeGroupFormItems() throws Exception
+	{		
+		Thread.sleep(5000);
+		Assert.assertTrue(attributeGroupNameField.isDisplayed());
+		Assert.assertTrue(attributeGroupDescField.isDisplayed());
+		Assert.assertTrue(attributeGroupSaveButton.isDisplayed());
+		Assert.assertTrue(attributeGroupResetButton.isDisplayed());
+		Assert.assertTrue(attributeGroupFormCloseButton.isDisplayed());		
+		return this;
+	}
+
+	@Step("To Verify Form contents of 'Add New Attributes Group' Form.")
+	public ManageTaxonomyPageObjects clickOnAddNewAttributeGroupButton() 
+	{
+		addNewAttributesGroupButton.click();
+		return this;
+	}
+
+	@Step("To Add contents to 'Add New Attributes Group' Form.")
+	public ManageTaxonomyPageObjects addNewAttributeGroup(String attributeGroupName, String attributeGroupDesc) throws Exception 
+	{
+		Thread.sleep(5000);
+		attributeGroupNameField.clear();
+		attributeGroupNameField.sendKeys(attributeGroupName);
+		attributeGroupDescField.clear();
+		attributeGroupDescField.sendKeys(attributeGroupDesc);
+		return this;
+	}
+
+	@Step("To Click on 'Save' Attribute Group Button.")
+	public ManageTaxonomyPageObjects clickOnAttributeGroupsSaveButton() throws Exception 
+	{
+		Thread.sleep(1000);
+		attributeGroupSaveButton.click();
+		return this;
+	}
+
+	@Step("To Verify Success/Failure Message after saving Attribute Groups.")
+	public ManageTaxonomyPageObjects verifyMessageAfterSavingAttributeGroup(String saveMessage) throws Exception
+	{
+		Thread.sleep(5000);
+		try
+		{
+			Assert.assertTrue(driver.findElement(By.xpath("//span[contains(.,'"+saveMessage+"') and contains(@style,'red')]")).isDisplayed());
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+		try
+		{
+			Assert.assertTrue(driver.findElement(By.xpath("//span[contains(@style,'green') and contains(.,'"+saveMessage+"')]")).isDisplayed());
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+		return this;		
+	}
+
+	@Step("To Verify Character Limit for Attribute Name Field.")
+	public ManageTaxonomyPageObjects verifyCharacterLimitForAttributesGroupNameField() throws Exception
+	{
+		Thread.sleep(5000);
+		for(int i=0; i<65; i++)
+		{
+			attributeGroupNameField.sendKeys("a");
+		}
+		String enteredText=attributeGroupNameField.getAttribute("value");
+		int enteredTextLength=enteredText.length();
+		Assert.assertEquals(enteredTextLength, Integer.parseInt(attributeGroupNameField.getAttribute("maxlength")));
+		return this;
+	}
+
+	@Step("To Verify Character Limit for Attribute Name Field.")
+	public ManageTaxonomyPageObjects verifyCharacterLimitForAttributesGroupDescField() throws Exception
+	{
+		SoftAssert softassert = new SoftAssert();
+		Thread.sleep(5000);
+		attributeGroupDescField.clear();
+		for (int i=0; i< 525; i++)
+		{
+			attributeGroupDescField.sendKeys("i");
+		}
+		Thread.sleep(2000);
+		String enteredText = attributeGroupDescField.getAttribute("value");
+		int enteredTextLength = enteredText.length();
+		softassert.assertEquals(enteredTextLength, 500);
+		softassert.assertAll();
+		return this;
+	}
+
+	@Step("To Search for an Attribute Group Item.")
+	public ManageTaxonomyPageObjects searchForAttributeGroup(String attributeGroupName) throws Exception
+	{
+		attributesGroupSearchBox.clear();
+		attributesGroupSearchBox.sendKeys(attributeGroupName);
+		attributesGroupSearchIcon.click();
+		return this;
+	}
+
+	@Step("To Verify after Searching for an Attribute Group Item.")
+	public ManageTaxonomyPageObjects verifyAfterSearchingForAttributeGorup(String attributeGroupName) throws Exception 
+	{
+		Thread.sleep(5000);
+		Assert.assertTrue(driver.findElement(By.xpath("//td[contains(@id,'attributeGroupNameCol') and contains(.,'"+attributeGroupName+"')]")).isDisplayed());
+		return this;
+	}
+
+	@Step("To Click on the Edit Button of a Specific Attribute Group.")
+	public ManageTaxonomyPageObjects clickOnEditSpecificAttributeGroup(String attributeGroupName) throws Exception
+	{		
+		Thread.sleep(5000);
+		driver.findElement(By.xpath("//td[contains(@id,'attributeGroupNameCol') and contains(.,'"+attributeGroupName+"')]//preceding::input[@title='Edit Attribute Group']")).click();
+		return this;
+	}
+
+	@Step("To Verify after Searching for an Attribute Group Item.")
+	public ManageTaxonomyPageObjects editAttributeGroup(String editedAttributedGroupName, String attributeGroupDesc) throws InterruptedException 
+	{
+		Thread.sleep(5000);
+		attributeGroupNameField.clear();
+		attributeGroupNameField.sendKeys(editedAttributedGroupName);
+		attributeGroupDescField.clear();
+		attributeGroupDescField.sendKeys(attributeGroupDesc);
+		return this;
+	}
+
+	@Step("To Click on Save Button after Editing an Attribute Group.")
+	public ManageTaxonomyPageObjects saveEditedAttributeGroup() throws Exception 
+	{
+		Thread.sleep(5000);
+		driver.findElement(By.xpath("//input[@title='Update Attribute Group']")).click();
+		return this;		
+	}
+
+	@Step("To Verify the Message displayed after Saving an Attribute Groups.")
+	public ManageTaxonomyPageObjects verifyMessageAfterEditingAnAttributeGroup(String saveMessage) throws Exception 
+	{
+		Thread.sleep(5000);
+		try
+		{
+			Assert.assertTrue(driver.findElement(By.xpath("//span[contains(.,'"+saveMessage+"') and contains(@style,'red')]")).isDisplayed());
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+		try
+		{
+			Assert.assertTrue(driver.findElement(By.xpath("//span[contains(@style,'green') and contains(.,'"+saveMessage+"')]")).isDisplayed());
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+		return this;	
+	}
+
+	@SuppressWarnings("static-access")
+	@Step("To Click on Delete Button of an Attribute Group.")
+	public ManageTaxonomyPageObjects clickOnDeleteAttributeGroupButton(String attributeGroupName) throws Exception 
+	{
+		Thread.sleep(3000);
+		driver.findElement(By.xpath("//td[contains(@id,'attributeGroupNameCol') and contains(.,'"+attributeGroupName+"')]//preceding::input[contains(@src,'delete.png')]")).click();
+		Thread.sleep(2000);
+		tu.alertAccept();
+		return this;
+	}
+
+	@Step("To Verify the Message After Deleting an Attribute Group Click on Delete Button of an Attribute Group.")
+	public ManageTaxonomyPageObjects verifyMessageAfterDeletingAttributeGroup() throws Exception 
+	{
+		Thread.sleep(5000);
+		Assert.assertTrue(driver.findElement(By.xpath("//span[contains(@style,'green') and contains(.,'removed successfully')]")).isDisplayed());
+		return this;
+	}
+
+	@SuppressWarnings("static-access")
+	@Step("To Click on History Button of an Attribute Group.")
+	public ManageTaxonomyPageObjects clickOnViewHistoryButtonForAttributesGroup() throws Exception 
+	{
+		Thread.sleep(2000);
+		driver.findElement(By.xpath("//a[@title='History']")).click();
+		Thread.sleep(2000);
+		tu.alertAccept();
+		return this;
+	}
+
+	@SuppressWarnings("static-access")
+	@Step("To Verify the Attribute Group Name Present in the Newly Opened Windows.")
+	public ManageTaxonomyPageObjects switchToNewlyOpenedWindowAndVerifyAttributeGroupName(String attributeGroupName) throws Exception 
+	{
+		Thread.sleep(2000);
+		tu.switchToRecentWindow();
+		Thread.sleep(3000);
+		Assert.assertTrue(driver.findElement(By.xpath("//span[contains(@style,'bold') and contains(.,'"+attributeGroupName+"')]")).isDisplayed());
+		Thread.sleep(5000);
+		tu.switchBackToFirstWindow();
+		return this;
+	}
+
+
 }

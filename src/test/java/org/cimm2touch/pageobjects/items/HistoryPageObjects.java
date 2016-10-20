@@ -4,10 +4,11 @@ import org.cimm2touch.maincontroller.PageFactoryInitializer;
 import org.cimm2touch.utils.TestUtility;
 import org.testng.Assert;
 
-public class HistoryPageObjects extends PageFactoryInitializer{
+public class HistoryPageObjects extends PageFactoryInitializer
+{
 
-	public boolean assertPageTitle(String expectedHistoryPageTitle) throws Exception {
-
+	public boolean assertPageTitle(String expectedHistoryPageTitle) throws Exception 
+	{
 		boolean t = driver.getTitle().replace(" ", "").trim().equals(expectedHistoryPageTitle.replace(" ", "").trim());
 		TestUtility.closeCurrentTab();
 		Thread.sleep(2000);
@@ -15,7 +16,8 @@ public class HistoryPageObjects extends PageFactoryInitializer{
 		return t;
 	}
 	
-	public HistoryPageObjects verifyPageTitle(String expectedHistoryPageTitle) throws Exception {
+	public HistoryPageObjects verifyPageTitle(String expectedHistoryPageTitle) throws Exception
+	{
 		Assert.assertTrue(assertPageTitle(expectedHistoryPageTitle),"Actual Title : "+driver.getTitle().trim()+" but expecting "+expectedHistoryPageTitle);
 		return this;
 	}

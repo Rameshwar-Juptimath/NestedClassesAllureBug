@@ -151,7 +151,6 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 		Thread.sleep(3000);
 		Assert.assertTrue(driver.findElement(By.xpath("//span[@id='searchId:savmsg2']")).isDisplayed(),"Searched taxonomy is not present. Searched for "+inavalidTaxonomyName+".");
 		return this;
-
 	}
 
 	public TaxonomyPageObjects clickOnAddnewTaxonomy() 
@@ -201,7 +200,6 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 		Thread.sleep(3000);
 		taxonomynametextfield.sendKeys(taxonomyname);
 		return this;
-
 	}
 
 	public TaxonomyPageObjects enteringMorethathirtycharactersinTaxonomyNameField(String getenteringMorethathirtycharacters) throws InterruptedException
@@ -209,7 +207,6 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 		Thread.sleep(3000);
 		taxonomynametextfield.sendKeys(getenteringMorethathirtycharacters);
 		return this;
-
 	}
 
 	public TaxonomyPageObjects verifyEnterdCharactersInTaxonomynamefield(String message) throws InterruptedException 
@@ -225,8 +222,8 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 		Assert.assertNotEquals(OriginalText, enteredText);
 		Assert.assertEquals(enteredTextLength, Integer.parseInt(taxonomynametextfield.getAttribute("maxlength")));
 		return this; 
-
 	}
+	
 	public TaxonomyPageObjects enteringMoretha500charactersinTaxonomyDescField() throws Exception 
 	{
 		Thread.sleep(5000);
@@ -417,12 +414,14 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 		ele.click();
 		return this;
 	}
+	
 	public TaxonomyPageObjects saveAs(String saveAsType) throws Exception
 	{
 		WebElement ele = driver.findElement(By.xpath("//td/label[contains(.,'"+saveAsType+"')]//preceding-sibling::input"));
 		ele.click();
 		return this;
 	}
+	
 	public TaxonomyPageObjects saveTaxanomy() 
 	{
 		savebuttonintaxonomypage.click();

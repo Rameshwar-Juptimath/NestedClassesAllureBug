@@ -1,5 +1,6 @@
 
 package org.cimm2touch.maincontroller;
+
 import static org.monte.media.FormatKeys.EncodingKey;
 import static org.monte.media.FormatKeys.FrameRateKey;
 import static org.monte.media.FormatKeys.KeyFrameIntervalKey;
@@ -17,12 +18,10 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Method;
 
 import org.apache.commons.io.FileUtils;
 import org.cimm2touch.utils.ApplicationSetUpPropertyFile;
-import org.cimm2touch.utils.Screenshot;
 import org.cimm2touch.utils.SendEmailGmail;
 import org.cimm2touch.utils.Video;
 import org.monte.media.Format;
@@ -48,37 +47,35 @@ import org.testng.annotations.BeforeTest;
 
 import ru.yandex.qatools.allure.annotations.Attachment;
 
+public class MainController implements IHookable {
 
-public class MainController implements IHookable{
-
-
-	public static WebDriver driver ;
+	public static WebDriver driver;
 
 	/*
 	 * @author Hemanth.Sridhar
 	 */
-	public static String outputVideo="";
-	public static String outputFolder="";
+	public static String outputVideo = "";
+	public static String outputFolder = "";
 	private ScreenRecorder screenRecorder;
 	public static String applicationSetUp = "resources/PropertyFiles/ApplicationSetUp.properties";
 	public static String searchData = "resources/PropertyFiles/SearchData.properties";
 	public static String TaxonomyData = "resources/PropertyFiles/TaxonomyData.properties";
 	DesiredCapabilities caps = new DesiredCapabilities();
 
-
-	@BeforeSuite(alwaysRun=true)
-	public void beforeSuite() throws Exception{
+	@BeforeSuite(alwaysRun = true)
+	public void beforeSuite() throws Exception {
 		ApplicationSetUpPropertyFile setUp = new ApplicationSetUpPropertyFile();
-		outputVideo="./Videos";
-		FileUtils.forceMkdir(new File(outputVideo));	
-		outputFolder="./Screenshots";
-		FileUtils.forceMkdir(new File(outputFolder));	
-		outputFolder += "/Screenshot_" + setUp.getBrowser().toUpperCase()+"_"+SendEmailGmail.getDate()+"_" + SendEmailGmail.getTime();
-		outputVideo += "/Videos_" + setUp.getBrowser().toUpperCase()+"_"+SendEmailGmail.getDate()+"_" + SendEmailGmail.getTime();
+		outputVideo = "./Videos";
+		FileUtils.forceMkdir(new File(outputVideo));
+		outputFolder = "./Screenshots";
+		FileUtils.forceMkdir(new File(outputFolder));
+		outputFolder += "/Screenshot_" + setUp.getBrowser().toUpperCase() + "_" + SendEmailGmail.getDate() + "_"
+				+ SendEmailGmail.getTime();
+		outputVideo += "/Videos_" + setUp.getBrowser().toUpperCase() + "_" + SendEmailGmail.getDate() + "_"
+				+ SendEmailGmail.getTime();
 	}
 
-
-	@BeforeMethod(alwaysRun=true)
+	@BeforeMethod(alwaysRun = true)
 	public void setUp() throws Exception {
 
 		ApplicationSetUpPropertyFile setUp = new ApplicationSetUpPropertyFile();
@@ -88,107 +85,81 @@ public class MainController implements IHookable{
 		driver.manage().deleteAllCookies();
 	}
 
-
-	@BeforeMethod(alwaysRun=true)
-	public void startRecording(Method methodName) throws Exception{
+	@BeforeMethod(alwaysRun = true)
+	public void startRecording(Method methodName) throws Exception {
 		ApplicationSetUpPropertyFile setUp = new ApplicationSetUpPropertyFile();
-		//File file = new File(outputFolder+"/"+"Videos/");
-		if(setUp.getVideoPermission().equalsIgnoreCase("yes"))
-		{
-			File file = new File(outputVideo+"/");
+		// File file = new File(outputFolder+"/"+"Videos/");
+		if (setUp.getVideoPermission().equalsIgnoreCase("yes")) {
+			File file = new File(outputVideo + "/");
 			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 			int width = screenSize.width;
-			int height = screenSize.height;    
+			int height = screenSize.height;
 			String testcaseName = methodName.getName();
-			Rectangle captureSize = new Rectangle(0,0, width, height);
+			Rectangle captureSize = new Rectangle(0, 0, width, height);
 
-			GraphicsConfiguration gc = GraphicsEnvironment
-					.getLocalGraphicsEnvironment()
-					.getDefaultScreenDevice()
+			GraphicsConfiguration gc = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice()
 					.getDefaultConfiguration();
 
 			this.screenRecorder = new Video(gc, captureSize,
 					new Format(MediaTypeKey, MediaType.VIDEO, MimeTypeKey, MIME_AVI),
 					new Format(MediaTypeKey, MediaType.VIDEO, EncodingKey, ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE,
-							CompressorNameKey, ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE,
-							DepthKey, 24, FrameRateKey, Rational.valueOf(15),
-							QualityKey, 1.0f,
-							KeyFrameIntervalKey, 15 * 60),
-					new Format(MediaTypeKey, MediaType.VIDEO, EncodingKey, "black",
-							FrameRateKey, Rational.valueOf(30)),
+							CompressorNameKey, ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE, DepthKey, 24, FrameRateKey,
+							Rational.valueOf(15), QualityKey, 1.0f, KeyFrameIntervalKey, 15 * 60),
+					new Format(MediaTypeKey, MediaType.VIDEO, EncodingKey, "black", FrameRateKey, Rational.valueOf(30)),
 					null, file, testcaseName);
 			this.screenRecorder.start();
 		}
 	}
 
-
-
-	@BeforeTest(alwaysRun=true)
-	public void beforeTest() throws Exception
-	{
+	@BeforeTest(alwaysRun = true)
+	public void beforeTest() throws Exception {
 		ApplicationSetUpPropertyFile setUp = new ApplicationSetUpPropertyFile();
-		if(System.getProperty("os.name").toUpperCase().contains("MAC"))
+		if (System.getProperty("os.name").toUpperCase().contains("MAC"))
 
 		{
 
-			if(setUp.getBrowser().trim().equalsIgnoreCase("chrome"))
-			{
+			if (setUp.getBrowser().trim().equalsIgnoreCase("chrome")) {
 
 				System.setProperty("webdriver.chrome.driver", "resources/drivers/Mac/chromedriver");
 				driver = new ChromeDriver();
 
-
-			}
-			else if(setUp.getBrowser().trim().equalsIgnoreCase("IE"))
-			{
-				System.setProperty("webdriver.ie.driver","resources/drivers/Mac/IEDriverServer.exe");
-				driver=new InternetExplorerDriver();			  
+			} else if (setUp.getBrowser().trim().equalsIgnoreCase("IE")) {
+				System.setProperty("webdriver.ie.driver", "resources/drivers/Mac/IEDriverServer.exe");
+				driver = new InternetExplorerDriver();
 
 			}
 
-
-			else if(setUp.getBrowser().trim().equalsIgnoreCase("firefox"))
-			{
+			else if (setUp.getBrowser().trim().equalsIgnoreCase("firefox")) {
 				driver = new FirefoxDriver();
 
 			}
 
-			else if(setUp.getBrowser().trim().equalsIgnoreCase("safari"))
-			{
+			else if (setUp.getBrowser().trim().equalsIgnoreCase("safari")) {
 				driver = new SafariDriver();
 
 			}
 
-			else
-			{
+			else {
 				System.out.println("cannot load driver");
 			}
 		}
 
-		else if(System.getProperty("os.name").toUpperCase().contains("WIN"))
-		{
-			if(setUp.getBrowser().trim().equalsIgnoreCase("chrome"))
-			{
+		else if (System.getProperty("os.name").toUpperCase().contains("WIN")) {
+			if (setUp.getBrowser().trim().equalsIgnoreCase("chrome")) {
 
 				System.setProperty("webdriver.chrome.driver", "resources/drivers/Windows/chromedriver.exe");
 				driver = new ChromeDriver();
 
-
-			}
-			else if(setUp.getBrowser().trim().equalsIgnoreCase("IE"))
-			{
-				System.setProperty("webdriver.ie.driver","resources/drivers/Windows/IEDriverServer.exe");
-				driver=new InternetExplorerDriver();			  
+			} else if (setUp.getBrowser().trim().equalsIgnoreCase("IE")) {
+				System.setProperty("webdriver.ie.driver", "resources/drivers/Windows/IEDriverServer.exe");
+				driver = new InternetExplorerDriver();
 
 			}
 
-			else if(setUp.getBrowser().trim().equalsIgnoreCase("firefox"))
-			{
+			else if (setUp.getBrowser().trim().equalsIgnoreCase("firefox")) {
 				driver = new FirefoxDriver();
 
-			}
-			else
-			{
+			} else {
 				System.out.println("cannot load driver");
 			}
 		}
@@ -198,52 +169,38 @@ public class MainController implements IHookable{
 	}
 
 	@Override
-	public void run(IHookCallBack callBack, ITestResult testResult){
+	public void run(IHookCallBack callBack, ITestResult testResult) {
 		callBack.runTestMethod(testResult);
-		if (testResult.getThrowable()!= null) {
+		if (testResult.getThrowable() != null) {
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			try
-			{
-				saveScreenshot(testResult.getName(),driver);
-			}
-			catch(Exception e)
-			{
+			try {
+				saveScreenshot(testResult.getName(), driver);
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
-	@AfterMethod(alwaysRun=true)
-	public void takeScreenshot(ITestResult testResult) throws IOException{
-
-		if (testResult.getStatus() == ITestResult.FAILURE)
-		{
-			Screenshot.captureScreenShot(driver, testResult.getName(),testResult);
-		}	
-	}
-
 	@Attachment(value = "Screenshot of {0}", type = "image/png")
-	public byte[] saveScreenshot(String name,WebDriver driver) {
+	public byte[] saveScreenshot(String name, WebDriver driver) {
 		return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
 	}
 
-
-	@AfterMethod(alwaysRun=true)
-	public void callStopRecording() throws Exception{
+	@AfterMethod(alwaysRun = true)
+	public void callStopRecording() throws Exception {
 		driver.manage().deleteAllCookies();
 		ApplicationSetUpPropertyFile setUp = new ApplicationSetUpPropertyFile();
-		if(setUp.getVideoPermission().equalsIgnoreCase("yes"))
-		{
+		if (setUp.getVideoPermission().equalsIgnoreCase("yes")) {
 			this.screenRecorder.stop();
-		}	
+		}
 	}
 
-	@AfterSuite(alwaysRun=true)
-	public void tearDownClass(){
+	@AfterSuite(alwaysRun = true)
+	public void tearDownClass() {
 		System.out.println("Ending Test Suite");
 		driver.close();
 		driver.quit();

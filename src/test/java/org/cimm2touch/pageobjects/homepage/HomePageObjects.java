@@ -1,21 +1,17 @@
 package org.cimm2touch.pageobjects.homepage;
 import org.cimm2touch.maincontroller.PageFactoryInitializer;
-import org.cimm2touch.pageobjects.manufacturer.ManufacturerPageObjects;
-import org.cimm2touch.pageobjects.adminstration.SitesPageObjects;
-import org.cimm2touch.pageobjects.products.ProductsListPageObjects;
 import org.cimm2touch.pageobjects.adminstration.SystemSettingsPageObjects;
 import org.cimm2touch.pageobjects.items.AddNewItemPageObjects;
 import org.cimm2touch.pageobjects.items.ItemsPageObjects;
-import org.cimm2touch.pageobjects.products.ProductsPageObjects;
+import org.cimm2touch.pageobjects.manufacturer.ManufacturerPageObjects;
+import org.cimm2touch.pageobjects.products.ProductsListPageObjects;
 import org.cimm2touch.pageobjects.subset.SubsetPageObjects;
-import org.cimm2touch.pageobjects.taxonomymanagement.TaxonomyPageObjects;
 import org.cimm2touch.pageobjects.taxonomymanagement.AttributeGroupsPageObjects;
 import org.cimm2touch.pageobjects.taxonomymanagement.AttributesPageObjects;
-
+import org.cimm2touch.pageobjects.taxonomymanagement.TaxonomyPageObjects;
 import org.cimm2touch.utils.Waiting;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
 
@@ -180,7 +176,7 @@ public class HomePageObjects extends PageFactoryInitializer{
 	}
 
 	@Step("clicking on subset link")
-	public HomePageObjects clickonsubset(){
+	public HomePageObjects clickOnSubset(){
 	
 		((JavascriptExecutor) driver).executeScript("arguments[0].click();",subsetlink);
 		return this;
@@ -199,7 +195,8 @@ public class HomePageObjects extends PageFactoryInitializer{
 	}
 	
 	@Step("clicking on attributes link")
-	public AttributesPageObjects clickOnAttributesLink() {
+	public AttributesPageObjects clickOnAttributesLink()
+	{
 		((JavascriptExecutor)driver).executeScript("arguments[0].click();",attributeslinkLocator);
 		return new AttributesPageObjects();
 	}

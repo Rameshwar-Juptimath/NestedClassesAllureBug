@@ -24,7 +24,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		create_Manufacturer();
 		createBrand();
 		createSubset();
-		createVendor();
+		//createVendor();
 		createItems();
 	}
 
@@ -39,11 +39,11 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.verifyWelcomeMessage(data.getwelcomeMessagevadi());  
 		homePage()
 		.clickonMB()
-		.manufacturerPage().assrtManufacturerbrandtextLocator()
+		.manufacturersAndBrandsPage().assrtManufacturerbrandtextLocator()
 		.typeonMBsearch(data.manufacturername())
 		.clickonMBsearch()
 		.manufacturerSearchResult(data.manufacturername())
-		.homePage().clickonMB().manufacturerPage()
+		.homePage().clickonMB().manufacturersAndBrandsPage()
 		.assrtManufacturerbrandtextLocator()
 		.clickonmanufacturerbutton()
 		.typeinmanufield(data.manufacturername())
@@ -63,7 +63,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.clickOnLogin();
 		homePage()
 		.clickonMB()
-		.manufacturerPage().assrtManufacturerbrandtextLocator()
+		.manufacturersAndBrandsPage().assrtManufacturerbrandtextLocator()
 		.typeonMBsearch(data.manufacturername())
 		.clickonMBsearch()
 		.checkManufacturerAlreadyExist(data.manufacturername())
@@ -88,7 +88,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.clickOnLogin();
 		homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessagevadi());
-		homePage().clickonsubset()
+		homePage().clickOnSubset()
 		.subsetPage()
 		.checkSubsetPage()
 		.typeInSubsetSearch(data.subsetname())
@@ -101,7 +101,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 
 	}
 
-	@Test()
+/*	@Test()
 	public void createVendor() throws InterruptedException, Exception 
 	{
 		landingPage()
@@ -119,8 +119,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.selectVendorSubset(data.subsetname())
 		.vendorSave()
 		.checkVendorSavemessg(data.vendorsavemsg());
-
-	}
+	}*/
 
 	@Test()
 	public void createItems() throws InterruptedException 

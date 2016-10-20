@@ -84,6 +84,13 @@ public class TestUtility extends MainController {
 		//driver.switchTo().window(winHandleBefore);
 	}
 	
+	public static void switchToRecentWindow(int windowIndex)
+	{
+		//String winHandleBefore = driver.getWindowHandle();
+		ArrayList<String> tabs = new ArrayList<String> (driver.getWindowHandles());
+	    driver.switchTo().window(tabs.get(windowIndex));
+		//driver.switchTo().window(winHandleBefore);
+	}
 	
 	public static void switchBackToFirstWindow() throws Exception{
 		ArrayList<String> tabs = new ArrayList<String> (driver.getWindowHandles());

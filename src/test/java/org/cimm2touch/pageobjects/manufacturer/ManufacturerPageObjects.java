@@ -1,22 +1,148 @@
 package org.cimm2touch.pageobjects.manufacturer;
+/**
+ * @author Gladson Antony
+ *
+ */
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
+
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import org.cimm2touch.maincontroller.PageFactoryInitializer;
 import org.cimm2touch.maincontroller.PageFactoryInitializer;
 import org.cimm2touch.utils.TestUtility;
 import org.cimm2touch.utils.Waiting;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
+import org.testng.asserts.SoftAssert;
 
 import ru.yandex.qatools.allure.annotations.Step;
 
-public class ManufacturerPageObjects extends PageFactoryInitializer{
+public class ManufacturerPageObjects extends PageFactoryInitializer
+{
+	TestUtility tu = new TestUtility();
+
+	@FindBy(xpath="//input[contains(@id,searchKeywordId) and @placeholder='Enter Manufacturer Name to Search' and @type='text']")
+	private WebElement manufacturersSearchBox;
+
+	@FindBy(xpath="//input[contains(@id,searchKeywordId) and @placeholder='Enter Manufacturer Name to Search' and @type='text']//following::a[contains(@id,'goBtn')]/i")
+	private WebElement manufacturersSearchIcon;
+
+	@FindBy(xpath="//li/span[contains(@id,'countVal')][2]")
+	private WebElement manufacturersTotalCount;
+
+	@FindBy(xpath="//select[contains(@id,'nrpp')]")
+	private WebElement itemsPerPageDropdown;
+
+	@FindBy(xpath="//div/img[@class='gearIcon']")
+	private WebElement manufacturers_GenericColumnSettings;
+
+	@FindBy(xpath="//div[@title='Generic Column Settings']/..//li/a[contains(.,'Sort Order')]")
+	private WebElement genericColumnSettings_SortOrder;
+
+	@FindBy(xpath="//div/input[@class='addIcon pull-left']")
+	private WebElement sortOrder_AddNewSortOrder;
+
+	@FindBy(xpath="(//div/input[@title='Remove'])[1]")
+	private WebElement sortOrder_RemoveSortOrder;
+
+	@FindBy(xpath="//div[@title='Generic Column Settings']/..//li/a[contains(.,'Show Fields')]")
+	private WebElement genericColumnSettings_ShowFields;
+
+	@FindBy(xpath="//table[@id='listManufacturerForm:manufacturerTableId']")
+	private WebElement manufacturersTableContents;
+
+	@FindBy(xpath="//a[@id='listManufacturerForm:nextBtnId']/i")
+	private WebElement manufacturersPaginationNextButton;
+
+	@FindBy(xpath="//a[@id='listManufacturerForm:prevBtnId']")
+	private WebElement manufacturersPaginationPreviousButton;
+
+	@FindBy(xpath="//a[@id='listManufacturerForm:lastBtnId']/i")
+	private WebElement manufacturersPaginationLastButton;
+
+	@FindBy(xpath="//a[@id='listManufacturerForm:firstBtnId']/i")
+	private WebElement manufacturersPaginationFirstButton;
+
+	@FindBy(xpath="//span[@id='listManufacturerForm:selectNo']")
+	private WebElement manufacturersPagination_CurrentPageCount;
+
+	@FindBy(xpath="//span[@id='listManufacturerForm:tnpId']")
+	private WebElement manufacturersPagination_TotalPageCount;
+
+	@FindBy(xpath="//a[@title='Add New Manufacturer']")
+	private WebElement addNewManufacturerButton;
+
+	@FindBy(xpath="//input[@id='addNewManufacturerForm:manfName']")
+	private WebElement newManufacturersNameLocator;
+
+	@FindBy(xpath="//input[@id='addNewManufacturerForm:manfCode']")
+	private WebElement newManufacturersCodeLocator;
+
+	@FindBy(xpath="//input[@id='addNewManufacturerForm:checkIT']")
+	private WebElement newManufacturersActiveStatus;
+
+	@FindBy(xpath="//input[@title='Save New Manufacturer']")
+	private WebElement saveNewManufacturer;
+
+	@FindBy(xpath="//input[@id='addNewManufacturerForm:btnReset']")
+	private WebElement resetAddNewManufacturerFields;
+
+	@FindBy(xpath="//form[@id='addNewManufacturerForm']/div[@class='cimm_closeBtn']/img")
+	private WebElement closeAddNewManufacturerForm;
+
+	@FindBy(id="listManufacturerForm:saveMsgId")
+	private WebElement messageAfterSavingNewManufacturerLocator;
+
+	@FindBy(xpath="//td/a[@title='List Brand']")
+	private WebElement listBrands;
+
+	@FindBy(xpath="//span/a[@title='Add New Brand']")
+	private WebElement addNewBrandLocator;
+
+	@FindBy(xpath="//select[@id='addBrandForm:manufacturerListComboId']")
+	private WebElement addNewBrand_ManufacturerName;
+
+	@FindBy(xpath="//input[@id='addBrandForm:brandId']")
+	private WebElement addNewBrand_BrandName;
+
+	@FindBy(xpath="//textarea[@id='addBrandForm:bDesc']")
+	private WebElement addNewBrand_BrandDesc;
+
+	@FindBy(xpath="//input[@id='addBrandForm:statusBooleanId' and @type='checkbox']")
+	private WebElement addNewBrand_BrandActive;
+
+	@FindBy(xpath="//td/label[contains(.,'Items Active')]//preceding-sibling::input")
+	private WebElement addNewBrand_ItemsActive;
+
+	@FindBy(xpath="//td/label[contains(.,'Items InActive')]//preceding-sibling::input")
+	private WebElement addNewBrand_ItemsInActive;
+
+	@FindBy(xpath="//form[@id='addBrandForm']//div[contains(.,'Brand URL')]//following::div[@class='cimm_formInput']/input[@maxlength='300']")
+	private WebElement addNewBrand_BrandURL;
+
+	@FindBy(xpath="//input[@title='Save New Brand']")
+	private WebElement addNewBrand_SaveBrand;
+
+	@FindBy(xpath="//input[@title='Reset' and @id='addBrandForm:btnReset']")
+	private WebElement addNewBrand_ResetBrandFields;
+
+	@FindBy(xpath="//form[@id='addBrandForm']//div[@class='cimm_closeBtn']")
+	private WebElement addNewBrand_CloseForm;
+
+	@FindBy(xpath="//span[@id='addBrandForm:saveMsgBrandId']")
+	private WebElement addNewBrand_SaveMessageArea;
+
+
+
+
+
+	/*****************************************************************************************************************************************************************
+	 *****************************************************************************************************************************************************************/
 
 	@FindBy(xpath="//div[@class='float-right']/input[@title='Save New Manufacturer']")
 	private WebElement saveButtonLocator;
@@ -60,7 +186,6 @@ public class ManufacturerPageObjects extends PageFactoryInitializer{
 	@FindBy(xpath=".//*[@id='listManufacturerForm:lastBtnId']/i")
 	private WebElement clickOnLastButtonLocator;
 
-
 	@FindBy(xpath=".//*[@id='listManufacturerForm:tnpId']")
 	private WebElement storeTotalNumberOfPagesLocator;
 
@@ -97,24 +222,25 @@ public class ManufacturerPageObjects extends PageFactoryInitializer{
 
 	@FindBy(xpath="//li[@class='show-sort-settings']/a")
 	private WebElement verifySortOrderTextLocator;
-	
+
+
 	@FindBy(xpath="//span[contains(@class,'breadCrumb')]/span/span/a[contains(text(),'Manufacturers & Brands')]")
 	private static WebElement manufacturerbrandtextLocator;
 
-	
+
 	@FindBy(xpath="//div/div/ul/li/input")
 	private WebElement manufacturerbrandsearchfield;
-	
+
 
 	@FindBy(xpath="//div/div/ul/li[2]/a/i")
 	private WebElement manufacturerbrandsearchbutton;
-	
-	
+
+
 
 	@FindBy(xpath="//table[@id='listManufacturerForm:manufacturerTableId']/tbody/tr[1]/td[3]")
 	private WebElement manufacturersearchres;
 
-	
+
 	@FindBy(xpath="//form/table/tbody/tr/td[4]/a")
 	private WebElement brandList;
 
@@ -173,53 +299,54 @@ public class ManufacturerPageObjects extends PageFactoryInitializer{
 	@FindBy(xpath="//div[@class='closeColSorTable closeSortTable pull-right']")
 	private WebElement clickOnCloseSortOrderLocator;
 
-@Step("click on brand list icon under manufacturer")
-public ManufacturerPageObjects clickOnlisticon() throws InterruptedException {
-	brandList.click();
-	Thread.sleep(2000);
-	return this;
-}
-	
-public boolean isBrandpresentHelp(String brandname) throws Exception
-{
-	driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-	try {
-		
-		
-		if(driver.findElement(By.xpath("//span[contains(text(),'Brand')]/ancestor::a/following-sibling::table/descendant::td[contains(text(),'"+brandname+"')]")).isDisplayed())
-		{
-		return false;
-		}
-		}
-	catch(NoSuchElementException e) {
-		return true;
-	   
+	@Step("click on brand list icon under manufacturer")
+	public ManufacturerPageObjects clickOnlisticon() throws InterruptedException {
+		brandList.click();
+		Thread.sleep(2000);
+		return this;
 	}
-	return false;		    
-}
 
-@Step("check whether brand is already created")
-public ManufacturerPageObjects isBrandpresent(String brandname) throws Exception
-{
-	Assert.assertTrue(isBrandpresentHelp(brandname),"Brand is Present Already. Please delete to create.");
-	return this;
-}
+	public boolean isBrandpresentHelp(String brandname) throws Exception
+	{
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		try {
+
+
+			if(driver.findElement(By.xpath("//span[contains(text(),'Brand')]/ancestor::a/following-sibling::table/descendant::td[contains(text(),'"+brandname+"')]")).isDisplayed())
+			{
+				return false;
+			}
+		}
+		catch(NoSuchElementException e) {
+			return true;
+
+		}
+		return false;		    
+	}
+
+	@Step("check whether brand is already created")
+	public ManufacturerPageObjects isBrandpresent(String brandname) throws Exception
+	{
+		Assert.assertTrue(isBrandpresentHelp(brandname),"Brand is Present Already. Please delete to create.");
+		return this;
+	}
+
 
 	@Step("assert element present manufacturerbrandtextLocator ")
 	public  ManufacturerPageObjects assrtManufacturerbrandtextLocator() throws Exception{
-		
+
 		TestUtility.assertElementnotPresent(manufacturerbrandtextLocator);
 		return this;
 	}
-	
+
 	@Step("type in manufacturerbrandsearchfield")
 	public ManufacturerPageObjects clickonMBsearch() throws InterruptedException {
-		
+
 		manufacturerbrandsearchbutton.click();
 		Thread.sleep(3000);
-	return this;
+		return this;
 	}
-	
+
 	@Step("check whether searched result is desired manufactuer")
 	public ManufacturerPageObjects checkManufacturerAlreadyExist(String manufacturername) throws InterruptedException
 	{
@@ -227,16 +354,16 @@ public ManufacturerPageObjects isBrandpresent(String brandname) throws Exception
 		Assert.assertEquals(manufacturersearchres.getText(),manufacturername);
 		return this;
 	}
-	
-	
+
+
 	@Step("type in manufacturerbrandsearchfield")
 	public ManufacturerPageObjects typeonMBsearch(String manufacturername){
-	manufacturerbrandsearchfield.clear();
-	manufacturerbrandsearchfield.sendKeys(manufacturername);
-	return this;
+		manufacturerbrandsearchfield.clear();
+		manufacturerbrandsearchfield.sendKeys(manufacturername);
+		return this;
 	}
 
-	
+
 	@Step("Click on save button")
 	public ManufacturerPageObjects clickOnSaveButton() throws Exception{
 		Waiting.explicitWaitVisibilityOfElement(saveButtonLocator, 5);
@@ -244,12 +371,8 @@ public ManufacturerPageObjects isBrandpresent(String brandname) throws Exception
 		return this;
 	}
 
-	@Step("click on add new add new manufacturer button")
-	public ManufacturerPageObjects clickOnAddNewManufacturerButton() throws Exception{
-		Waiting.explicitWaitVisibilityOfElement(addNewManufacturerButtonLocator, 5);
-		addNewManufacturerButtonLocator.click();
-		return this;
-	}
+
+
 	@Step("Verify whether unsuccessful message is  {0}")
 	public ManufacturerPageObjects verifyUnsuccessfullMessage(String unsuccessfullMessageOfManufacturerSave)throws Exception {
 		Waiting.explicitWaitVisibilityOfElement(manufacturerUnsuccessfullMessageLocator, 8);
@@ -306,7 +429,7 @@ public ManufacturerPageObjects isBrandpresent(String brandname) throws Exception
 	@Step("verify alert text is {0}")
 	public ManufacturerPageObjects verifyAlertText(String alertTextToDeleteManufacturer)throws Exception {
 		Assert.assertTrue(assertAlertText(alertTextToDeleteManufacturer));
-	return this;
+		return this;
 	}
 
 
@@ -357,13 +480,6 @@ public ManufacturerPageObjects isBrandpresent(String brandname) throws Exception
 			Assert.assertEquals(firstPageNumber, 1);
 		}
 		return returnflag;
-	}
-
-	@Step("click on reset button")
-	public ManufacturerPageObjects clickOnResetButton()throws Exception {
-		Waiting.explicitWaitVisibilityOfElement(clickOnResetButtonLocator, 8);
-		clickOnResetButtonLocator.click();
-		return this;
 	}
 
 	@Step("click on new manufacturer field")
@@ -427,10 +543,10 @@ public ManufacturerPageObjects isBrandpresent(String brandname) throws Exception
 		return this;
 	}
 
-	
+
 	@FindBy(xpath="//form/table/tbody/tr[2]/td/span/a[@title='Add New Brand']")
 	private WebElement addnewbrandbutton ;
-		
+
 	@Step("click on add new brand button")
 	public ManufacturerPageObjects clickOnaddnewbrandbutton() throws InterruptedException {
 		Thread.sleep(2000);
@@ -441,7 +557,7 @@ public ManufacturerPageObjects isBrandpresent(String brandname) throws Exception
 
 	@FindBy(xpath="//form[@id='addBrandForm']/div")
 	private WebElement addnewbrandform ;
-		
+
 	@Step("check whether add new brand form got enabled")
 	public ManufacturerPageObjects checkBrandFormEnabled() {
 		Assert.assertEquals(addnewbrandform.getText(),"Add New Brand");
@@ -450,7 +566,7 @@ public ManufacturerPageObjects isBrandpresent(String brandname) throws Exception
 
 	@FindBy(id="addBrandForm:manufacturerListComboId")
 	private WebElement manufacturerdropdown; //manufactuer drop down under Add new Brand form
-		
+
 	@Step("select manufactuer from dropdown")
 	public ManufacturerPageObjects selectmanufacturerfromdropdown(String manufacturername) throws InterruptedException {
 		Thread.sleep(3000);
@@ -460,7 +576,7 @@ public ManufacturerPageObjects isBrandpresent(String brandname) throws Exception
 
 	@FindBy(id="addBrandForm:brandId")
 	private WebElement brandnamefield;
-		
+
 	@Step("type in brandname")
 	public ManufacturerPageObjects typeinbrandname(String brandname) {
 		brandnamefield.clear();
@@ -470,7 +586,7 @@ public ManufacturerPageObjects isBrandpresent(String brandname) throws Exception
 
 	@FindBy(id="addBrandForm:bDesc")
 	private WebElement branddescfield;
-		
+
 	@Step("type in brand desc field")
 	public ManufacturerPageObjects typeinBrandDescField(String branddesc) {
 		branddescfield.clear();
@@ -480,7 +596,7 @@ public ManufacturerPageObjects isBrandpresent(String brandname) throws Exception
 
 	@FindBy(xpath="//input[@id='addBrandForm:statusBooleanId']")
 	private WebElement brandactivecheckbox;
-		
+
 	@Step("check on brandactive checkbox")
 	public ManufacturerPageObjects checkOnBrandActive() {
 		if(!(brandactivecheckbox).isSelected()) {
@@ -491,7 +607,7 @@ public ManufacturerPageObjects isBrandpresent(String brandname) throws Exception
 
 	@FindBy(xpath="//input[@id='addBrandForm:itemsStatusId:0']")
 	private WebElement itemactivecheckbox;
-		
+
 	@Step("check on itemactivecheckbox")
 	public ManufacturerPageObjects checkOnItemActive() {
 		if(!(itemactivecheckbox).isSelected()) {
@@ -502,7 +618,7 @@ public ManufacturerPageObjects isBrandpresent(String brandname) throws Exception
 
 	@FindBy(xpath="//form[@id='addBrandForm']/div[4]/div[15]/input")
 	private WebElement brandsavebutton;
-		
+
 	@Step("click on brand save button")
 	public ManufacturerPageObjects clickonbrandsave() throws InterruptedException {
 		brandsavebutton.click();
@@ -512,22 +628,22 @@ public ManufacturerPageObjects isBrandpresent(String brandname) throws Exception
 
 	@FindBy(id="addBrandForm:saveMsgBrandId")
 	private WebElement brandsavemsgloc;
-		
+
 	@Step("check brand is saved succesfully")
 	public ManufacturerPageObjects checkBrandSaveMessage(String brandsavemsg) {
 		Assert.assertEquals(brandsavemsgloc.getText(), brandsavemsg);
 		return this;
 	}
-	
+
 	public boolean manufacturerSearchResultHelp(String manufacturername) throws Exception
 	{
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		try {
-				if(driver.findElement(By.xpath("//form/table/tbody/tr[td[3]='"+manufacturername+"']/td[3]")).isDisplayed())
-				{
-					return false;
-				}
+			if(driver.findElement(By.xpath("//form/table/tbody/tr[td[3]='"+manufacturername+"']/td[3]")).isDisplayed())
+			{
+				return false;
 			}
+		}
 		catch(NoSuchElementException e) {
 			return true;
 		}
@@ -539,19 +655,19 @@ public ManufacturerPageObjects isBrandpresent(String brandname) throws Exception
 		Thread.sleep(3000);
 		Assert.assertTrue(manufacturerSearchResultHelp(manufacturername),"Manufacturer is Present. Please delete for creating again.");
 		return this;
-			    
+
 	}
-	
+
 	@FindBy(xpath="//form/div/ul/li[3]/a")
 	private WebElement createmanufacturerbutton;
-	
-	
+
+
 	@Step("click on createmanufacturer button")
 	public ManufacturerPageObjects clickonmanufacturerbutton() {
 		createmanufacturerbutton.click();
 		return this;
 	}
-	
+
 	@FindBy(id="addNewManufacturerForm:manfName")
 	private WebElement manufacturernamefield;
 
@@ -590,15 +706,15 @@ public ManufacturerPageObjects isBrandpresent(String brandname) throws Exception
 	}
 
 
-@FindBy(id="listManufacturerForm:saveMsgId")
-private WebElement manufacturermessagesaveph;
+	@FindBy(id="listManufacturerForm:saveMsgId")
+	private WebElement manufacturermessagesaveph;
 
-@Step("verify manufacturer save message")
-public ManufacturerPageObjects verifymessage(String message) throws InterruptedException {
-	Waiting.explicitWaitVisibilityOfElement(manufacturermessagesaveph, 10);
-	Assert.assertEquals(manufacturermessagesaveph.getText().trim(),message );
-	return this;
-}
+	@Step("verify manufacturer save message")
+	public ManufacturerPageObjects verifymessage(String message) throws InterruptedException {
+		Waiting.explicitWaitVisibilityOfElement(manufacturermessagesaveph, 10);
+		Assert.assertEquals(manufacturermessagesaveph.getText().trim(),message );
+		return this;
+	}
 
 	@Step("click on show fields")
 	public ManufacturerPageObjects clickOnShowFieldsText()throws Exception {
@@ -689,20 +805,6 @@ public ManufacturerPageObjects verifymessage(String message) throws InterruptedE
 		return this;
 	}
 
-	@Step("click on sort order")
-	public ManufacturerPageObjects clickOnSortOrder() throws Exception {
-		Waiting.explicitWaitVisibilityOfElement(clickOnSortOrderLocator, 8);
-		clickOnSortOrderLocator.click();
-		return this;
-	}
-
-	@Step("click on add new sort order")
-	public ManufacturerPageObjects clickOnAddNewSortOrder() throws Exception {
-		Waiting.explicitWaitVisibilityOfElement(clickOnAddNewSortOrderLocator, 8);
-		clickOnAddNewSortOrderLocator.click();
-		return this;
-	}
-
 	@Step("enter sort field name")
 	public ManufacturerPageObjects enterSortFieldName(String SortFieldName) throws Exception {
 		Waiting.explicitWaitVisibilityOfElement(enterSortFieldNameLocator, 8);
@@ -738,8 +840,506 @@ public ManufacturerPageObjects verifymessage(String message) throws InterruptedE
 		clickOnCloseSortOrderLocator.click();
 		return this;
 	}
+
+	/*****************************************************************************************************************************************************************
+	 *****************************************************************************************************************************************************************/
+
+
+
+	@Step("To Verify the Manufacturers Page Items")
+	public ManufacturerPageObjects verifyManufacturersAndBrandsPageItems() throws Exception 
+	{
+		Thread.sleep(5000);
+		Assert.assertTrue(manufacturersSearchBox.isDisplayed());
+		Assert.assertTrue(manufacturersSearchIcon.isDisplayed());
+		Assert.assertTrue(manufacturersTableContents.isDisplayed());
+		Assert.assertTrue(manufacturers_GenericColumnSettings.isDisplayed());
+		Assert.assertTrue(itemsPerPageDropdown.isDisplayed());
+		Assert.assertTrue(manufacturersPaginationFirstButton.isDisplayed());
+		Assert.assertTrue(manufacturersPaginationLastButton.isDisplayed());
+		Assert.assertTrue(manufacturersPaginationNextButton.isDisplayed());
+		Assert.assertTrue(manufacturersPaginationPreviousButton.isDisplayed());
+		Assert.assertTrue(addNewManufacturerButton.isDisplayed());
+		return this;
+	}
+
+	@Step("To Click on 'Add New Manufacturers' Button")
+	public ManufacturerPageObjects clickOnAddNewManufacturerButton() throws Exception
+	{
+		Waiting.explicitWaitVisibilityOfElement(addNewManufacturerButtonLocator, 5);
+		addNewManufacturerButtonLocator.click();
+		return this;
+	}
+
+	@Step("To Verify Form Items after clicking on  'Add New Manufacturers' Button")
+	public ManufacturerPageObjects verifyAddNewManufacturerFormItems() throws Exception
+	{
+		Thread.sleep(5000);
+		Assert.assertTrue(newManufacturersNameLocator.isDisplayed());
+		Assert.assertTrue(newManufacturersCodeLocator.isDisplayed());
+		Assert.assertTrue(newManufacturersActiveStatus.isDisplayed());
+		Assert.assertTrue(saveNewManufacturer.isDisplayed());
+		Assert.assertTrue(resetAddNewManufacturerFields.isDisplayed());
+		Assert.assertTrue(closeAddNewManufacturerForm.isDisplayed());
+		return this;
+	}
+
+	@Step("To Add New Manufacturers {0}")
+	public ManufacturerPageObjects addNewManufacture(String manufacturersName, String manufacturersCode, String manufacturerActiveStatus) throws Exception 
+	{
+		Thread.sleep(5000);
+		newManufacturersNameLocator.clear();
+		newManufacturersNameLocator.sendKeys(manufacturersName);
+		newManufacturersCodeLocator.clear();
+		newManufacturersCodeLocator.sendKeys(manufacturersCode);
+		if(manufacturerActiveStatus.equalsIgnoreCase("yes"))
+		{
+			newManufacturersActiveStatus.click();
+		}
+		return this;
+	}
+
+	@Step("To Save a New Manufacturer")
+	public ManufacturerPageObjects clickOnSaveNewManufacturer() 
+	{
+		saveNewManufacturer.click();
+		return this;
+	}
+
+	@Step("To Verify the Message after saving a Manufacturer")
+	public ManufacturerPageObjects verifyMessageAfterSavingManufacturer(String saveMessage) throws Exception 
+	{
+		Waiting.explicitWaitVisibilityOfElement(messageAfterSavingNewManufacturerLocator, 15);
+		assertThat(messageAfterSavingNewManufacturerLocator.getText(), containsString(saveMessage));
+		return this;
+	}
+
+	@Step("To Search for the Manufacturer {0}")
+	public ManufacturerPageObjects searchForManufacturer(String manufacturersName) throws Exception
+	{
+		Waiting.explicitWaitVisibilityOfElement(manufacturersSearchBox, 10);
+		manufacturersSearchBox.clear();
+		manufacturersSearchBox.sendKeys(manufacturersName);
+		manufacturersSearchIcon.click();
+		return this;
+	}
+
+	@Step("To Verify for the Manufacturer {0} after Searching")
+	public ManufacturerPageObjects verifyAfterSearchingForManufacturer(String manufacturersName) throws Exception
+	{
+		Thread.sleep(5000);
+		Assert.assertTrue(driver.findElement(By.xpath("//span[@id='listManufacturerForm:noResults' and contains(.,'"+manufacturersName+"')]")).isDisplayed(),"Manufacturer Results is Not Displaying");
+		Assert.assertTrue(driver.findElement(By.xpath("//form[@id='listManufacturerForm']//td[contains(.,'"+manufacturersName+"')]")).isDisplayed());
+		return this;
+	}
+
+	@Step("To Click on Add New Brand")
+	public ManufacturerPageObjects clickOnAddNewBrand() throws Exception
+	{
+		Waiting.explicitWaitVisibilityOfElement(listBrands, 10);
+		listBrands.click();
+		Waiting.explicitWaitVisibilityOfElement(addNewBrandLocator, 10);
+		addNewBrandLocator.click();		
+		return this;
+	}
+
+	@Step("To Click on Add New Brand")
+	public ManufacturerPageObjects verifyAddNewBrandFormItems() throws Exception
+	{
+		Thread.sleep(5000);
+		Assert.assertTrue(addNewBrand_ManufacturerName.isDisplayed(),"Manufacturer Name is not Dispalying");
+		Assert.assertTrue(addNewBrand_BrandName.isDisplayed(), "Brand Name is not Displaying");
+		Assert.assertTrue(addNewBrand_BrandDesc.isDisplayed(), "Brand Description Field is not Displaying");
+		Assert.assertTrue(addNewBrand_BrandActive.isDisplayed());
+		Assert.assertTrue(addNewBrand_ItemsActive.isDisplayed());
+		Assert.assertTrue(addNewBrand_ItemsInActive.isDisplayed());
+		Assert.assertTrue(addNewBrand_BrandURL.isDisplayed(),"Brand URL is not Displaying");
+		return this;
+	}
+
+	@Step("To Verify the Pre-Selected Manufacturer when adding a Manufacturer")
+	public ManufacturerPageObjects verifyPreSelectedManufacturerWhenAddingBrand(String manufacturersName) 
+	{
+		String selectedOption = new Select(addNewBrand_ManufacturerName).getFirstSelectedOption().getText();
+		System.out.println(selectedOption);
+		Assert.assertEquals(selectedOption, manufacturersName);
+		return this;
+	}
+
+	@Step("To Create a New Brand {0} under the Manufacturer")
+	public ManufacturerPageObjects addNewBrand(String brandName, String brandDesc, String brandActiveStatus, String brandURL) 
+	{
+		addNewBrand_BrandName.clear();
+		addNewBrand_BrandName.sendKeys(brandName);
+		addNewBrand_BrandDesc.clear();
+		addNewBrand_BrandDesc.sendKeys(brandDesc);
+		if(brandActiveStatus.equalsIgnoreCase("yes"))
+		{
+			addNewBrand_BrandActive.click();
+		}
+		addNewBrand_BrandURL.clear();
+		addNewBrand_BrandURL.sendKeys(brandURL);
+		return this;
+	}
+
+	@Step("To Save a Brand")
+	public ManufacturerPageObjects clickOnSaveNewBrand() 
+	{
+		addNewBrand_SaveBrand.click();
+		return this;
+	}
+
+	@Step("To Verify the Message {0} after saving the Brand")
+	public ManufacturerPageObjects verifyMessageAfterSavingBrands(String saveMessage) throws Exception 
+	{
+		Thread.sleep(5000);;
+		assertThat(addNewBrand_SaveMessageArea.getText(), containsString(saveMessage));
+		return this;
+	}
+
+	@Step("To Verify the working of 'Reset' button")
+	public ManufacturerPageObjects clickOnResetManufacturersFieldsButton()throws Exception 
+	{
+		Waiting.explicitWaitVisibilityOfElement(resetAddNewManufacturerFields, 5);
+		resetAddNewManufacturerFields.click();
+		return this;
+	}
+
+	@Step("To Verify the Error Message on Saving a Manufacturer. ")
+	public ManufacturerPageObjects verifyErrorMessageOnSavingBrand(String errorMessage) throws Exception 
+	{
+		Thread.sleep(5000);
+		assertThat(driver.findElement(By.xpath("//span[@id='addBrandForm:hmsgBrandId']")).getText(),containsString(errorMessage));
+		return this;
+	}
+
+	@Step("To Click on Previous Page Option and Verify the Functionality.")
+	public ManufacturerPageObjects verifytheWorkingOfThePreviousPageOption() throws Exception 
+	{
+		manufacturersPaginationNextButton.click();
+		Thread.sleep(5000);
+		int currentPageNumber1 =  Integer.parseInt(manufacturersPagination_CurrentPageCount.getText());
+		System.out.println(currentPageNumber1);
+		manufacturersPaginationPreviousButton.click();
+		Thread.sleep(5000);
+		int currentPageNumber2 =  Integer.parseInt(manufacturersPagination_CurrentPageCount.getText());
+		System.out.println(currentPageNumber2);
+		Assert.assertNotEquals(currentPageNumber1, currentPageNumber2);
+		return this;		
+	}
+
+	@Step("To Click on Next Page Option and Verify the Functionality.")
+	public ManufacturerPageObjects verifytheWorkingOfTheNextPageOption() throws Exception 
+	{
+		int currentPageNumber1 = Integer.parseInt(manufacturersPagination_CurrentPageCount.getText());
+		manufacturersPaginationNextButton.click();
+		Thread.sleep(5000);
+		int currentPageNumber2 = Integer.parseInt(manufacturersPagination_CurrentPageCount.getText());
+		Assert.assertNotEquals(currentPageNumber1, currentPageNumber2);
+		return this;
+	}
+
+	@Step("To Click on Last Page Option and Verify the Functionality.")
+	public ManufacturerPageObjects verifytheWorkingOfTheLastPageOption() throws Exception
+	{
+		int totalPagesCount = Integer.parseInt(manufacturersPagination_TotalPageCount.getText());
+		manufacturersPaginationLastButton.click();
+		Thread.sleep(5000);
+		int currentPageNumber =  Integer.parseInt(manufacturersPagination_CurrentPageCount.getText());
+		Assert.assertEquals(totalPagesCount, currentPageNumber);
+		return this;
+	}
+
+	@Step("To Click on First Page Option and Verify the Functionality.")
+	public ManufacturerPageObjects verifytheWorkingOfTheFirstPageOption() throws Exception
+	{
+		manufacturersPaginationNextButton.click();
+		Thread.sleep(5000);
+		int currentPageNumber1 =  Integer.parseInt(manufacturersPagination_CurrentPageCount.getText());
+		manufacturersPaginationFirstButton.click();
+		Thread.sleep(5000);
+		int currentPageNumber2 =  Integer.parseInt(manufacturersPagination_CurrentPageCount.getText());
+		Assert.assertNotEquals(currentPageNumber1, currentPageNumber2);
+		return this;
+	}
+
+	@Step("To Click on 'NoOfItems Dropdown' and verify contents dispalyed.")
+	public ManufacturerPageObjects verifyDisplayNoOfItemsDropdown() throws Exception
+	{
+		SoftAssert sa = new SoftAssert();
+
+		List<WebElement> itemsDisplayed = driver.findElements(By.xpath("//form[@id='listManufacturerForm']//table[contains(@id,'manufacturerTableId')]//tbody/tr[contains(@class,'rich-table-row')]"));
+		Assert.assertEquals(itemsDisplayed.size(), 10);
+
+		driver.findElement(By.xpath("//select[@class='comboFlat']/option[@value='25']")).click();
+		Thread.sleep(5000);
+		List<WebElement> itemsDisplayed1= driver.findElements(By.xpath("//form[@id='listManufacturerForm']//table[contains(@id,'manufacturerTableId')]//tbody/tr[contains(@class,'rich-table-row')]"));
+		sa.assertEquals(itemsDisplayed1.size(), 25);
+
+		driver.findElement(By.xpath("//select[@class='comboFlat']/option[@value='50']")).click();
+		Thread.sleep(10000);
+		List<WebElement> itemsDisplayed2 = driver.findElements(By.xpath("//form[@id='listManufacturerForm']//table[contains(@id,'manufacturerTableId')]//tbody/tr[contains(@class,'rich-table-row')]"));
+		sa.assertEquals(itemsDisplayed2.size(), 50);
+
+		driver.findElement(By.xpath("//select[@class='comboFlat']/option[@value='75']")).click();
+		Thread.sleep(10000);
+		List<WebElement> itemsDisplayed3 = driver.findElements(By.xpath("//form[@id='listManufacturerForm']//table[contains(@id,'manufacturerTableId')]//tbody/tr[contains(@class,'rich-table-row')]"));
+		sa.assertEquals(itemsDisplayed3.size(), 75);
+
+		driver.findElement(By.xpath("//select[@class='comboFlat']/option[@value='100']")).click();
+		Thread.sleep(10000);
+		List<WebElement> itemsDisplayed4 = driver.findElements(By.xpath("//form[@id='listManufacturerForm']//table[contains(@id,'manufacturerTableId')]//tbody/tr[contains(@class,'rich-table-row')]"));
+		sa.assertEquals(itemsDisplayed4.size(), 100);
+
+		driver.findElement(By.xpath("//select[@class='comboFlat']/option[@value='10']")).click();
+		Thread.sleep(10000);
+		List<WebElement> itemsDisplayed5 = driver.findElements(By.xpath("//form[@id='listManufacturerForm']//table[contains(@id,'manufacturerTableId')]//tbody/tr[contains(@class,'rich-table-row')]"));
+		sa.assertEquals(itemsDisplayed5.size(), 10);
+		sa.assertAll();
+		return this;
+	}
+
+	@Step("To Click on 'Generic Column Settings'.")
+	public ManufacturerPageObjects clickOnGenericColumnSettings() throws Exception
+	{
+		Waiting.explicitWaitVisibilityOfElement(manufacturers_GenericColumnSettings, 5);
+		manufacturers_GenericColumnSettings.click();
+		return this;
+	}
+
+	@Step("To Verify the Items displayed in 'Generic Column Settings'.")
+	public ManufacturerPageObjects verifyGenericColumnSettingsItems() throws Exception 
+	{
+		Thread.sleep(5000);
+		Assert.assertTrue(genericColumnSettings_ShowFields.isDisplayed(),"'Show Fields' Option is not Displayed");
+		Assert.assertTrue(genericColumnSettings_SortOrder.isDisplayed(),"'Sort Order' Option is not Displayed");
+		return this;
+	}
+
+	@Step("To Click on 'Sort Order'")
+	public ManufacturerPageObjects clickOnSortOrder() throws Exception 
+	{
+		Waiting.explicitWaitVisibilityOfElement(clickOnSortOrderLocator, 5);
+		genericColumnSettings_SortOrder.click();
+		return this;
+	}
+
+	@Step("To Verify the Options displayed on clicking 'Sort Order'")
+	public ManufacturerPageObjects verifyItemsDisplayedAfterClickingSortOrder() throws InterruptedException 
+	{
+		Waiting.explicitWaitVisibilityOfElement(sortOrder_AddNewSortOrder, 5);
+		Assert.assertTrue(sortOrder_AddNewSortOrder.isDisplayed(),"Add New Sort Order Option is Not Displayed");
+		try
+		{
+			Assert.assertTrue(driver.findElement(By.xpath("//select[contains(@id,'listManufacturerForm:sortLevelTableId:0:selOneId')]")).isDisplayed());
+			Assert.assertTrue(driver.findElement(By.xpath("//select[contains(@id,'listManufacturerForm:sortLevelTableId:0:sortById')]")).isDisplayed());
+			Assert.assertTrue(sortOrder_RemoveSortOrder.isDisplayed(),"Remove Sort Order Option is Not Displayed");
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+		return this;
+	}
+
+	@Step("To Click On 'Add New Sort Order'")
+	public ManufacturerPageObjects clickOnAddNewSortOrder() throws Exception 
+	{
+		Waiting.explicitWaitVisibilityOfElement(sortOrder_AddNewSortOrder, 5);
+		sortOrder_AddNewSortOrder.click();
+		return this;
+	}
+
+	@Step("To Click On 'Add New Sort Order'")
+	public ManufacturerPageObjects clickOnRemoveSortOrder() throws Exception
+	{
+		Waiting.explicitWaitVisibilityOfElement(sortOrder_RemoveSortOrder, 5);
+		sortOrder_RemoveSortOrder.click();
+		return this;
+	}
+
+	@Step("To Verify the working of 'Reset' Button in Manufacturer and Brand")
+	public ManufacturerPageObjects verifyManufacturersFormItemsAfterClickingResetButton() throws Exception 
+	{
+		Thread.sleep(5000);
+		String ManufacturerName = newManufacturersNameLocator.getAttribute("value");
+		String ManufacturerCode = newManufacturersCodeLocator.getAttribute("value");
+		Assert.assertEquals(ManufacturerName.length(), 0);
+		Assert.assertEquals(ManufacturerCode.length(), 0);
+		return this;
+	}
+
+	@Step("To Verify the message after saving and Manufacturer without Name")
+	public ManufacturerPageObjects verifyErrorMessageAfterSavingManufacturer(String errorMessage) throws Exception 
+	{
+		Thread.sleep(5000);
+		assertThat(driver.findElement(By.xpath("//span[@id='addNewManufacturerForm:hmsgId']")).getText(), containsString(errorMessage));
+		return this;	
+	}
+
+	@Step("To Verify the Character Limit for 'Manufacturer Name'")
+	public ManufacturerPageObjects verifyCharacterLimitForManufacturersName() throws Exception 
+	{
+		Waiting.explicitWaitVisibilityOfElement(newManufacturersNameLocator, 5);
+		for (int i=0; i< 100; i++)
+		{
+			newManufacturersNameLocator.sendKeys("a");
+		}
+		String enteredText=newManufacturersNameLocator.getAttribute("value");
+		int enteredTextLength=enteredText.length();
+		Assert.assertEquals(enteredTextLength, Integer.parseInt(newManufacturersNameLocator.getAttribute("maxlength")));
+		return this;
+	}
+
+	@Step("To Verify the Character Limit for 'Manufacturer Code'")
+	public ManufacturerPageObjects verifyCharacterLimitForManufacturersCode() 
+	{
+		Waiting.explicitWaitVisibilityOfElement(newManufacturersCodeLocator, 5);
+		for (int i=0; i< 100; i++)
+		{
+			newManufacturersCodeLocator.sendKeys("0");
+		}
+		String enteredText=newManufacturersCodeLocator.getAttribute("value");
+		int enteredTextLength=enteredText.length();
+		Assert.assertEquals(enteredTextLength, Integer.parseInt(newManufacturersCodeLocator.getAttribute("maxlength")));
+		return this;
+	}
+
+	@Step("To Verify the Character Limit for 'Brand Name'")
+	public ManufacturerPageObjects verifyCharacterLimitForBrandNameField() 
+	{
+		Waiting.explicitWaitVisibilityOfElement(addNewBrand_BrandName, 5);
+		for (int i=0; i< 100; i++)
+		{
+			addNewBrand_BrandName.sendKeys("0");
+		}
+		String enteredText=addNewBrand_BrandName.getAttribute("value");
+		int enteredTextLength=enteredText.length();
+		Assert.assertEquals(enteredTextLength, Integer.parseInt(addNewBrand_BrandName.getAttribute("maxlength")));
+		return this;
+	}
+
+	@Step("To Verify the Character Limit for 'Brand Description'")
+	public ManufacturerPageObjects verifyCharacterLimitForBrandDescField() 
+	{
+		Waiting.explicitWaitVisibilityOfElement(addNewBrand_BrandDesc, 5);
+		for (int i=0; i< 500; i++)
+		{
+			addNewBrand_BrandDesc.sendKeys("0");
+		}
+		String enteredText=addNewBrand_BrandDesc.getAttribute("value");
+		int enteredTextLength=enteredText.length();
+		Assert.assertEquals(enteredTextLength, 500);
+		return this;
+	}
+
+	@Step("To Verify the Character Limit for 'Brand URL'")
+	public ManufacturerPageObjects verifyCharacterLimitForBrandURL() 
+	{
+		Waiting.explicitWaitVisibilityOfElement(addNewBrand_BrandURL, 5);
+		for (int i=0; i< 500; i++)
+		{
+			addNewBrand_BrandURL.sendKeys("0");
+		}
+		String enteredText=addNewBrand_BrandURL.getAttribute("value");
+		int enteredTextLength=enteredText.length();
+		Assert.assertEquals(enteredTextLength, Integer.parseInt(addNewBrand_BrandURL.getAttribute("maxlength")));
+		return this;
+	}
+
+	@Step("To Click on 'Reset' button for Brands")
+	public ManufacturerPageObjects clickOnResetBrandFields() 
+	{
+		Waiting.explicitWaitVisibilityOfElement(addNewBrand_ResetBrandFields, 10);
+		addNewBrand_ResetBrandFields.click();
+		return this;
+	}
+
+	@Step("To Verify the Character Limit for 'Brand URL'")
+	public ManufacturerPageObjects verifyBrandsFieldsAfterClickingResetButton() throws Exception 
+	{
+		Thread.sleep(10000);
+		String BrandName = addNewBrand_BrandName.getAttribute("value");
+		String BrandDesc = addNewBrand_BrandDesc.getAttribute("value");
+		String BrandURL = addNewBrand_BrandURL.getAttribute("value");
+		Assert.assertEquals(BrandName.length(), 0);
+		Assert.assertEquals(BrandDesc.length(), 0);
+		Assert.assertEquals(BrandURL.length(), 0);
+		return this;
+	}
+
+	@Step("To Click on 'Edit Manufacturer'")
+	public ManufacturerPageObjects clickOnEditManufacturer(String manufacturersName) throws Exception 
+	{
+		Thread.sleep(5000);
+		driver.findElement(By.xpath("//td[contains(.,'"+manufacturersName+"')]//preceding::input[@title='Edit Manufacturer']")).click();
+		return this;
+	}
+
+	@Step("To Search for a 'Brand'")
+	public ManufacturerPageObjects searchForBrand(String brandName) 
+	{
+		Waiting.explicitWaitVisibilityOfElement(manufacturersSearchBox, 10);
+		manufacturersSearchBox.clear();
+		manufacturersSearchBox.sendKeys(brandName);
+		manufacturersSearchIcon.click();
+		return this;
+	}
+
+	@Step("To Click on Edit Brand Button'")
+	public ManufacturerPageObjects clickOnEditBrand(String brandName) throws Exception 
+	{
+		Thread.sleep(5000);
+		driver.findElement(By.xpath("//table[contains(@id,'brandTableId')]//td[contains(.,'"+brandName+"')]/..//div/input[@title='Edit Brand']")).click();
+		return this;		
+	}
+
+	@Step("To Verify the Page after searching for an Brand'")
+	public ManufacturerPageObjects verifyAfterSearchingForBrand(String brandName) throws Exception
+	{
+		Thread.sleep(5000);
+		Assert.assertTrue(driver.findElement(By.xpath("//table[contains(@id,'brandTableId')]//td[contains(.,'"+brandName+"')]")).isDisplayed(),"Brand Results is Displayed");
+		return this;
+	}
+
+	@SuppressWarnings("static-access")
+	@Step("To Click on 'Remove Brand'")
+	public ManufacturerPageObjects clickOnDeleteBrand() throws Exception 
+	{
+		Thread.sleep(5000);
+		driver.findElement(By.xpath("//input[@title='Remove Brand']")).click();
+		Waiting.explicitWaitForAlert(10);
+		tu.alertAccept();
+		return this;
+	}
+
+	@Step("To Verify Message after deleting 'Brand'")
+	public ManufacturerPageObjects verifyMessageAfterDeletingBrand(String brandDelMessage) throws Exception
+	{
+		Thread.sleep(5000);
+		assertThat(driver.findElement(By.xpath("//form[@id='listManufacturerForm']//span[contains(@style,'green')and @id='listManufacturerForm:noResults']")).getText(),
+				containsString(brandDelMessage));
+		return this;
+	}
+
+	@SuppressWarnings("static-access")
+	@Step("To Click on 'Remove Manufacturer'")
+	public ManufacturerPageObjects clickOnDeleteManufacturer() throws Exception 
+	{
+		Thread.sleep(5000);
+		driver.findElement(By.xpath("//table[@id='listManufacturerForm:manufacturerTableId']//input[@title='Remove Manufacturer']")).click();
+		Waiting.explicitWaitForAlert(10);
+		tu.alertAccept();
+		return this;
+	}
+
+	@Step("To Verify Message after deleting 'Manufacturer'")
+	public ManufacturerPageObjects verifyMessageAfterDeletingManufacturer(String manuDelMessage) throws Exception
+	{
+		Thread.sleep(5000);
+		assertThat(driver.findElement(By.xpath("//form[@id='listManufacturerForm']//span[contains(@style,'green')and @id='listManufacturerForm:noResults']")).getText(),
+				containsString(manuDelMessage));
+		return this;
+	}
+
 }
-
-
-
-

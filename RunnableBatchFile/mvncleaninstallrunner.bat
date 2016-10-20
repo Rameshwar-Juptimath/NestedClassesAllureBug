@@ -1,4 +1,3 @@
-
-cd E:/CIMM2Touch/cimm2v4/
-mvn clean install
+E:
+cd E:\AutomationProject\CIMMTouchLatest\cimm2touch\
 mvn clean install

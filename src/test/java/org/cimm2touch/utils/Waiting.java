@@ -1,10 +1,14 @@
 package org.cimm2touch.utils;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.cimm2touch.maincontroller.MainController;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 /*
@@ -43,9 +47,18 @@ public class Waiting extends MainController{
 		new WebDriverWait(driver, time).until(ExpectedConditions.alertIsPresent());
 	}
 
-	public static void explicitWaitVisibilityOfElements(List<WebElement> element, int time) {
-		
+	public static void explicitWaitVisibilityOfElements(List<WebElement> element, int time)
+	{	
 		new WebDriverWait(driver,time).until(ExpectedConditions.visibilityOfAllElements(element));
-		
+	}
+	
+	public static void FluentWaitForVisibilityOfElement(int TotalTimeInSeconds, int PollingTimeInMilliSeconds, WebElement element)
+	{
+		FluentWait<WebDriver> waitForElement = new FluentWait<WebDriver>(driver)
+				.withTimeout(TotalTimeInSeconds, TimeUnit.SECONDS)
+				.pollingEvery(PollingTimeInMilliSeconds,TimeUnit.MILLISECONDS)
+				.ignoring(NoSuchElementException.class);
+				
+		waitForElement.until(ExpectedConditions.visibilityOf(element));
 	}
 }
