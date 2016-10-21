@@ -261,6 +261,9 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//div[@class='leftSliderToggleImg']/div")
 	private WebElement leftSliderToggleImgLocator;
 	
+	@FindBy(xpath="//*[@id='categoryid:ctgMsgId' and contains(text(),'Category Deleted Successfully')]")
+	private WebElement successfulMessageLocatorForDelCatecory;
+	
 	public ManageTaxonomyPageObjects verifyTabsPresentInManageTaxonomyPage() throws InterruptedException 
 	{
 		Assert.assertTrue(categoryandattributesLocator.isDisplayed());
@@ -657,7 +660,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	public ManageTaxonomyPageObjects verifySuccessMessageAfterDeletingCategory() throws Exception 
 	{
 		Thread.sleep(5000);
-		Assert.assertTrue(driver.findElement(By.xpath("//*[@id='categoryid:ctgMsgId' and contains(text(),'Category Deleted Successfully')]")).isDisplayed());
+		Assert.assertTrue(successfulMessageLocatorForDelCatecory.isDisplayed());
 		return this;
 	}
 
@@ -1171,6 +1174,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	@Step("To Search for an Attribute Group Item.")
 	public ManageTaxonomyPageObjects searchForAttributeGroup(String attributeGroupName) throws Exception
 	{
+		Waiting.explicitWaitVisibilityOfElement(attributesGroupSearchBox, 15);
 		attributesGroupSearchBox.clear();
 		attributesGroupSearchBox.sendKeys(attributeGroupName);
 		attributesGroupSearchIcon.click();

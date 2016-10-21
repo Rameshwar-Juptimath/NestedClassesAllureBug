@@ -171,7 +171,8 @@ public class HomePageObjects extends PageFactoryInitializer{
 	@Step("verifying welcome message {0}")
 	public HomePageObjects verifyWelcomeMessage(String welcomeMessage)
 	{
-		Assert.assertTrue(welcomeMessageLocator.getText().equalsIgnoreCase(welcomeMessage),"Invalid welcome message. Getting "+welcomeMessageLocator.getText()+".");
+		Assert.assertEquals(welcomeMessageLocator.getText(), welcomeMessage,"Invalid welcome message. Getting "+welcomeMessageLocator.getText()+".");
+	//	Assert.assertTrue(welcomeMessageLocator.getText().equalsIgnoreCase(welcomeMessage),"Invalid welcome message. Getting "+welcomeMessageLocator.getText()+".");
 		return this;
 	}
 

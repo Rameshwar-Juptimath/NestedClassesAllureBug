@@ -710,9 +710,9 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	private WebElement manufacturermessagesaveph;
 
 	@Step("verify manufacturer save message")
-	public ManufacturerPageObjects verifymessage(String message) throws InterruptedException {
+	public ManufacturerPageObjects verifymessageAfterManufacturerCreate(String mfgName, String successMessageAfterCreate) throws InterruptedException {
 		Waiting.explicitWaitVisibilityOfElement(manufacturermessagesaveph, 10);
-		Assert.assertEquals(manufacturermessagesaveph.getText().trim(),message );
+		Assert.assertEquals(manufacturermessagesaveph.getText().trim(),mfgName+" "+successMessageAfterCreate);
 		return this;
 	}
 

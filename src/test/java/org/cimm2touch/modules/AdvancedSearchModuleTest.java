@@ -2,6 +2,7 @@ package org.cimm2touch.modules;
 
 import java.io.File;
 
+import org.cimm2touch.dataprovider.SearchData;
 import org.cimm2touch.maincontroller.PageFactoryInitializer;
 import org.cimm2touch.utils.ApplicationSetUpPropertyFile;
 import org.cimm2touch.utils.SearchDataPropertyFile;
@@ -17,53 +18,62 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 
 	SearchDataPropertyFile data = new SearchDataPropertyFile();
 	ApplicationSetUpPropertyFile setUp = new ApplicationSetUpPropertyFile();
-
+	
+	@Description("This method is used to create Manufacturer, brand, subset, item")
+	@Features(value={"AdvancedSearch Module"})
 	@Test(priority=0,groups="regression")
-	public void adv001executeFirst() throws Exception
+	public void adv001ExecuteFirst() throws Exception
 	{ 
-		create_Manufacturer();
+		//createManufacturer();
 		createBrand();
 		createSubset();
 		//createVendor();
 		createItems();
 	}
-
-	@Test()
-	public void create_Manufacturer() throws Exception
+	
+	@Description("This method is used to create new manufacturer.")
+	@Features(value={"AdvancedSearch Module"})
+	@Test(groups={"regression"}, dataProvider="AdvancedSearchModuleTest",dataProviderClass=SearchData.class)
+	public void createManufacturer(String testCaseId, String userName, String password, String welComeMessage,String manufacturerName, String manufacturerCode, String SuccessMessageAfterCreate) throws Exception
 	{
 		landingPage()
-		.enterUsername(data.getUserNameVadirajTest())
-		.enterPassword(data.getPasswordVadirajTest())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
-		.verifyWelcomeMessage(data.getwelcomeMessagevadi());  
+		.verifyWelcomeMessage(welComeMessage);  
 		homePage()
 		.clickonMB()
-		.manufacturersAndBrandsPage().assrtManufacturerbrandtextLocator()
-		.typeonMBsearch(data.manufacturername())
+		.manufacturersAndBrandsPage()
+		.assrtManufacturerbrandtextLocator()
+		.typeonMBsearch(manufacturerName)
 		.clickonMBsearch()
-		.manufacturerSearchResult(data.manufacturername())
-		.homePage().clickonMB().manufacturersAndBrandsPage()
+		.manufacturerSearchResult(manufacturerName)
+		.homePage()
+		.clickonMB()
+		.manufacturersAndBrandsPage()
 		.assrtManufacturerbrandtextLocator()
 		.clickonmanufacturerbutton()
-		.typeinmanufield(data.manufacturername())
-		.typeinmanucodefield(data.manufacturercode())
+		.typeinmanufield(manufacturerName)
+		.typeinmanucodefield(manufacturerCode)
 		.checkmanufactureractive()
 		.clickonmanufacturersave()
-		.verifymessage(data.manufacturername()+" "+data.manufacturerSuccessmessage());
+		.verifymessageAfterManufacturerCreate(manufacturerName,SuccessMessageAfterCreate);
 
 	}
-
-	@Test()
+	@Description("This method is used to create new brand.")
+	@Features(value={"AdvancedSearch Module"})
+	@Test(groups={"regression"})
 	public void createBrand() throws Exception
 	{
 		landingPage()
-		.enterUsername(data.getUserNameVadirajTest())
-		.enterPassword(data.getPasswordVadirajTest())
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
 		.clickOnLogin();
 		homePage()
 		.clickonMB()
-		.manufacturersAndBrandsPage().assrtManufacturerbrandtextLocator()
+		.manufacturersAndBrandsPage()
+		.assrtManufacturerbrandtextLocator()
 		.typeonMBsearch(data.manufacturername())
 		.clickonMBsearch()
 		.checkManufacturerAlreadyExist(data.manufacturername())
@@ -79,12 +89,12 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.checkBrandSaveMessage(data.brandsavemsg());
 	}
 
-	@Test()
+	@Test(groups={"regression"})
 	public void createSubset() throws InterruptedException, Exception 
 	{
 		landingPage()
-		.enterUsername(data.getUserNameVadirajTest())
-		.enterPassword(data.getPasswordVadirajTest())
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
 		.clickOnLogin();
 		homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessagevadi());
@@ -105,8 +115,8 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	public void createVendor() throws InterruptedException, Exception 
 	{
 		landingPage()
-		.enterUsername(data.getUserNameVadirajTest())
-		.enterPassword(data.getPasswordVadirajTest())
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
 		.clickOnLogin();
 		homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessagevadi())
@@ -125,8 +135,8 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	public void createItems() throws InterruptedException 
 	{
 		landingPage()
-		.enterUsername(data.getUserNameVadirajTest())
-		.enterPassword(data.getPasswordVadirajTest())
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
 		.clickOnLogin();
 		homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessagevadi()).clickOnItemsLink()
@@ -524,8 +534,8 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	public void addDescriptiontoItems(@Parameter("partNumber")String partNumberDesc) throws Exception
 	{
 		landingPage()
-		.enterUsername(data.getUserNameVadirajTest())
-		.enterPassword(data.getPasswordVadirajTest())
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getWelcomeMessage())
@@ -544,8 +554,8 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	public void addImageURLtoItems(@Parameter("partNumber")String partNumber) throws Exception
 	{
 		landingPage()
-		.enterUsername(data.getUserNameVadirajTest())
-		.enterPassword(data.getPasswordVadirajTest())
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getWelcomeMessage())
@@ -566,8 +576,8 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	public void addDocumenttoItems(@Parameter("partNumber")String partNumber) throws Exception
 	{
 		landingPage()
-		.enterUsername(data.getUserNameVadirajTest())
-		.enterPassword(data.getPasswordVadirajTest())
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getWelcomeMessage())
