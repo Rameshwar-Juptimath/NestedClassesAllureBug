@@ -21,36 +21,35 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	
 	@Description("This method is used to create Manufacturer, brand, subset, item")
 	@Features(value={"AdvancedSearch Module"})
-	@Test(priority=0,groups="regression")
+	@Test(priority=0,groups="regression",dependsOnMethods={"adv001executeFirst"})
 	public void adv001ExecuteFirst() throws Exception
 	{ 
-		//createManufacturer();
-		createBrand();
-		createSubset();
-		//createVendor();
-		createItems();
+		//createNewManufacturer();
+		//createNewBrand();
+		//createNewSubset();
+		//createNewVendor();
+		//createNewItem();
 	}
 	
 	@Description("This method is used to create new manufacturer.")
 	@Features(value={"AdvancedSearch Module"})
-	@Test(groups={"regression"}, dataProvider="AdvancedSearchModuleTest",dataProviderClass=SearchData.class)
-	public void createManufacturer(String testCaseId, String userName, String password, String welComeMessage,String manufacturerName, String manufacturerCode, String SuccessMessageAfterCreate) throws Exception
+	@Test(groups={"regression"},priority=0, dataProvider="AdvancedSearchModuleTest",dataProviderClass=SearchData.class)
+	public void createNewManufacturer(String testCaseId, String userName, String password, String welComeMessage,String manufacturerName, String manufacturerCode, String SuccessMessageAfterCreate) throws Exception
 	{
 		landingPage()
 		.enterUsername(userName)
 		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
-		.verifyWelcomeMessage(welComeMessage);  
-		homePage()
-		.clickonMB()
+		.verifyWelcomeMessage(welComeMessage)
+		.clickonManufactureBrandsLink()
 		.manufacturersAndBrandsPage()
 		.assrtManufacturerbrandtextLocator()
 		.typeonMBsearch(manufacturerName)
 		.clickonMBsearch()
 		.manufacturerSearchResult(manufacturerName)
 		.homePage()
-		.clickonMB()
+		.clickonManufactureBrandsLink()
 		.manufacturersAndBrandsPage()
 		.assrtManufacturerbrandtextLocator()
 		.clickonmanufacturerbutton()
@@ -61,53 +60,58 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.verifymessageAfterManufacturerCreate(manufacturerName,SuccessMessageAfterCreate);
 
 	}
-	@Description("This method is used to create new brand.")
+	@Description("This method is used to create a new brand.")
 	@Features(value={"AdvancedSearch Module"})
-	@Test(groups={"regression"})
-	public void createBrand() throws Exception
+	@Test(groups={"regression"},priority=1,dataProvider="AdvancedSearchModuleTest",dataProviderClass=SearchData.class)
+	public void createNewBrand(String testCaseId, String userName, String password,String welComeMessage,String manufacturerName, String brandName, String brandDescription, String SuccesfulMessageForCreatedBrand) throws Exception
 	{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin();
 		homePage()
-		.clickonMB()
+		.verifyWelcomeMessage(welComeMessage)
+		.clickonManufactureBrandsLink()
 		.manufacturersAndBrandsPage()
 		.assrtManufacturerbrandtextLocator()
-		.typeonMBsearch(data.manufacturername())
+		.typeonMBsearch(manufacturerName)
 		.clickonMBsearch()
-		.checkManufacturerAlreadyExist(data.manufacturername())
+		.checkManufacturerAlreadyExist(manufacturerName)
 		.clickOnlisticon()
-		.isBrandpresent(data.brandname())
+		.isBrandpresent(brandName)
 		.clickOnaddnewbrandbutton()
 		.checkBrandFormEnabled()
-		.selectmanufacturerfromdropdown(data.manufacturername())
-		.typeinbrandname(data.brandname())
-		.typeinBrandDescField(data.branddesc())
-		.checkOnBrandActive().checkOnItemActive()
+		.selectmanufacturerfromdropdown(manufacturerName)
+		.typeinbrandname(brandName)
+		.typeinBrandDescField(brandDescription)
+		.checkOnBrandActive()
+		.checkOnItemActive()
 		.clickonbrandsave()
-		.checkBrandSaveMessage(data.brandsavemsg());
+		.checkBrandSaveMessage(SuccesfulMessageForCreatedBrand);
 	}
-
-	@Test(groups={"regression"})
-	public void createSubset() throws InterruptedException, Exception 
+	
+	@Description("This method is used to create a new subset.")
+	@Features(value={"AdvancedSearch Module"})
+	@Test(groups={"regression"},priority=2,dataProvider="AdvancedSearchModuleTest",dataProviderClass=SearchData.class)
+	public void createNewSubset(String testCaseId, String userName, String password,String welComeMessage,String subsetName, String ExpSuccessfulMessageForCreatedSubset) throws InterruptedException, Exception 
 	{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin();
 		homePage()
-		.verifyWelcomeMessage(data.getwelcomeMessagevadi());
-		homePage().clickOnSubset()
+		.verifyWelcomeMessage(welComeMessage);
+		homePage()
+		.clickOnSubset()
 		.subsetPage()
 		.checkSubsetPage()
-		.typeInSubsetSearch(data.subsetname())
+		.typeInSubsetSearch(subsetName)
 		.clickOnSubsetSearchButton()
-		.subsetSearchResult(data.subsetname())//checks whether subset already exists
+		.subsetSearchResult(subsetName)//checks whether subset already exists
 		.clickOnSubsetButton()
-		.typeInSubsetNameField(data.subsetname())
+		.typeInSubsetNameField(subsetName)
 		.clickOnSubsetSave()
-		.verifySubsetCreationMessage(data.subsetsavemsgexpected());
+		.verifySubsetCreationMessage(ExpSuccessfulMessageForCreatedSubset);
 
 	}
 
@@ -130,20 +134,23 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.vendorSave()
 		.checkVendorSavemessg(data.vendorsavemsg());
 	}*/
-
-	@Test()
-	public void createItems() throws InterruptedException 
+	
+	@Description("This method is used to create a new item.")
+	@Features(value={"AdvancedSearch Module"})
+	@Test(groups={"regression"},priority=3,dataProvider="AdvancedSearchModuleTest",dataProviderClass=SearchData.class)
+	public void createNewItem(String testcaseId,String userName, String password, String welcomMessage, String manufactureName, String brandName,
+			String itemNameTemplate,String mfgNameTemplate,String vendorName, String succesfulMessageForCreatedItem, String subsetName, String numberOfItemsToCreate ) throws InterruptedException 
 	{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin();
 		homePage()
-		.verifyWelcomeMessage(data.getwelcomeMessagevadi()).clickOnItemsLink()
+		.verifyWelcomeMessage(welcomMessage)
+		.clickOnItemsLink()
 		.itemsPage()
-		.createItemsinside(data.manufacturername(), data.brandname(),
-				data.itemnametemplate(), data.manufacturernametemplate(),
-				data.vendorname(), data.savenewItemMessage(), data.subsetname(), data.Noofitemstobecreated());
+		.createNewItemsinside(manufactureName, brandName,itemNameTemplate, mfgNameTemplate,
+				vendorName, succesfulMessageForCreatedItem, subsetName, numberOfItemsToCreate);
 	}
 	
 	@DataProvider(name = "partNumbersforDescription")
@@ -187,7 +194,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	}
 
 
-	@Features("Advanced Search")
+	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Part No or Keyword search")
 	@TestCaseId("AdvSe003")
 	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
@@ -203,10 +210,10 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 
 	}
 
-	@Features("Advanced Search")
+	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Part No or Keyword search- Negative Test case")
 	@TestCaseId("AdvSe004")
-	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
+	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
 	public void advSe004() throws InterruptedException {
 		new LoginModuleTest().login();
 		homePage().clickOnItemsLink().itemsPage()
@@ -216,7 +223,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 
 	}
 
-	@Features("Advanced Search")
+	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Part No or Keyword search- Partial Search")
 	@TestCaseId("AdvSe005")
 	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
@@ -229,7 +236,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 
 	}
 
-	@Features("Advanced Search")
+	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Invalid keyword")
 	@TestCaseId("AdvSe006")
 	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
@@ -242,7 +249,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 
 	}
 
-	@Features("Advanced Search")
+	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Part No search")
 	@TestCaseId("AdvSe007")
 	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
@@ -255,7 +262,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.verifyadvSe007Searchresult(data.advSe007searchinput());		
 	}
 
-	@Features("Advanced Search")
+	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Part No search- Partial search")
 	@TestCaseId("AdvSe008")
 	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
@@ -269,7 +276,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 
 	}
 
-	@Features("Advanced Search")
+	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Part No search- Invalid Part Number")
 	@TestCaseId("AdvSe009")
 	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
@@ -283,7 +290,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 
 	}
 
-	@Features("Advanced Search")
+	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Manufacturer Part No search")
 	@TestCaseId("AdvSe010")
 	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
@@ -299,7 +306,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 
 	}
 
-	@Features("Advanced Search")
+	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Manufacturer Part No search- Invalid MPN")
 	@TestCaseId("AdvSe011")
 	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
@@ -313,7 +320,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 
 	}
 
-	@Features("Advanced Search")
+	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - CIMM Item ID")
 	@TestCaseId("AdvSe014")
 	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
@@ -329,7 +336,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 
 	}
 
-	@Features("Advanced Search")
+	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - CIMM Item ID- Invalid input")
 	@TestCaseId("AdvSe015")
 	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
@@ -343,7 +350,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 
 	}
 
-	@Features("Advanced Search")
+	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search -Manufacturer filter- without search")
 	@TestCaseId("AdvSe016")
 	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
@@ -357,7 +364,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 
 	}
 
-	@Features("Advanced Search")
+	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search -Manufacturer filter- with search")
 	@TestCaseId("AdvSe017")
 	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
@@ -373,7 +380,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 
 	}
 
-	@Features("Advanced Search")
+	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search -Brand filter- without search")
 	@TestCaseId("advSe018")
 	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
@@ -389,7 +396,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	}
 
 
-	@Features("Advanced Search")
+	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search -Brand filter- with search")
 	@TestCaseId("advSe019")
 	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
@@ -404,7 +411,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 
 	}
 
-	@Features("Advanced Search")
+	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search -Subset filter- without search")
 	@TestCaseId("AdvSe020")
 	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
@@ -419,7 +426,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 
 	}
 
-	@Features("Advanced Search")
+	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search -Subset filter- with search")
 	@TestCaseId("AdvSe021")
 	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
@@ -432,7 +439,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.verifyadvse020(data.itemnametemplate(),data.Noofitemstobecreated(),data.manufacturernametemplate(),data.subsetname());		
 	}
 
-	@Features("Advanced Search")
+	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search -vendor filter- without search")
 	@TestCaseId("AdvSe022")
 	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
@@ -446,7 +453,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 
 	}
 
-	@Features("Advanced Search")
+	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search -vendor filter- with search")
 	@TestCaseId("AdvSe023")
 	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
@@ -461,7 +468,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	}
 
 	//
-	@Features("Advanced Search")
+	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search -Item status - Active")
 	@TestCaseId("AdvSe024")
 	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
@@ -476,7 +483,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	}
 
 
-	@Features("Advanced Search")
+	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search -Display Online - Yes")
 	@TestCaseId("AdvSe025")
 	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
@@ -490,7 +497,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 
 	}
 
-	@Features("Advanced Search")
+	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search -Display Online - No")
 	@TestCaseId("AdvSe026")
 	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
@@ -504,7 +511,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 
 	}
 
-	@Features("Advanced Search")
+	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search -Display Online - All")
 	@TestCaseId("AdvSe027")
 	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
@@ -518,7 +525,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 
 	}
 
-	@Features("Advanced Search")
+	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - veriifcation of grayed out fields in Subset Item dropdown")
 	@TestCaseId("AdvSe028")
 	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
@@ -593,7 +600,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.assignDocument();
 	}
 
-	@Features("Advanced Search")
+	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Verification of appropriate  search result displays when 'Images' is selected under Image dropdown")
 	@TestCaseId("AdvSe033")
 	@Test(groups="regression")//,dependsOnMethods={"adv001executeFirst"})
@@ -611,7 +618,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	}
 
 
-	@Features("Advanced Search")
+	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Verification of appropriate search result displays when 'LongDesc' is selected under LongDesc dropdown")
 	@TestCaseId("AdvSe039")
 	@Test(groups="regression",dataProvider ="partNumberswithLongDescriptionVerification")
@@ -632,7 +639,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	}
 
 
-	@Features("Advanced Search")
+	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Verification of appropriate search result displays when 'LongDesc' is selected under LongDesc dropdown")
 	@TestCaseId("AdvSe040")
 	@Test(groups="regression",dataProvider ="partNumberswithoutLongDescriptionVerification")
@@ -652,7 +659,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.verifyNoLongDescription();
 	}
 
-	@Features("Advanced Search")
+	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Verification of appropriate  search result displays when 'Ignore' is selected under LongDesc dropdown")
 	@TestCaseId("AdvSe041")
 	@Test(groups="regression",dataProvider ="partNumbersIgnoreLongDescriptionVerification")
@@ -671,7 +678,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.verifyIgnorelongDescPartNumbers();
 	}
 
-	@Features("Advanced Search")
+	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Verification of appropriate  search result displays when attributes, images and (AND) is searched under Attribute, "
 			+ "Image and Combine Above 'Items With' dropdown'")
 	@TestCaseId("AdvSe045")
@@ -690,7 +697,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	}
 
 
-	@Features("Advanced Search")
+	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Verification of appropriate  search result displays when attributes, images and (OR) is searched for Combine Above 'Items With'")
 	@TestCaseId("AdvSe046")
 	@Test(groups="regression")//,dataProvider ="partNumbersIgnoreLongDescriptionVerification")
@@ -716,7 +723,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		};
 	}
 
-	@Features("Advanced Search")
+	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - veriifcation of Attribute items")
 	@TestCaseId("AdvSe030")
 	@Test()
@@ -737,7 +744,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 
 
 
-	@Features("Advanced Search")
+	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - veriifcation of No Attribute items")
 	@TestCaseId("AdvSe031")
 	@Test()
@@ -756,7 +763,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.verifyadvse031();
 	}
 
-	@Features("Advanced Search")
+	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - veriifcation of Attribute items")
 	@TestCaseId("AdvSe042")
 	@Test()
@@ -775,7 +782,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.verifyadvse042();
 	}
 
-	@Features("Advanced Search")
+	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - veriifcation of Attribute items")
 	@TestCaseId("AdvSe043")
 	@Test()

@@ -239,7 +239,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	@FindBy(id="generalInfoFormId:partNumberId")
 	private WebElement itemPartNumberField;
 
-	@FindBy(xpath="//form[@id='generalInfoFormId']/div/div/span[div='Manufacturer Part Number ']/div/input")
+	@FindBy(xpath="//td[@id='GInfoTab']/descendant::input[@id='generalInfoFormId:mpnTxtId']")
 	private WebElement itemManufacturerPartNumberField;
 
 	@FindBy(xpath="//span[contains(text(),'Supplier')]/ancestor::div/following-sibling::div/descendant::input[contains(@id,'supplierListComboIdcomboboxField')]")
@@ -924,7 +924,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 		return this;
 	}
 
-	public ItemsPageObjects createItemsinside(String manufacturername,String brandname,String itemnametemplate,String manufacturernametemplate,String vendorname,String savenewItemMessage,String subsetname,String Noofitemstobecreated) throws InterruptedException
+	public ItemsPageObjects createNewItemsinside(String manufacturername,String brandname,String itemnametemplate,String manufacturernametemplate,String vendorname,String savenewItemMessage,String subsetname,String Noofitemstobecreated) throws InterruptedException
 	{
 		int var1 = Integer.parseInt(Noofitemstobecreated);
 		for(int var=1;var<=var1;var++)

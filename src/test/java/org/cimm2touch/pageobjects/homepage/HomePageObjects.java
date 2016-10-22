@@ -152,7 +152,7 @@ public class HomePageObjects extends PageFactoryInitializer{
 	
 	
 	@Step("clicking on Manufacturers & Brands link")
-		public HomePageObjects clickonMB() throws InterruptedException {
+		public HomePageObjects clickonManufactureBrandsLink() throws InterruptedException {
 		((JavascriptExecutor) driver).executeScript("arguments[0].click();",MBlinkLocator);
 		return this;
 		}
