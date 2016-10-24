@@ -17,6 +17,7 @@ import org.cimm2touch.pageobjects.products.EditProductsPageObjects;
 import org.cimm2touch.pageobjects.products.ProductsPageObjects;
 import org.cimm2touch.pageobjects.subset.SubsetPageObjects;
 import org.cimm2touch.pageobjects.taxonomymanagement.TaxonomyPageObjects;
+import org.cimm2touch.pageobjects.userconfiguration.UserConfigurationPageObjects;
 import org.cimm2touch.pageobjects.vendors.EditVendorsPageObjects;
 import org.cimm2touch.pageobjects.vendors.VendorsPageObjects;
 import org.cimm2touch.pageobjects.taxonomymanagement.AttributeGroupsPageObjects;
@@ -196,6 +197,11 @@ public class PageFactoryInitializer extends MainController
 	{
 		EditVendorsPageObjects editVendorsPage=PageFactory.initElements(driver,EditVendorsPageObjects.class);
 		return editVendorsPage;
+	}
+	public UserConfigurationPageObjects userConfigPage(){
+		
+		UserConfigurationPageObjects userConfigPage=PageFactory.initElements(driver, UserConfigurationPageObjects.class);
+		return userConfigPage;
 	}
 
 }

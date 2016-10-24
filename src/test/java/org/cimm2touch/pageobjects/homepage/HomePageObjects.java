@@ -1,4 +1,6 @@
 package org.cimm2touch.pageobjects.homepage;
+import java.util.List;
+
 import org.cimm2touch.maincontroller.PageFactoryInitializer;
 import org.cimm2touch.pageobjects.adminstration.SystemSettingsPageObjects;
 import org.cimm2touch.pageobjects.items.AddNewItemPageObjects;
@@ -12,6 +14,7 @@ import org.cimm2touch.pageobjects.taxonomymanagement.TaxonomyPageObjects;
 import org.cimm2touch.utils.Waiting;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
 
@@ -25,7 +28,8 @@ public class HomePageObjects extends PageFactoryInitializer{
 	private WebElement productslinkLocator;
 	
 
-
+	@FindBy(xpath="//div[@title='User Options']")
+	private WebElement userOptionsLink;
 	
 	@FindBy(xpath="//div[contains(@class,'rightSliderRightArrow')]")
 	private WebElement rightNavigationArrowLocator;
@@ -33,7 +37,8 @@ public class HomePageObjects extends PageFactoryInitializer{
 	@FindBy(xpath="//a[@title='Search']/i")
 	private WebElement searchButton;
 
-
+	@FindBy(xpath="//div[@title='User Options']/descendant::a[contains(.,'User Configuration')]")
+	private WebElement userConfigurationLink;
 
 	@FindBy(xpath="//li/a[contains(text(),'Manufacturers & Brands')]")
 	private WebElement ManufacturerlinkLocator;
@@ -53,7 +58,8 @@ public class HomePageObjects extends PageFactoryInitializer{
 	@FindBy(xpath="(//a[contains(.,'PIM')])[1]/ancestor::li/ul/descendant::a[contains(.,'Taxonomy Management')]/following-sibling::ul/descendant::a[contains(.,'Attribute Groups')]")
 	private WebElement attributesGroupsLinkLocator;
 
-	
+	@FindAll(value={@FindBy(xpath="//div[@title='User Options']/descendant::li")})
+	private List<WebElement> linksUnderUserOptions;
 
 	@Step("clicking on PIM link")
 	public HomePageObjects clickonPIM() {
@@ -206,6 +212,35 @@ public class HomePageObjects extends PageFactoryInitializer{
 	public AttributeGroupsPageObjects clickOnAttributeGroupsLink() {
 		((JavascriptExecutor)driver).executeScript("arguments[0].click();",attributesGroupsLinkLocator);
 		return new AttributeGroupsPageObjects();
+	}
+
+	public HomePageObjects clickOnUserOptionsIcon() throws InterruptedException {
+		Waiting.explicitWaitVisibilityOfElement(userOptionsLink, 15);
+		Thread.sleep(3000);
+		userOptionsLink.click();
+		return this;
+	}
+
+	public HomePageObjects verifyUserUserConfigurationLink() {
+		Waiting.explicitWaitVisibilityOfElement(userConfigurationLink, 15);
+		Assert.assertTrue(userConfigurationLink.isDisplayed());
+		return this;
+		
+		
+	}
+
+	public HomePageObjects verifytheLinksUnderUserOptions() {
+		Waiting.explicitWaitVisibilityOfElements(linksUnderUserOptions, 20);
+		//if(linksUnderUserOptions.size()!=0)
+			Assert.assertNotNull(linksUnderUserOptions,"user options list are :"+linksUnderUserOptions+"");
+		
+		return this;
+	}
+
+	public HomePageObjects clickOnUserConfigurationLink() {
+		Waiting.explicitWaitVisibilityOfElement(userConfigurationLink, 15);
+		userConfigurationLink.click();
+		return this;
 	}
 	
 }

@@ -19,17 +19,17 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	SearchDataPropertyFile data = new SearchDataPropertyFile();
 	ApplicationSetUpPropertyFile setUp = new ApplicationSetUpPropertyFile();
 	
-	@Description("This method is used to create Manufacturer, brand, subset, item")
-	@Features(value={"AdvancedSearch Module"})
-	@Test(priority=0,groups="regression",dependsOnMethods={"adv001executeFirst"})
-	public void adv001ExecuteFirst() throws Exception
-	{ 
-		//createNewManufacturer();
-		//createNewBrand();
-		//createNewSubset();
-		//createNewVendor();
-		//createNewItem();
-	}
+//	@Description("This method is used to create Manufacturer, brand, subset, item")
+//	@Features(value={"AdvancedSearch Module"})
+//	@Test(priority=0,groups="regression",dependsOnMethods={"adv001executeFirst"})
+//	public void adv001ExecuteFirst() throws Exception
+//	{ 
+//		//createNewManufacturer();
+//		//createNewBrand();
+//		//createNewSubset();
+//		//createNewVendor();
+//		//createNewItem();
+//	}
 	
 	@Description("This method is used to create new manufacturer.")
 	@Features(value={"AdvancedSearch Module"})
@@ -197,7 +197,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Part No or Keyword search")
 	@TestCaseId("AdvSe003")
-	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
+	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
 	public void advSe003() throws Exception 
 	{
 		new LoginModuleTest().login();
@@ -226,7 +226,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Part No or Keyword search- Partial Search")
 	@TestCaseId("AdvSe005")
-	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
+	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
 	public void advSe005() throws InterruptedException {
 		new LoginModuleTest().login();
 		homePage().clickOnItemsLink().itemsPage()
@@ -239,7 +239,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Invalid keyword")
 	@TestCaseId("AdvSe006")
-	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
+	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
 	public void advSe006() throws InterruptedException {
 		new LoginModuleTest().login();
 		homePage().clickOnItemsLink().itemsPage()
@@ -252,7 +252,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Part No search")
 	@TestCaseId("AdvSe007")
-	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
+	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
 	public void advSe007() throws InterruptedException {
 		String selectvalue="Part Number";
 		new LoginModuleTest().login();
@@ -265,7 +265,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Part No search- Partial search")
 	@TestCaseId("AdvSe008")
-	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
+	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
 	public void advSe008() throws InterruptedException {
 		String selectvalue="Part Number";
 		new LoginModuleTest().login();
@@ -279,7 +279,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Part No search- Invalid Part Number")
 	@TestCaseId("AdvSe009")
-	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
+	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
 	public void advSe009() throws InterruptedException {
 		data.setSelectValue("Part Number");
 		new LoginModuleTest().login();
@@ -293,7 +293,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Manufacturer Part No search")
 	@TestCaseId("AdvSe010")
-	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
+	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
 	public void advSe010() throws InterruptedException {
 		data.setSelectValue("Manufacturer Part Number");
 		new LoginModuleTest().login();
@@ -309,7 +309,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Manufacturer Part No search- Invalid MPN")
 	@TestCaseId("AdvSe011")
-	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
+	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
 	public void advSe011() throws InterruptedException {
 		data.setSelectValue("Manufacturer Part Number");
 		new LoginModuleTest().login();
@@ -323,7 +323,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - CIMM Item ID")
 	@TestCaseId("AdvSe014")
-	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
+	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
 	public void advSe014() throws Exception {
 		data.setSelectValue("CIMM Item Id");
 		new LoginModuleTest().login();
@@ -339,7 +339,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - CIMM Item ID- Invalid input")
 	@TestCaseId("AdvSe015")
-	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
+	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
 	public void advSe015() throws InterruptedException {
 		data.setSelectValue("CIMM Item Id");
 		new LoginModuleTest().login();
@@ -353,7 +353,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search -Manufacturer filter- without search")
 	@TestCaseId("AdvSe016")
-	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
+	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
 	public void advSe016() throws Exception {
 
 		new LoginModuleTest().login();
@@ -367,7 +367,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search -Manufacturer filter- with search")
 	@TestCaseId("AdvSe017")
-	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
+	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
 	public void advSe017() throws InterruptedException {
 
 		new LoginModuleTest().login();
@@ -383,7 +383,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search -Brand filter- without search")
 	@TestCaseId("advSe018")
-	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
+	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
 	public void advSe018() throws InterruptedException {
 
 		new LoginModuleTest().login();
@@ -399,7 +399,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search -Brand filter- with search")
 	@TestCaseId("advSe019")
-	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
+	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
 	public void advSe019() throws InterruptedException {
 		new LoginModuleTest().login();
 		homePage().clickOnItemsLink().itemsPage()
@@ -414,7 +414,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search -Subset filter- without search")
 	@TestCaseId("AdvSe020")
-	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
+	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
 	public void advSe020() throws InterruptedException {
 
 		new LoginModuleTest().login();
@@ -429,7 +429,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search -Subset filter- with search")
 	@TestCaseId("AdvSe021")
-	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
+	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
 	public void advSe021() throws InterruptedException {
 		new LoginModuleTest().login();
 		homePage().clickOnItemsLink().itemsPage()
@@ -442,7 +442,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search -vendor filter- without search")
 	@TestCaseId("AdvSe022")
-	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
+	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
 	public void advSe022() throws InterruptedException {
 		new LoginModuleTest().login();
 		homePage().clickOnItemsLink().itemsPage()
@@ -456,7 +456,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search -vendor filter- with search")
 	@TestCaseId("AdvSe023")
-	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
+	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
 	public void advSe023() throws InterruptedException {
 		new LoginModuleTest().login();
 		homePage().clickOnItemsLink().itemsPage()
@@ -471,7 +471,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search -Item status - Active")
 	@TestCaseId("AdvSe024")
-	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
+	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
 	public void advSe024() throws Exception {
 		data.setSelectValue("Active");
 		new LoginModuleTest().login();
@@ -486,7 +486,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search -Display Online - Yes")
 	@TestCaseId("AdvSe025")
-	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
+	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
 	public void advSe025() throws Exception {
 		data.setSelectValue("Yes");
 		new LoginModuleTest().login();
@@ -500,7 +500,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search -Display Online - No")
 	@TestCaseId("AdvSe026")
-	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
+	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
 	public void advSe026() throws Exception {
 		data.setSelectValue("No");
 		new LoginModuleTest().login();
@@ -514,7 +514,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search -Display Online - All")
 	@TestCaseId("AdvSe027")
-	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
+	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
 	public void advSe027() throws Exception {
 		data.setSelectValue("All");
 		new LoginModuleTest().login();
@@ -528,7 +528,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - veriifcation of grayed out fields in Subset Item dropdown")
 	@TestCaseId("AdvSe028")
-	@Test(groups="regression",dependsOnMethods={"adv001executeFirst"})
+	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
 	public void advSe028() throws Exception {
 
 		new LoginModuleTest().login();
