@@ -36,7 +36,8 @@ public class UserConfigurationModuleTest extends PageFactoryInitializer{
 		.clickOnUserOptionsIcon()
 		.clickOnUserConfigurationLink()
 		.userConfigPage()
-		.verifySessionTimeOutDropDown();
+		.verifySessionTimeOutDropDown()
+		.verifyTheTimeRange();
 		
 	}
 

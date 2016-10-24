@@ -17,4 +17,14 @@ public class UserConfigurationPageObjects {
 		
 	}
 
+	public UserConfigurationPageObjects verifyTheTimeRange() {
+		Waiting.FluentWaitForVisibilityOfElement(30, 5, sessionTimeoutDropDown);
+		System.out.println(sessionTimeoutDropDown.getText());
+		
+		
+		
+		return this;
+		
+	}
+
 }
