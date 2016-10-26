@@ -23,6 +23,13 @@ public class SearchData
 		Object data[][] = ExcelLibrary.readFromExcelDataForTestNGDataProvider(file.getAbsolutePath(),methodName.getName());
 		return data;
 	}
+	@DataProvider(name="ItemsModuleTest")
+	public static Object[][] itemsModuleTest(Method methodName) throws Exception
+	{
+		File file = new File("resources/ExcelSheetData/ItemsModuleTest.xlsx");
+		Object data[][] = ExcelLibrary.readFromExcelDataForTestNGDataProvider(file.getAbsolutePath(),methodName.getName());
+		return data;
+	}
 	@DataProvider(name="TaxonomyModuleTest")
 	public static Object[][] taxonomyModuleTest(Method methodName) throws Exception
 	{

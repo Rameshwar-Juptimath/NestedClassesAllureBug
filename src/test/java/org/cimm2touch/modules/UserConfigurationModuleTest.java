@@ -23,7 +23,10 @@ public class UserConfigurationModuleTest extends PageFactoryInitializer{
 	@Description("This methos is used to Verify User Configuration Link")
 	@Test(groups="regression")
 	public void TC_UCONFIG_02() throws InterruptedException{
-		landingPage().enterUsername(data.getUserName()).enterPassword(data.getPassword()).clickOnLogin()
+		landingPage()
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+		.clickOnLogin()
 		.homePage()
 		.clickOnUserOptionsIcon()
 		.verifyUserUserConfigurationLink();

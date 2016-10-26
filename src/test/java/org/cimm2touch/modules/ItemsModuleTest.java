@@ -24,8 +24,8 @@ public class ItemsModuleTest extends PageFactoryInitializer
 	@Features(value = {"Items Module"})
 	@Description("This is a test case which verifies display of records per page based on the filter chosen. 25,50,75,100 are the filter values.")
 	@TestCaseId("TC_ITEMS_002")
-	@Test(groups={"smoke","regression"})
-	public void verifyDisplayOfNumberRecordsChosen() throws Exception
+	@Test(groups={"smoke","regression"}, dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void verifyDisplayOfNumRecordsChosen(String testCaseId, String userName, String password, String welComeMessage ) throws Exception
 	{
 		/*
 		 * @author:hemanth.sridhar
@@ -33,8 +33,8 @@ public class ItemsModuleTest extends PageFactoryInitializer
 		 */
 		data.setNumberOfRecordsToDisplay("10");
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
 		.clickOnItemsLink()
@@ -58,18 +58,18 @@ public class ItemsModuleTest extends PageFactoryInitializer
 	@Features(value = {"Items Module"})
 	@Description("This is a test case which verifies the fields in items page when we click show fields under the settings button.")
 	@TestCaseId("TC_ITEMS_003")
-	@Test(groups="regression")
-	public void verifyShowFieldsInItemsPage() throws Exception{
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void verifyShowFieldsInItemsPage(String testCaseId, String userName, String password, String dynamicSettingTableHeader, String dynamicSettingsTableFieldName , String displayNamesInDynamicSettingsTableLocators) throws Exception{
 		/*
 		 * @author:hemanth.sridhar
 		 * 
 		 */
-		String [] dynamicSettingsTableHeadings = data.getDynamicSettingsTableHeadings().split(",");
-		String [] dynamicSettingsTableFieldNames = data.getDynamicSettingsTableFieldNames().split(",");
-		String [] displayNamesInDynamicSettingsTableLocator = data.getDisplayNamesInDynamicSettingsTableLocator().split(",");
+		String [] dynamicSettingsTableHeadings = dynamicSettingTableHeader.split(",");
+		String [] dynamicSettingsTableFieldNames = dynamicSettingsTableFieldName.split(",");
+		String [] displayNamesInDynamicSettingsTableLocator =displayNamesInDynamicSettingsTableLocators.split(",");
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
 		.clickOnItemsLink()

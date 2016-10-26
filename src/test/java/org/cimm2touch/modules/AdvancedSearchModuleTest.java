@@ -19,18 +19,18 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	SearchDataPropertyFile data = new SearchDataPropertyFile();
 	ApplicationSetUpPropertyFile setUp = new ApplicationSetUpPropertyFile();
 	
-//	@Description("This method is used to create Manufacturer, brand, subset, item")
-//	@Features(value={"AdvancedSearch Module"})
-//	@Test(priority=0,groups="regression",dependsOnMethods={"adv001executeFirst"})
-//	public void adv001ExecuteFirst() throws Exception
-//	{ 
-//		//createNewManufacturer();
-//		//createNewBrand();
-//		//createNewSubset();
-//		//createNewVendor();
-//		//createNewItem();
-//	}
-	
+/*	@Description("This method is used to create Manufacturer, brand, subset, item")
+	@Features(value={"AdvancedSearch Module"})
+	@Test(priority=0,groups="regression",dependsOnMethods={"adv001executeFirst"})
+ 	public void adv001ExecuteFirst() throws Exception
+ 	{ 
+  		createNewManufacturer();
+		createNewBrand();
+		createNewSubset();
+		createNewVendor();
+		createNewItem();
+	}
+*/	
 	@Description("This method is used to create new manufacturer.")
 	@Features(value={"AdvancedSearch Module"})
 	@Test(groups={"regression"},priority=0, dataProvider="AdvancedSearchModuleTest",dataProviderClass=SearchData.class)
@@ -196,127 +196,160 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Part No or Keyword search")
-	@TestCaseId("AdvSe003")
-	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
-	public void advSe003() throws Exception 
+	@TestCaseId("TC_ADV SEARCH_003")
+	@Test(groups="regression", dataProvider="AdvancedSearchModuleTest",dataProviderClass=SearchData.class) //dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"}
+	public void advSearch_003(String testCaseId,String userName, String password,String searchInput) throws Exception 
 	{
-		new LoginModuleTest().login();
-		homePage()
+		landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin()
+		.homePage()
 		.clickOnItemsLink()
 		.itemsPage()
-		.typeinadvancedSearchTopSearchField(data.advSe003searchinput())
+		.typeinadvancedSearchTopSearchField(searchInput)
 		.clickOnadvancedSearchTopSearchButton()
-		.verifyadvSe003Searchresult(data.advSe003searchinput());
+		.verifyadvSe003Searchresult(searchInput);
 
 	}
 
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Part No or Keyword search- Negative Test case")
-	@TestCaseId("AdvSe004")
-	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
-	public void advSe004() throws InterruptedException {
-		new LoginModuleTest().login();
-		homePage().clickOnItemsLink().itemsPage()
-		.typeinadvancedSearchTopSearchField(data.advSe004searchinput())
+	@TestCaseId("TC_ADV SEARCH_004")
+	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
+	public void advSearch_004(String testCaseId,String userName, String password,String searchData, String expMessage) throws InterruptedException {
+		landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin();
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.typeinadvancedSearchTopSearchField(searchData)
 		.clickOnadvancedSearchTopSearchButton()
-		.verifyadvSe004Searchresult();
+		.verifyadvSe004Searchresult(expMessage);
 
 	}
 
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Part No or Keyword search- Partial Search")
-	@TestCaseId("AdvSe005")
-	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
-	public void advSe005() throws InterruptedException {
-		new LoginModuleTest().login();
-		homePage().clickOnItemsLink().itemsPage()
-		.typeinadvancedSearchTopSearchField(data.advSe005searchinput())
+	@TestCaseId("TC_ADV SEARCH_005")
+	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
+	public void advSearch_005(String testCaseId,String userName, String password,String searchData) throws InterruptedException {
+		landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin();
+		homePage().clickOnItemsLink()
+		.itemsPage()
+		.typeinadvancedSearchTopSearchField(searchData)
 		.clickOnadvancedSearchTopSearchButton()
-		.verifyadvSe005Searchresult(data.advSe005searchinput());
+		.verifyadvSe005Searchresult(searchData);
 
 	}
 
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Invalid keyword")
-	@TestCaseId("AdvSe006")
-	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
-	public void advSe006() throws InterruptedException {
-		new LoginModuleTest().login();
-		homePage().clickOnItemsLink().itemsPage()
-		.typeinadvancedSearchTopSearchField(data.advSe006searchinput())
+	@TestCaseId("TC_ADV SEARCH_006")
+	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
+	public void advSearch_006(String testCaseId,String userName, String password,String searchData, String expMessage) throws InterruptedException {
+		landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin();
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.typeinadvancedSearchTopSearchField(searchData)
 		.clickOnadvancedSearchTopSearchButton()
-		.verifyadvSe004Searchresult();
+		.verifyadvSe004Searchresult(expMessage);
 
 	}
 
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Part No search")
-	@TestCaseId("AdvSe007")
-	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
-	public void advSe007() throws InterruptedException {
-		String selectvalue="Part Number";
-		new LoginModuleTest().login();
-		homePage().clickOnItemsLink().itemsPage()
-		.typeinadvancedSearchTopSearchField(data.advSe007searchinput()).selectDropdownTop(selectvalue)
+	@TestCaseId("TC_ADV SEARCH_007")
+	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
+	public void advSearch_007(String testCaseId,String userName, String password,String searchData, String selectValue) throws InterruptedException {
+		landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin();
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.typeinadvancedSearchTopSearchField(searchData)
+		.selectDropdownTop(selectValue)
 		.clickOnadvancedSearchTopSearchButton()
-		.verifyadvSe007Searchresult(data.advSe007searchinput());		
+		.verifyadvSe007Searchresult(searchData);		
 	}
 
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Part No search- Partial search")
-	@TestCaseId("AdvSe008")
-	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
-	public void advSe008() throws InterruptedException {
-		String selectvalue="Part Number";
-		new LoginModuleTest().login();
+	@TestCaseId("TC_ADV SEARCH_008")
+	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
+	public void advSearch_008(String testCaseId,String userName, String password,String searchData, String selectValue) throws InterruptedException {
+		landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin();
 		homePage().clickOnItemsLink().itemsPage()
-		.typeinadvancedSearchTopSearchField(data.advSe008searchinput()).selectDropdownTop(selectvalue)
+		.typeinadvancedSearchTopSearchField(searchData)
+		.selectDropdownTop(selectValue)
 		.clickOnadvancedSearchTopSearchButton()
-		.verifyadvSe008Searchresult(data.advSe008searchinput());
+		.verifyadvSe008Searchresult(searchData);
 
 	}
 
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Part No search- Invalid Part Number")
-	@TestCaseId("AdvSe009")
-	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
-	public void advSe009() throws InterruptedException {
-		data.setSelectValue("Part Number");
-		new LoginModuleTest().login();
+	@TestCaseId("TC_ADV SEARCH_009")
+	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
+	public void advSearch_009(String testCaseId,String userName, String password,String searchData, String selectValue, String expMessage) throws InterruptedException {
+		landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin();
 		homePage().clickOnItemsLink().itemsPage()
-		.typeinadvancedSearchTopSearchField(data.advSe009searchinput()).selectDropdownTop(data.getSelectValue())
+		.typeinadvancedSearchTopSearchField(searchData)
+		.selectDropdownTop(selectValue)
 		.clickOnadvancedSearchTopSearchButton()
-		.verifyadvSe004Searchresult();
+		.verifyadvSe004Searchresult(expMessage);
 
 	}
 
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Manufacturer Part No search")
-	@TestCaseId("AdvSe010")
-	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
-	public void advSe010() throws InterruptedException {
-		data.setSelectValue("Manufacturer Part Number");
-		new LoginModuleTest().login();
+	@TestCaseId("TC_ADV SEARCH_010")
+	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
+	public void advSearch_010(String testCaseId,String userName, String password,String searchData, String selectValue) throws InterruptedException {
+		landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin();
 		homePage()
 		.clickOnItemsLink()
 		.itemsPage()
-		.typeinadvancedSearchTopSearchField(data.advSe010searchinput()).selectDropdownTop(data.getSelectValue())
+		.typeinadvancedSearchTopSearchField(searchData)
+		.selectDropdownTop(selectValue)
 		.clickOnadvancedSearchTopSearchButton()
-		.verifyadvSe010Searchresult(data.advSe010searchinput());
+		.verifyadvSe010Searchresult(searchData);
 
 	}
 
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Manufacturer Part No search- Invalid MPN")
-	@TestCaseId("AdvSe011")
-	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
-	public void advSe011() throws InterruptedException {
-		data.setSelectValue("Manufacturer Part Number");
-		new LoginModuleTest().login();
+	@TestCaseId("TC_ADV SEARCH_011")
+	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
+	public void advSearch_011(String testCaseId,String userName, String password,String searchData, String selectValue, String expMessage) throws InterruptedException {
+		landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin();
 		landingPage().homePage().clickOnItemsLink().itemsPage()
-		.typeinadvancedSearchTopSearchField(data.advSe011searchinput()).selectDropdownTop(data.getSelectValue())
+		.typeinadvancedSearchTopSearchField(searchData).selectDropdownTop(selectValue)
 		.clickOnadvancedSearchTopSearchButton()
-		.verifyadvSe004Searchresult();
+		.verifyadvSe004Searchresult(expMessage);
 
 	}
 
@@ -340,13 +373,13 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	@Description("Items - Advanced Search - CIMM Item ID- Invalid input")
 	@TestCaseId("AdvSe015")
 	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
-	public void advSe015() throws InterruptedException {
+	public void advSe015(String testCaseId,String userName, String password,String searchData, String selectValue, String expMessage) throws InterruptedException {
 		data.setSelectValue("CIMM Item Id");
 		new LoginModuleTest().login();
 		homePage().clickOnItemsLink().itemsPage()
 		.typeinadvancedSearchTopSearchField(data.advSe015searchinput()).selectDropdownTop(data.getSelectValue())
 		.clickOnadvancedSearchTopSearchButton()
-		.verifyadvSe004Searchresult();
+		.verifyadvSe004Searchresult(expMessage);
 
 	}
 

@@ -699,8 +699,8 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 		for(int i=0;i<fieldNamesDynamicSettingsTableLocator.size();i++)
 		{
-			//System.out.print(fieldNamesDynamicSettingsTableLocator.get(i).getText().trim()+",");
-			Assert.assertEquals(fieldNamesDynamicSettingsTableLocator.get(i).getText().trim(), verifyFieldNames[i]);
+			System.out.print(fieldNamesDynamicSettingsTableLocator.get(i).getText().trim()+", ");
+			Assert.assertEquals(fieldNamesDynamicSettingsTableLocator.get(i).getText().trim(), verifyFieldNames[i].trim());
 		}
 		return this;
 
@@ -861,7 +861,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	}
 
 	public ItemsPageObjects verifyAddNewItemSectioniEnabled() {
-		Waiting.explicitWaitVisibilityOfElement(addNewItemsection, 5);
+		Waiting.explicitWaitVisibilityOfElement(addNewItemsection, 20);
 		Assert.assertEquals(addNewItemsection.getText().trim(),"Add New Item");
 		return this;
 	}
@@ -926,15 +926,15 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	public ItemsPageObjects createNewItemsinside(String manufacturername,String brandname,String itemnametemplate,String manufacturernametemplate,String vendorname,String savenewItemMessage,String subsetname,String Noofitemstobecreated) throws InterruptedException
 	{
-		int var1 = Integer.parseInt(Noofitemstobecreated);
-		for(int var=1;var<=var1;var++)
+		int items = Integer.parseInt(Noofitemstobecreated);
+		for(int i=1; i<=items; items++)
 		{
 			clickOnAddNewItemButton();
 			verifyAddNewItemSectioniEnabled();
 			typeInitemManufacturerfield(manufacturername);
 			typeInitemBrandfield(brandname);
-			typeInitemPartNumberField(itemnametemplate,var);
-			typeInmanufacturerPartNumberField(manufacturernametemplate,var);
+			typeInitemPartNumberField(itemnametemplate,i);
+			typeInmanufacturerPartNumberField(manufacturernametemplate,i);
 			typeInitemSupplierField(vendorname);
 			clickOnsavenewItem();
 			verifysavenewItemMessage(savenewItemMessage);
@@ -961,16 +961,16 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	@Step("verify Part number or Keyword search result - {0} ")
 	public ItemsPageObjects verifyadvSe003Searchresult(String advSesearchRes) throws Exception {
 		//Thread.sleep(2000);
-		Waiting.explicitWaitVisibilityOfElement(driver.findElement(By.xpath("//td[contains(text(),'Automation_PN_1')]")), 10);
+		Waiting.explicitWaitVisibilityOfElement(driver.findElement(By.xpath("//td[contains(text(),'"+advSesearchRes+"')]")), 10);
 		Assert.assertEquals(searchResults.getText().trim(), advSesearchRes);
 		return this;
 
 	}
 
 	@Step("verify 'No Items Found' message is displayed when searched for Invalid part number or Keyword")
-	public ItemsPageObjects verifyadvSe004Searchresult() throws InterruptedException {
+	public ItemsPageObjects verifyadvSe004Searchresult(String expMessage) throws InterruptedException {
 		Waiting.explicitWaitVisibilityOfElement(advancedSearchErrorMessageLoc, 60);
-		Assert.assertEquals(advancedSearchErrorMessageLoc.getText().trim(), "No Items Found");
+		Assert.assertEquals(advancedSearchErrorMessageLoc.getText().trim(), expMessage,"InValid text message is :"+advancedSearchErrorMessageLoc.getText()+"Dispayed");
 		return this;
 
 	}
