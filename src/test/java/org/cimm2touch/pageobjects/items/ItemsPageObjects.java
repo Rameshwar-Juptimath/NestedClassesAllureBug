@@ -960,9 +960,9 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	@Step("verify Part number or Keyword search result - {0} ")
 	public ItemsPageObjects verifyadvSe003Searchresult(String advSesearchRes) throws Exception {
-		//Thread.sleep(2000);
-		Waiting.explicitWaitVisibilityOfElement(driver.findElement(By.xpath("//td[contains(text(),'"+advSesearchRes+"')]")), 10);
-		Assert.assertEquals(searchResults.getText().trim(), advSesearchRes);
+		Thread.sleep(3000);
+		WebElement wb=driver.findElement(By.xpath("//td[contains(text(),'"+advSesearchRes+"')]"));
+		Assert.assertEquals(wb.getText().trim(), advSesearchRes);
 		return this;
 
 	}
@@ -1036,9 +1036,9 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 
 	@Step("Manufacturer search without typing in text field")
-	public ItemsPageObjects manufacturerfilterWithoutSearch(String manufacturername) throws Exception {
-		//Waiting.explicitWaitVisibilityOfElement(driver.findElement(By.xpath("//tbody[@id='searchFormId:MnfListTabId:tb']/tr[td='"+manufacturername+"']/td[1]/*")), 20);
-		WebElement ele = driver.findElement(By.xpath("//tbody[@id='searchFormId:MnfListTabId:tb']/tr[td='"+manufacturername+"']/td[1]/*"));
+	public ItemsPageObjects selectTheCreatedManufacturerfilterWithoutSearch(String mfgName) throws Exception {
+		Thread.sleep(3000);
+		WebElement ele = driver.findElement(By.xpath("//tbody[@id='searchFormId:MnfListTabId:tb']/descendant::td[contains(text(),'"+mfgName+"')]/preceding-sibling::td"));
 		if(!(ele.isSelected()))
 		{
 			ele.click();
@@ -1048,10 +1048,15 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	}
 
 	@Step("Manufacturer search with typing in text field")
-	public ItemsPageObjects manufacturerfilterWithSearch(String manufacturername) throws InterruptedException {
-		Assert.assertEquals(driver.findElement(By.xpath("//table[@id='searchFormId:MnfListTabId']/tbody/tr[not(@style='display: none;')]/td[2]")).getText(),manufacturername);
-		driver.findElement(By.xpath("//table[@id='searchFormId:MnfListTabId']/tbody/tr[not(@style='display: none;')]/td[1]/*")).click();
-		Thread.sleep(3000);
+	public ItemsPageObjects selectTheManufacturersFromList(String manufacturername) throws InterruptedException {
+		Waiting.explicitWaitElementToBeClickable(By.xpath("//tbody[@id='searchFormId:MnfListTabId:tb']/descendant::td[contains(.,'"+manufacturername+"')]/preceding-sibling::td"), 20);
+		WebElement wb= driver.findElement(By.xpath("//tbody[@id='searchFormId:MnfListTabId:tb']/descendant::td[contains(.,'"+manufacturername+"')]/preceding-sibling::td"));
+		if(!(wb.isSelected()))
+			{
+				wb.click();
+				
+			}
+		
 		return this;
 
 	}
@@ -1062,14 +1067,14 @@ public class ItemsPageObjects extends PageFactoryInitializer
 		int var1 = Integer.parseInt(Noofitemstobecreated);
 		for(int i=1;i<=var1;i++) 
 		{
-			WebElement ele =driver.findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/tr["+i+"]/td[7]"));
+			WebElement ele =driver.findElement(By.xpath("//tbody/descendant::td[contains(text(),'"+manufacturername+" / "+brandname+"')]"));
 			Assert.assertEquals(ele.getText(), manufacturername+" / "+brandname);
 		}
 		return this;
 	}
 
 	@Step("Type in Manufacturefilter search")
-	public ItemsPageObjects typeInas_Manufacturerfiltersearchfield(String manufacturername ) throws InterruptedException {
+	public ItemsPageObjects enterTheManufactureNameInSearchField(String manufacturername ) throws InterruptedException {
 		as_Manufacturerfiltersearchfield.sendKeys(manufacturername);
 		return this;
 	}

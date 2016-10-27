@@ -23,6 +23,7 @@ public class SearchData
 		Object data[][] = ExcelLibrary.readFromExcelDataForTestNGDataProvider(file.getAbsolutePath(),methodName.getName());
 		return data;
 	}
+	
 	@DataProvider(name="ItemsModuleTest")
 	public static Object[][] itemsModuleTest(Method methodName) throws Exception
 	{

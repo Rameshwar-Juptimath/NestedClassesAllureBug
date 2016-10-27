@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.cimm2touch.maincontroller.MainController;
+import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -18,6 +19,9 @@ public class Waiting extends MainController{
 
 	public static void explicitWaitElementToBeClickable(WebElement element, int time){
 		new WebDriverWait(driver, time).until(ExpectedConditions.elementToBeClickable(element));
+	}
+	public static void explicitWaitElementToBeClickable(By by, int time){
+		new WebDriverWait(driver, time).until(ExpectedConditions.elementToBeClickable(by));
 	}
 	
 	public static void explicitWaitElementToBeSelected(WebElement element, int time){

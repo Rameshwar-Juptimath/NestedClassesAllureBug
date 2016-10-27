@@ -9,6 +9,8 @@ import org.cimm2touch.utils.SearchDataPropertyFile;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import com.fasterxml.jackson.databind.BeanDescription;
+
 import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Features;
 import ru.yandex.qatools.allure.annotations.Parameter;
@@ -355,29 +357,42 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - CIMM Item ID")
-	@TestCaseId("AdvSe014")
-	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
-	public void advSe014() throws Exception {
-		data.setSelectValue("CIMM Item Id");
-		new LoginModuleTest().login();
-		homePage().clickOnItemsLink().itemsPage()
-		.typeinadvancedSearchTopSearchField(data.advSe014searchinput())
+	@TestCaseId("TC_ADV SEARCH_014")
+	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
+	public void advSearch_014(String testCaseId,String userName, String password,String searchData, String selectValue) throws Exception {
+			landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin();
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.typeinadvancedSearchTopSearchField(searchData)
 		.clickOnadvancedSearchTopSearchButton()
-		.verifyadvSe003Searchresult(data.advSe014searchinput())
-		.typeinadvancedSearchTopSearchField(itemsPage().getCIMMItemID(data.advSe014searchinput())).selectDropdownTop(data.getSelectValue())
-		.clickOnadvancedSearchTopSearchButton().verifyadvSe014Searchresult(itemsPage().getCIMMItemID(data.advSe014searchinput()));
+		.verifyadvSe003Searchresult(searchData)
+		.typeinadvancedSearchTopSearchField(itemsPage()
+		.getCIMMItemID(searchData))
+		.selectDropdownTop(selectValue)
+		.clickOnadvancedSearchTopSearchButton()
+		.verifyadvSe014Searchresult(itemsPage()
+		.getCIMMItemID(searchData));
 
 	}
 
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - CIMM Item ID- Invalid input")
-	@TestCaseId("AdvSe015")
-	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
+	@TestCaseId("TC_ADV SEARCH_015")
+	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
 	public void advSe015(String testCaseId,String userName, String password,String searchData, String selectValue, String expMessage) throws InterruptedException {
-		data.setSelectValue("CIMM Item Id");
-		new LoginModuleTest().login();
-		homePage().clickOnItemsLink().itemsPage()
-		.typeinadvancedSearchTopSearchField(data.advSe015searchinput()).selectDropdownTop(data.getSelectValue())
+		landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin();
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.typeinadvancedSearchTopSearchField(searchData)
+		.selectDropdownTop(selectValue)
 		.clickOnadvancedSearchTopSearchButton()
 		.verifyadvSe004Searchresult(expMessage);
 
@@ -385,46 +400,57 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search -Manufacturer filter- without search")
-	@TestCaseId("AdvSe016")
-	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
-	public void advSe016() throws Exception {
-
-		new LoginModuleTest().login();
-		homePage().clickOnItemsLink().itemsPage()
-		.clickOnas_Manufacturerfilter().manufacturerfilterWithoutSearch(data.manufacturername())
-		.clcikOnas_Manufacturerfiltersearchbutton().
-		verifyadvSe016(data.manufacturername(),data.brandname(),data.Noofitemstobecreated());
+	@TestCaseId("TC_ADV SEARCH_016")
+	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
+	public void advSe016(String testCaseId,String userName, String password,String mfgName, String brandName,String noOfItemsTobeCreate) throws Exception {
+		landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin();
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.clickOnas_Manufacturerfilter()
+		.selectTheCreatedManufacturerfilterWithoutSearch(mfgName)
+		.clcikOnas_Manufacturerfiltersearchbutton()
+		.verifyadvSe016(mfgName,brandName,noOfItemsTobeCreate);
 
 	}
 
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search -Manufacturer filter- with search")
-	@TestCaseId("AdvSe017")
-	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
-	public void advSe017() throws InterruptedException {
-
-		new LoginModuleTest().login();
-		homePage().clickOnItemsLink().itemsPage()
-		.clickOnas_Manufacturerfilter().
-		typeInas_Manufacturerfiltersearchfield(data.manufacturername()).
-		manufacturerfilterWithSearch(data.manufacturername()).
+	@TestCaseId("TC_ADV SEARCH_017")
+	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
+	public void advSearch_017(String testCaseId,String userName, String password,String mfgName, String brandName,String noOfItemsTobeCreate) throws InterruptedException {
+		landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin();
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.clickOnas_Manufacturerfilter()
+		.enterTheManufactureNameInSearchField(mfgName)
+		.selectTheManufacturersFromList(mfgName).
 		clcikOnas_Manufacturerfiltersearchbutton().
-		verifyadvSe016(data.manufacturername(),data.brandname(),data.Noofitemstobecreated());
+		verifyadvSe016(mfgName,brandName,noOfItemsTobeCreate);
 
 	}
 
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search -Brand filter- without search")
-	@TestCaseId("advSe018")
-	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
-	public void advSe018() throws InterruptedException {
+	@TestCaseId("TC_ADV SEARCH_018")
+	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
+	public void advSearch_018(String testCaseId,String userName, String password,String mfgName, String brandName,String noOfItemsTobeCreate) throws InterruptedException {
 
 		new LoginModuleTest().login();
-		homePage().clickOnItemsLink().itemsPage()
-		.clickOnas_Brandfilter().
-		brandfilterWithoutSearch(data.brandname()).
-		clickOnas_Brandfiltersearchbutton()
-		.verifyadvSe016(data.manufacturername(),data.brandname(),data.Noofitemstobecreated());
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.clickOnas_Brandfilter()
+		.brandfilterWithoutSearch(brandName)
+		.clickOnas_Brandfiltersearchbutton()
+		.verifyadvSe016(mfgName,brandName,noOfItemsTobeCreate);
 
 	}
 
@@ -432,7 +458,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search -Brand filter- with search")
 	@TestCaseId("advSe019")
-	@Test(groups="regression",dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
+	@Test(groups="regression")
 	public void advSe019() throws InterruptedException {
 		new LoginModuleTest().login();
 		homePage().clickOnItemsLink().itemsPage()
