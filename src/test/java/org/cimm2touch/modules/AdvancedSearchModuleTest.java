@@ -504,11 +504,14 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.enterUsername(userName)
 		.enterPassword(password)
 		.clickOnLogin();
-		homePage().clickOnItemsLink().itemsPage()
-		.clickOnas_Subsetfilter().typeIn_as_Subsetfiltersearchfield(data.subsetname())
-		.subsetfilterWithSearch(data.subsetname())
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.clickOnas_Subsetfilter()
+		.typeIn_as_Subsetfiltersearchfield(subsetName)
+		.subsetfilterWithSearch(subsetName)
 		.clickOnas_Subsetfiltersearchbutton()
-		.verifyadvse020(data.itemnametemplate(),data.Noofitemstobecreated(),data.manufacturernametemplate(),data.subsetname());		
+		.verifyadvse020(itemNameTemplate,noOfOtemsTobeCreated,mfgNameTemplate,subsetName);		
 	}
 
 	@Features("AdvancedSearch Module")
@@ -629,6 +632,25 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.verifyadvse028();
 
 	}	
+	@Features("AdvancedSearch Module")
+	@Description("Items - Advanced Search - Verification of appropriate  search result displays when searched for Active Subset Item")
+	@TestCaseId("AdvSe029")
+	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
+	public void advSearch_29(String testCaseId,String userName, String password,String welComeMessage, String subsetName,String subsetStatus, String expectedItems) throws Exception {
+		landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(welComeMessage)
+		.clickOnItemsLink()
+		.itemsPage()
+		.clickOnSubsetFilterDropdown()
+		.clcikOnSubsetitemStatusFromTheDropdown(subsetName)
+		.selectSubsetItemStatus(subsetStatus)
+		.clickOnbottomSeacrhButton()
+		.verifySubsetItemResults(expectedItems);
+		}
 	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
 	public void addDescriptiontoItems(String testCaseId, String userName,String password,String expWelcomeMsg,String partNumberDesc, String longDesc1, String longDesc2) throws Exception
 	{
@@ -671,15 +693,15 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	}
 
 	String resourceLocation = System.getProperty("user.dir") + File.separator + "resources" + File.separator;
-	@Test(dataProvider="partNumbersforDescription")
-	public void addDocumenttoItems(@Parameter("partNumber")String partNumber) throws Exception
+	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
+	public void addDocumenttoItems(String testCaseId, String userName,String password,String expWelcomeMsg,@Parameter("partNumber")String partNumber, String documentLocation) throws Exception
 	{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
-		.verifyWelcomeMessage(data.getWelcomeMessage())
+		.verifyWelcomeMessage(expWelcomeMsg)
 		.clickOnItemsLink()
 		.itemsPage()
 		.searchItem(partNumber)
@@ -688,14 +710,14 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.clickOnDocumentsTab()
 		.clickOnAddNewDocumentButton()
 		.enterDocumentCaption()
-		.UploadDocument(data.getdocumentLocation())
+		.UploadDocument(documentLocation)
 		.assignDocument();
 	}
 
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Verification of appropriate  search result displays when 'Images' is selected under Image dropdown")
 	@TestCaseId("AdvSe033")
-	@Test(groups="regression")//,dependsOnMethods={"adv001executeFirst"})
+	@Test(groups="regression")
 	public void advSe033() throws Exception
 	{
 		new LoginModuleTest().login();

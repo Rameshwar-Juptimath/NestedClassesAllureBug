@@ -621,10 +621,10 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath = "//input[@id='documentUploadFormId:captionId' and @type='text']")
 	private WebElement documentCaption;
 
-	@FindBy(xpath = "//td//div[@id='documentUploadFormId:itemDocumentUploadId:add1']")
+	@FindBy(xpath = "//td/descendant::div[@id='documentUploadFormId:itemDocumentUploadId:add1']")
 	private WebElement addDocumentButton;
 
-	@FindBy(xpath = "//td//div[@id='documentUploadFormId:itemDocumentUploadId:upload1']")
+	@FindBy(xpath = "//td/descendant::div[@id='documentUploadFormId:itemDocumentUploadId:upload1']")
 	private WebElement uploadDocumentButton;
 
 	@FindBy(xpath = "//input[@title='Assign']")
@@ -798,7 +798,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		Waiting.explicitWaitVisibilityOfElement(addNewCpnTextboxLocator, 3);
 		addNewCpnTextboxLocator.sendKeys(cpnTextEnter);
 		return this;
-		// TODO Auto-generated method stub
+	
 
 	}
 
@@ -831,11 +831,12 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		Waiting.explicitWaitVisibilityOfElement(cpnSuccessMessageLocator, 8);
 		Assert.assertEquals(cpnSuccessMessageLocator.getText().trim(), "Customer Part Numbers Saved Successfully .");
 		return this;
-		// TODO Auto-generated method stub
-
+	
 	}
 
 	public EditItemsPageObjects VerifyPartnumber(String partNumberField) {
+		Waiting.explicitWaitVisibilityOfElement(addNewItemPage().enterPartNumberLocator, 10);
+		
 		Assert.assertEquals(addNewItemPage().enterPartNumberLocator.getAttribute("value"),partNumberField);
 		return this;
 	}
@@ -1629,7 +1630,8 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	}
 	@Step("To Click On Images Tab")
 	public EditItemsPageObjects clickOnImagesTab()
-	{
+		{	
+		Waiting.explicitWaitVisibilityOfElement(imagesTab, 15);
 		imagesTab.click();
 		return this;
 	}
@@ -1637,14 +1639,15 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@Step("To Click on 'Add New Image' Button in the Images Tab")
 	public EditItemsPageObjects clickOnAddNewImageButton()  throws Exception
 	{
-		Thread.sleep(2000);
+		Waiting.explicitWaitVisibilityOfElement(addNewImageButton, 15);
 		addNewImageButton.click();
 		return this;
 	}
 
 	@Step("To Enter the URL of the Image in the Image Tab")
 	public EditItemsPageObjects enterImageURL(String imageURL)
-	{
+	{	
+		Waiting.explicitWaitVisibilityOfElement(enterImageURL, 15);
 		enterImageURL.sendKeys(imageURL);
 		return this;
 	}
@@ -1652,14 +1655,16 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@Step("To Click on 'Save Image URL' ")
 	public EditItemsPageObjects clickSaveImageURL() throws Exception
 	{
+		Waiting.explicitWaitVisibilityOfElement(saveImageURL, 15);
 		saveImageURL.click();
-		Thread.sleep(5000);
+		
 		return this;
 	}
 
 	@Step("To Enter the 'Image Caption' in the Images Tab")
 	public EditItemsPageObjects enterImageCaption()
-	{
+	{	
+		Waiting.explicitWaitVisibilityOfElement(imageCaption, 15);
 		imageCaption.clear();
 		imageCaption.sendKeys("Image Caption");
 		return this;
@@ -1691,6 +1696,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@SuppressWarnings("static-access")
 	public EditItemsPageObjects UploadDocument(String fileToUpload) throws Exception
 	{
+		Waiting.explicitWaitVisibilityOfElement(addDocumentButton, 10);
 		addDocumentButton.click();
 		tu.fileUpload(fileToUpload);
 		return this;

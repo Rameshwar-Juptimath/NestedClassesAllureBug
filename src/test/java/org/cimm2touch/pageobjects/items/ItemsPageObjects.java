@@ -1,6 +1,7 @@
 package org.cimm2touch.pageobjects.items;
 import java.util.List;
 import org.cimm2touch.maincontroller.PageFactoryInitializer;
+import org.cimm2touch.pageobjects.subset.SubsetPageObjects;
 import org.cimm2touch.utils.TestUtility;
 import org.cimm2touch.utils.Waiting;
 import org.openqa.selenium.By;
@@ -347,8 +348,9 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	@Step("click on specific edit button")
 	public EditItemsPageObjects clickOnSpecificItemEditButton(String itemPartnumber) {
-		driver.findElement(By.xpath("//table[@id='searchFormId:itemListTableId']/tbody/tr[1]/td[1]/div/input[1]")).click();
-		/*((JavascriptExecutor) driver).executeScript("arguments[0].click();",editButtonsLocator.get(specificEditButton-1));*/
+		Waiting.explicitWaitVisibilityOfElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+itemPartnumber+"')]/preceding-sibling::td/descendant::input[@title='Edit Item']"), 15);
+		driver.findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+itemPartnumber+"')]/preceding-sibling::td/descendant::input[@title='Edit Item']")).click();
+		
 		return new EditItemsPageObjects();
 	}
 
@@ -1115,8 +1117,9 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	@Step("clicking on Brand filter {0} with typing in text field")
 	public ItemsPageObjects brandfilterWithSearch(String brandname) throws InterruptedException {
-		Waiting.explicitWaitVisibilityOfElement(By.xpath("//table[@id='searchFormId:brandTableId']/descendant::td[contains(.,'"+brandname+"')]"), 20);
-		Assert.assertEquals(driver.findElement(By.xpath("//table[@id='searchFormId:brandTableId']/descendant::td[contains(.,'"+brandname+"')]")).getText(),brandname);
+		WebElement wb=driver.findElement(By.xpath("//table[@id='searchFormId:brandTableId']/descendant::td[contains(.,'"+brandname+"')]"));
+		Waiting.explicitWaitVisibilityOfElement(wb, 20);
+		Assert.assertEquals(wb.getText(),brandname);
 		driver.findElement(By.xpath("//table[@id='searchFormId:brandTableId']/descendant::td[contains(.,'"+brandname+"')]/preceding-sibling::td")).click();
 		Thread.sleep(3000);
 		return this;
@@ -1147,6 +1150,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	@Step("clicking on subset filter search button")
 	public ItemsPageObjects clickOnas_Subsetfiltersearchbutton() throws InterruptedException {
+		Waiting.explicitWaitVisibilityOfElement(as_Subsetfiltersearchbutton, 10);
 		as_Subsetfiltersearchbutton.click();
 		Thread.sleep(8000);
 		return this;
@@ -1155,7 +1159,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	@Step("verify search result-items belongs to the subset {2}")
 	public ItemsPageObjects verifyadvse020(String itemnametemplate,String Noofitemstobecreated,String manufacturernametemplate,String subsetname) throws InterruptedException{
-
+		Thread.sleep(4000);
 		int var1 = Integer.parseInt(Noofitemstobecreated);
 		Assert.assertEquals(driver.findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/tr[1]/td[5]")).getText(), itemnametemplate+"1");
 		driver.findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/tr[1]/td[1]/div/input[1]")).click();
@@ -1184,8 +1188,9 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	@Step("subset filter without search")
 	public ItemsPageObjects subsetfilterWithSearch(String subsetname) throws InterruptedException {
-		Waiting.explicitWaitVisibilityOfElement(By.xpath("//table[@id='searchFormId:subsetTableId']/descendant::td[contains(.,'"+subsetname+"')]"), 20);
-		Assert.assertEquals(driver.findElement(By.xpath("//table[@id='searchFormId:subsetTableId']/descendant::td[contains(.,'"+subsetname+"')]")).getText(),subsetname);
+		WebElement wb= driver.findElement(By.xpath("//table[@id='searchFormId:subsetTableId']/descendant::td[contains(.,'"+subsetname+"')]"));
+		Waiting.explicitWaitVisibilityOfElement(wb, 20);
+		Assert.assertEquals(wb.getText(),subsetname);
 		driver.findElement(By.xpath("//table[@id='searchFormId:subsetTableId']/descendant::td[contains(.,'"+subsetname+"')]/preceding-sibling::td")).click();
 		
 		return this;
@@ -1252,8 +1257,9 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	@Step("vendor filter without typing in text field")
 	public ItemsPageObjects vendorfilterWithSearch(String vendorname) throws InterruptedException {
-		Waiting.explicitWaitVisibilityOfElement(By.xpath("//tbody[@id='searchFormId:supplierTableId:tb']/descendant::td[contains(.,'"+vendorname+"')]"), 15);
-		Assert.assertEquals(driver.findElement(By.xpath("//tbody[@id='searchFormId:supplierTableId:tb']/descendant::td[contains(.,'"+vendorname+"')]")).getText(),vendorname);
+		WebElement wb=driver.findElement(By.xpath("//tbody[@id='searchFormId:supplierTableId:tb']/descendant::td[contains(.,'"+vendorname+"')]"));
+		Waiting.explicitWaitVisibilityOfElement(wb, 15);
+		Assert.assertEquals(wb.getText(),vendorname);
 		driver.findElement(By.xpath("//tbody[@id='searchFormId:supplierTableId:tb']/descendant::td[contains(.,'"+vendorname+"')]/preceding-sibling::td")).click();
 		
 		return this;
@@ -1478,6 +1484,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	@Step("select Categorized dropdown")
 	public ItemsPageObjects selectWithCategorizedDropdown()  
 	{
+		Waiting.explicitWaitVisibilityOfElement(itemCategorizedDropdown, 15);
 		itemCategorizedDropdown.click();
 		return this;
 	}
@@ -1487,6 +1494,71 @@ public class ItemsPageObjects extends PageFactoryInitializer
 		Thread.sleep(9000);
 		driver.findElement(By.xpath("//table[@id= 'searchFormId:itemListTableId']/descendant::input[@title= 'Edit Item'][1]")).click();
 		return this;
+	}
+
+	public ItemsPageObjects clickOnSubsetFilterDropdown() {
+		
+		Waiting.explicitWaitVisibilityOfElement(as_Subsetfilter, 15);
+		as_Subsetfilter.click();
+		return this;
+	}
+
+	public ItemsPageObjects selectSubsetFromTheList() {
+		
+		return this;
+	}
+
+	public ItemsPageObjects clickOnTheCheckboxOfTheList() {
+		
+		return this;
+	}
+	@Step("click on the specific subset {0}")
+	public ItemsPageObjects clcikOnSubsetitemStatusFromTheDropdown(String subsetName) {
+	
+		Waiting.explicitWaitVisibilityOfElement(By.xpath("//tbody[@id='searchFormId:subsetTableId:tb']/descendant::td[contains(text(),'"+subsetName+"')]/preceding-sibling::td"), 15);
+		driver.findElement(By.xpath("//tbody[@id='searchFormId:subsetTableId:tb']/descendant::td[contains(text(),'"+subsetName+"')]/preceding-sibling::td")).click();
+		return this;
+	}
+	
+	@Step("select subset item status {0}")
+	public ItemsPageObjects selectSubsetItemStatus(String subsetStatus) throws Exception {
+		
+		Thread.sleep(3000);
+		driver.findElement(By.xpath("//select[@id='searchFormId:subsetItemStatusId']")).click();
+			List <WebElement> status = driver.findElements(By.xpath("//select[@id='searchFormId:subsetItemStatusId']/option"));
+			switch(subsetStatus)
+			{
+			case "Active": driver.findElement(By.xpath("//select[@id='searchFormId:subsetItemStatusId']/option[@value='A']")).click();
+				break;
+			case "InActive": driver.findElement(By.xpath("//select[@id='searchFormId:subsetItemStatusId']/option[@value='I']")).click();
+				break;
+			case "All": driver.findElement(By.xpath("//select[@id='searchFormId:subsetItemStatusId']/option[@value='']")).click();
+				break;
+			default : throw new Exception("invalid selection");			
+			}
+			for(WebElement Status : status)
+			{
+				if(Status.getText().trim().equals(subsetStatus.trim()))
+				{
+					Status.click();
+					break;
+				}
+			}
+			return this;
+	
+	}
+	@Step("Expected items {0}")
+	public ItemsPageObjects verifySubsetItemResults(String expectedItems) {
+		
+		List <WebElement> items=driver.findElements(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+expectedItems+"')]"));
+		Waiting.explicitWaitVisibilityOfElements(items, 15);
+		for(int i=0; i<items.size();i++)
+		{
+			Assert.assertTrue(items.get(i).isDisplayed(),"Results not found in item list page.");
+		}
+		
+		return this;
+		
 	}
 
 
