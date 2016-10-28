@@ -65,4 +65,8 @@ public class Waiting extends MainController{
 				
 		waitForElement.until(ExpectedConditions.visibilityOf(element));
 	}
+	public static void explicitWaitVisibilityOfElement(By by, int time){
+		new WebDriverWait(driver, time).until(ExpectedConditions.elementToBeClickable(by));
+		
+	}
 }

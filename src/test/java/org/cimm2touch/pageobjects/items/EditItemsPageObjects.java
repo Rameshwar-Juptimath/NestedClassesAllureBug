@@ -1599,6 +1599,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 	@Step("click on history in custom prices tab")
 	public EditItemsPageObjects clickOnCPhistoryLink() throws InterruptedException {
+		Waiting.explicitWaitVisibilityOfElement(CustomPricesHistoryLocator, 10);
 		CustomPricesHistoryLocator.click();
 		Thread.sleep(2000);
 		return this;
@@ -1606,7 +1607,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 	@Step("To Edit the Long Description in the Descriptions Tab")
 	public EditItemsPageObjects editLongDescription(String longdesc)
-	{
+	{	Waiting.explicitWaitVisibilityOfElement(longDescription, 10);
 		longDescription.clear();
 		longDescription.sendKeys(longdesc);
 		return this;

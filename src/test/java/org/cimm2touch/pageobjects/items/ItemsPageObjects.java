@@ -1088,11 +1088,11 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	@Step("clicking on Brand filter {0} without typing in text field")
 	public ItemsPageObjects brandfilterWithoutSearch(String brandname) {
-		WebElement ele = driver.findElement(By.xpath("//tbody[@id='searchFormId:brandTableId:tb']/tr[td='"+brandname+"']/td[1]/*"));
+		WebElement ele = driver.findElement(By.xpath("//tbody[@id='searchFormId:brandTableId:tb']/descendant::td[contains(.,'"+brandname+"')]/preceding-sibling::td"));
 		if(!(ele.isSelected()))
 		{
 			ele.click();
-			System.out.println("\n \n\n "+ele+"CLicked");
+			//System.out.println("\n \n\n "+ele+"CLicked");
 		}
 		return this;
 	}
@@ -1115,8 +1115,9 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	@Step("clicking on Brand filter {0} with typing in text field")
 	public ItemsPageObjects brandfilterWithSearch(String brandname) throws InterruptedException {
-		Assert.assertEquals(driver.findElement(By.xpath("//table[@id='searchFormId:brandTableId']/tbody/tr[not(@style='display: none;')]/td[2]")).getText(),brandname);
-		driver.findElement(By.xpath("//table[@id='searchFormId:brandTableId']/tbody/tr[not(@style='display: none;')]/td[1]/*")).click();
+		Waiting.explicitWaitVisibilityOfElement(By.xpath("//table[@id='searchFormId:brandTableId']/descendant::td[contains(.,'"+brandname+"')]"), 20);
+		Assert.assertEquals(driver.findElement(By.xpath("//table[@id='searchFormId:brandTableId']/descendant::td[contains(.,'"+brandname+"')]")).getText(),brandname);
+		driver.findElement(By.xpath("//table[@id='searchFormId:brandTableId']/descendant::td[contains(.,'"+brandname+"')]/preceding-sibling::td")).click();
 		Thread.sleep(3000);
 		return this;
 
@@ -1124,6 +1125,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	@Step("clicking on subset filter")
 	public ItemsPageObjects clickOnas_Subsetfilter() throws InterruptedException {
+		Waiting.explicitWaitVisibilityOfElement(as_Subsetfilter, 15);
 		as_Subsetfilter.click();
 		Thread.sleep(4000);
 		return this;
@@ -1131,11 +1133,12 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	@Step("clicking on subset name {0} without typing in text field")
 	public ItemsPageObjects subsetfilterWithoutSearch(String subsetname) {
-		WebElement ele = driver.findElement(By.xpath("//tbody[@id='searchFormId:subsetTableId:tb']/tr[td='"+subsetname+"']/td[1]/*"));
+		Waiting.explicitWaitVisibilityOfElement(By.xpath("//tbody[@id='searchFormId:subsetTableId:tb']/descendant::td[contains(.,'"+subsetname+"')]/preceding-sibling::td"), 15);
+		WebElement ele = driver.findElement(By.xpath("//tbody[@id='searchFormId:subsetTableId:tb']/descendant::td[contains(.,'"+subsetname+"')]/preceding-sibling::td"));
 		if(!(ele.isSelected()))
 		{
 			ele.click();
-			System.out.println("\n \n\n "+ele+"CLicked");
+			//System.out.println("\n \n\n "+ele+"CLicked");
 		}
 		return this;
 	}
@@ -1174,16 +1177,17 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	@Step("typing in Subsetfiltersearchfield")
 	public ItemsPageObjects typeIn_as_Subsetfiltersearchfield(String subsetname ) throws InterruptedException {
+		Waiting.explicitWaitVisibilityOfElement(as_Subsetfiltersearchfield, 15);
 		as_Subsetfiltersearchfield.sendKeys(subsetname);
 		return this;
 	}
 
 	@Step("subset filter without search")
 	public ItemsPageObjects subsetfilterWithSearch(String subsetname) throws InterruptedException {
-
-		Assert.assertEquals(driver.findElement(By.xpath("//table[@id='searchFormId:subsetTableId']/tbody/tr[not(@style='display: none;')]/td[2]")).getText(),subsetname);
-		driver.findElement(By.xpath("//table[@id='searchFormId:subsetTableId']/tbody/tr[not(@style='display: none;')]/td[1]/*")).click();
-		Thread.sleep(3000);
+		Waiting.explicitWaitVisibilityOfElement(By.xpath("//table[@id='searchFormId:subsetTableId']/descendant::td[contains(.,'"+subsetname+"')]"), 20);
+		Assert.assertEquals(driver.findElement(By.xpath("//table[@id='searchFormId:subsetTableId']/descendant::td[contains(.,'"+subsetname+"')]")).getText(),subsetname);
+		driver.findElement(By.xpath("//table[@id='searchFormId:subsetTableId']/descendant::td[contains(.,'"+subsetname+"')]/preceding-sibling::td")).click();
+		
 		return this;
 	}	
 
@@ -1196,7 +1200,8 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	@Step("click on vendor name {0}  without typing in text field")
 	public ItemsPageObjects vendorfilterWithoutSearch(String vendorname) {
-		WebElement ele = driver.findElement(By.xpath("//tbody[@id='searchFormId:supplierTableId:tb']/tr[td='"+vendorname+"']/td[1]/*"));
+		Waiting.explicitWaitVisibilityOfElement(By.xpath("//tbody[@id='searchFormId:supplierTableId:tb']/descendant::td[contains(.,'"+vendorname+"')]/preceding-sibling::td"), 15);
+		WebElement ele = driver.findElement(By.xpath("//tbody[@id='searchFormId:supplierTableId:tb']/descendant::td[contains(.,'"+vendorname+"')]/preceding-sibling::td"));
 		if(!(ele.isSelected()))
 		{
 			ele.click();
@@ -1208,8 +1213,9 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	@Step("clicking ob vendor filter search button")
 	public ItemsPageObjects clickOnas_vendorfiltersearchbutton() throws InterruptedException {
+		Waiting.explicitWaitVisibilityOfElement(as_vendorfiltersearchbutton, 15);
 		as_vendorfiltersearchbutton.click();
-		Thread.sleep(5000);
+		
 		return this;
 	}
 
@@ -1238,6 +1244,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	@Step("typing in vendor filter search field")
 	public ItemsPageObjects typeIn_as_Vendorfiltersearchfield(String vendorname ) throws InterruptedException {
+		Waiting.explicitWaitVisibilityOfElement(as_vendorfiltersearchbutton, 15);
 		as_Vendorfiltersearchfield.sendKeys(vendorname);
 		return this;
 	}
@@ -1245,11 +1252,12 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	@Step("vendor filter without typing in text field")
 	public ItemsPageObjects vendorfilterWithSearch(String vendorname) throws InterruptedException {
-
-		Assert.assertEquals(driver.findElement(By.xpath("//table[@id='searchFormId:supplierTableId']/tbody/tr[not(@style='display: none;')]/td[2]")).getText(),vendorname);
-		driver.findElement(By.xpath("//table[@id='searchFormId:supplierTableId']/tbody/tr[not(@style='display: none;')]/td[1]/*")).click();
-		Thread.sleep(3000);
+		Waiting.explicitWaitVisibilityOfElement(By.xpath("//tbody[@id='searchFormId:supplierTableId:tb']/descendant::td[contains(.,'"+vendorname+"')]"), 15);
+		Assert.assertEquals(driver.findElement(By.xpath("//tbody[@id='searchFormId:supplierTableId:tb']/descendant::td[contains(.,'"+vendorname+"')]")).getText(),vendorname);
+		driver.findElement(By.xpath("//tbody[@id='searchFormId:supplierTableId:tb']/descendant::td[contains(.,'"+vendorname+"')]/preceding-sibling::td")).click();
+		
 		return this;
+		
 	}
 
 	@Step("verification of 'CIMM Item ID' search results {0} is displayed")
@@ -1271,8 +1279,8 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	@Step("Click on bottom search button")
 	public ItemsPageObjects clickOnbottomSeacrhButton() throws InterruptedException  {
+		Waiting.explicitWaitVisibilityOfElement(bottomSearchButton, 15);
 		bottomSearchButton.click();
-		Thread.sleep(4000);
 		return this;
 	}
 
@@ -1293,6 +1301,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	@Step("select display online dropdown")
 	public ItemsPageObjects selectDropdowndisplayOnlineDropdown(String selectvalue)  {
+		Waiting.explicitWaitElementToBeSelected(displayOnlineDropdown, 15);
 		new Select(displayOnlineDropdown).selectByVisibleText(selectvalue);
 		return this;
 	}
@@ -1344,6 +1353,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	@Step("verification of grayed out fields in Images dropdown")
 	public ItemsPageObjects verifyImagesStatus()
 	{
+	
 		Assert.assertEquals(driver.findElement(By.xpath("//td/select[@name='searchFormId:rbtImages']/option[@value='WithImages']")).getText().trim(), "Images");
 		Assert.assertEquals(driver.findElement(By.xpath("//td/select[@name='searchFormId:rbtImages']/option[@value='NoImages']")).getText().trim(), "No Images");
 		Assert.assertEquals(driver.findElement(By.xpath("//td/select[@name='searchFormId:rbtImages']/option[text()='Ignore']")).getText().trim(), "Ignore");
