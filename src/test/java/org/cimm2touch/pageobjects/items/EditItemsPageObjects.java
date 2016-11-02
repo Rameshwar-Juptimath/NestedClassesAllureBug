@@ -940,6 +940,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	}
 
 	public EditItemsPageObjects verificationOfDescription(String descOptions, String testData) throws Exception {
+		
 		switch(descOptions){
 		case "Page Title":
 			ItemPageTitleDescriptionLocator.sendKeys(testData);
@@ -1743,6 +1744,28 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		return this;
 
 	}
+	
+	@Step("verificaton of Attributes dropdown {0} ")
+	public EditItemsPageObjects verifyAttributesSection(String attributeValue, String expMsgForNoAttribute) throws Exception{
+		
+		Thread.sleep(2500);
+		switch(attributeValue){
+		
+	case "Attributes": TestUtility.assertElementPresent(driver.findElement(By.xpath("//input[contains(@id,':colAVD') and @value]")));
+	break;
+	
+	case "No Attributes":  Assert.assertTrue(TestUtility.assertElementPresent(driver.findElement(By.xpath("//span[contains(text(),'"+expMsgForNoAttribute+"')]"))) || TestUtility.assertElementPresent(driver.findElement(By.xpath("//input[contains(@id,':colAVD') and not (@value)])"))));
+	break;
+	
+	case "Ignore": Assert.assertTrue( TestUtility.assertElementPresent(driver.findElement(By.xpath("//input[contains(@id,':colAVD') and @value]"))) || TestUtility.assertElementPresent(driver.findElement(By.xpath("//span[contains(text(),'"+expMsgForNoAttribute+"')]"))));
+	break;
+	
+	default : throw new Exception("invalid selection");			
+	
+		}	
+	return this;
+	}
+	
 
 	@Step("verification of Attributes dropdown - Attributes ")
 	public boolean verifyadvse030() throws Exception 
@@ -1757,7 +1780,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 			try 
 			{
-				bool1=TestUtility.assertElementPresent(driver.findElement(By.xpath("//span/table/tbody/tr/td/table/tbody/tr[*]/td[4]/input[@value])")));
+				bool1=TestUtility.assertElementPresent(driver.findElement(By.xpath("//input[contains(@id,':colAVD') and @value]")));
 			}
 			catch(Exception e)
 			{

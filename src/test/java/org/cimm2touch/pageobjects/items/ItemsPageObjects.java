@@ -294,6 +294,9 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath = "//select[@name= 'searchFormId:rbtCategorized']/option[text()= 'Categorized ']")
 	private WebElement itemCategorizedDropdown;
 
+	@FindBy(xpath = "//select[@name= 'searchFormId:rbtCategorized']/option[text()= 'UnCategorized ']")
+	private WebElement itemUnCategorizedDropdown;
+	
 	@Step("select checkbox for MPN under desktop view.")
 	public ItemsPageObjects selectCheckboxOfManufacturerPartNumberInDesktopViewForAdding() throws Exception
 	{
@@ -1419,8 +1422,9 @@ public class ItemsPageObjects extends PageFactoryInitializer
 		return this;
 	}
 
-	public ItemsPageObjects verifyIgnorelongDescPartNumbers(String partNumber)
+	public ItemsPageObjects verifyIgnorelongDescPartNumbers(String partNumber) throws InterruptedException
 	{
+		Waiting.explicitWaitVisibilityOfElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+partNumber+"')]"), 15);
 		Assert.assertEquals(driver.findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']//td[text()='"+partNumber+"']")).getText().trim(),partNumber);
 		return this;
 	}
@@ -1434,19 +1438,23 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	public ItemsPageObjects clickOnWithAttributesSubFilter() throws Exception
 	{
+		Waiting.explicitWaitVisibilityOfElement(withAttributes_SubFilter, 15);
 		withAttributes_SubFilter.click();
 		return this;
 	}
 
 	public ItemsPageObjects clickOnCombinewithOR()  throws Exception
 	{
+		Waiting.explicitWaitVisibilityOfElement(combineOptions_OR_SubFilter, 10);
 		combineOptions_OR_SubFilter.click();
 		return this;
 	}
 
-	public ItemsPageObjects clickOnCombinewithAND()  throws Exception
+	public ItemsPageObjects clickOnCombine(String operator)  throws Exception
 	{
-		combineOptions_AND_SubFilter.click();
+		WebElement wb=driver.findElement(By.xpath("//select[@id='searchFormId:joinOpId']/descendant::option[contains(text(),'"+operator+"')]"));
+		Waiting.explicitWaitVisibilityOfElement(wb, 10);
+		wb.click();
 		return this;
 	}
 
@@ -1457,8 +1465,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 		return this;
 	}
 
-	@FindBy(xpath = "//select[@name= 'searchFormId:rbtCategorized']/option[text()= 'UnCategorized ']")
-	private WebElement itemUnCategorizedDropdown;
+
 
 
 	@Step("select Attributes dropdown")
@@ -1545,16 +1552,36 @@ public class ItemsPageObjects extends PageFactoryInitializer
 				break;
 			default : throw new Exception("invalid selection");			
 			}
-			for(WebElement Status : status)
+			for(WebElement statusOfItem : status)
 			{
-				if(Status.getText().trim().equals(subsetStatus.trim()))
+				if(statusOfItem.getText().trim().equals(subsetStatus.trim()))
 				{
-					Status.click();
+					statusOfItem.click();
 					break;
 				}
 			}
 			return this;
 	
+	}
+	
+	@Step("selection of Attributes dropdown {0} ")
+	public ItemsPageObjects selectAttributesFromDropDown(String attributeValue) throws Exception{
+		Thread.sleep(2500);
+		switch(attributeValue){
+		
+	case "Attributes": driver.findElement(By.xpath("//select[@id='searchFormId:rbtAttributes']/option[text()='Attributes ']")).click();
+	break;
+	
+	case "No Attributes": driver.findElement(By.xpath("//select[@id='searchFormId:rbtAttributes']/option[text()='No Attributes ']")).click();
+	break;
+	
+	case "Ignore": driver.findElement(By.xpath("//select[@id='searchFormId:rbtAttributes']/option[text()='Ignore']")).click();
+	break;
+	
+	default : throw new Exception("invalid selection");			
+	
+		}	
+	return this;
 	}
 	@Step("Expected items {0}")
 	public ItemsPageObjects verifySubsetItemResults(String expectedItems) {
