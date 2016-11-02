@@ -1384,7 +1384,9 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	}
 
 	public ItemsPageObjects verifylongDescPartNumbers(String partNumber) throws Exception
-	{/*
+	{
+		Thread.sleep(3000);
+		/*
 	Assert.assertEquals(driver.findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']//td[text()='"+partNumber1+"']")).getText().trim(),partNumber1);
 	Assert.assertEquals(driver.findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']//td[text()='"+partNumber2+"']")).getText().trim(),partNumber2);*/
 		Assert.assertEquals(driver.findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']//td[text()='"+partNumber+"']")).getText().trim(),partNumber);

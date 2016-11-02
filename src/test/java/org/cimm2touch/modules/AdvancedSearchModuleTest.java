@@ -694,7 +694,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 
 	String resourceLocation = System.getProperty("user.dir") + File.separator + "resources" + File.separator;
 	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
-	public void addDocumenttoItems(String testCaseId, String userName,String password,String expWelcomeMsg,@Parameter("partNumber")String partNumber, String documentLocation) throws Exception
+	public void addDocumenttoItems(String testCaseId, String userName,String password,String expWelcomeMsg,String partNumber, String documentLocation) throws Exception
 	{
 		landingPage()
 		.enterUsername(userName)
@@ -717,15 +717,15 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Verification of appropriate  search result displays when 'Images' is selected under Image dropdown")
 	@TestCaseId("AdvSe033")
-	@Test(groups="regression")
-	public void advSe033() throws Exception
+	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
+	public void advSe033(String testCaseId, String userName,String password,String expWelcomeMsg, String partNumber) throws Exception
 	{
 		new LoginModuleTest().login();
 		homePage()
 		.clickOnItemsLink()
 		.itemsPage()
 		.verifyImagesStatus()
-		.typeinadvancedSearchTopSearchField("Automation_PN")
+		.typeinadvancedSearchTopSearchField(partNumber)
 		.clickOnImagesSubFilter()
 		.clickOnbottomSeacrhButton()
 		.verifyPartNumbers();
