@@ -275,6 +275,9 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	@FindBy(xpath = "//select[@id='searchFormId:rbtAttributes']//option[text()='Ignore']")
 	private WebElement ignoreAttributes_SubFilter;
+	
+	@FindBy(xpath="//td/select[@name='searchFormId:rbtImages']/option[@value='WithImages']")
+	private WebElement imageSubfilterLocator;
 
 	/*	@FindBy(xpath = "//select[@id='searchFormId:rbtAttributes']//option[text()='Attributes ']")
 	private WebElement withAttributes_SubFilter;*/
@@ -949,6 +952,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	@Step("Type in advanced search top field")
 	public ItemsPageObjects typeinadvancedSearchTopSearchField(String advSesearchinput) {
+		Waiting.explicitWaitVisibilityOfElement(advancedSearchTopSearchField, 15);
 		advancedSearchTopSearchField.clear();
 		advancedSearchTopSearchField.sendKeys(advSesearchinput);
 		return this;
@@ -1368,12 +1372,14 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	public ItemsPageObjects clickOnImagesSubFilter()
 	{
-		driver.findElement(By.xpath("//td/select[@name='searchFormId:rbtImages']/option[@value='WithImages']")).click();
+		Waiting.explicitWaitVisibilityOfElement(imageSubfilterLocator, 10);
+		imageSubfilterLocator.click();
 		return this;
 	}
 
 	public ItemsPageObjects verifyPartNumbers()
 	{
+		
 		return this;
 	}
 
@@ -1394,20 +1400,20 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	public ItemsPageObjects clickOnNoLongDescSubFilter()
 	{
-		driver.findElement(By.xpath("//select[@name='searchFormId:rbtLongDesc']//option[text()='No LongDesc ']")).click();
+		driver.findElement(By.xpath("//select[@name='searchFormId:rbtLongDesc']/descendant::option[text()='No LongDesc ']")).click();
 		return this;
 	}
 
 	public ItemsPageObjects verifyNolongDescPartNumbers(String partNumber)
 	{
-		Assert.assertEquals(driver.findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']//td[text()='"+partNumber+"']")).getText().trim(),partNumber);
+		Assert.assertEquals(driver.findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[text()='"+partNumber+"']")).getText().trim(),partNumber);
 		return this;
 
 	}
 
 	public ItemsPageObjects clickOnIgnoreLongDescSubFilter()
 	{
-		driver.findElement(By.xpath("//select[@name='searchFormId:rbtLongDesc']//option[text()='Ignore']")).click();
+		driver.findElement(By.xpath("//select[@name='searchFormId:rbtLongDesc']/descendant::option[text()='Ignore']")).click();
 		return this;
 	}
 
@@ -1420,6 +1426,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	public ItemsPageObjects clickOnEditButton(String partNumber)  throws Exception
 	{
 		driver.findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']//td[text()='"+partNumber+"']/..//input[@title='Edit Item']")).click();
+		//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+itemPartnumber+"')]/preceding-sibling::td/descendant::input[@title='Edit Item']
 		return this;
 	}
 

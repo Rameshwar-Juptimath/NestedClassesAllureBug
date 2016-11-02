@@ -694,7 +694,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 
 	String resourceLocation = System.getProperty("user.dir") + File.separator + "resources" + File.separator;
 	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
-	public void addDocumenttoItems(String testCaseId, String userName,String password,String expWelcomeMsg,@Parameter("partNumber")String partNumber, String documentLocation) throws Exception
+	public void addDocumenttoItems(String testCaseId, String userName,String password,String expWelcomeMsg,String partNumber, String documentLocation) throws Exception
 	{
 		landingPage()
 		.enterUsername(userName)
@@ -717,15 +717,20 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Verification of appropriate  search result displays when 'Images' is selected under Image dropdown")
 	@TestCaseId("AdvSe033")
-	@Test(groups="regression")
-	public void advSe033() throws Exception
+	@Test(groups="regression", dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
+	public void advSe033(String testCaseId, String userName,String password,String expWelcomeMsg, String advSesearchinput) throws Exception
 	{
-		new LoginModuleTest().login();
+		landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(expWelcomeMsg);
 		homePage()
 		.clickOnItemsLink()
 		.itemsPage()
 		.verifyImagesStatus()
-		.typeinadvancedSearchTopSearchField("Automation_PN")
+		.typeinadvancedSearchTopSearchField(advSesearchinput)
 		.clickOnImagesSubFilter()
 		.clickOnbottomSeacrhButton()
 		.verifyPartNumbers();
@@ -735,14 +740,19 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Verification of appropriate search result displays when 'LongDesc' is selected under LongDesc dropdown")
 	@TestCaseId("AdvSe039")
-	@Test(groups="regression",dataProvider ="partNumberswithLongDescriptionVerification")
-	public void advSe039(@Parameter("Part Number")String partNumber) throws Exception
+	@Test(groups="regression", dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
+	public void advSe039(String testcaseID, String userName, String password, String welcomeMessage,String partNumber, String itemnametemplate) throws Exception
 	{
-		new LoginModuleTest().login();
+		landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(welcomeMessage);
 		homePage()
 		.clickOnItemsLink()
 		.itemsPage()
-		.typeinadvancedSearchTopSearchField(data.itemnametemplate())
+		.typeinadvancedSearchTopSearchField(itemnametemplate)
 		.clickOnLongDescSubFilter()
 		.clickOnbottomSeacrhButton()
 		.verifylongDescPartNumbers(partNumber)
@@ -756,14 +766,19 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Verification of appropriate search result displays when 'LongDesc' is selected under LongDesc dropdown")
 	@TestCaseId("AdvSe040")
-	@Test(groups="regression",dataProvider ="partNumberswithoutLongDescriptionVerification")
-	public void advSe040(@Parameter("Part Number")String partNumber) throws Exception
+	@Test(groups="regression", dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
+	public void advSearch_040(String testcaseID, String userName, String password, String welcomeMessage,String partNumber, String itemnametemplate) throws Exception
 	{
-		new LoginModuleTest().login();
+		landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(welcomeMessage);
 		homePage()
 		.clickOnItemsLink()
 		.itemsPage()
-		.typeinadvancedSearchTopSearchField(data.itemnametemplate())
+		.typeinadvancedSearchTopSearchField(itemnametemplate)
 		.clickOnNoLongDescSubFilter()
 		.clickOnbottomSeacrhButton()
 		.verifyNolongDescPartNumbers(partNumber)

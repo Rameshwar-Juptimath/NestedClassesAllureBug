@@ -898,6 +898,8 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	}
 
 	public EditItemsPageObjects clickOnDescriptionTabLink() {
+		
+		Waiting.explicitWaitVisibilityOfElement(itemDescriptionLocator, 10);
 		itemDescriptionLocator.click();
 		return this;
 	}
@@ -1399,6 +1401,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 	@Step("click on Attributes link")
 	public EditItemsPageObjects clickOnAttributesTab() {
+		Waiting.explicitWaitVisibilityOfElement(attributesLink, 15);
 		attributesLink.click();
 		return this;
 	}
