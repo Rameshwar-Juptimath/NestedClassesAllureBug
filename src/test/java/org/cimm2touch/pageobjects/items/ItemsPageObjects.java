@@ -1373,16 +1373,26 @@ public class ItemsPageObjects extends PageFactoryInitializer
 		return this;
 	}
 
-	public ItemsPageObjects clickOnImagesSubFilter()
+	public ItemsPageObjects clickOnImagesSubFilter(String imageStatus) throws Exception
 	{
 		Waiting.explicitWaitVisibilityOfElement(imageSubfilterLocator, 10);
 		imageSubfilterLocator.click();
+		switch(imageStatus)
+		{
+		case "Images": driver.findElement(By.xpath("//select[@id='searchFormId:rbtImages']/option[@value='WithImages']")).click();
+			break;
+		case "No Images": driver.findElement(By.xpath("//select[@id='searchFormId:rbtImages']/option[@value='NoImages']")).click();
+			break;
+		case "Ignore": driver.findElement(By.xpath("//select[@id='searchFormId:rbtImages']/option[@value='']")).click();
+			break;
+		default : throw new Exception("invalid selection");			
+		}
 		return this;
 	}
 
 	public ItemsPageObjects verifyPartNumbers()
 	{
-		
+		// needs to write the code
 		return this;
 	}
 
@@ -1392,26 +1402,46 @@ public class ItemsPageObjects extends PageFactoryInitializer
 		return this;
 	}
 
-	public ItemsPageObjects verifylongDescPartNumbers(String partNumber) throws Exception
+	/*public ItemsPageObjects verifylongDescPartNumbers(String partNumber) throws Exception
 	{
 		Thread.sleep(3000);
-		/*
+		
 	Assert.assertEquals(driver.findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']//td[text()='"+partNumber1+"']")).getText().trim(),partNumber1);
-	Assert.assertEquals(driver.findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']//td[text()='"+partNumber2+"']")).getText().trim(),partNumber2);*/
+	Assert.assertEquals(driver.findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']//td[text()='"+partNumber2+"']")).getText().trim(),partNumber2);
 		Assert.assertEquals(driver.findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']//td[text()='"+partNumber+"']")).getText().trim(),partNumber);
 		return this;
 
+	}*/
+	
+	public ItemsPageObjects clickOnLongDescriptionSubFilter(String longDescValue) throws Exception
+	{
+		driver.findElement(By.xpath("//select[@id='searchFormId:rbtLongDesc']")).click();
+		switch(longDescValue)
+		{
+		case "LongDesc": driver.findElement(By.xpath("//select[@id='searchFormId:rbtLongDesc']/option[@value='WithLongDesc']")).click();
+			break;
+		case "No LongDesc": driver.findElement(By.xpath("//select[@id='searchFormId:rbtLongDesc']/option[@value='NoLongDesc']")).click();
+			break;
+		case "Ignore": driver.findElement(By.xpath("//select[@id='searchFormId:rbtLongDesc']/option[@value='']")).click();
+			break;
+		default : throw new Exception("invalid selection");			
+		}
+		return this;
 	}
-
+	
 	public ItemsPageObjects clickOnNoLongDescSubFilter()
 	{
 		driver.findElement(By.xpath("//select[@name='searchFormId:rbtLongDesc']/descendant::option[text()='No LongDesc ']")).click();
 		return this;
 	}
 
-	public ItemsPageObjects verifyNolongDescPartNumbers(String partNumber)
+	public ItemsPageObjects verifylongDescPartNumbers(String partNumber) throws InterruptedException
 	{
-		Assert.assertEquals(driver.findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[text()='"+partNumber+"']")).getText().trim(),partNumber);
+		Thread.sleep(2000);
+		List<WebElement> items=driver.findElements(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+partNumber+"')]"));
+		//for(int i=0; i < items.size() ;i++)
+		Assert.assertTrue(driver.findElements(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+partNumber+"')]")).get(0).getText().trim().contains(partNumber));
+		
 		return this;
 
 	}
@@ -1430,8 +1460,11 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	}
 
 	public ItemsPageObjects clickOnEditButton(String partNumber)  throws Exception
-	{
-		driver.findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']//td[text()='"+partNumber+"']/..//input[@title='Edit Item']")).click();
+	{	
+		
+		{
+		driver.findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']//td[contains(text(),'"+partNumber+"')]/..//input[@title='Edit Item']")).click();
+		}
 		//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+itemPartnumber+"')]/preceding-sibling::td/descendant::input[@title='Edit Item']
 		return this;
 	}
@@ -1507,7 +1540,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	public ItemsPageObjects clickOnFirstEditButton()  throws Exception
 	{
-		Thread.sleep(9000);
+		Thread.sleep(3000);
 		driver.findElement(By.xpath("//table[@id= 'searchFormId:itemListTableId']/descendant::input[@title= 'Edit Item'][1]")).click();
 		return this;
 	}
@@ -1541,7 +1574,6 @@ public class ItemsPageObjects extends PageFactoryInitializer
 		
 		Thread.sleep(3000);
 		driver.findElement(By.xpath("//select[@id='searchFormId:subsetItemStatusId']")).click();
-			List <WebElement> status = driver.findElements(By.xpath("//select[@id='searchFormId:subsetItemStatusId']/option"));
 			switch(subsetStatus)
 			{
 			case "Active": driver.findElement(By.xpath("//select[@id='searchFormId:subsetItemStatusId']/option[@value='A']")).click();
@@ -1552,14 +1584,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 				break;
 			default : throw new Exception("invalid selection");			
 			}
-			for(WebElement statusOfItem : status)
-			{
-				if(statusOfItem.getText().trim().equals(subsetStatus.trim()))
-				{
-					statusOfItem.click();
-					break;
-				}
-			}
+			
 			return this;
 	
 	}
@@ -1584,10 +1609,9 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	return this;
 	}
 	@Step("Expected items {0}")
-	public ItemsPageObjects verifySubsetItemResults(String expectedItems) {
-		
+	public ItemsPageObjects verifySubsetItemResults(String expectedItems) throws InterruptedException {
+		Thread.sleep(2500);
 		List <WebElement> items=driver.findElements(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+expectedItems+"')]"));
-		Waiting.explicitWaitVisibilityOfElements(items, 15);
 		for(int i=0; i<items.size();i++)
 		{
 			Assert.assertTrue(items.get(i).isDisplayed(),"Results not found in item list page.");
@@ -1596,6 +1620,10 @@ public class ItemsPageObjects extends PageFactoryInitializer
 		return this;
 		
 	}
+
+	
+		
+	
 
 
 

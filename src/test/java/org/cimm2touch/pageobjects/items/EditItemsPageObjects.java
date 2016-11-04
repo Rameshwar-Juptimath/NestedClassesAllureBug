@@ -1692,6 +1692,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@Step("To Enter the 'Document Caption' in 'Documents' Tab")
 	public EditItemsPageObjects enterDocumentCaption()
 	{
+		Waiting.explicitWaitVisibilityOfElement(documentCaption, 10);
 		documentCaption.sendKeys("Document Caption");
 		return this;
 	}
@@ -1726,13 +1727,31 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	}
 
 	@Step("To Verify that the Long Descriptions is not present in the 'Descriptions' Tab")
-	public EditItemsPageObjects verifyNoLongDescription() throws Exception
+	public EditItemsPageObjects verifyLongDescription(String longDescription) throws Exception
 	{
-		Assert.assertEquals(((JavascriptExecutor) driver).executeScript("return $x('boolean(//div[@id=\"longDescEditor\"]/*[string-length(//div[@id=\"longDescEditor\"]) > 0])');"),true,"remember me checkbox is not checked");
-		/*Thread.sleep(2000);
-	tu.assertElementPresent(noLongDescription_SubFilter);*/
-		return this;
+		
+		Thread.sleep(2500);
+		switch(longDescription){
+		
+	case "LongDesc": TestUtility.assertElementPresent(longDescription_SubFilter);
+	break;
+	
+	case "No LongDesc":  TestUtility.assertElementPresent(noLongDescription_SubFilter);
+	break;
+	
+	case "Ignore": Assert.assertTrue( TestUtility.assertElementPresent(longDescription_SubFilter) || TestUtility.assertElementPresent(noLongDescription_SubFilter));
+	break;
+	
+	default : throw new Exception("invalid selection");			
+	
+		}	
+	return this;
 	}
+	/*	Assert.assertEquals(((JavascriptExecutor) driver).executeScript("return $x('boolean(//div[@id=\"longDescEditor\"]/*[string-length(//div[@id=\"longDescEditor\"]) > 0])');"),true,"remember me checkbox is not checked");
+		Thread.sleep(2000);
+	tu.assertElementPresent(noLongDescription_SubFilter);
+		return this;
+	}*/
 
 
 	@Step("To Verify after ignoring Long Descriptions 'Descriptions' Tab")
@@ -1918,5 +1937,22 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		clickOnCategorizationTab();
 
 		return this;
+	}
+
+	public EditItemsPageObjects verifyItemAttributeAndImage(String operator) throws Exception {
+		Thread.sleep(2500);
+		switch(operator){
+		
+	case "AND": Assert.assertTrue(TestUtility.assertElementPresent(driver.findElement(By.xpath("//input[contains(@id,':colAVD') and @value]"))) && TestUtility.assertElementPresent(driver.findElement(By.xpath("//div[@class='imageHolder']/descendant::img"))));
+	break;
+	
+	case "OR": Assert.assertTrue(TestUtility.assertElementPresent(driver.findElement(By.xpath("//input[contains(@id,':colAVD') and @value]"))) || TestUtility.assertElementPresent(driver.findElement(By.xpath("//div[@class='imageHolder']/descendant::img"))));
+							
+	break;
+		
+	default : throw new Exception("invalid selection");			
+	
+		}	
+	return this;
 	}
 }
