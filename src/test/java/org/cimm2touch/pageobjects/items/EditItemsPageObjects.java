@@ -83,7 +83,10 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//input[contains(@id,'buyingCompanyId')]")
 	private WebElement addNewCpnTextboxLocator;
 
-
+	
+	@FindBy(xpath="//input[@id='itemNavigateForm:nextItemIcon']")
+	private WebElement nextItemIconLocator;
+	
 	@FindBy(xpath=".//*[@id='custPrtNumFormId:CPNFormId:addNewcstPnumId']")
 	private WebElement addNewNumber;
 
@@ -513,6 +516,11 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 	@FindBy(xpath="//form[@id='EditItemLinkTypeForm']/div[2]/img")
 	private WebElement EditFormlinktypeCloseLocator;
+	
+	
+	@FindBy(xpath="//tbody[@id='itemCategoryFormId:categoryListTableId:tb']/tr")
+	private WebElement categoryUnderCategorizationTab;
+	
 
 	//form[@id='EditItemLinkTypeForm']/div[2]/img
 
@@ -1887,37 +1895,42 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 	@Step("click on categorization tab")
 	public EditItemsPageObjects clickOnCategorizationTab() throws InterruptedException{
-		Thread.sleep(5000);
+		Waiting.explicitWaitVisibilityOfElement(categorizationTabLocator, 10);
 		categorizationTabLocator.click();
 		Thread.sleep(5000);
 		return this;
 	}
 
 	@Step("verification of Categorized dropdown - Categorized ")
-	public EditItemsPageObjects verifyadvse042() throws InterruptedException 
+	public EditItemsPageObjects verifyadvsearchResultsForCategory(String categoryStatus, String noOfItemToBeVerify) throws Exception 
 	{
-		int var = 5;
+		int var = Integer.parseInt(noOfItemToBeVerify);
 		for(int i=0;i<=var;i++)
+		
 		{
 			try 
 			{
-				Thread.sleep(2000);
-			} 
+				Waiting.explicitWaitVisibilityOfElement(nextItemIconLocator, 10);
+				nextItemIconLocator.click();
+			switch(categoryStatus)
+			{
+			case "Categorized": Assert.assertTrue(categoryUnderCategorizationTab.isDisplayed());
+				break;
+			case "UnCategorized": Assert.assertFalse(categoryUnderCategorizationTab.isDisplayed());
+				break;
+			case "Ignore": Assert.assertTrue(TestUtility.assertElementPresent(categoryUnderCategorizationTab) || TestUtility.assertElementnotPresent(categoryUnderCategorizationTab));
+				
+				break;
+			default : throw new Exception("invalid Category selection selection");			
+			}
+			}
 			catch(Exception e)
 			{
 
-				System.out.println("continue to next item");
+				System.out.println("Items not available ");
 			}
-
-
-			Assert.assertTrue(driver.findElement(By.xpath("//tbody[@id='itemCategoryFormId:categoryListTableId:tb']/tr/td[3]")).isDisplayed());
-
-		}
-
-		clickOnNextItem_EditPage.click();
-		//@Step(value= "clickOnCategorizationTab")
 		clickOnCategorizationTab();
-
+		}
 		return this;
 	}	
 

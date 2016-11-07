@@ -127,7 +127,7 @@ public class HomePageObjects extends PageFactoryInitializer{
 
 	
 	
-	@FindBy(xpath="//a[contains(text(),'Subset/Catalog')]")
+	@FindBy(xpath="(//a[contains(text(),'Subset/Catalog')])[2]")
 	private WebElement subsetlink;
 		
 	@FindBy(xpath="//form[@id='menuFmId:headerForm']/descendant::div[contains(@class,'loggedInUser')]") //css="div.header-right > ul.cimm_boxShadow > li > div.header-right-icons > ul > li > div.loggedInUser"
@@ -185,7 +185,7 @@ public class HomePageObjects extends PageFactoryInitializer{
 	@Step("clicking on subset link")
 	public HomePageObjects clickOnSubset(){
 		
-		Waiting.explicitWaitVisibilityOfElement(subsetlink, 15);
+		//Waiting.explicitWaitVisibilityOfElement(subsetlink, 15);
 		((JavascriptExecutor) driver).executeScript("arguments[0].click();",subsetlink);
 		return this;
 	}

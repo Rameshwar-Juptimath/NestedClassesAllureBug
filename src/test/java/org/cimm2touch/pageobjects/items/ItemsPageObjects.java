@@ -4,6 +4,7 @@ import org.cimm2touch.maincontroller.PageFactoryInitializer;
 import org.cimm2touch.pageobjects.subset.SubsetPageObjects;
 import org.cimm2touch.utils.TestUtility;
 import org.cimm2touch.utils.Waiting;
+import org.omg.PortableInterceptor.SUCCESSFUL;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -291,7 +292,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath = "//select[@id='searchFormId:joinOpId']//option[@value='joinOperatorOR']")
 	private WebElement combineOptions_OR_SubFilter;
 
-	@FindBy(xpath = "//select[@name= 'searchFormId:rbtCategorized']/option[text()= 'Categorized ']")
+	@FindBy(xpath = "//select[@name= 'searchFormId:rbtCategorized']/option")
 	private WebElement itemCategorizedDropdown;
 
 	@FindBy(xpath = "//select[@name= 'searchFormId:rbtCategorized']/option[text()= 'UnCategorized ']")
@@ -494,13 +495,22 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 
 	@Step("Click on delete icon for the item name {0}")
-	public ItemsPageObjects verifyAndRemoveItem(String partNumber) throws Exception {
+	public ItemsPageObjects verifyAndRemoveItem(String CreatedpartNumber) throws Exception {
 		Thread.sleep(2500);
-
-		((JavascriptExecutor)driver).executeScript("arguments[0].click();",driver.findElement(By.xpath("//td[contains(text(),'"+partNumber+"')]/preceding-sibling::td/descendant::input[@title='Remove Item']")));
+		String partNuber=driver.findElement(By.xpath("//td[contains(text(),'"+CreatedpartNumber+"')]/preceding-sibling::td[1]")).getText();
+		((JavascriptExecutor)driver).executeScript("arguments[0].click();",driver.findElement(By.xpath("//td[contains(text(),'"+CreatedpartNumber+"')]/preceding-sibling::td/descendant::input[@title='Remove Item']")));
 
 		TestUtility.alertAccept();
 		return this;
+	}
+	@Step("Click on delete icon for the item name {0}")
+	public String verifyAndRemoveCreatedItem(String CreatedpartNumber) throws Exception {
+		Thread.sleep(2500);
+		String partNuber=driver.findElement(By.xpath("//td[contains(text(),'"+CreatedpartNumber+"')]/preceding-sibling::td[1]")).getText();
+		((JavascriptExecutor)driver).executeScript("arguments[0].click();",driver.findElement(By.xpath("//td[contains(text(),'"+CreatedpartNumber+"')]/preceding-sibling::td/descendant::input[@title='Remove Item']")));
+
+		TestUtility.alertAccept();
+		return partNuber;
 	}
 
 
@@ -1014,9 +1024,9 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	}
 
 	@Step("verify 'Manufacturer Part No search' Searchresult {0} is displayed")
-	public ItemsPageObjects verifyadvSe010Searchresult(String advSe010searchinput) throws InterruptedException {
+	public ItemsPageObjects verifyadvSe010Searchresult(String advSearchinput) throws InterruptedException {
 		Thread.sleep(3000);
-		Assert.assertEquals(driver.findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/tr[1]/td[6]")).getText(),advSe010searchinput);
+		Assert.assertEquals(driver.findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+advSearchinput+"')]")).getText(),advSearchinput);
 		return this;
 	}
 
@@ -1168,7 +1178,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	public ItemsPageObjects verifyadvse020(String itemnametemplate,String Noofitemstobecreated,String manufacturernametemplate,String subsetname) throws InterruptedException{
 		Thread.sleep(4000);
 		int var1 = Integer.parseInt(Noofitemstobecreated);
-		Assert.assertEquals(driver.findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/tr[1]/td[5]")).getText(), itemnametemplate+"1");
+		Assert.assertTrue(driver.findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+itemnametemplate+"')]")).getText().contains(itemnametemplate));
 		driver.findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/tr[1]/td[1]/div/input[1]")).click();
 		Thread.sleep(4000);
 		for(int i=1;i<=var1;i++) {
@@ -1531,10 +1541,21 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	}
 
 	@Step("select Categorized dropdown")
-	public ItemsPageObjects selectWithCategorizedDropdown()  
+	public ItemsPageObjects selectCategorizedDropdown(String categoryStatus) throws Exception  
 	{
 		Waiting.explicitWaitVisibilityOfElement(itemCategorizedDropdown, 15);
 		itemCategorizedDropdown.click();
+		switch(categoryStatus)
+			{
+			case "Categorized": driver.findElement(By.xpath("//select[@id='searchFormId:rbtCategorized']/option[@value='WithCategorized']")).click();
+				break;
+			case "UnCategorized": driver.findElement(By.xpath("//select[@id='searchFormId:rbtCategorized']/option[@value='UnCategorized']")).click();
+				break;
+			case "Ignore": driver.findElement(By.xpath("//select[@id='searchFormId:rbtCategorized']/option[@value='']")).click();
+				break;
+			default : throw new Exception("invalid Category selection selection");			
+			}
+			
 		return this;
 	}
 
@@ -1617,6 +1638,16 @@ public class ItemsPageObjects extends PageFactoryInitializer
 			Assert.assertTrue(items.get(i).isDisplayed(),"Results not found in item list page.");
 		}
 		
+		return this;
+		
+	}
+	@Step("verify the succesful message after deletion {0}")
+	public ItemsPageObjects vefifySuccesfulMessage(String expSuccesfulMessageForDeletion, String partNumber, String Noofitemstobecreated) throws InterruptedException {
+		Thread.sleep(2500);
+		int items = Integer.parseInt(Noofitemstobecreated);
+		for(int i=1; i<=items; items++){
+			Assert.assertEquals(driver.findElement(By.xpath("//span[@id='searchFormId:deleteSearchItmMsg']")).getText().trim(), "Item with Part No. : '"+partNumber+items+"' removed Successfully");
+		}
 		return this;
 		
 	}

@@ -23,7 +23,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	
 	@Description("This method is used to create new manufacturer.")
 	@Features(value={"AdvancedSearch Module"})
-	@Test(enabled=false,groups={"regression"},priority=0, dataProvider="AdvancedSearchModuleTest",dataProviderClass=SearchData.class)
+	@Test(groups={"regression"},priority=0, dataProvider="AdvancedSearchModuleTest",dataProviderClass=SearchData.class)
 	public void createNewManufacturer(String testCaseId, String userName, String password, String welComeMessage,String manufacturerName, String manufacturerCode, String SuccessMessageAfterCreate) throws Exception
 	{
 		landingPage()
@@ -52,7 +52,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	}
 	@Description("This method is used to create a new brand.")
 	@Features(value={"AdvancedSearch Module"})
-	@Test(enabled=false,groups={"regression"},priority=1,dataProvider="AdvancedSearchModuleTest",dataProviderClass=SearchData.class)
+	@Test(groups={"regression"},priority=1,dataProvider="AdvancedSearchModuleTest",dataProviderClass=SearchData.class)
 	public void createNewBrand(String testCaseId, String userName, String password,String welComeMessage,String manufacturerName, String brandName, String brandDescription, String SuccesfulMessageForCreatedBrand) throws Exception
 	{
 		landingPage()
@@ -82,7 +82,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	
 	@Description("This method is used to create a new subset.")
 	@Features(value={"AdvancedSearch Module"})
-	@Test(enabled=false,groups={"regression"},priority=2,dataProvider="AdvancedSearchModuleTest",dataProviderClass=SearchData.class)
+	@Test(groups={"regression"},priority=2,dataProvider="AdvancedSearchModuleTest",dataProviderClass=SearchData.class)
 	public void createNewSubset(String testCaseId, String userName, String password,String welComeMessage,String subsetName, String ExpSuccessfulMessageForCreatedSubset) throws InterruptedException, Exception 
 	{
 		landingPage()
@@ -127,7 +127,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	
 	@Description("This method is used to create a new item.")
 	@Features(value={"AdvancedSearch Module"})
-	@Test(enabled=false,groups={"regression"},priority=3,dataProvider="AdvancedSearchModuleTest",dataProviderClass=SearchData.class)
+	@Test(groups={"regression"},priority=3,dataProvider="AdvancedSearchModuleTest",dataProviderClass=SearchData.class)
 	public void createNewItem(String testcaseId,String userName, String password, String welcomMessage, String manufactureName, String brandName,
 			String itemNameTemplate,String mfgNameTemplate,String vendorName, String succesfulMessageForCreatedItem, String subsetName, String numberOfItemsToCreate ) throws InterruptedException 
 	{
@@ -879,32 +879,40 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	}
 */
 	@Features("AdvancedSearch Module")
-	@Description("Items - Advanced Search - veriifcation of Attribute items")
+	@Description("Items - Advanced Search - Verification of appropriate  search result displays for Categorized/unCategorized/Ignore is selected under Categorized dropdown")
 	@TestCaseId("AdvSe042")
-	@Test()
-	public void advSearch_042() throws Exception 
+	@Test(groups="regression",dataProvider ="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
+	public void advSearch_042_043_044(String testCaseId, String userName, String password, String welcomeMessage,String categoryStatus, String noOfItemsToBeVerify) throws Exception 
 	{
-		new LoginModuleTest()
-		.login();
+		landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(welcomeMessage);
 		homePage()
 		.clickOnItemsLink()
 		.itemsPage()
-		.selectWithCategorizedDropdown()
+		.selectCategorizedDropdown(categoryStatus)
 		.clickOnbottomSeacrhButton()
 		.clickOnFirstEditButton()
 		.editItemsPage()
 		.clickOnCategorizationTab()
-		.verifyadvse042();
+		.verifyadvsearchResultsForCategory(categoryStatus,noOfItemsToBeVerify);
 	}
 
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - veriifcation of Attribute items")
 	@TestCaseId("AdvSe043")
-	@Test()
-	public void advSe043() throws Exception 
+	@Test(groups="regression",dataProvider ="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
+	public void advSe043(String testCaseId, String userName, String password, String welcomeMessage) throws Exception 
 	{
-		new LoginModuleTest()
-		.login();
+		landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(welcomeMessage);
 		homePage()
 		.clickOnItemsLink()
 		.itemsPage()
@@ -940,6 +948,30 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.editItemsPage()
 		.clickOnAttributesTab()
 		.verifyItemAttributeAndImage(operator);
+	}
+	@Test(groups="regression",dataProvider ="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
+	public void deleteCreatedItem(String testCaseId, String userName, String password, String welcomeMessage, String partNumber, String expSuccesfulMessageForDeletion, String noOfItemsToBeDelete) throws Exception{
+		landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(welcomeMessage);
+		homePage()
+		.clickOnItemsLink();
+		String partNumber1=itemsPage()
+		.typeinadvancedSearchTopSearchField(partNumber)
+		.clickOnbottomSeacrhButton()
+		.verifyAndRemoveCreatedItem(partNumber);
+		itemsPage()
+		.vefifySuccesfulMessage(expSuccesfulMessageForDeletion, partNumber1, noOfItemsToBeDelete);
+		
+	}
+	@Test(groups="regression",dataProvider ="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
+	public void deleteCreatedSubset(){
+		
+		
+		
 	}
 }
 
