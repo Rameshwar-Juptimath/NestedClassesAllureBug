@@ -477,7 +477,9 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.enterUsername(userName)
 		.enterPassword(password)
 		.clickOnLogin();
-		homePage().clickOnItemsLink().itemsPage()
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
 		.clickOnas_Subsetfilter()
 		.subsetfilterWithoutSearch(subsetName)
 		.clickOnas_Subsetfiltersearchbutton()
@@ -557,7 +559,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	}
 
 
-	@Features("AdvancedSearch Module")
+	/*@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search -Display Online - Yes")
 	@TestCaseId("AdvSe025")
 	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
@@ -574,12 +576,12 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.verifyadvse025();
 
 	}
-
+*/
 	@Features("AdvancedSearch Module")
-	@Description("Items - Advanced Search -Display Online - No")
-	@TestCaseId("AdvSe026")
+	@Description("Items - Advanced Search -Display Online - yes/No/OR")
+	@TestCaseId("AdvSe025, AdvSe026, AdvSe027")
 	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
-	public void advSearch_026(String testCaseId, String userName, String password, String displayOnlineStatus) throws Exception {
+	public void advSearch_025_026_027(String testCaseId, String userName, String password, String displayOnlineStatus, String noOfItemsToBeVerify) throws Exception {
 		landingPage()
 		.enterUsername(userName)
 		.enterPassword(password)
@@ -587,11 +589,11 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		homePage().clickOnItemsLink().itemsPage()
 		.selectDropdowndisplayOnlineDropdown(displayOnlineStatus)
 		.clickOnbottomSeacrhButton()
-		.verifyadvse026();
+		.verifyadvSearchForDispayOnineStatus(noOfItemsToBeVerify,displayOnlineStatus);
 
 	}
 
-	@Features("AdvancedSearch Module")
+	/*@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search -Display Online - All")
 	@TestCaseId("AdvSe027")
 	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
@@ -605,13 +607,13 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.clickOnbottomSeacrhButton()
 		.verifyadvse027();
 
-	}
+	}*/
 
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - veriifcation of grayed out fields in Subset Item dropdown")
 	@TestCaseId("AdvSe028")
 	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
-	public void advSearch_028(String userName, String password) throws Exception {
+	public void advSearch_028(String testCaseId,String userName, String password) throws Exception {
 		landingPage()
 		.enterUsername(userName)
 		.enterPassword(password)

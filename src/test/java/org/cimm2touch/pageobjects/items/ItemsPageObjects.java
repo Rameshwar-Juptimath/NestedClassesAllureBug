@@ -265,7 +265,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//tbody[@id='searchFormId:itemListTableId:tb']/tr[1]/td[3]")
 	private WebElement itemIdInTableLocator;
 
-	@FindBy(id="searchFormId:dispOnline")
+	@FindBy(xpath="//select[@id='searchFormId:dispOnline']")
 	private WebElement displayOnlineDropdown;
 
 	@FindBy(id="searchFormId:goBtn")
@@ -279,6 +279,10 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	
 	@FindBy(xpath="//td/select[@name='searchFormId:rbtImages']/option[@value='WithImages']")
 	private WebElement imageSubfilterLocator;
+	
+	
+	@FindBy(xpath="//input[@id='itemNavigateForm:nextItemIcon']")
+	private WebElement nextItemIconLocator;
 
 	/*	@FindBy(xpath = "//select[@id='searchFormId:rbtAttributes']//option[text()='Attributes ']")
 	private WebElement withAttributes_SubFilter;*/
@@ -300,6 +304,10 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	
 	@FindBy(xpath="//span[@id='searchFormId:deleteSearchItmMsg']")
 	private WebElement succesfulItemDeleteMessage;
+	
+	@FindBy(xpath="//li[@class='editItem_displayOn']/descendant::input")
+	private WebElement displayOnlineItemCheckBox;
+	
 	
 	@Step("select checkbox for MPN under desktop view.")
 	public ItemsPageObjects selectCheckboxOfManufacturerPartNumberInDesktopViewForAdding() throws Exception
@@ -1183,7 +1191,6 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	public ItemsPageObjects clickOnas_Subsetfiltersearchbutton() throws InterruptedException {
 		Waiting.explicitWaitVisibilityOfElement(as_Subsetfiltersearchbutton, 10);
 		as_Subsetfiltersearchbutton.click();
-		Thread.sleep(8000);
 		return this;
 	}
 
@@ -1191,22 +1198,19 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	@Step("verify search result-items belongs to the subset {2}")
 	public ItemsPageObjects verifyadvse020(String itemnametemplate,String Noofitemstobecreated,String manufacturernametemplate,String subsetname) throws InterruptedException{
 		Thread.sleep(4000);
-		int var1 = Integer.parseInt(Noofitemstobecreated);
 		Assert.assertTrue(driver.findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+itemnametemplate+"')]")).getText().contains(itemnametemplate));
-		driver.findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/tr[1]/td[1]/div/input[1]")).click();
+		int var1 = Integer.parseInt(Noofitemstobecreated);
 		Thread.sleep(4000);
 		for(int i=1;i<=var1;i++) {
-			Assert.assertEquals(driver.findElement(By.xpath("//form[@id='itemDtlFm']/table/tbody/tr[2]/td[1]")).getText(), "MPN");
+		
 			Assert.assertEquals(driver.findElement(By.xpath("//form[@id='itemDtlFm']/table/tbody/tr[2]/td[3]")).getText(), manufacturernametemplate+i);
 			driver.findElement(By.xpath("//td[@id='CPTab_lbl']")).click();
-			Thread.sleep(4000);
-			Assert.assertEquals(driver.findElement(By.xpath("//tbody[@id='customPricesForm:customPricesTable:tb']/tr/td/*[@title='Update Item Prices in Subset']/../../*[span='"+subsetname+"']")).getText(), subsetname);
-			if(i!=var1) {
-				driver.findElement(By.xpath("//input[@id=('itemNavigateForm:nextItemIcon')]")).click();
-				Thread.sleep(4000);
-			}
-
-		}
+			Thread.sleep(2000);
+			Assert.assertTrue(driver.findElement(By.xpath("//tbody[@id='customPricesForm:customPricesTable:tb']/tr[td='"+subsetname+"']")).isDisplayed(),"subset is not available");
+					}
+			
+		driver.findElement(By.xpath("//input[@id=('itemNavigateForm:nextItemIcon')]")).click();
+		Thread.sleep(2500);
 		return this;
 	}
 
@@ -1337,9 +1341,20 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 
 	@Step("select display online dropdown")
-	public ItemsPageObjects selectDropdowndisplayOnlineDropdown(String selectvalue)  {
-		Waiting.explicitWaitElementToBeSelected(displayOnlineDropdown, 15);
-		new Select(displayOnlineDropdown).selectByVisibleText(selectvalue);
+	public ItemsPageObjects selectDropdowndisplayOnlineDropdown(String selectvalue) throws Exception  {
+		Thread.sleep(2000);
+		displayOnlineDropdown.click();
+		
+		switch(selectvalue)
+		{
+		case "Yes": driver.findElement(By.xpath("//select[@id='searchFormId:dispOnline']/option[@value='Y']")).click();
+			break;
+		case "No": driver.findElement(By.xpath("//select[@id='searchFormId:dispOnline']/option[@value='Y']")).click();
+			break;
+		case "All": driver.findElement(By.xpath("//select[@id='searchFormId:dispOnline']/option[@value='']")).click();
+			break;
+		default : throw new Exception("invalid selection");			
+		}
 		return this;
 	}
 
@@ -1356,12 +1371,35 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	}
 
 	@Step("verification of display online dropdown - No ")
-	public ItemsPageObjects verifyadvse026() {
-		int i =1;
-		String count="count(//table[@id='searchFormId:itemListTableId']/thead/tr/th/div/span/span[text()='Display Online']/../../../preceding-sibling::*)+1";
-		String xpath="//tbody[@id='searchFormId:itemListTableId:tb']/tr["+i+"]/td["+count+"]/label/input";
-		for(i=1;i<10;i++) {
-			Assert.assertFalse(driver.findElement(By.xpath(xpath)).isSelected());
+	public ItemsPageObjects verifyadvSearchForDispayOnineStatus(String noOfItemToBeVerify, String displayOnlineStatus) {
+		
+		int var = Integer.parseInt(noOfItemToBeVerify);
+		for(int i=0;i<=var;i++)
+		
+		{
+			try 
+			{
+				Waiting.explicitWaitVisibilityOfElement(nextItemIconLocator, 10);
+				nextItemIconLocator.click();
+			switch(displayOnlineStatus)
+			{
+			case "Yes": Assert.assertTrue(displayOnlineItemCheckBox.isSelected());
+				break;
+			case "No": Assert.assertFalse(displayOnlineItemCheckBox.isSelected());
+				break;
+			case "All": Assert.assertTrue(displayOnlineItemCheckBox.isSelected() || !(displayOnlineItemCheckBox.isSelected()));
+				
+				break;
+			default : throw new Exception("invalid online status selection selection");			
+			}
+			}
+			catch(Exception e)
+			{
+
+				System.out.println("Online status is not available");
+			}
+		
+	
 		}
 		return this;
 	}
