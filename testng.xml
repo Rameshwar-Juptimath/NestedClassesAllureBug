@@ -13,7 +13,7 @@
 			</run>
 		</groups>
 		<classes>
-			<class name="org.cimm2touch.modules.SubsetModuleTest" />
+			<class name="org.cimm2touch.modules.AdvancedSearchModuleTest" />
 		</classes>
 	</test> <!-- Regression Testing -->
 </suite> <!-- CIMM2Touch Automation Suite -->
