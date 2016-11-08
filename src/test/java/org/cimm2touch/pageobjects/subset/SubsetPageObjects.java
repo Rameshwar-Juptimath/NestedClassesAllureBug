@@ -446,7 +446,9 @@ public class SubsetPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//span[@id='displayPricingFPId:msgId']")
 	private WebElement displayPricesaveLocator;
 
-
+	@FindBy(xpath="//span[@id='subsetForm:removeMsg']")
+	private WebElement succesfulMessageForDeleteSubset;
+	
 	@Step("verify the action label is {0} in subset page")
 	public SubsetPageObjects verifyAction(String actionLabel) {
 		Assert.assertEquals(actionLocator.getText().trim(),actionLabel );
@@ -1275,14 +1277,12 @@ public class SubsetPageObjects extends PageFactoryInitializer
 		String subsetId=driver.findElement(By.xpath("//span[contains(text(),'"+subsetName+"')]/ancestor::td//preceding-sibling::td[1]")).getText();
 		wb.click();
 		TestUtility.alertAccept();
-		
 		return subsetId;
 	}
-	public SubsetPageObjects verifySuccessMessageForDeletionOfSubset(String successmsgForSubsetDelete, String subsetId) throws InterruptedException {
-		Thread.sleep(2500);
-		String[] s=successmsgForSubsetDelete.split("-");
-		
-		String expMsg="Subset - : 'test'with Subset Id -'"+subsetId+"' removed Successfully";
+	public SubsetPageObjects verifySuccessMessageForDeletionOfSubset( String subsetName,String subsetId) throws InterruptedException {
+		Waiting.explicitWaitVisibilityOfElement(succesfulMessageForDeleteSubset, 10);
+		Assert.assertEquals(succesfulMessageForDeleteSubset.getText(), "Subset - : '"+subsetName+"'with Subset Id -'"+subsetId+"' removed Successfully");	
+		//String expMsg="Subset - : 'test'with Subset Id -'"+subsetId+"' removed Successfully";
 		
 		return this;
 	}

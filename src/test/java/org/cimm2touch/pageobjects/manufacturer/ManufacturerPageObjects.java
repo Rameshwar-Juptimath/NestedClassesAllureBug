@@ -137,7 +137,8 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//span[@id='addBrandForm:saveMsgBrandId']")
 	private WebElement addNewBrand_SaveMessageArea;
 
-
+	@FindBy(xpath="//span[@id='listManufacturerForm:noResults']")
+	private WebElement successMessageRemoveMfgLocator;
 
 
 
@@ -564,13 +565,15 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 		return this;
 	}
 
-	@FindBy(id="addBrandForm:manufacturerListComboId")
+	@FindBy(xpath="//select[@id='addBrandForm:manufacturerListComboId']")
 	private WebElement manufacturerdropdown; //manufactuer drop down under Add new Brand form
 
 	@Step("select manufactuer from dropdown")
 	public ManufacturerPageObjects selectmanufacturerfromdropdown(String manufacturername) throws InterruptedException {
-		Thread.sleep(3000);
-		new Select(manufacturerdropdown).selectByVisibleText(manufacturername);
+		Thread.sleep(2500);
+		Select sel=new Select(manufacturerdropdown);
+		sel.selectByVisibleText(manufacturername);
+		//driver.findElement(By.xpath("//select[@id='addBrandForm:manufacturerListComboId']/option[contains(text(),'"+manufacturername+"')]")).click();//select[@id='addBrandForm:manufacturerListComboId']/option[contains(text(),'AS_Manufacturer_Automation_Testing')];
 		return this;
 	}
 
@@ -579,6 +582,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	@Step("type in brandname")
 	public ManufacturerPageObjects typeinbrandname(String brandname) {
+		Waiting.explicitWaitVisibilityOfElement(brandnamefield, 10);
 		brandnamefield.clear();
 		brandnamefield.sendKeys(brandname);
 		return this;
@@ -1347,6 +1351,23 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 		Waiting.explicitWaitVisibilityOfElement(wb, 10);
 		wb.click();
 		TestUtility.alertAccept();
+		return this;
+	}
+
+	public ManufacturerPageObjects removeAndVerifyManufacturer(String manufacturerName) throws InterruptedException {
+		Thread.sleep(2000);
+		WebElement wb=driver.findElement(By.xpath("//tbody[@id='listManufacturerForm:manufacturerTableId:tb']/descendant::td[contains(text(),'"+manufacturerName+"')]/preceding-sibling::td/descendant::input[@title='Remove Manufacturer']"));
+		Waiting.explicitWaitVisibilityOfElement(wb, 10);
+		wb.click();
+		TestUtility.alertAccept();
+		return this;
+	}
+
+	public ManufacturerPageObjects verifySuccessMessageAfterRemove(String successMessage) {
+
+		Waiting.explicitWaitVisibilityOfElement(successMessageRemoveMfgLocator, 10);
+		Assert.assertEquals(successMessageRemoveMfgLocator.getText(), successMessage);
+
 		return this;
 	}
 

@@ -21,9 +21,14 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	SearchDataPropertyFile data = new SearchDataPropertyFile();
 	ApplicationSetUpPropertyFile setUp = new ApplicationSetUpPropertyFile();
 	
+	
+	@Test(priority=0,dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"})
+	public void methodToCreatedTestData(){
+		System.out.println("deleted All test data.");
+	}
 	@Description("This method is used to create new manufacturer.")
 	@Features(value={"AdvancedSearch Module"})
-	@Test(groups={"regression"},priority=0, dataProvider="AdvancedSearchModuleTest",dataProviderClass=SearchData.class)
+	@Test(priority=0,groups={"regression"}, dataProvider="AdvancedSearchModuleTest",dataProviderClass=SearchData.class)
 	public void createNewManufacturer(String testCaseId, String userName, String password, String welComeMessage,String manufacturerName, String manufacturerCode, String SuccessMessageAfterCreate) throws Exception
 	{
 		landingPage()
@@ -82,7 +87,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	
 	@Description("This method is used to create a new subset.")
 	@Features(value={"AdvancedSearch Module"})
-	@Test(groups={"regression"},priority=2,dataProvider="AdvancedSearchModuleTest",dataProviderClass=SearchData.class)
+	@Test(priority=2,groups={"regression"},dataProvider="AdvancedSearchModuleTest",dataProviderClass=SearchData.class)
 	public void createNewSubset(String testCaseId, String userName, String password,String welComeMessage,String subsetName, String ExpSuccessfulMessageForCreatedSubset) throws InterruptedException, Exception 
 	{
 		landingPage()
@@ -127,7 +132,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	
 	@Description("This method is used to create a new item.")
 	@Features(value={"AdvancedSearch Module"})
-	@Test(groups={"regression"},priority=3,dataProvider="AdvancedSearchModuleTest",dataProviderClass=SearchData.class)
+	@Test(priority=3,groups={"regression"},dataProvider="AdvancedSearchModuleTest",dataProviderClass=SearchData.class)
 	public void createNewItem(String testcaseId,String userName, String password, String welcomMessage, String manufactureName, String brandName,
 			String itemNameTemplate,String mfgNameTemplate,String vendorName, String succesfulMessageForCreatedItem, String subsetName, String numberOfItemsToCreate ) throws InterruptedException 
 	{
@@ -949,6 +954,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.clickOnAttributesTab()
 		.verifyItemAttributeAndImage(operator);
 	}
+	@Description("This method is used to delete the created item(s)")
 	@Test(groups="regression",dataProvider ="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
 	public void deleteCreatedItem(String testCaseId, String userName, String password, String welcomeMessage, String partNumber, String expSuccesfulMessageForDeletion, String noOfItemsToBeDelete) throws Exception{
 		landingPage()
@@ -959,16 +965,15 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.verifyWelcomeMessage(welcomeMessage);
 		homePage()
 		.clickOnItemsLink();
-		String partNumber1=itemsPage()
+		itemsPage()
 		.typeinadvancedSearchTopSearchField(partNumber)
 		.clickOnbottomSeacrhButton()
-		.verifyAndRemoveCreatedItem(partNumber);
-		itemsPage()
-		.vefifySuccesfulMessage(expSuccesfulMessageForDeletion, partNumber1, noOfItemsToBeDelete);
+		.verifyAndRemoveCreatedItem(partNumber,noOfItemsToBeDelete);
+		
 		
 	}
 	@Test(groups="regression",dataProvider ="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
-	public void deleteCreatedSubset(String testCaseId, String userName, String password, String welcomeMessage,String subsetName, String successmsgForSubsetDelete) throws Exception{
+	public void deleteCreatedSubset(String testCaseId, String userName, String password, String welcomeMessage,String subsetName) throws Exception{
 		landingPage()
 		.enterUsername(userName)
 		.enterPassword(password)
@@ -980,12 +985,12 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.searchForAnSubset(subsetName)
 		.verifyandDeleteSubset(subsetName);
 		subsetPage()
-		.verifySuccessMessageForDeletionOfSubset(successmsgForSubsetDelete,subsetId);
+		.verifySuccessMessageForDeletionOfSubset(subsetName,subsetId);
 		
 		
 	}
 	@Test(groups="regression",dataProvider ="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
-	public void deleteCreatedBrand(String testCaseId, String userName, String password, String welcomeMessage,String manufacturerName,String brandName, String successmsgForBrandDelete) throws Exception{
+	public void deleteCreatedBrand(String testCaseId, String userName, String password, String welcomeMessage,String manufacturerName,String brandName) throws Exception{
 		landingPage()
 		.enterUsername(userName)
 		.enterPassword(password)
@@ -998,10 +1003,28 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.typeonMBsearch(manufacturerName)
 		.clickonMBsearch()
 		.clickOnlisticon()
-		.isBrandpresent(brandName)
 		.verifyAndRemoveBrand(brandName);
 	
 	}
-	
+	@Test(groups="regression",dataProvider ="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
+	public void deleteCreatedManufactures(String testCaseId, String userName, String password, String welcomeMessage,String manufacturerName,String brandName, String successMessage) throws Exception{
+		landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(welcomeMessage)
+		.clickonManufactureBrandsLink()
+		.manufacturersAndBrandsPage()
+		.assrtManufacturerbrandtextLocator()
+		.typeonMBsearch(manufacturerName)
+		.clickonMBsearch()
+		.removeAndVerifyManufacturer(manufacturerName)
+		.verifySuccessMessageAfterRemove(successMessage);
+	}
+	@Test(priority=1,dependsOnMethods={"deleteCreatedItem","deleteCreatedSubset","deleteCreatedBrand","deleteCreatedManufactures"})
+	public void methodToRemoveAllCreatedTestData(){
+		System.out.println("deleted All test data.");
+	}
 }
 

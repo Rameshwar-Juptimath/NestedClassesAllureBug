@@ -193,7 +193,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	@FindBy(id="searchFormId:searchInId")
 	private WebElement advancedSearchselectLoc;
 
-	@FindBy(xpath="//li/*[@title='Add New Item']")
+	@FindBy(xpath="//*[@title='Add New Item']")
 	private WebElement addNewItemLinklocator;
 
 	@FindBy(xpath="//span[@class='breadCrumb_LastChild']/following-sibling::span[contains(text(),'Add New Item')]")
@@ -297,6 +297,9 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	@FindBy(xpath = "//select[@name= 'searchFormId:rbtCategorized']/option[text()= 'UnCategorized ']")
 	private WebElement itemUnCategorizedDropdown;
+	
+	@FindBy(xpath="//span[@id='searchFormId:deleteSearchItmMsg']")
+	private WebElement succesfulItemDeleteMessage;
 	
 	@Step("select checkbox for MPN under desktop view.")
 	public ItemsPageObjects selectCheckboxOfManufacturerPartNumberInDesktopViewForAdding() throws Exception
@@ -497,20 +500,26 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	@Step("Click on delete icon for the item name {0}")
 	public ItemsPageObjects verifyAndRemoveItem(String CreatedpartNumber) throws Exception {
 		Thread.sleep(2500);
-		String partNuber=driver.findElement(By.xpath("//td[contains(text(),'"+CreatedpartNumber+"')]/preceding-sibling::td[1]")).getText();
 		((JavascriptExecutor)driver).executeScript("arguments[0].click();",driver.findElement(By.xpath("//td[contains(text(),'"+CreatedpartNumber+"')]/preceding-sibling::td/descendant::input[@title='Remove Item']")));
 
 		TestUtility.alertAccept();
 		return this;
 	}
 	@Step("Click on delete icon for the item name {0}")
-	public String verifyAndRemoveCreatedItem(String CreatedpartNumber) throws Exception {
+	public String verifyAndRemoveCreatedItem(String CreatedpartNumber, String noOfItemsTobeDelete) throws Exception {
 		Thread.sleep(2500);
-		String partNuber=driver.findElement(By.xpath("//td[contains(text(),'"+CreatedpartNumber+"')]/preceding-sibling::td[1]")).getText();
-		((JavascriptExecutor)driver).executeScript("arguments[0].click();",driver.findElement(By.xpath("//td[contains(text(),'"+CreatedpartNumber+"')]/preceding-sibling::td/descendant::input[@title='Remove Item']")));
+		int items= Integer.parseInt(noOfItemsTobeDelete);
+		String partNuber=null;
+		for(int i=1; i<items; i++){
+		partNuber=driver.findElement(By.xpath("//td[contains(text(),'"+CreatedpartNumber+"')]/preceding-sibling::td/descendant::span[contains(@id,'ITMID')]")).getText();
+		((JavascriptExecutor)driver).executeScript("arguments[0].click();",driver.findElement(By.xpath("//td[contains(text(),'"+CreatedpartNumber+i+"')]/preceding-sibling::td/descendant::input[@title='Remove Item']")));
 
 		TestUtility.alertAccept();
+		Thread.sleep(2500);
+		Assert.assertEquals(succesfulItemDeleteMessage.getText().trim(), "Item with Part No. : '"+CreatedpartNumber+i+"' removed Successfully");
+		}
 		return partNuber;
+		
 	}
 
 
@@ -872,8 +881,9 @@ public class ItemsPageObjects extends PageFactoryInitializer
 		}
 		return this;
 	}
-
-	public ItemsPageObjects clickOnAddNewItemButton() {
+	@Step("click on create new item locator")
+	public ItemsPageObjects clickOnAddNewItemButton() throws InterruptedException {
+		Thread.sleep(3500);
 		addNewItemLinklocator.click();
 		return this;
 	}
@@ -927,17 +937,21 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	}
 
 	public ItemsPageObjects clickOncustomPricesTabLocator() throws InterruptedException {
+		
+		Waiting.explicitWaitVisibilityOfElement(customPricesTabLocator, 10);
 		customPricesTabLocator.click();
-		Thread.sleep(5000);
+		
 		return this;
 	}
 
-	public ItemsPageObjects assignSubsettoItems(String subsetname) {
-		(driver.findElement(By.xpath("//tbody[@id='customPricesForm:customPricesTable:tb']/tr[td='"+subsetname+"']/td[1]/*[1]"))).click();
+	public ItemsPageObjects assignSubsettoItems(String subsetname) throws InterruptedException {
+		Thread.sleep(2000);
+		(driver.findElement(By.xpath("//tbody[@id='customPricesForm:customPricesTable:tb']/tr[td='"+subsetname+"']/descendant::input[@title='Add Item Into Subset']"))).click();
 		return this;
 	}
 
 	public ItemsPageObjects verifySubsetAssignToItemmessageloc(String subsetname) {
+		Waiting.explicitWaitVisibilityOfElement(subsetassigntoitemmessageloc, 10);
 		Assert.assertEquals(subsetassigntoitemmessageloc.getText().trim(),"Item added to Subset \""+subsetname+"\" Successfully");
 		return this;
 	}
@@ -945,7 +959,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	public ItemsPageObjects createNewItemsinside(String manufacturername,String brandname,String itemnametemplate,String manufacturernametemplate,String vendorname,String savenewItemMessage,String subsetname,String Noofitemstobecreated) throws InterruptedException
 	{
 		int items = Integer.parseInt(Noofitemstobecreated);
-		for(int i=1; i<=items; items++)
+		for(int i=1; i<=items; i++)
 		{
 			clickOnAddNewItemButton();
 			verifyAddNewItemSectioniEnabled();
@@ -1642,16 +1656,17 @@ public class ItemsPageObjects extends PageFactoryInitializer
 		
 	}
 	@Step("verify the succesful message after deletion {0}")
-	public ItemsPageObjects vefifySuccesfulMessage(String expSuccesfulMessageForDeletion, String partNumber, String Noofitemstobecreated) throws InterruptedException {
+	public ItemsPageObjects vefifySuccesfulMessage(String partNumber,String expSuccesfulMessageForDeletion,String Noofitemstobecreated) throws InterruptedException {
 		Thread.sleep(2500);
 		int items = Integer.parseInt(Noofitemstobecreated);
-		for(int i=1; i<=items; items++){
-			Assert.assertEquals(driver.findElement(By.xpath("//span[@id='searchFormId:deleteSearchItmMsg']")).getText().trim(), "Item with Part No. : '"+partNumber+items+"' removed Successfully");
+		for(int i=1; i<=items; i++){
+			Assert.assertEquals(driver.findElement(By.xpath("//span[@id='searchFormId:deleteSearchItmMsg']")).getText().trim(), "Item with Part No. : '"+partNumber+i+"' removed Successfully");
 		}
 		return this;
 		
 	}
 
+	
 	
 		
 	

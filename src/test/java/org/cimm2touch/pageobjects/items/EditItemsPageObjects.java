@@ -1951,7 +1951,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 		return this;
 	}
-
+	@Step("verification of item attribute {0} and image status")
 	public EditItemsPageObjects verifyItemAttributeAndImage(String operator) throws Exception {
 		Thread.sleep(2500);
 		switch(operator){
