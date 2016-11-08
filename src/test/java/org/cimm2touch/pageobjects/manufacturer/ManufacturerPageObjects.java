@@ -1342,4 +1342,12 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 		return this;
 	}
 
+	public ManufacturerPageObjects verifyAndRemoveBrand(String brandName) {
+		WebElement wb= driver.findElement(By.xpath("//td[contains(text(),'"+brandName+"')]/ancestor::td//preceding-sibling::td/descendant::input[@title='Remove Brand']"));
+		Waiting.explicitWaitVisibilityOfElement(wb, 10);
+		wb.click();
+		TestUtility.alertAccept();
+		return this;
+	}
+
 }

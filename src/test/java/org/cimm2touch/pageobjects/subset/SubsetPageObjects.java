@@ -1268,6 +1268,28 @@ public class SubsetPageObjects extends PageFactoryInitializer
 		assertThat(driver.findElement(By.xpath("//span[@id='saveMessage']")).getText(),containsString(saveMessage));
 		return this;
 	}
+	public String verifyandDeleteSubset(String subsetName) throws Exception {
+		WebElement wb=driver.findElement(By.xpath("//span[contains(text(),'"+subsetName+"')]/ancestor::td//preceding-sibling::td/descendant::input[@value='Remove']"));
+		Waiting.explicitWaitVisibilityOfElement(wb, 10);
+		TestUtility.assertElementPresent(wb);
+		String subsetId=driver.findElement(By.xpath("//span[contains(text(),'"+subsetName+"')]/ancestor::td//preceding-sibling::td[1]")).getText();
+		wb.click();
+		TestUtility.alertAccept();
+		
+		return subsetId;
+	}
+	public SubsetPageObjects verifySuccessMessageForDeletionOfSubset(String successmsgForSubsetDelete, String subsetId) throws InterruptedException {
+		Thread.sleep(2500);
+		String[] s=successmsgForSubsetDelete.split("-");
+		
+		String expMsg="Subset - : 'test'with Subset Id -'"+subsetId+"' removed Successfully";
+		
+		return this;
+	}
 
 
+	
+	
+	
+	
 }	

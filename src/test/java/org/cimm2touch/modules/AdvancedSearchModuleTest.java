@@ -968,10 +968,40 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		
 	}
 	@Test(groups="regression",dataProvider ="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
-	public void deleteCreatedSubset(){
-		
+	public void deleteCreatedSubset(String testCaseId, String userName, String password, String welcomeMessage,String subsetName, String successmsgForSubsetDelete) throws Exception{
+		landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(welcomeMessage)
+		.clickonSubsetlink();
+		String subsetId=subsetPage()
+		.searchForAnSubset(subsetName)
+		.verifyandDeleteSubset(subsetName);
+		subsetPage()
+		.verifySuccessMessageForDeletionOfSubset(successmsgForSubsetDelete,subsetId);
 		
 		
 	}
+	@Test(groups="regression",dataProvider ="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
+	public void deleteCreatedBrand(String testCaseId, String userName, String password, String welcomeMessage,String manufacturerName,String brandName, String successmsgForBrandDelete) throws Exception{
+		landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(welcomeMessage)
+		.clickonManufactureBrandsLink()
+		.manufacturersAndBrandsPage()
+		.assrtManufacturerbrandtextLocator()
+		.typeonMBsearch(manufacturerName)
+		.clickonMBsearch()
+		.clickOnlisticon()
+		.isBrandpresent(brandName)
+		.verifyAndRemoveBrand(brandName);
+	
+	}
+	
 }
 
