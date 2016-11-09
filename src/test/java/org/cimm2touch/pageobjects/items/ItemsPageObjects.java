@@ -281,6 +281,10 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	private WebElement imageSubfilterLocator;
 	
 	
+	@FindAll(value={@FindBy(xpath="//input[@title='Edit Item']")})
+	private List<WebElement> editItemLink;
+	
+	
 	@FindBy(xpath="//input[@id='itemNavigateForm:nextItemIcon']")
 	private WebElement nextItemIconLocator;
 
@@ -995,6 +999,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	@Step("click on advanced search top search button")
 	public ItemsPageObjects clickOnadvancedSearchTopSearchButton() {
+		Waiting.explicitWaitVisibilityOfElement(advancedSearchTopSearchButton, 10);
 		advancedSearchTopSearchButton.click();
 		return this;
 	}
@@ -1046,9 +1051,20 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	}
 
 	@Step("verify 'Manufacturer Part No search' Searchresult {0} is displayed")
-	public ItemsPageObjects verifyadvSe010Searchresult(String advSearchinput) throws InterruptedException {
-		Thread.sleep(3000);
-		Assert.assertEquals(driver.findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+advSearchinput+"')]")).getText(),advSearchinput);
+	public ItemsPageObjects verifyadvSe010Searchresult(String itemNameTemplate,String advSearchinput, String Noofitemstobecreated) throws InterruptedException {
+		Thread.sleep(2500);
+		int var1 = Integer.parseInt(Noofitemstobecreated);
+		Waiting.explicitWaitVisibilityOfElements(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+itemNameTemplate+"')]"), 10);
+		Assert.assertTrue(driver.findElements(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+itemNameTemplate+"')]")).get(0).getText().contains(itemNameTemplate));
+		driver.findElements(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+itemNameTemplate+"')]/preceding-sibling::td/descendant::input[@title='Edit Item']")).get(0).click();
+		for(int i=1;i<=var1;i++) 
+		{
+			Thread.sleep(2500);
+			Waiting.explicitWaitVisibilityOfElement(By.xpath("//input[@id='generalInfoFormId:mpnTxtId']"), 10);
+			Assert.assertEquals(driver.findElement(By.xpath("//input[@id='generalInfoFormId:mpnTxtId']")).getAttribute("value"),advSearchinput+i);
+		}
+		nextItemIconLocator.click();
+		Thread.sleep(2500);
 		return this;
 	}
 
@@ -1196,20 +1212,20 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 
 	@Step("verify search result-items belongs to the subset {2}")
-	public ItemsPageObjects verifyadvse020(String itemnametemplate,String Noofitemstobecreated,String manufacturernametemplate,String subsetname) throws InterruptedException{
-		Thread.sleep(4000);
-		Assert.assertTrue(driver.findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+itemnametemplate+"')]")).getText().contains(itemnametemplate));
+	public ItemsPageObjects verifyadvsearchForSubset(String itemnametemplate,String Noofitemstobecreated,String manufacturernametemplate,String subsetname) throws InterruptedException{
 		int var1 = Integer.parseInt(Noofitemstobecreated);
 		Thread.sleep(4000);
-		for(int i=1;i<=var1;i++) {
-		
-			Assert.assertEquals(driver.findElement(By.xpath("//form[@id='itemDtlFm']/table/tbody/tr[2]/td[3]")).getText(), manufacturernametemplate+i);
+		Assert.assertTrue(driver.findElements(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+itemnametemplate+"')]")).get(0).getText().contains(itemnametemplate));
+		Waiting.explicitWaitVisibilityOfElements(editItemLink, 10);
+		editItemLink.get(0).click();
+		for(int i=1;i<=var1;i++) 
+		{
+			
 			driver.findElement(By.xpath("//td[@id='CPTab_lbl']")).click();
 			Thread.sleep(2000);
 			Assert.assertTrue(driver.findElement(By.xpath("//tbody[@id='customPricesForm:customPricesTable:tb']/tr[td='"+subsetname+"']")).isDisplayed(),"subset is not available");
-					}
-			
-		driver.findElement(By.xpath("//input[@id=('itemNavigateForm:nextItemIcon')]")).click();
+		}
+		nextItemIconLocator.click();
 		Thread.sleep(2500);
 		return this;
 	}
@@ -1233,8 +1249,8 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	@Step("clicking on vendor filter")
 	public ItemsPageObjects clickOnas_vendorfilter() throws InterruptedException {
+		Waiting.explicitWaitVisibilityOfElement(as_vendorfilter, 10);
 		as_vendorfilter.click();
-		Thread.sleep(4000);
 		return this;
 	}
 
@@ -1261,21 +1277,19 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	@Step("verification of vendor filter search results")
 	public ItemsPageObjects verifyadvseVendorFilter(String itemnametemplate,String Noofitemstobecreated,String manufacturernametemplate,String vendorname) throws InterruptedException{
-
+		Thread.sleep(3500);
 		int var1 = Integer.parseInt(Noofitemstobecreated);
-		Assert.assertEquals(driver.findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/tr[1]/td[5]")).getText(), itemnametemplate+"1");
-		driver.findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/tr[td[contains(text(),'"+itemnametemplate+"1"+"')]]/td/div/input[1]")).click();
-		Thread.sleep(4000);
-		for(int i=1;i<=var1;i++) {
-			Assert.assertEquals(driver.findElement(By.xpath("//form[@id='itemDtlFm']/table/tbody/tr[2]/td[1]")).getText(), "MPN");
-			Assert.assertEquals(driver.findElement(By.xpath("//form[@id='itemDtlFm']/table/tbody/tr[2]/td[3]")).getText(), manufacturernametemplate+i);
-
-			Assert.assertEquals(driver.findElement(By.xpath("//*[text()='Supplier']/../following-sibling::div/div/div/div/input[1]")).getAttribute("value"), vendorname);
-
-
-			if(i!=var1) {
-				driver.findElement(By.xpath("//input[@id=('itemNavigateForm:nextItemIcon')]")).click();
-				Thread.sleep(4000);
+		Assert.assertTrue(driver.findElements(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+itemnametemplate+"')]")).get(0).getText().contains(itemnametemplate));
+		Waiting.explicitWaitVisibilityOfElements(editItemLink, 10);
+		editItemLink.get(0).click();
+		for(int i=1;i<=var1;i++) 
+		{	Waiting.explicitWaitVisibilityOfElement(By.xpath("//input[@id='generalInfoFormId:supplierListComboIdcomboboxField']"), 10);
+			Assert.assertEquals(driver.findElement(By.xpath("//input[@id='generalInfoFormId:supplierListComboIdcomboboxField']")).getAttribute("value"),vendorname );
+			if(i!=var1) 
+			{
+				Waiting.explicitWaitVisibilityOfElement(nextItemIconLocator, 10);
+				nextItemIconLocator.click();
+				
 			}
 
 		}

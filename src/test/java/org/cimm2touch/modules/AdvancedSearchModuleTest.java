@@ -314,7 +314,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	@Description("Items - Advanced Search - Manufacturer Part No search")
 	@TestCaseId("TC_ADV SEARCH_010")
 	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
-	public void advSearch_010(String testCaseId,String userName, String password,String searchData, String selectValue) throws InterruptedException {
+	public void advSearch_010(String testCaseId,String userName, String password,String searchData, String selectValue,String noOfItemsTobeVerify, String itemNameTemplate) throws InterruptedException {
 		landingPage()
 		.enterUsername(userName)
 		.enterPassword(password)
@@ -325,7 +325,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.typeinadvancedSearchTopSearchField(searchData)
 		.selectDropdownTop(selectValue)
 		.clickOnadvancedSearchTopSearchButton()
-		.verifyadvSe010Searchresult(searchData);
+		.verifyadvSe010Searchresult(itemNameTemplate,searchData,noOfItemsTobeVerify);
 
 	}
 
@@ -483,7 +483,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.clickOnas_Subsetfilter()
 		.subsetfilterWithoutSearch(subsetName)
 		.clickOnas_Subsetfiltersearchbutton()
-		.verifyadvse020(itemNameTemplate,noOfOtemsTobeCreated,mfgNameTemplate,subsetName);
+		.verifyadvsearchForSubset(itemNameTemplate,noOfOtemsTobeCreated,mfgNameTemplate,subsetName);
 
 	}
 
@@ -503,7 +503,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.typeIn_as_Subsetfiltersearchfield(subsetName)
 		.subsetfilterWithSearch(subsetName)
 		.clickOnas_Subsetfiltersearchbutton()
-		.verifyadvse020(itemNameTemplate,noOfOtemsTobeCreated,mfgNameTemplate,subsetName);		
+		.verifyadvsearchForSubset(itemNameTemplate,noOfOtemsTobeCreated,mfgNameTemplate,subsetName);		
 	}
 
 	@Features("AdvancedSearch Module")
@@ -557,26 +557,6 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.verifyresultsadvSe024(selectItemStatus);
 
 	}
-
-
-	/*@Features("AdvancedSearch Module")
-	@Description("Items - Advanced Search -Display Online - Yes")
-	@TestCaseId("AdvSe025")
-	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
-	public void advSearch_025(String testCaseId, String userName, String password, String displayOnlineStatus) throws Exception {
-		landingPage()
-		.enterUsername(userName)
-		.enterPassword(password)
-		.clickOnLogin();
-		homePage()
-		.clickOnItemsLink()
-		.itemsPage()
-		.selectDropdowndisplayOnlineDropdown(displayOnlineStatus)
-		.clickOnbottomSeacrhButton()
-		.verifyadvse025();
-
-	}
-*/
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search -Display Online - yes/No/OR")
 	@TestCaseId("AdvSe025, AdvSe026, AdvSe027")
@@ -592,23 +572,6 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.verifyadvSearchForDispayOnineStatus(noOfItemsToBeVerify,displayOnlineStatus);
 
 	}
-
-	/*@Features("AdvancedSearch Module")
-	@Description("Items - Advanced Search -Display Online - All")
-	@TestCaseId("AdvSe027")
-	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
-	public void advSearch_027(String testCaseId, String userName, String password, String displayOnlineStatus) throws Exception {
-		landingPage()
-		.enterUsername(userName)
-		.enterPassword(password)
-		.clickOnLogin();
-		homePage().clickOnItemsLink().itemsPage()
-		.selectDropdowndisplayOnlineDropdown(displayOnlineStatus)
-		.clickOnbottomSeacrhButton()
-		.verifyadvse027();
-
-	}*/
-
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - veriifcation of grayed out fields in Subset Item dropdown")
 	@TestCaseId("AdvSe028")
