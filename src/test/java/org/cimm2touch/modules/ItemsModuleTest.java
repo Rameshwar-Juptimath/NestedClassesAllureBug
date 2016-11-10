@@ -84,17 +84,18 @@ public class ItemsModuleTest extends PageFactoryInitializer
 	@Features(value = {"Items Module"})
 	@Description("This is a test case which verifies the field that is selected is getting displayed as a column in the items list page. It also verifies that when the field is deselected the column should not get displayed.")
 	@TestCaseId("TC_ITEMS_004")
-	@Test(groups="regression")
-	public void verifySelectedFieldIsDisplayedInItemsPage() throws Exception {
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void verifySelectedFieldIsDisplayed(String testCaseId, String userName, String password,String welcomeMessage) throws Exception {
 		/*
 		 * @author:hemanth.sridhar
 		 * 
 		 */
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
+		.verifyWelcomeMessage(welcomeMessage)
 		.clickOnItemsLink()
 		.itemsPage()
 		.clickOnSettingsIcon()
@@ -111,17 +112,18 @@ public class ItemsModuleTest extends PageFactoryInitializer
 	@Features(value = {"Items Module"})
 	@Description("This is a test case which verifies the taxonomy tree in the left side of the items list page")
 	@TestCaseId("TC_ITEMS_006")
-	@Test(groups="regression")
-	public void verifyAttributesInTaxonomyTree() throws Exception {
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void verifyAttributesInTaxonomyTree(String testCaseId, String userName, String password,String welcomeMessage) throws Exception {
 		/*
 		 * @author:hemanth.sridhar
 		 * 
 		 */
 		String defaultTaxonomy = landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
+		.verifyWelcomeMessage(welcomeMessage)
 		.clickOnItemsLink()
 		.homePage()
 		.clickOnLeftNavigationbar()
@@ -149,48 +151,50 @@ public class ItemsModuleTest extends PageFactoryInitializer
 	@Features(value = {"Items Module"})
 	@Description("This is a test case which verifies the search functionality in the taxonomy tree.")
 	@TestCaseId("TC_ITEMS_007")
-	@Test(groups="regression")
-	public void verifySearchInTaxonomyTree() throws Exception {
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void verifySearchInTaxonomyTree(String testCaseId, String userName, String password,String welcomeMessage, String category) throws Exception {
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
+		.verifyWelcomeMessage(welcomeMessage)
 		.clickOnItemsLink()
 		.homePage()
 		.clickOnLeftNavigationbar()
 		.itemsPage()
-		.enterSearchCategory(data.getCategoryToSearch())
+		.enterSearchCategory(category)
 		.clickOnSearchCategory()
-		.verifyWhetherSearchedTaxonomyStyleIsGreen(data.getCategoryToSearch());
+		.verifyWhetherSearchedTaxonomyStyleIsGreen(category);
 	}
 	
 	@Features(value = {"Items Module"})
 	@Description("This is a test case which verifies the refresh functionality in the taxonomy tree.")
 	@TestCaseId("TC_ITEMS_008")
 	@Issues(value = { @Issue(value = "CIM-901") })
-	@Test(groups="regression")
-	public void verifyRefreshInTaxonomyTree() throws Exception {
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void verifyRefreshInTaxonomyTree(String testCaseId, String userName, String password,String welcomeMessage,String category ) throws Exception {
 		/*
 		 * @author:hemanth.sridhar
 		 * 
 		 */
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
+		.verifyWelcomeMessage(welcomeMessage)
 		.clickOnItemsLink()
 		.homePage()
 		.clickOnLeftNavigationbar()
 		.itemsPage()
 		.enterSearchCategory(data.getCategoryToSearch())
 		.clickOnSearchCategory()
-		.verifyWhetherSearchedTaxonomyStyleIsGreen(data.getCategoryToSearch())
-		.verifyWhetherValueContainsTextInsideTheTextbox(data.getCategoryToSearch())
+		.verifyWhetherSearchedTaxonomyStyleIsGreen(category)
+		.verifyWhetherValueContainsTextInsideTheTextbox(category)
 		.clickOnRefresh()
-		.verifyWhetherSearchedTaxonomyStyleIsNotGreen(data.getCategoryToSearch())
-		.verifyClearingOfSearchTextbox(data.getCategoryToSearch());
+		.verifyWhetherSearchedTaxonomyStyleIsNotGreen(category)
+		.verifyClearingOfSearchTextbox(category);
 	}
 	
 	@Features(value = {"Items Module"})

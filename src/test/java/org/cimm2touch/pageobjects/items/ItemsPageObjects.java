@@ -1052,19 +1052,18 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	@Step("verify 'Manufacturer Part No search' Searchresult {0} is displayed")
 	public ItemsPageObjects verifyadvSe010Searchresult(String itemNameTemplate,String advSearchinput, String Noofitemstobecreated) throws InterruptedException {
-		Thread.sleep(2500);
+		Thread.sleep(3500);
 		int var1 = Integer.parseInt(Noofitemstobecreated);
-		Waiting.explicitWaitVisibilityOfElements(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+itemNameTemplate+"')]"), 10);
-		Assert.assertTrue(driver.findElements(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+itemNameTemplate+"')]")).get(0).getText().contains(itemNameTemplate));
+		Assert.assertTrue(driver.findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+itemNameTemplate+"')]")).getText().contains(itemNameTemplate));
 		driver.findElements(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+itemNameTemplate+"')]/preceding-sibling::td/descendant::input[@title='Edit Item']")).get(0).click();
 		for(int i=1;i<=var1;i++) 
 		{
-			Thread.sleep(2500);
-			Waiting.explicitWaitVisibilityOfElement(By.xpath("//input[@id='generalInfoFormId:mpnTxtId']"), 10);
+			Thread.sleep(3500);
 			Assert.assertEquals(driver.findElement(By.xpath("//input[@id='generalInfoFormId:mpnTxtId']")).getAttribute("value"),advSearchinput+i);
+			nextItemIconLocator.click();
+			Thread.sleep(2500);
 		}
-		nextItemIconLocator.click();
-		Thread.sleep(2500);
+		
 		return this;
 	}
 
@@ -1223,7 +1222,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 			
 			driver.findElement(By.xpath("//td[@id='CPTab_lbl']")).click();
 			Thread.sleep(2000);
-			Assert.assertTrue(driver.findElement(By.xpath("//tbody[@id='customPricesForm:customPricesTable:tb']/tr[td='"+subsetname+"']")).isDisplayed(),"subset is not available");
+			Assert.assertTrue(driver.findElement(By.xpath("//tbody[@id='customPricesForm:customPricesTable:tb']/tr/td/*[@title='Update Item Prices in Subset']/../../*[span='"+subsetname+"']")).isDisplayed(),"subset is not available");
 		}
 		nextItemIconLocator.click();
 		Thread.sleep(2500);
@@ -1340,14 +1339,18 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	}
 
 	@Step("Verify searched results which are active")
-	public ItemsPageObjects verifyresultsadvSe024(String status) throws Exception {
-		int i=0;
-		String count="count(//table[@id='searchFormId:itemListTableId']/thead/tr/th/div/span[text()='Status']/../../preceding-sibling::*)+1";
-		String xpath="//table[@id='searchFormId:itemListTableId']/tbody/tr["+i+"]/td["+count+"]/*/*";
-		for(i=1;i<10;i++)
-		{	
-
-			Assert.assertEquals(driver.findElement(By.xpath(xpath)).getText(), status);
+	public ItemsPageObjects verifyresultsadvSe024(String status, String expStatus) throws Exception {
+		Waiting.explicitWaitVisibilityOfElements(editItemLink, 10);
+		editItemLink.get(0).click();
+		Thread.sleep(2500);
+		switch(status)
+		{
+		case "Active" : Assert.assertEquals(driver.findElement(By.xpath("//select[contains(@id,'generalInfoFormId:activeId')]/option[contains(@value,'Y')]")).getAttribute("selected"), expStatus);
+			break;
+		case "InActive" : Assert.assertEquals(driver.findElement(By.xpath("//select[contains(@id,'generalInfoFormId:activeId')]/option[contains(@value,'N')]")).getAttribute("selected"), expStatus);
+			break;
+			default : throw new Exception("in valid selection");
+			
 		}
 		return this;
 	}
@@ -1716,6 +1719,12 @@ public class ItemsPageObjects extends PageFactoryInitializer
 		}
 		return this;
 		
+	}
+	@Step("to check the required checkboxes in {0} for desktop view")
+	public ItemsPageObjects clickOnGenricColumnSetting(String genericColumnSetting, String fields) {
+
+
+		return this;
 	}
 
 	

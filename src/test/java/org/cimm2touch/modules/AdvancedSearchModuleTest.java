@@ -23,6 +23,21 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	
 	
 	
+	@Description("This method is used to set the per -setting of show fields in for Automation.")
+	@Features(value={"AdvancedSearch Module"})
+	@Test(groups={"regression"}, dataProvider="AdvancedSearchModuleTest",dataProviderClass=SearchData.class)
+	public void genericFieldsSettingForItems(String testCaseId, String userName, String password, String welComeMessage, String genericColumnSetting, String fields){
+		landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(welComeMessage)
+		.clickOnItemsLink()
+		.clickOnGenricColumnSetting(genericColumnSetting, fields);
+		
+	}
+	
 	@Description("This method is used to create new manufacturer.")
 	@Features(value={"AdvancedSearch Module"})
 	@Test(enabled=false,priority=0,groups={"regression"}, dataProvider="AdvancedSearchModuleTest",dataProviderClass=SearchData.class)
@@ -145,47 +160,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 				vendorName, succesfulMessageForCreatedItem, subsetName, numberOfItemsToCreate);
 	}
 	
-	@DataProvider(name = "partNumbersforDescription")
-	public static Object[][] partNumbersforDescription()
-	{
-		return new Object[ ][ ] {
-			new Object[] {"Automation_PN_1"},
-			new Object[] {"Automation_PN_2"}
-		};
-	}
-
-	@DataProvider(name = "partNumberswithLongDescriptionVerification")
-	public static Object[][] partNumberswithLongDescription()
-	{
-		return new Object[ ][ ] {
-			new Object[] {"Automation_PN_1"},
-			new Object[] {"Automation_PN_2"}
-		};
-	}
-
-	@DataProvider(name = "partNumberswithoutLongDescriptionVerification")
-	public static Object[][] partNumberswithoutLongDescription()
-	{
-		return new Object[ ][ ] {
-			new Object[] {"Automation_PN_3"},
-			new Object[] {"Automation_PN_4"},
-			new Object[] {"Automation_PN_5"}
-		};
-	}
-
-	@DataProvider(name = "partNumbersIgnoreLongDescriptionVerification")
-	public static Object[][] partNumbersIgnoreLongDescription()
-	{
-		return new Object[ ][ ] {
-			new Object[] {"Automation_PN_1"},
-			new Object[] {"Automation_PN_2"},
-			new Object[] {"Automation_PN_3"},
-			new Object[] {"Automation_PN_4"},
-			new Object[] {"Automation_PN_5"}
-		};
-	}
-
-
+	
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Part No or Keyword search")
 	@TestCaseId("TC_ADV SEARCH_003")
@@ -541,20 +516,21 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 
 	}
 
-	//
+	
 	@Features("AdvancedSearch Module")
-	@Description("Items - Advanced Search -Item status - Active")
+	@Description("Items - Advanced Search -Item status - Active/InActive")
 	@TestCaseId("AdvSe024")
 	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
-	public void advSearch_024(String testCaseId, String userName, String password, String selectItemStatus) throws Exception {
+	public void advSearch_024(String testCaseId, String userName, String password, String selectItemStatus, String expStatus) throws Exception {
 		landingPage()
 		.enterUsername(userName)
 		.enterPassword(password)
 		.clickOnLogin();
-		homePage().clickOnItemsLink().itemsPage()
+		homePage().clickOnItemsLink()
+		.itemsPage()
 		.selectDropdownitemstatusDropdown(selectItemStatus)
 		.clickOnbottomSeacrhButton()
-		.verifyresultsadvSe024(selectItemStatus);
+		.verifyresultsadvSe024(selectItemStatus,expStatus);
 
 	}
 	@Features("AdvancedSearch Module")
@@ -716,33 +692,6 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.verifyPartNumbers();
 	}
 
-
-	/*@Features("AdvancedSearch Module")
-	@Description("Items - Advanced Search - Verification of appropriate search result displays when 'LongDesc' is selected under LongDesc dropdown")
-	@TestCaseId("AdvSe039")
-	@Test(groups="regression", dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
-	public void advSearch_039(String testcaseID, String userName, String password, String welcomeMessage,String partNumber, String itemnametemplate) throws Exception
-	{
-		landingPage()
-		.enterUsername(userName)
-		.enterPassword(password)
-		.clickOnLogin()
-		.homePage()
-		.verifyWelcomeMessage(welcomeMessage);
-		homePage()
-		.clickOnItemsLink()
-		.itemsPage()
-		.typeinadvancedSearchTopSearchField(itemnametemplate)
-		.clickOnLongDescSubFilter()
-		.clickOnbottomSeacrhButton()
-		.verifylongDescPartNumbers(partNumber)
-		.clickOnEditButton(partNumber)
-		.editItemsPage()
-		.clickOnDescriptionTabLink()
-		.verifyLongDescription();
-	}*/
-
-
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Verification of appropriate search result displays when 'LongDesc' is selected under LongDesc dropdown")
 	@TestCaseId("AdvSe040")
@@ -769,82 +718,6 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.verifyLongDescription(longDescription);
 	}
 
-	/*@Features("AdvancedSearch Module")
-	@Description("Items - Advanced Search - Verification of appropriate  search result displays when 'Ignore' is selected under LongDesc dropdown")
-	@TestCaseId("AdvSe041")
-	@Test(groups="regression",dataProvider ="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
-	public void advSearch_041(String testcaseID, String userName, String password, String welcomeMessage, String partNumber, String itemTemplate) throws Exception
-	{
-		landingPage()
-		.enterUsername(userName)
-		.enterPassword(password)
-		.clickOnLogin()
-		.homePage()
-		.verifyWelcomeMessage(welcomeMessage);
-		homePage()
-		.clickOnItemsLink()
-		.itemsPage()
-		.typeinadvancedSearchTopSearchField(itemTemplate)
-		.clickOnbottomSeacrhButton()
-		.verifyIgnorelongDescPartNumbers(partNumber)
-		.clickOnEditButton(partNumber)
-		.editItemsPage()
-		.clickOnDescriptionTabLink()
-		.verifyIgnorelongDescPartNumbers();
-	}
-*/
-	
-
-
-	/*@Features("AdvancedSearch Module")
-	@Description("Items - Advanced Search - Verification of appropriate  search result displays when attributes, images and (OR) is searched for Combine Above 'Items With'")
-	@TestCaseId("AdvSe046")
-	@Test(groups="regression")//,dataProvider ="partNumbersIgnoreLongDescriptionVerification")
-	public void advSe046(@Parameter("Part Number")String partNumber) throws Exception
-	{
-		new LoginModuleTest().login();
-		homePage()
-		.clickOnItemsLink()
-		.itemsPage()
-		.typeinadvancedSearchTopSearchField(data.itemnametemplate())
-		.clickOnImagesSubFilter()
-		.clickOnWithAttributesSubFilter()
-		.clickOnCombinewithOR()
-		.clickOnbottomSeacrhButton();
-	}*/
-
-	@DataProvider(name="Select Value For Attributes")
-	public Object[][] selectValueForAttributes() throws Exception
-	{
-		return new Object[][] {
-			new Object[] {"Automation_PN_1"}
-			//new Object[] {"Automation_PN_2"}
-		};
-	}
-
-	
-
-
-
-	/*@Features("AdvancedSearch Module")
-	@Description("Items - Advanced Search - veriifcation of No Attribute items")
-	@TestCaseId("AdvSe031")
-	@Test()
-	public void advSe031() throws Exception 
-	{
-		new LoginModuleTest()
-		.login();
-		homePage()
-		.clickOnItemsLink()
-		.itemsPage()
-		.selectWithoutAttributesDropdown()
-		.clickOnbottomSeacrhButton()
-		.clickOnFirstEditButton()
-		.editItemsPage()
-		.clickOnAttributesTab()
-		.verifyadvse031();
-	}
-*/
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Verification of appropriate  search result displays for Categorized/unCategorized/Ignore is selected under Categorized dropdown")
 	@TestCaseId("AdvSe042")
@@ -868,28 +741,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.verifyadvsearchResultsForCategory(categoryStatus,noOfItemsToBeVerify);
 	}
 
-	/*@Features("AdvancedSearch Module")
-	@Description("Items - Advanced Search - veriifcation of Attribute items")
-	@TestCaseId("AdvSe043")
-	@Test(groups="regression",dataProvider ="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
-	public void advSe043(String testCaseId, String userName, String password, String welcomeMessage) throws Exception 
-	{
-		landingPage()
-		.enterUsername(userName)
-		.enterPassword(password)
-		.clickOnLogin()
-		.homePage()
-		.verifyWelcomeMessage(welcomeMessage);
-		homePage()
-		.clickOnItemsLink()
-		.itemsPage()
-		.selectWithOutCategorizedDropdown()
-		.clickOnbottomSeacrhButton()
-		.clickOnFirstEditButton()
-		.editItemsPage()
-		.clickOnCategorizationTab()
-		.verifyadvse043();
-	}*/
+	
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - Verification of appropriate  search result displays when attributes, images and (AND) is searched under Attribute, "
 			+ "Image and Combine Above 'Items With' dropdown'")
