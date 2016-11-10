@@ -23,10 +23,10 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	
 	
 	
-	@Description("This method is used to set the per -setting of show fields in for Automation.")
+	@Description("pre setting for Desktop view - show fields for Automation.")
 	@Features(value={"AdvancedSearch Module"})
 	@Test(groups={"regression"}, dataProvider="AdvancedSearchModuleTest",dataProviderClass=SearchData.class)
-	public void genericFieldsSettingForItems(String testCaseId, String userName, String password, String welComeMessage, String genericColumnSetting, String fields){
+	public void genericFieldsSettingForItems(String testCaseId, String userName, String password, String welComeMessage, String genericColumnSettingType, String fields) throws Exception{
 		landingPage()
 		.enterUsername(userName)
 		.enterPassword(password)
@@ -34,11 +34,19 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.homePage()
 		.verifyWelcomeMessage(welComeMessage)
 		.clickOnItemsLink()
-		.clickOnGenricColumnSetting(genericColumnSetting, fields);
+		.itemsPage()
+		.clickOnGenricColumnSetting(genericColumnSettingType)
+		.verifyGenericColumnSettingTable(genericColumnSettingType)
+		.setTheShowFieldsForDesktopView(fields);
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.verifyItemsPageWithRequiredFields(fields);
+		
 		
 	}
 	
-	@Description("This method is used to create new manufacturer.")
+	@Description("creation of new manufacturer.")
 	@Features(value={"AdvancedSearch Module"})
 	@Test(enabled=false,priority=0,groups={"regression"}, dataProvider="AdvancedSearchModuleTest",dataProviderClass=SearchData.class)
 	public void createNewManufacturer(String testCaseId, String userName, String password, String welComeMessage,String manufacturerName, String manufacturerCode, String SuccessMessageAfterCreate) throws Exception
@@ -67,7 +75,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.verifymessageAfterManufacturerCreate(manufacturerName,SuccessMessageAfterCreate);
 
 	}
-	@Description("This method is used to create a new brand.")
+	@Description("Creation of new brand.")
 	@Features(value={"AdvancedSearch Module"})
 	@Test(enabled=false,groups={"regression"},priority=1,dataProvider="AdvancedSearchModuleTest",dataProviderClass=SearchData.class)
 	public void createNewBrand(String testCaseId, String userName, String password,String welComeMessage,String manufacturerName, String brandName, String brandDescription, String SuccesfulMessageForCreatedBrand) throws Exception
@@ -122,25 +130,30 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 
 	}
 
-/*	@Test()
-	public void createVendor() throws InterruptedException, Exception 
+	@Test(groups={"regression"},dataProvider="AdvancedSearchModuleTest",dataProviderClass=SearchData.class)
+	public void createVendor(String testCaseId, String userName, String password,String welComeMessage, String title,String vendorName, String vendorShortName, String customerType, String vendorAddress, String vendorEmailAddress,String subsetName, String vendorSavemessage) throws InterruptedException, Exception 
 	{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
-		.clickOnLogin();
-		homePage()
-		.verifyWelcomeMessage(data.getwelcomeMessagevadi())
-		.homePage().clickOnVendorLink()
-		.vendorsPage().checkVendorPage()
-		.typeInVendorName(data.vendorname())
-		.typeInVendorshortname(data.vendorshortname())
-		.typeInVendorAddress(data.vendoraddress())
-		.typeInVendorEmailAddress(data.vendoremailaddress())
-		.selectVendorSubset(data.subsetname())
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(welComeMessage)
+		.homePage()
+		.clickOnVendorLink()
+		.vendorsPage()
+		.checkVendorPage(title)
+		.typeVendorNameInSearch(vendorName)
+		.verifyVendorSearchResults(vendorName)
+		.typeInVendorName(vendorName)
+		.typeInVendorshortname(vendorShortName)
+		.selectCustomerType(customerType)
+		.typeInVendorAddress(vendorAddress)
+		.typeInVendorEmailAddress(vendorEmailAddress)
+		.selectVendorSubset(subsetName)
 		.vendorSave()
-		.checkVendorSavemessg(data.vendorsavemsg());
-	}*/
+		.checkCreatedVendorSaveMessage(vendorSavemessage);
+	}
 	
 	@Description("This method is used to create a new item.")
 	@Features(value={"AdvancedSearch Module"})

@@ -3,6 +3,8 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.isEmptyString;
 
+import java.util.concurrent.TimeUnit;
+
 import org.apache.commons.lang3.RandomStringUtils;
 /**
  * @author Gladson Antony
@@ -12,6 +14,7 @@ import org.cimm2touch.maincontroller.PageFactoryInitializer;
 import org.cimm2touch.utils.Waiting;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
@@ -97,7 +100,23 @@ public class VendorsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//a[@id='listSupplierForm:firstBtnId']/i")
 	private WebElement pagination_FirstButton;
 
-
+	@FindBy(xpath="//title")
+	private WebElement vendorsPageTitle;
+	
+	@FindBy(xpath="//select[@id='addNewSupplierForm:customerType']")
+	private WebElement selectCustomerTypeLocator; 
+	
+	@FindBy(xpath="//select[@id='addNewSupplierForm:subsetId']")
+	private WebElement selectSubsetName;
+	
+	
+	@FindBy(xpath="//input[@title='Save New Vendor']")
+	private WebElement saveVendorLocator;
+	
+	@FindBy(xpath="//span[@id='addNewSupplierForm:supplierSaveMsgId']")
+	private WebElement successfulMessageForNewlyCreatedVendorLocator;
+	
+	
 	@Step("To Verify Vendors Page Items")
 	public VendorsPageObjects verifyVendorsPageItems() 
 	{
@@ -428,6 +447,102 @@ public class VendorsPageObjects extends PageFactoryInitializer
 		Thread.sleep(5000);
 		Assert.assertEquals(new Select(driver.findElement(By.xpath("//div[@class='centerPanelRightIcons ']/select"))).getFirstSelectedOption().getText(), "10");
 		Thread.sleep(5000);
+		return this;
+	}
+
+	public VendorsPageObjects checkVendorPage(String title) throws InterruptedException {
+		Thread.sleep(3000);
+		System.out.println(driver.getTitle());
+		Assert.assertEquals(driver.getTitle(), title.trim());
+		return this;
+	}
+
+	public VendorsPageObjects typeVendorNameInSearch(String vendorName) {
+
+			Waiting.explicitWaitVisibilityOfElement(vendors_SearchBox, 10);
+			vendors_SearchBox.sendKeys(vendorName);
+			vendors_SearchIcon.click();
+		
+		return this;
+		
+	}
+	public boolean vendorSearchResultHelp(String vendorName) throws Exception
+	{
+		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		try {
+			if(driver.findElement(By.xpath("//tbody[@id='listSupplierForm:listSupplierTableId:tb']/tr/descendant::td[contains(text(),'"+vendorName+"')]")).isDisplayed())
+			{
+				return false;
+			}
+		}
+		catch(NoSuchElementException e) {
+			return true;
+
+		}
+		return false;		    
+	}
+	public VendorsPageObjects verifyVendorSearchResults(String vendorName) throws Exception {
+		
+		Assert.assertTrue(vendorSearchResultHelp(vendorName),"vendor is Present. Please delete for creating again.");
+
+		
+		return this;
+	}
+
+	public VendorsPageObjects typeInVendorName(String vendorName) {
+		Waiting.explicitWaitVisibilityOfElement(addVendor_VendorName, 10);
+		addVendor_VendorName.clear();
+		addVendor_VendorName.sendKeys(vendorName);
+		return this;
+	}
+
+	public VendorsPageObjects typeInVendorshortname(String vendorshortname) {
+		Waiting.explicitWaitVisibilityOfElement(addVendor_ShortName, 10);
+		addVendor_ShortName.clear();
+		addVendor_ShortName.sendKeys(vendorshortname);
+		
+		return this;
+	}
+
+	public VendorsPageObjects selectCustomerType(String customerType) {
+		
+		Waiting.explicitWaitVisibilityOfElement(selectCustomerTypeLocator, 10);
+		
+		new Select(selectCustomerTypeLocator).selectByVisibleText(customerType);
+		
+		return this;
+	}
+
+	public VendorsPageObjects typeInVendorAddress(String vendorAddress) {
+		Waiting.explicitWaitVisibilityOfElement(addVendor_Address1, 10);
+		addVendor_Address1.clear();
+		addVendor_Address1.sendKeys(vendorAddress);
+		
+		return this;
+	}
+
+	public VendorsPageObjects typeInVendorEmailAddress(String vendorEmailAddress) {
+		Waiting.explicitWaitVisibilityOfElement(addVendor_Email, 10);
+		addVendor_Email.clear();
+		addVendor_Email.sendKeys(vendorEmailAddress);
+		return this;
+	}
+
+	public VendorsPageObjects selectVendorSubset(String subsetname) {
+		new Select(selectSubsetName).selectByVisibleText(subsetname);
+		return this;
+	}
+
+	public VendorsPageObjects vendorSave() {
+		saveVendorLocator.click();
+		return this;
+	}
+
+	public VendorsPageObjects checkCreatedVendorSaveMessage(String vendorSavemessage) {
+		Waiting.explicitWaitVisibilityOfElement(successfulMessageForNewlyCreatedVendorLocator, 10);
+		
+		Assert.assertEquals(successfulMessageForNewlyCreatedVendorLocator.getText(), vendorSavemessage);
+
 		return this;
 	}
 

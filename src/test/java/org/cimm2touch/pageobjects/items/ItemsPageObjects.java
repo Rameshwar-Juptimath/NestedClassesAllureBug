@@ -284,6 +284,14 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	@FindAll(value={@FindBy(xpath="//input[@title='Edit Item']")})
 	private List<WebElement> editItemLink;
 	
+	@FindBy(xpath="//div[@class='dynamic-tabel-settings customGenericAlign']/descendant::img[@class='gearIcon']")
+	private WebElement genericColumnSettingIconLocator; 
+	
+	@FindBy(xpath="//li[@class='show-dyna-table-setting']/a")
+	private WebElement showFieldsSettingLoc;
+	
+	@FindBy(xpath="//li[@class='show-sort-settings']/a")
+	private WebElement showSortSettingLoc;
 	
 	@FindBy(xpath="//input[@id='itemNavigateForm:nextItemIcon']")
 	private WebElement nextItemIconLocator;
@@ -312,6 +320,11 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//li[@class='editItem_displayOn']/descendant::input")
 	private WebElement displayOnlineItemCheckBox;
 	
+	@FindBy(xpath="//div[contains(text(),'Dynamic Table Settings')]")
+	private WebElement dynamicTableSettingSection;
+	
+	@FindBy(xpath="//div[contains(text(),'Sort Order Settings')]")
+	private WebElement sortOrderSettingSection;
 	
 	@Step("select checkbox for MPN under desktop view.")
 	public ItemsPageObjects selectCheckboxOfManufacturerPartNumberInDesktopViewForAdding() throws Exception
@@ -522,7 +535,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 		Thread.sleep(2500);
 		int items= Integer.parseInt(noOfItemsTobeDelete);
 		String partNuber=null;
-		for(int i=1; i<items; i++){
+		for(int i=1; i<=items; i++){
 		partNuber=driver.findElement(By.xpath("//td[contains(text(),'"+CreatedpartNumber+"')]/preceding-sibling::td/descendant::span[contains(@id,'ITMID')]")).getText();
 		((JavascriptExecutor)driver).executeScript("arguments[0].click();",driver.findElement(By.xpath("//td[contains(text(),'"+CreatedpartNumber+i+"')]/preceding-sibling::td/descendant::input[@title='Remove Item']")));
 
@@ -1721,9 +1734,82 @@ public class ItemsPageObjects extends PageFactoryInitializer
 		
 	}
 	@Step("to check the required checkboxes in {0} for desktop view")
-	public ItemsPageObjects clickOnGenricColumnSetting(String genericColumnSetting, String fields) {
+	public ItemsPageObjects clickOnGenricColumnSetting(String genericColumnSetting) throws Exception {
+		Waiting.explicitWaitVisibilityOfElement(genericColumnSettingIconLocator, 10);
+		Assert.assertTrue(genericColumnSettingIconLocator.isDisplayed(), "generic column setting is not available ");
+		genericColumnSettingIconLocator.click();
+		switch(genericColumnSetting)
+		{
+			case "Show fields": Waiting.explicitWaitVisibilityOfElement(showFieldsSettingLoc, 5);
+								Assert.assertTrue(showFieldsSettingLoc.isDisplayed(),"Show fields table setting option is not available");
+								showFieldsSettingLoc.click();
+				break;
+				
+			case "Sort Order":	 Waiting.explicitWaitVisibilityOfElement(showSortSettingLoc, 5);
+								Assert.assertTrue(showSortSettingLoc.isDisplayed(),"Sort order setting option is not available");
+								showSortSettingLoc.click();
+			break;
+			default: throw new Exception("invalid selection for dynamic table setting");
+		}
+		return this;
+	}
 
+	public ItemsPageObjects setTheShowFieldsForDesktopView(String requiredfields) throws Exception {
+		String[] fields=requiredfields.split(",");
+		Thread.sleep(2500);
+		for(int i=0;i<fields.length;i++) {
+		
+		
+				//Assert.assertTrue(driver.findElement(By.xpath("//span[text()='"+fields[i]+"']/ancestor::td/following-sibling::td/descendant::label/input[contains(@name,'ITMSLCT1')]/following-sibling::span")).isDisplayed(),"Manufacturer part number field is not available");
+	
+			Assert.assertTrue(driver.findElement(By.xpath("//tr/th/div[text()='Field Names']/../../../../tbody/tr/td[span='"+fields[i]+"']")).isDisplayed(),fields[i]+" -> not available");
+			
+					WebElement wb1=driver.findElement(By.xpath("//tr/th/div[text()='Field Names']/../../../../tbody/tr/td[span='"+fields[i]+"']/following-sibling::td[1]/label/span"));
+					
+					WebElement wb2=driver.findElement(By.xpath("//tr/th/div[text()='Field Names']/../../../../tbody/tr/td[span='"+fields[i]+"']/following-sibling::td[1]/label/input"));
+					if(!(wb2.isSelected()))
+					{
+						wb1.click();
+						Thread.sleep(1000);
+					}
+			
+					
+	}
+				
+			
+		driver.findElement(By.xpath("//div[contains(text(),'Dynamic Table Settings')]/following-sibling::div/descendant::input[contains(@title,'Save')]")).click();
+		
+		
+		
 
+		return this;
+	}
+
+	public ItemsPageObjects verifyGenericColumnSettingTable(String genericColumnSettingType) throws Exception {
+		
+		switch(genericColumnSettingType)
+		{
+		case "Show fields" :	Waiting.explicitWaitVisibilityOfElement(dynamicTableSettingSection, 5);
+								Assert.assertTrue(dynamicTableSettingSection.isDisplayed(), "dynamic table setting table is not available");
+		break;
+		
+		case "Sort Order" :	Waiting.explicitWaitVisibilityOfElement(sortOrderSettingSection, 5);
+							Assert.assertTrue(sortOrderSettingSection.isDisplayed(), "sort order setting section is not displayed.");
+		break;
+		
+		default: throw new Exception("invalid selection for dynamic table setting");
+		}
+		return this;
+	}
+
+	public ItemsPageObjects verifyItemsPageWithRequiredFields(String requiredfields) throws InterruptedException {
+		String[] fields=requiredfields.split(",");
+		Thread.sleep(3000);
+		for(int i=0; i<fields.length; i++)
+		{
+		Assert.assertTrue(driver.findElement(By.xpath("//thead[@class='rich-table-thead']/descendant::span[text()='"+fields[i]+"']")).isDisplayed());
+		}
+		
 		return this;
 	}
 
