@@ -22,6 +22,29 @@ public class VendorsModuleTest extends PageFactoryInitializer
 	SearchDataPropertyFile data = new SearchDataPropertyFile();
 	ApplicationSetUpPropertyFile setUp = new ApplicationSetUpPropertyFile();
 	
+	
+	@Description("pre setting for Desktop view in vendors page- show fields for Automation.")
+	@Features(value={"Vendors Module"})
+	@Test(groups={"regression"}, dataProvider="VendorsModuleTest",dataProviderClass=SearchData.class)
+	public void genericFieldsSettingForVendor(String testCaseId, String userName, String password, String welComeMessage, String genericColumnSettingType, String fields) throws Exception{
+		landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(welComeMessage)
+		.clickOnVendorLink()
+		.vendorsPage()
+		.clickOnGenricColumnSetting(genericColumnSettingType)
+		.verifyGenericColumnSettingTable(genericColumnSettingType)
+		.setTheShowFieldsForDesktopView(fields);
+		homePage()
+		.clickOnVendorLink()
+		.vendorsPage()
+		.verifyVendorsPageWithRequiredFields(fields);
+		
+		
+	}
 	@Features(value = {"Vendors Module"})
 	@Description("This is a Method that Creates Vendors.")
 	@Test(enabled=false, groups={"regression"},dataProvider="VendorsModuleTest",dataProviderClass=SearchData.class)

@@ -105,7 +105,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.checkBrandSaveMessage(SuccesfulMessageForCreatedBrand);
 	}
 	
-	@Description("This method is used to create a new subset.")
+	@Description("create a new subset.")
 	@Features(value={"AdvancedSearch Module"})
 	@Test(enabled=false,priority=2,groups={"regression"},dataProvider="AdvancedSearchModuleTest",dataProviderClass=SearchData.class)
 	public void createNewSubset(String testCaseId, String userName, String password,String welComeMessage,String subsetName, String ExpSuccessfulMessageForCreatedSubset) throws InterruptedException, Exception 
@@ -129,7 +129,8 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.verifySubsetCreationMessage(ExpSuccessfulMessageForCreatedSubset);
 
 	}
-
+	@Description("Create new vendor.")
+	@Features(value={"AdvancedSearch Module"})
 	@Test(groups={"regression"},dataProvider="AdvancedSearchModuleTest",dataProviderClass=SearchData.class)
 	public void createVendor(String testCaseId, String userName, String password,String welComeMessage, String title,String vendorName, String vendorShortName, String customerType, String vendorAddress, String vendorEmailAddress,String subsetName, String vendorSavemessage) throws InterruptedException, Exception 
 	{
@@ -781,7 +782,8 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.clickOnAttributesTab()
 		.verifyItemAttributeAndImage(operator);
 	}
-	@Description("This method is used to delete the created item(s)")
+	@Features("AdvancedSearch Module")
+	@Description("delete the created item(s)")
 	@Test(enabled=false,groups="regression",dataProvider ="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
 	public void deleteCreatedItem(String testCaseId, String userName, String password, String welcomeMessage, String partNumber, String expSuccesfulMessageForDeletion, String noOfItemsToBeDelete) throws Exception{
 		landingPage()
@@ -799,6 +801,8 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		
 		
 	}
+	@Features("AdvancedSearch Module")
+	@Description("delete the created subset")
 	@Test(enabled=false,groups="regression",dataProvider ="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
 	public void deleteCreatedSubset(String testCaseId, String userName, String password, String welcomeMessage,String subsetName) throws Exception{
 		landingPage()
@@ -816,6 +820,8 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		
 		
 	}
+	@Features("AdvancedSearch Module")
+	@Description("delete the created Brand")
 	@Test(enabled=false,groups="regression",dataProvider ="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
 	public void deleteCreatedBrand(String testCaseId, String userName, String password, String welcomeMessage,String manufacturerName,String brandName) throws Exception{
 		landingPage()
@@ -833,6 +839,8 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.verifyAndRemoveBrand(brandName);
 	
 	}
+	@Features("AdvancedSearch Module")
+	@Description("delete the created manufacturer")
 	@Test(enabled=false,groups="regression",dataProvider ="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
 	public void deleteCreatedManufactures(String testCaseId, String userName, String password, String welcomeMessage,String manufacturerName,String brandName, String successMessage) throws Exception{
 		landingPage()
@@ -848,6 +856,24 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.clickonMBsearch()
 		.removeAndVerifyManufacturer(manufacturerName)
 		.verifySuccessMessageAfterRemove(successMessage);
+	}
+	@Features("AdvancedSearch Module")
+	@Description("delete the created vendor")
+	@Test(enabled=true,groups="regression",dataProvider ="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
+	public void deleteCreatedVendor(String testCaseId, String userName, String password, String welcomeMessage,String title,String vendorName,String expSuccessMessageForRemove) throws Exception{
+		landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(welcomeMessage)
+		.homePage()
+		.clickOnVendorLink()
+		.vendorsPage()
+		.checkVendorPage(title)
+		.typeVendorNameInSearch(vendorName)
+		.verifyAndRemoveVendore(vendorName)
+		.verifySuccessMessageForRemove(vendorName);
 	}
 	/*@Test(priority=1,dependsOnMethods={"deleteCreatedItem","deleteCreatedSubset","deleteCreatedBrand","deleteCreatedManufactures"})
 	public void methodToRemoveAllCreatedTestData(){

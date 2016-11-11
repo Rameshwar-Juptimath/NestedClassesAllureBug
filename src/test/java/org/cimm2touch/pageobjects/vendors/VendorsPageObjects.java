@@ -11,6 +11,8 @@ import org.apache.commons.lang3.RandomStringUtils;
  *
  */
 import org.cimm2touch.maincontroller.PageFactoryInitializer;
+import org.cimm2touch.pageobjects.items.ItemsPageObjects;
+import org.cimm2touch.utils.TestUtility;
 import org.cimm2touch.utils.Waiting;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -116,6 +118,23 @@ public class VendorsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//span[@id='addNewSupplierForm:supplierSaveMsgId']")
 	private WebElement successfulMessageForNewlyCreatedVendorLocator;
 	
+	@FindBy(xpath="//span[@id='listSupplierForm:noResults']")
+	private WebElement successfulMessageRemoveVendorLocator;
+	
+	@FindBy(xpath="//div[@title='Generic Column Settings']/descendant::img[@class='gearIcon']")
+	private WebElement genericColumnSettingIconLocator; 
+	
+	@FindBy(xpath="//li[@class='show-dyna-table-setting']/a")
+	private WebElement showFieldsSettingLoc;
+	
+	@FindBy(xpath="//li[@class='show-sort-settings']/a")
+	private WebElement showSortSettingLoc;
+	
+	@FindBy(xpath="//div[contains(text(),'Dynamic Table Settings')]")
+	private WebElement dynamicTableSettingSection;
+	
+	@FindBy(xpath="//div[contains(text(),'Sort Order Settings')]")
+	private WebElement sortOrderSettingSection;
 	
 	@Step("To Verify Vendors Page Items")
 	public VendorsPageObjects verifyVendorsPageItems() 
@@ -449,14 +468,14 @@ public class VendorsPageObjects extends PageFactoryInitializer
 		Thread.sleep(5000);
 		return this;
 	}
-
+	@Step("verify vendor's page title {0}")
 	public VendorsPageObjects checkVendorPage(String title) throws InterruptedException {
 		Thread.sleep(3000);
 		System.out.println(driver.getTitle());
 		Assert.assertEquals(driver.getTitle(), title.trim());
 		return this;
 	}
-
+	@Step("enter vendor name: {0}")
 	public VendorsPageObjects typeVendorNameInSearch(String vendorName) {
 
 			Waiting.explicitWaitVisibilityOfElement(vendors_SearchBox, 10);
@@ -466,6 +485,7 @@ public class VendorsPageObjects extends PageFactoryInitializer
 		return this;
 		
 	}
+	
 	public boolean vendorSearchResultHelp(String vendorName) throws Exception
 	{
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
@@ -481,6 +501,7 @@ public class VendorsPageObjects extends PageFactoryInitializer
 		}
 		return false;		    
 	}
+	@Step("verify vendor search results: {0}")
 	public VendorsPageObjects verifyVendorSearchResults(String vendorName) throws Exception {
 		
 		Assert.assertTrue(vendorSearchResultHelp(vendorName),"vendor is Present. Please delete for creating again.");
@@ -488,14 +509,14 @@ public class VendorsPageObjects extends PageFactoryInitializer
 		
 		return this;
 	}
-
+	@Step("enter the vendor name as {0}")
 	public VendorsPageObjects typeInVendorName(String vendorName) {
 		Waiting.explicitWaitVisibilityOfElement(addVendor_VendorName, 10);
 		addVendor_VendorName.clear();
 		addVendor_VendorName.sendKeys(vendorName);
 		return this;
 	}
-
+	@Step("enter vendor short name : {0}")
 	public VendorsPageObjects typeInVendorshortname(String vendorshortname) {
 		Waiting.explicitWaitVisibilityOfElement(addVendor_ShortName, 10);
 		addVendor_ShortName.clear();
@@ -503,7 +524,7 @@ public class VendorsPageObjects extends PageFactoryInitializer
 		
 		return this;
 	}
-
+	@Step("select customer type {0}")
 	public VendorsPageObjects selectCustomerType(String customerType) {
 		
 		Waiting.explicitWaitVisibilityOfElement(selectCustomerTypeLocator, 10);
@@ -512,7 +533,7 @@ public class VendorsPageObjects extends PageFactoryInitializer
 		
 		return this;
 	}
-
+	@Step("enter vendor address {0}")
 	public VendorsPageObjects typeInVendorAddress(String vendorAddress) {
 		Waiting.explicitWaitVisibilityOfElement(addVendor_Address1, 10);
 		addVendor_Address1.clear();
@@ -520,29 +541,119 @@ public class VendorsPageObjects extends PageFactoryInitializer
 		
 		return this;
 	}
-
+	@Step("enter vendor email addres as : {0}")
 	public VendorsPageObjects typeInVendorEmailAddress(String vendorEmailAddress) {
 		Waiting.explicitWaitVisibilityOfElement(addVendor_Email, 10);
 		addVendor_Email.clear();
 		addVendor_Email.sendKeys(vendorEmailAddress);
 		return this;
 	}
-
+	@Step("select vendor subseet {0}")
 	public VendorsPageObjects selectVendorSubset(String subsetname) {
 		new Select(selectSubsetName).selectByVisibleText(subsetname);
 		return this;
 	}
-
+	@Step("save the vendor details")
 	public VendorsPageObjects vendorSave() {
 		saveVendorLocator.click();
 		return this;
 	}
-
+	@Step("verify  newly created vendor success message: {0}")
 	public VendorsPageObjects checkCreatedVendorSaveMessage(String vendorSavemessage) {
 		Waiting.explicitWaitVisibilityOfElement(successfulMessageForNewlyCreatedVendorLocator, 10);
 		
 		Assert.assertEquals(successfulMessageForNewlyCreatedVendorLocator.getText(), vendorSavemessage);
 
+		return this;
+	}
+	@Step("verify and remove the {0} vendor ")
+	public VendorsPageObjects verifyAndRemoveVendore(String vendorName) {
+		Assert.assertTrue(driver.findElement(By.xpath("//span[contains(text(),'Vendor Name')]/ancestor::table/descendant::td[contains(text(),'"+vendorName+"')]")).isDisplayed(),"Vendor :"+vendorName+" is not available.");
+		WebElement wb=driver.findElement(By.xpath("//span[contains(text(),'Vendor Name')]/ancestor::table/descendant::td[contains(text(),'"+vendorName+"')]/preceding-sibling::td/descendant::input[@title='Remove Vendor']"));
+		Waiting.explicitWaitVisibilityOfElement(wb, 10);
+		wb.click();
+		TestUtility.alertAccept();
+		return this;
+		
+	}
+
+	public VendorsPageObjects verifySuccessMessageForRemove(String vendorName) {
+		Waiting.explicitWaitVisibilityOfElement(successfulMessageRemoveVendorLocator, 10);
+		Assert.assertEquals(successfulMessageRemoveVendorLocator.getText(), "Vendor : '"+vendorName+"' removed Successfully");
+
+		return this;
+	}
+
+	@Step("to check the required checkboxes in {0} for desktop view")
+	public VendorsPageObjects clickOnGenricColumnSetting(String genericColumnSetting) throws Exception {
+		Waiting.explicitWaitVisibilityOfElement(genericColumnSettingIconLocator, 10);
+		Assert.assertTrue(genericColumnSettingIconLocator.isDisplayed(), "generic column setting is not available ");
+		genericColumnSettingIconLocator.click();
+		switch(genericColumnSetting)
+		{
+			case "Show fields": Waiting.explicitWaitVisibilityOfElement(showFieldsSettingLoc, 5);
+								Assert.assertTrue(showFieldsSettingLoc.isDisplayed(),"Show fields table setting option is not available");
+								showFieldsSettingLoc.click();
+				break;
+				
+			case "Sort Order":	 Waiting.explicitWaitVisibilityOfElement(showSortSettingLoc, 5);
+								Assert.assertTrue(showSortSettingLoc.isDisplayed(),"Sort order setting option is not available");
+								showSortSettingLoc.click();
+			break;
+			default: throw new Exception("invalid selection for dynamic table setting");
+		}
+		return this;
+	}
+
+	public VendorsPageObjects verifyGenericColumnSettingTable(String genericColumnSettingType) throws Exception {
+		
+		switch(genericColumnSettingType)
+		{
+		case "Show fields" :	Waiting.explicitWaitVisibilityOfElement(dynamicTableSettingSection, 5);
+								Assert.assertTrue(dynamicTableSettingSection.isDisplayed(), "dynamic table setting table is not available");
+		break;
+		
+		case "Sort Order" :	Waiting.explicitWaitVisibilityOfElement(sortOrderSettingSection, 5);
+							Assert.assertTrue(sortOrderSettingSection.isDisplayed(), "sort order setting section is not displayed.");
+		break;
+		
+		default: throw new Exception("invalid selection for dynamic table setting");
+		}
+		return this;
+	}
+
+	public VendorsPageObjects setTheShowFieldsForDesktopView(String requiredfields) throws Exception {
+		String[] fields=requiredfields.split(",");
+		Thread.sleep(2500);
+		for(int i=0;i<fields.length;i++) {
+		
+		
+				//Assert.assertTrue(driver.findElement(By.xpath("//span[text()='"+fields[i]+"']/ancestor::td/following-sibling::td/descendant::label/input[contains(@name,'ITMSLCT1')]/following-sibling::span")).isDisplayed(),"Manufacturer part number field is not available");
+	
+			Assert.assertTrue(driver.findElement(By.xpath("//tr/th/div[text()='Field Names']/../../../../tbody/tr/td[span='"+fields[i]+"']")).isDisplayed(),fields[i]+" -> not available");
+			
+					WebElement wb1=driver.findElement(By.xpath("//tr/th/div[text()='Field Names']/../../../../tbody/tr/td[span='"+fields[i]+"']/following-sibling::td[1]/label/span"));
+					
+					WebElement wb2=driver.findElement(By.xpath("//tr/th/div[text()='Field Names']/../../../../tbody/tr/td[span='"+fields[i]+"']/following-sibling::td[1]/label/input"));
+					if(!(wb2.isSelected()))
+					{
+						wb1.click();
+						Thread.sleep(1000);
+					}		
+	}
+		driver.findElement(By.xpath("//div[contains(text(),'Dynamic Table Settings')]/following-sibling::div/descendant::input[contains(@title,'Save')]")).click();
+	
+		return this;
+	}
+
+	public VendorsPageObjects verifyVendorsPageWithRequiredFields(String requiredfields) throws InterruptedException {
+		String[] fields=requiredfields.split(",");
+		Thread.sleep(3000);
+		for(int i=0; i<fields.length; i++)
+		{
+		Assert.assertTrue(driver.findElement(By.xpath("//thead[@class='rich-table-thead']/descendant::*[text()='"+fields[i]+"']")).isDisplayed());
+		}
+		
 		return this;
 	}
 
