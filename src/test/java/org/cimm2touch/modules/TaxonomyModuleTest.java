@@ -25,14 +25,15 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 	@Features(value = {"Taxonomy Module"})
 	@Description("This Method is used to Create a Taxonomy {0}")
 	@Test(enabled=false, groups={"regression"},dataProvider="TaxonomyModuleTest",dataProviderClass=SearchData.class)
-	public void createTaxonomy(String testCaseId,String taxonomyName,String taxonomyDesc,String supplier,String topBanner, String rightBanner, 
+	public void createTaxonomy(String testCaseId,String userName, String password,String welcomeMessage, String taxonomyName,String taxonomyDesc,String supplier,String topBanner, String rightBanner, 
 			String leftBanner, String bottomBanner, String saveAs) throws Exception
 	{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
+		.verifyWelcomeMessage(welcomeMessage)
 		.clickOnTaxonomyLink()
 		.taxonomyPage()
 		.clickOnAddnewTaxonomy()

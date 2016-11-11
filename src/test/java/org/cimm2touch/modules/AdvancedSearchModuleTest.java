@@ -15,7 +15,11 @@ import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Features;
 import ru.yandex.qatools.allure.annotations.Parameter;
 import ru.yandex.qatools.allure.annotations.TestCaseId;
-
+/**
+ * 
+ * @author Thiruveedhi Chinna
+ *
+ */
 public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 
 	SearchDataPropertyFile data = new SearchDataPropertyFile();

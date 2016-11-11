@@ -88,6 +88,9 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 
 	@FindBy(xpath="//div[contains(@class,'pull-right comboBoxGrey')]/select")
 	private WebElement selectRecordsDropdownInTaxonomyLocator;
+	
+	@FindBy(xpath="//form[@id='categoryid']/descendant::a[@title='Category']/descendant::span")
+	private WebElement createNewCategoryIconLocator;
 
 	@FindAll(value={@FindBy(xpath="//input[@title='Edit this Taxonomy']")})
 	private List<WebElement> editThisTaxonomyLocator; 
@@ -281,9 +284,11 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 		return this;
 
 	}
-	public TaxonomyPageObjects clickOnGoToManageTaxonomyIcon() {
-		Waiting.explicitWaitElementToBeClickable(gotomanagetaxonomyLocator, 5);
-		gotomanagetaxonomyLocator.click();
+	@Step("click on goto taxonomy management of : {0}")
+	public TaxonomyPageObjects clickOnGoToManageTaxonomyIcon(String taxonomyName) {
+		WebElement goToTaxonomy=driver.findElement(By.xpath("//tbody[@id='taxonomyTableForm:taxonomyDataTable:tb']/descendant::span[contains(text(),'"+taxonomyName+"')]/ancestor::td/preceding-sibling::td/descendant::input[@title='Goto Manage Taxonomy']"));
+		Waiting.explicitWaitElementToBeClickable(goToTaxonomy, 10);
+		goToTaxonomy.click();
 		return this;
 	}
 
@@ -433,9 +438,10 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 	@Step("To Verify If Taxonomy is  Present")
 	public TaxonomyPageObjects verifyTaxonomyPresent(String taxonomyName) throws InterruptedException
 	{
-		Thread.sleep(3000);
+		
 		
 		WebElement ele=driver.findElement(By.xpath("//table[@id='taxonomyTableForm:taxonomyDataTable']//span[contains(@id,'taxonomyName') and contains(.,'"+taxonomyName+"')]"));
+		Waiting.explicitWaitVisibilityOfElement(ele, 10);
 		Assert.assertTrue(ele.isDisplayed(), "Taxonomy "+taxonomyName+" is not Present");
 		return this;
 	}
@@ -511,6 +517,13 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 		Thread.sleep(5000);
 		paginationLastButton.click();
 		return this;
+	}
+	@Step("click on create new category icon")
+	public TaxonomyPageObjects clickOnCreateNewCategoryIcon() {
+		Waiting.explicitWaitElementToBeClickable(createNewCategoryIconLocator, 10);
+		createNewCategoryIconLocator.click();
+		return this;
+		
 	}
 
 }

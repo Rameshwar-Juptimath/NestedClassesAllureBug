@@ -19,7 +19,24 @@ public class ItemsModuleTest extends PageFactoryInitializer
 	
 	SearchDataPropertyFile data = new SearchDataPropertyFile();
 	ApplicationSetUpPropertyFile setUp = new ApplicationSetUpPropertyFile();
-	
+	@Test(groups={"smoke","regression"}, dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void createNewCategory(String testCaseId, String userName, String password, String welComeMessage, String taxonomyName, String categoryName) throws InterruptedException{
+		landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(welComeMessage)
+		.clickOnTaxonomyLink()
+		.taxonomyPage()
+		.searchForTaxonomy(taxonomyName)
+		.verifyTaxonomyPresent(taxonomyName)
+		.clickOnGoToManageTaxonomyIcon(taxonomyName);
+		
+		
+		
+		
+	}
 	
 	@Features(value = {"Items Module"})
 	@Description("This is a test case which verifies display of records per page based on the filter chosen. 25,50,75,100 are the filter values.")
