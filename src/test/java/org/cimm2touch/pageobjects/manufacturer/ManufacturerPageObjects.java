@@ -1365,7 +1365,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	public ManufacturerPageObjects verifySuccessMessageAfterRemove(String successMessage) {
 
-		Waiting.explicitWaitVisibilityOfElement(successMessageRemoveMfgLocator, 10);
+		Waiting.explicitWaitVisibilityOfElement(successMessageRemoveMfgLocator, 20);
 		Assert.assertEquals(successMessageRemoveMfgLocator.getText(), successMessage);
 
 		return this;

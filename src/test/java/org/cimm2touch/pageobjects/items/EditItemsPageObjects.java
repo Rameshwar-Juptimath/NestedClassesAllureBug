@@ -1,4 +1,6 @@
 package org.cimm2touch.pageobjects.items;
+import java.awt.AWTException;
+import java.awt.Robot;
 import java.util.List;
 
 import org.cimm2touch.maincontroller.PageFactoryInitializer;
@@ -7,6 +9,7 @@ import org.cimm2touch.utils.Waiting;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
@@ -420,6 +423,9 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//input[@title='Save URL']")
 	private WebElement AddVideoSaveButtonLocator;
 
+	@FindBy(xpath="//a[@id='itemCategoryFormId:sbmtBtn']/img[contains(@src,'save')]")
+	private WebElement categorySaveLocator;
+	
 	@FindBy(xpath="//input[@title='Reset']")
 	private WebElement AddVideoResetButtonLocator;
 
@@ -451,6 +457,8 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//table[@id='listForm:assignedItemsTable3']/thead/tr[1]/th[3]/span")
 	private WebElement AvailableLinkedItemsPartNumberLocator;
 
+	@FindBy(xpath="//span[@id='itemCategoryFormId:saveMsgId']")
+	private WebElement itemCategorySaveMessageLoator; 
 
 	@FindBy(xpath="//table[@id='listForm:assignedItemsTable3']/thead/tr[1]/th[4]/span")
 	private WebElement AvailableLinkedItemsMPNLocator;
@@ -521,6 +529,9 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//tbody[@id='itemCategoryFormId:categoryListTableId:tb']/tr")
 	private WebElement categoryUnderCategorizationTab;
 	
+	
+	@FindBy(xpath="//input[@id='taxonomyListId:taxonomyListComboIdcomboboxField']")
+	private WebElement taxonomySearchFieldLocator; 
 
 	//form[@id='EditItemLinkTypeForm']/div[2]/img
 
@@ -1895,7 +1906,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 	@Step("click on categorization tab")
 	public EditItemsPageObjects clickOnCategorizationTab() throws InterruptedException{
-		Waiting.explicitWaitVisibilityOfElement(categorizationTabLocator, 10);
+		Waiting.explicitWaitElementToBeClickable(categorizationTabLocator, 10);
 		categorizationTabLocator.click();
 		Thread.sleep(5000);
 		return this;
@@ -1967,5 +1978,55 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	
 		}	
 	return this;
+	}
+	@Step("search for taxonomy {0}")
+	public EditItemsPageObjects  searchForTaxonomy(String taxonomyName) throws AWTException {
+		Waiting.explicitWaitVisibilityOfElement(taxonomySearchFieldLocator, 10);
+		taxonomySearchFieldLocator.clear();
+		taxonomySearchFieldLocator.sendKeys(taxonomyName);
+		TestUtility.hitEnter();
+
+		
+		return this;
+	}
+	@Step("assign tem(s) to category {0}")
+	public EditItemsPageObjects assignItemToCategory(String categoryName, String noOfitemsToBeCategorized, String taxonomyName, String expSuccessMessage) throws AWTException, InterruptedException {
+		
+		int var = Integer.parseInt(noOfitemsToBeCategorized);
+		for(int i=0; i< var; i++){
+			Waiting.explicitWaitElementToBeClickable(categorizationTabLocator, 10);
+			categorizationTabLocator.click();
+			searchForTaxonomy(taxonomyName);
+			selectCategory(categoryName);
+			saveCategory();
+			verifySuccessMessageForCategoryAssign(expSuccessMessage);
+			clickOnNextItem_EditPage.click();
+			
+		}
+		return this;
+		
+	}
+	public EditItemsPageObjects verifySuccessMessageForCategoryAssign(String expSuccessMessage) {
+		Waiting.explicitWaitVisibilityOfElement(itemCategorySaveMessageLoator, 10);
+		Assert.assertEquals(itemCategorySaveMessageLoator.getText(), expSuccessMessage);
+
+		return this;
+	}
+
+	@Step("seect category to assign {0}")
+	public  EditItemsPageObjects selectCategory(String categoryName) throws InterruptedException {
+		Waiting.explicitWaitVisibilityOfElement(By.xpath("//div[@id='ttformid:taxonomyTreeId']/descendant::td/descendant::span[contains(@id,'ttformid:taxonomyTreeId') and text()='"+categoryName+"']"), 10);
+		WebElement element= driver.findElement(By.xpath("//div[@id='ttformid:taxonomyTreeId']/descendant::td/descendant::span[contains(@id,'ttformid:taxonomyTreeId') and text()='"+categoryName+"']"));
+		WebElement target= driver.findElement(By.xpath("//form[@id='itemCategoryFormId']/descendant::div[@class='itemTabContentWrap']"));
+		(new Actions(driver)).dragAndDrop(element, target).perform();
+		Thread.sleep(500);
+		return this;
+		
+	}
+	@Step("click on save link")
+	public EditItemsPageObjects saveCategory(){
+		Waiting.explicitWaitElementToBeClickable(categorySaveLocator, 10);
+		categorySaveLocator.click();
+		return this;
 	}
 }

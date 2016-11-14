@@ -516,17 +516,17 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	{
 
 		Thread.sleep(2000);
-		WebElement ele = driver.findElement(By.xpath("//div[@class='editTaxonomyWrap']/ul/li/div/div/div/div/input[contains(@value,'"+taxonomyname+"')]"));
+		WebElement ele = driver.findElement(By.xpath("//div[@class='editTaxonomyWrap']/descendant::input[contains(@value,'"+taxonomyname+"')]"));
 		Assert.assertTrue(ele.isDisplayed(), "Taxonomy "+taxonomyname+" is not Present in the Left Side Panel");
 		return this;
 	}
 
-	public ManageTaxonomyPageObjects clickOnAddNewCategory() throws InterruptedException 
+	public ManageTaxonomyPageObjects clickOnAddNewCategory(String categoryName) throws InterruptedException 
 	{
-		Thread.sleep(5000);
+		Thread.sleep(3000);
 		try
 		{
-			WebElement ele = driver.findElement(By.xpath("//span[contains(text(),'CARS')]"));
+			WebElement ele = driver.findElement(By.xpath("//span[contains(text(),'"+categoryName+"')]"));
 			ele.click();
 			
 		}
@@ -534,19 +534,24 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 		{
 			System.out.println(e);
 		}
-		Thread.sleep(5000);
+		Waiting.explicitWaitVisibilityOfElement(addNewCategoryButton, 15);
 		addNewCategoryButton.click();
-		Thread.sleep(5000);
+	
 		return this;
 	}
 
 
 	public ManageTaxonomyPageObjects addNewCategory(String categoryCodeforParentCategory, String categoryNameforParentCategory,  
-			String displaySequenceforParentCategory) throws Exception 
-	{	
+			String displaySequenceforParentCategory, String NoOfCategoriesToCreate) throws Exception {
+	int var=Integer.parseInt(NoOfCategoriesToCreate);
+	
+		for(int i=1;i<= var; i++)
+		{
+		clickOnAddNewCategory(categoryNameforParentCategory);
 		enterParentCategoryCode(categoryCodeforParentCategory);
 		enterParentCategoryName(categoryNameforParentCategory);
 		enterDisplaySequenceOfParentCategory(displaySequenceforParentCategory);
+	}
 		return this;
 	}
 	@Step("enter parent category code {0}")
@@ -1282,7 +1287,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 		return this;
 	}
 
-	public ManageTaxonomyPageObjects clickOnAddNewCategory(String categoryNameForAddNewCategoryClick) throws InterruptedException {
+	/*public ManageTaxonomyPageObjects clickOnAddNewCategory(String categoryNameForAddNewCategoryClick) throws InterruptedException {
 		Thread.sleep(5000);
 		try
 		{
@@ -1298,7 +1303,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 		addNewCategoryButton.click();
 		Thread.sleep(5000);
 		return this;
-	}
+	}*/
 
 
 }

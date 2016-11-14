@@ -16,6 +16,20 @@ public class SearchData
 		Object data[][] =	ExcelLibrary.readFromExcelDataForTestNGDataProvider(file.getAbsolutePath());
 		return data;
 	}
+	@DataProvider(name="CreateDataConfigTest")
+	public static Object[][] createDataConfigTest(Method methodName) throws Exception
+	{
+		File file = new File("resources/ExcelSheetData/CreateDataConfigTest.xlsx");
+		Object data[][] = ExcelLibrary.readFromExcelDataForTestNGDataProvider(file.getAbsolutePath(),methodName.getName());
+		return data;
+	}
+	@DataProvider(name="RemoveDataConfigTest")
+	public static Object[][] removeDataConfigTest(Method methodName) throws Exception
+	{
+		File file = new File("resources/ExcelSheetData/RemoveDataConfigTest.xlsx");
+		Object data[][] = ExcelLibrary.readFromExcelDataForTestNGDataProvider(file.getAbsolutePath(),methodName.getName());
+		return data;
+	}
 	@DataProvider(name="AdvancedSearchModuleTest")
 	public static Object[][] advancedSearchModuleTest(Method methodName) throws Exception
 	{

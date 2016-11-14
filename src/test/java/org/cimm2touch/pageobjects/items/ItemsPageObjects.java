@@ -1553,9 +1553,9 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	public ItemsPageObjects clickOnEditButton(String partNumber)  throws Exception
 	{	
-		
+		Waiting.explicitWaitElementToBeClickable(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']//td[contains(text(),'"+partNumber+"')]/..//input[@title='Edit Item']"), 10);
 		{
-		driver.findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']//td[contains(text(),'"+partNumber+"')]/..//input[@title='Edit Item']")).click();
+		driver.findElements(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']//td[contains(text(),'"+partNumber+"')]/..//input[@title='Edit Item']")).get(0).click();
 		}
 		//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+itemPartnumber+"')]/preceding-sibling::td/descendant::input[@title='Edit Item']
 		return this;

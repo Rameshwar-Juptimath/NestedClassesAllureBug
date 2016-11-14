@@ -1280,9 +1280,10 @@ public class SubsetPageObjects extends PageFactoryInitializer
 		return subsetId;
 	}
 	public SubsetPageObjects verifySuccessMessageForDeletionOfSubset( String subsetName,String subsetId) throws InterruptedException {
-		Waiting.explicitWaitVisibilityOfElement(succesfulMessageForDeleteSubset, 10);
+	
+		Thread.sleep(3000);
 		Assert.assertEquals(succesfulMessageForDeleteSubset.getText(), "Subset - : '"+subsetName+"'with Subset Id -'"+subsetId+"' removed Successfully");	
-		//String expMsg="Subset - : 'test'with Subset Id -'"+subsetId+"' removed Successfully";
+		
 		
 		return this;
 	}

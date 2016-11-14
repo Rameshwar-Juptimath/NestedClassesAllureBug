@@ -22,81 +22,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 	TaxonomyDataPropertyFile taxData = new TaxonomyDataPropertyFile();
 	ApplicationSetUpPropertyFile setUp = new ApplicationSetUpPropertyFile();
 
-	@Features(value = {"Taxonomy Module"})
-	@Description("This Method is used to Create a Taxonomy {0}")
-	@Test(enabled=false, groups={"regression"},dataProvider="TaxonomyModuleTest",dataProviderClass=SearchData.class)
-	public void createTaxonomy(String testCaseId,String userName, String password,String welcomeMessage, String taxonomyName,String taxonomyDesc,String supplier,String topBanner, String rightBanner, 
-			String leftBanner, String bottomBanner, String saveAs) throws Exception
-	{
-		landingPage()
-		.enterUsername(userName)
-		.enterPassword(password)
-		.clickOnLogin()
-		.homePage()
-		.verifyWelcomeMessage(welcomeMessage)
-		.clickOnTaxonomyLink()
-		.taxonomyPage()
-		.clickOnAddnewTaxonomy()
-		.enterTaxonomyName(taxonomyName)
-		.enterTaxonomyDesciption(taxonomyDesc)
-		.selectSupplier(supplier)
-		.selectTopBanner(topBanner)
-		.selectRightBanner(rightBanner)
-		.selectLeftBanner(leftBanner)
-		.selectBottomBanner(bottomBanner)
-		.saveAs(saveAs)
-		.saveTaxanomy()
-		.searchForTaxonomy(taxonomyName)
-		.verifyTaxonomyPresent(taxonomyName);
-	}
-
-	@Features(value = {"Taxonomy Module"})
-	@Description("This Method is used to Create Categoryies {0}")
-	@Test(enabled=false, groups={"regression"},dataProvider="TaxonomyModuleTest",dataProviderClass=SearchData.class)
-	public void createCategories(String testCaseNo, String categoryCode, String categoryName,String displaySequence, String expectedSuccesfulMessageForNewCategoryCreation) throws Exception
-	{
-		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
-		.clickOnLogin()
-		.homePage()
-		.clickOnTaxonomyLink()
-		.taxonomyPage()
-		.searchForTaxonomy(taxData.getTaxonomyName())
-		.verifyTaxonomyPresent(taxData.getTaxonomyName())
-		.clickOnManageTaxonomy()
-		.manageTaxonomyPage()
-		.verifyLeftPanelTaxonomyName(taxData.getTaxonomyName())
-		.clickOnAddNewCategory()
-		.addNewCategory(categoryCode, categoryName, displaySequence)
-		.saveNewCategory()
-		.verifySuccessMessageAfterSavingCategory(expectedSuccesfulMessageForNewCategoryCreation);
-	}
-
-	@Features(value = {"Taxonomy Module"})
-	@Description("This Method is used to Create L1 Child Category to the Above Created Categories")
-	@Test(enabled=false, groups={"regression"},dataProvider="TaxonomyModuleTest",dataProviderClass=SearchData.class)
-	public void createChildCategories(String testCaseNo, String categoryName,  
-			String childCategoryName, String childCategoryCode, String displaySequence) throws Exception
-	{
-		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
-		.clickOnLogin()
-		.homePage()
-		.clickOnTaxonomyLink()
-		.taxonomyPage()
-		.searchForTaxonomy(taxData.getTaxonomyName())
-		.verifyTaxonomyPresent(taxData.getTaxonomyName())
-		.clickOnManageTaxonomy()
-		.manageTaxonomyPage()
-		.verifyLeftPanelTaxonomyName(taxData.getTaxonomyName())
-		.clickOnRespectiveCategory(categoryName)
-		.clickOnAddNewChildCategory()
-		.addNewChildCategory(childCategoryCode, childCategoryName, displaySequence)
-		.saveNewCategory();
-	}
-
+	
 
 	@Features(value = {"Taxonomy Module"})
 	@Description("This is a Test Case to Verify the Taxonomy Page Items.")
@@ -375,7 +301,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 		.verifyTaxonomyPresent(taxonomyName)
 		.clickOnManageTaxonomy()
 		.manageTaxonomyPage()
-		.clickOnAddNewCategory()
+		.clickOnAddNewCategory(categoryName)
 		.verifyCategoryFields()
 		.addNewCategory(categoryCode, categoryName, displaySequence)
 		.saveNewCategory()
@@ -386,7 +312,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 	@Description("This Test Case is to Verify the 500 Characters Limit in Category DescriptionField in Manage Taxonomy page.")
 	@TestCaseId("TC_T-Mgmt_27")
 	@Test(groups={"regression"},dataProvider="TaxonomyModuleTest",dataProviderClass=SearchData.class)
-	public void TC_TaxMgt_027(String testCaseID, String taxonomyName) throws Exception
+	public void TC_TaxMgt_027(String testCaseID, String taxonomyName, String categoryName) throws Exception
 	{
 		landingPage()
 		.enterUsername(data.getUserName())
@@ -399,7 +325,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 		.verifyTaxonomyPresent(taxonomyName)
 		.clickOnManageTaxonomy()
 		.manageTaxonomyPage()
-		.clickOnAddNewCategory()
+		.clickOnAddNewCategory(categoryName)
 		.verifyCategoryFields()
 		.verifyCharacterLimitInCategoryDescField();
 	}
@@ -408,7 +334,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 	@Description("This Test Case is to Verify the 500 Characters Limit in Marketing Description Field in Manage Taxonomy page.")
 	@TestCaseId("TC_T-Mgmt_28")
 	@Test(groups={"regression"},dataProvider="TaxonomyModuleTest",dataProviderClass=SearchData.class)
-	public void TC_TaxMgt_028(String testCaseID, String taxonomyName) throws Exception
+	public void TC_TaxMgt_028(String testCaseID, String taxonomyName,String categoryName) throws Exception
 	{
 		landingPage()
 		.enterUsername(data.getUserName())
@@ -421,7 +347,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 		.verifyTaxonomyPresent(taxonomyName)
 		.clickOnManageTaxonomy()
 		.manageTaxonomyPage()
-		.clickOnAddNewCategory()
+		.clickOnAddNewCategory(categoryName)
 		.verifyCategoryFields()
 		.verifyCharacterLimitInMarketingDescField();
 	}
