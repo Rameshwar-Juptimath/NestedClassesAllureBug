@@ -75,6 +75,7 @@ public class MainController implements IHookable {
 
 		else if (System.getProperty("os.name").toUpperCase().contains("WIN")) {
 			if (setUp.getBrowser().trim().equalsIgnoreCase("chrome")) {
+				System.setProperty("webdriver.chrome.driver", "C:/Users/Hemanth/Softwares/chromedriver.exe");
 				driver = new ChromeDriver();
 
 			} else if (setUp.getBrowser().trim().equalsIgnoreCase("IE")) {
