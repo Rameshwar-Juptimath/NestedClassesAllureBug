@@ -3,7 +3,7 @@
  
 <test name="Regression Testing">
  <parameter name="browser" value="chrome"></parameter>
-  <parameter name="Node Url" value="http://hemanthip:5555/wd/hub"></parameter>
+  <parameter name="Node Url" value="http://10.200.1.188:4444/wd/hub"></parameter>
     <classes>
         <class name="org.google.modules.SearchModuleTest" ></class>
     </classes>
