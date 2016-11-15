@@ -288,7 +288,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 	@TestCaseId("TC_T-Mgmt_19, TC_T-Mgmt_20,TC_T-Mgmt_21,TC_T-Mgmt_22,TC_T-Mgmt_24,TC_T-Mgmt_25,TC_T-Mgmt_26 ")
 	@Test(groups={"regression"},dataProvider="TaxonomyModuleTest",dataProviderClass=SearchData.class)
 	public void TC_TaxMgt_019(String testCaseID, String taxonomyName, String categoryName, 
-			String categoryCode, String displaySequence, String errorMessage) throws Exception
+			String categoryCode, String displaySequence, String errorMessage, String noOfCategoriestoBeCreate) throws Exception
 	{
 		landingPage()
 		.enterUsername(data.getUserName())
@@ -558,7 +558,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 	@Description("This Test Case is to Save a Category and Verify the SuccessMessage in Manage Taxonomy page.")
 	@TestCaseId("TC_T-Mgmt_52")
 	@Test(groups={"regression"},dataProvider="TaxonomyModuleTest",dataProviderClass=SearchData.class)
-	public void TC_TaxMgt_52(String testCaseID, String taxonomyName, String categoryCode, String categoryNameForAddNewCategoryClick, String categoryName, String displaySequence, String expectedSuccesfulMessageForNewCategoryCreation) throws Exception
+	public void TC_TaxMgt_52(String testCaseID, String taxonomyName, String categoryCode, String categoryNameForAddNewCategoryClick, String categoryName, String displaySequence, String expectedSuccesfulMessageForNewCategoryCreation, String noOfCategoriestoBeCreate) throws Exception
 	{
 		landingPage()
 		.enterUsername(data.getUserName())

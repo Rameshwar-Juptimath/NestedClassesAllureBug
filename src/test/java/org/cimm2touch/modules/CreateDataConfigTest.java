@@ -101,8 +101,7 @@ public class CreateDataConfigTest extends PageFactoryInitializer{
 	@Features(value = {"Taxonomy Module"})
 	@Description(" Create Categoryies {0}")
 	@Test(enabled=true,priority=3, groups={"regression"},dataProvider="CreateDataConfigTest",dataProviderClass=SearchData.class)
-	public void createCategories(String testCaseNo, String userName, String password, String welcomeMessage,String taxonomy,String categoryCode, String categoryName,
-			String displaySequence, String expectedSuccesfulMessageForNewCategoryCreation, String NoOfCategoriesToCreate) throws Exception
+	public void createCategories(String testCaseNo, String userName, String password, String welcomeMessage,String taxonomy,String categoryCode, String categoryName,String displaySequence, String expSuccessMsgForNewCategoryCreation, String noOfCategories) throws Exception
 	{
 		landingPage()
 		.enterUsername(userName)
@@ -117,10 +116,11 @@ public class CreateDataConfigTest extends PageFactoryInitializer{
 		.clickOnManageTaxonomy()
 		.manageTaxonomyPage()
 		.verifyLeftPanelTaxonomyName(taxonomy)
-		.clickOnAddNewCategory(categoryName)
-		.addNewCategory(categoryCode, categoryName, displaySequence,NoOfCategoriesToCreate)
+		.addNewCategoryAndVerify(categoryCode, categoryName, displaySequence, noOfCategories,expSuccessMsgForNewCategoryCreation);
+		/*.clickOnAddNewCategory(categoryName)
+		.addNewCategory(categoryCode, categoryName, displaySequence)
 		.saveNewCategory()
-		.verifySuccessMessageAfterSavingCategory(expectedSuccesfulMessageForNewCategoryCreation);
+		.verifySuccessMessageAfterSavingCategory(expectedSuccesfulMessageForNewCategoryCreation);*/
 	}
 
 	@Features(value = {"Taxonomy Module"})

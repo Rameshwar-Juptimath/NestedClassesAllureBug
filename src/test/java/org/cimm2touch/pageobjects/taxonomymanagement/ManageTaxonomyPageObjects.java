@@ -526,7 +526,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 		Thread.sleep(3000);
 		try
 		{
-			WebElement ele = driver.findElement(By.xpath("//span[contains(text(),'"+categoryName+"')]"));
+			WebElement ele = driver.findElement(By.xpath("//span[text()='"+categoryName+"']"));
 			ele.click();
 			
 		}
@@ -542,21 +542,35 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 
 
 	public ManageTaxonomyPageObjects addNewCategory(String categoryCodeforParentCategory, String categoryNameforParentCategory,  
-			String displaySequenceforParentCategory, String NoOfCategoriesToCreate) throws Exception {
+			String displaySequenceforParentCategory) throws Exception {
+	
+		
+		clickOnAddNewCategory(categoryNameforParentCategory);
+		enterParentCategoryCode(categoryCodeforParentCategory);
+		enterParentCategoryName(categoryNameforParentCategory);
+		enterDisplaySequenceOfParentCategory(displaySequenceforParentCategory);
+		
+	
+		return this;
+	}
+	public ManageTaxonomyPageObjects addNewCategoryAndVerify(String categoryCodeforParentCategory, String categoryNameforParentCategory,  
+			String displaySequenceforParentCategory, String NoOfCategoriesToCreate, String expMsg) throws Exception {
 	int var=Integer.parseInt(NoOfCategoriesToCreate);
 	
 		for(int i=1;i<= var; i++)
 		{
 		clickOnAddNewCategory(categoryNameforParentCategory);
-		enterParentCategoryCode(categoryCodeforParentCategory);
-		enterParentCategoryName(categoryNameforParentCategory);
+		enterParentCategoryCode(categoryCodeforParentCategory+i);
+		enterParentCategoryName(categoryNameforParentCategory+i);
 		enterDisplaySequenceOfParentCategory(displaySequenceforParentCategory);
+		saveNewCategory();
+		verifySuccessMessageAfterSavingCategory(expMsg);
 	}
 		return this;
 	}
 	@Step("enter parent category code {0}")
 	public ManageTaxonomyPageObjects enterParentCategoryCode(String categoryCodeforParentCategory) throws InterruptedException{
-		Thread.sleep(5000);
+		Thread.sleep(3000);
 		categoryCode.clear();
 		categoryCode.sendKeys(categoryCodeforParentCategory);
 		return this;
@@ -597,13 +611,14 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 		categoryName.sendKeys(childCategoryName1);
 		displaySequence.clear();
 		displaySequence.sendKeys(displaySequence1);	
-		Thread.sleep(5000);
+		
 		return this;
 	}
 
 	@Step("To Save Category")
-	public ManageTaxonomyPageObjects saveNewCategory() 
+	public ManageTaxonomyPageObjects saveNewCategory() throws InterruptedException 
 	{
+		Thread.sleep(2000);
 		((JavascriptExecutor) driver).executeScript("arguments[0].click();",saveCategory);
 		return this;		
 	}
@@ -657,7 +672,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	public ManageTaxonomyPageObjects verifySuccessMessageAfterSavingCategory(String expectedNewSavedCategorySuccesfulMessage) throws Exception 
 	{
 		Thread.sleep(5000);
-		Assert.assertTrue(driver.findElement(By.xpath("//*[@id='categoryid:ctgMsgId' and contains(text(),'"+expectedNewSavedCategorySuccesfulMessage+"')]")).isDisplayed());
+		Assert.assertEquals(driver.findElement(By.xpath("//*[@id='categoryid:ctgMsgId' and contains(text(),'"+expectedNewSavedCategorySuccesfulMessage+"')]")).getText(),expectedNewSavedCategorySuccesfulMessage);
 		return this;
 	}
 
