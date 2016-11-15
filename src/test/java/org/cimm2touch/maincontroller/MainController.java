@@ -22,8 +22,6 @@ import java.lang.reflect.Method;
 
 import org.apache.commons.io.FileUtils;
 import org.cimm2touch.utils.ApplicationSetUpPropertyFile;
-import org.cimm2touch.utils.SendEmailGmail;
-import org.cimm2touch.utils.Video;
 import org.monte.media.Format;
 import org.monte.media.FormatKeys.MediaType;
 import org.monte.media.math.Rational;
@@ -62,18 +60,6 @@ public class MainController implements IHookable {
 	public static String TaxonomyData = "resources/PropertyFiles/TaxonomyData.properties";
 	DesiredCapabilities caps = new DesiredCapabilities();
 
-	@BeforeSuite(alwaysRun = true)
-	public void beforeSuite() throws Exception {
-		ApplicationSetUpPropertyFile setUp = new ApplicationSetUpPropertyFile();
-		outputVideo = "./Videos";
-		FileUtils.forceMkdir(new File(outputVideo));
-		outputFolder = "./Screenshots";
-		FileUtils.forceMkdir(new File(outputFolder));
-		outputFolder += "/Screenshot_" + setUp.getBrowser().toUpperCase() + "_" + SendEmailGmail.getDate() + "_"
-				+ SendEmailGmail.getTime();
-		outputVideo += "/Videos_" + setUp.getBrowser().toUpperCase() + "_" + SendEmailGmail.getDate() + "_"
-				+ SendEmailGmail.getTime();
-	}
 
 	@BeforeMethod(alwaysRun = true)
 	public void setUp() throws Exception {
@@ -85,31 +71,6 @@ public class MainController implements IHookable {
 		driver.manage().deleteAllCookies();
 	}
 
-	@BeforeMethod(alwaysRun = true)
-	public void startRecording(Method methodName) throws Exception {
-		ApplicationSetUpPropertyFile setUp = new ApplicationSetUpPropertyFile();
-		// File file = new File(outputFolder+"/"+"Videos/");
-		if (setUp.getVideoPermission().equalsIgnoreCase("yes")) {
-			File file = new File(outputVideo + "/");
-			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-			int width = screenSize.width;
-			int height = screenSize.height;
-			String testcaseName = methodName.getName();
-			Rectangle captureSize = new Rectangle(0, 0, width, height);
-
-			GraphicsConfiguration gc = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice()
-					.getDefaultConfiguration();
-
-			this.screenRecorder = new Video(gc, captureSize,
-					new Format(MediaTypeKey, MediaType.VIDEO, MimeTypeKey, MIME_AVI),
-					new Format(MediaTypeKey, MediaType.VIDEO, EncodingKey, ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE,
-							CompressorNameKey, ENCODING_AVI_TECHSMITH_SCREEN_CAPTURE, DepthKey, 24, FrameRateKey,
-							Rational.valueOf(15), QualityKey, 1.0f, KeyFrameIntervalKey, 15 * 60),
-					new Format(MediaTypeKey, MediaType.VIDEO, EncodingKey, "black", FrameRateKey, Rational.valueOf(30)),
-					null, file, testcaseName);
-			this.screenRecorder.start();
-		}
-	}
 
 	@BeforeTest(alwaysRun = true)
 	public void beforeTest() throws Exception {

@@ -3,7 +3,6 @@
 <suite name="CIMM2Touch Automation Suite">
 	<listeners>
 		<listener class-name="org.cimm2touch.maincontroller.MainController" />
-		<listener class-name="org.cimm2touch.utils.ReportGenerator" />
 	</listeners>
 	<test name="End to End Testing">
 
@@ -13,7 +12,8 @@
 			</run>
 		</groups>
 		<classes>
-			<class name="org.cimm2touch.modules.AdvancedSearchModuleTest" />
+			<class name="org.cimm2touch.modules.CreateDataConfigTest" />
+			<class name="org.cimm2touch.modules.AdvancedSearchModuleTest" />			
 		</classes>
 	</test> <!-- Regression Testing -->
 </suite> <!-- CIMM2Touch Automation Suite -->
