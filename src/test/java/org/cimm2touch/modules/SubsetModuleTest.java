@@ -1,6 +1,6 @@
 package org.cimm2touch.modules;
 /**
- * @author Gladson Antony
+ * @author Thiruveedhi Chinna
  *
  */
 
@@ -8,6 +8,7 @@ import org.cimm2touch.dataprovider.SearchData;
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.utils.SearchDataPropertyFile;
 import org.framework.utils.ApplicationSetUpPropertyFile;
+import org.framework.utils.RandomGenerator;
 import org.testng.annotations.Test;
 
 import ru.yandex.qatools.allure.annotations.Description;
@@ -18,36 +19,17 @@ public class SubsetModuleTest extends PageFactoryInitializer
 {
 	SearchDataPropertyFile data = new SearchDataPropertyFile();
 	ApplicationSetUpPropertyFile setUp = new ApplicationSetUpPropertyFile();
-
-	@Features(value = {"Subset/Catlog Module"})
-	@Description("This is a Method that Creates Subset.")
-	@Test(priority=1,enabled=true, groups={"regression"},dataProvider="SubsetModuleTest",dataProviderClass=SearchData.class)
-	public void createSubsets(String testCaseID, String subsetName, String subsetDesc, String bannerText, String saveMessage) throws Exception
-	{
-		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
-		.clickOnLogin()
-		.homePage()
-		.clickOnSubset()
-		.subsetPage()
-		.verifySubsetPageItems()
-		.clickOnAddNewSubset()
-		.verifyAddNewSubsetFormItems()
-		.addNewSubset(subsetName, subsetDesc, bannerText)
-		.clickOnSaveNewSubset()
-		.verifyMessageAfterSavingSubset(saveMessage);
-	}
+	RandomGenerator random=new RandomGenerator();
 
 	@Features(value = {"Subset/Catlog Module"})
 	@Description("This is a Method that Creates Subset.")
 	@TestCaseId("TC_Subset_01, TC_Subset_03, TC_Subset_04, TC_Subset_05, TC_Subset_06, TC_Subset_07")
-	@Test(priority=2,groups={"regression"},dataProvider="SubsetModuleTest",dataProviderClass=SearchData.class)
-	public void TC_Subset_01(String testCaseID, String subsetName, String subsetDesc, String bannerText, String saveMessage) throws Exception
+	@Test(groups={"regression"},dataProvider="SubsetModuleTest",dataProviderClass=SearchData.class)
+	public void TC_Subset_01(String testCaseID,String userName,String password, String subsetName, String subsetDesc, String bannerText, String saveMessage) throws Exception
 	{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
 		.clickOnSubset()
@@ -65,12 +47,12 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	@Features(value = {"Subset/Catlog Module"})
 	@Description("This Test Case is to Verify the Working of 'No. Of Items' Dropdown.")
 	@TestCaseId("TC_Subset_02")
-	@Test(priority=3,groups={"regression"})
-	public void TC_Subset_02() throws Exception
+	@Test(groups={"regression"},dataProvider="SubsetModuleTest",dataProviderClass=SearchData.class)
+	public void TC_Subset_02(String testCaseID,String userName,String password) throws Exception
 	{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
 		.clickOnSubset()
@@ -83,11 +65,11 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	@Description("This Test Case is to Verify the 'Edit Subset' Form Items")
 	@TestCaseId("TC_Subset_08")
 	@Test(priority=4,groups={"regression"},dataProvider="SubsetModuleTest",dataProviderClass=SearchData.class)
-	public void TC_Subset_08(String testCaseID, String subsetName) throws Exception
+	public void TC_Subset_08(String testCaseID,String userName,String password, String subsetName) throws Exception
 	{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
 		.clickOnSubset()
@@ -103,11 +85,11 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	@Description("This Test Case is to Verify the  working of 'Edit Subset' Form Items")
 	@TestCaseId("TC_Subset_09")
 	@Test(priority=5,groups={"regression"},dataProvider="SubsetModuleTest",dataProviderClass=SearchData.class)
-	public void TC_Subset_09(String testCaseID, String subsetName, String editedSubsetName, String subsetDesc, String updateMessage) throws Exception
+	public void TC_Subset_09(String testCaseID,String userName,String password, String subsetName, String editedSubsetName, String subsetDesc, String updateMessage) throws Exception
 	{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
 		.clickOnSubset()
@@ -125,11 +107,11 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	@Description("This Test Case is to Verify 'Catalog Builder View' Form Items")
 	@TestCaseId("TC_Subset_10")
 	@Test(priority=6,groups={"regression"},dataProvider="SubsetModuleTest",dataProviderClass=SearchData.class)
-	public void TC_Subset_10(String testCaseID, String subsetName) throws Exception
+	public void TC_Subset_10(String testCaseID,String userName,String password, String subsetName) throws Exception
 	{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
 		.clickOnSubset()
@@ -145,11 +127,11 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	@Description("This Test Case is to add Manufacturer and Brands under 'Catalog Builder View'")
 	@TestCaseId("TC_Subset_11")
 	@Test(priority=7,groups={"regression"},dataProvider="SubsetModuleTest",dataProviderClass=SearchData.class)
-	public void TC_Subset_11(String testCaseID, String subsetName, String manufacturerName, String brandName) throws Exception
+	public void TC_Subset_11(String testCaseID,String userName,String password, String subsetName, String manufacturerName, String brandName) throws Exception
 	{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
 		.clickOnSubset()
@@ -167,11 +149,11 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	@Description("This Test Case is to verify previously added Manufacturer and Brands under 'Catalog Builder View'")
 	@TestCaseId("TC_Subset_12, TC_Subset_13")
 	@Test(priority=8,groups={"regression"},dataProvider="SubsetModuleTest",dataProviderClass=SearchData.class)
-	public void TC_Subset_12(String testCaseID, String subsetName, String manufacturerName, String brandName, String saveMessage) throws Exception
+	public void TC_Subset_12(String testCaseID,String userName,String password, String subsetName, String manufacturerName, String brandName, String saveMessage) throws Exception
 	{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
 		.clickOnSubset()
@@ -195,8 +177,8 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	public void TC_Subset_24() throws Exception
 	{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
 		.clickOnSubset()
@@ -246,8 +228,8 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	 * @author:yogish.mt
 
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -272,8 +254,8 @@ public class SubsetModuleTest extends PageFactoryInitializer
 
 		 data.setTheNumberofRecordsToDisplay("10");
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -300,8 +282,8 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	@Test(groups="regression")
 	public void verificationOfValidSearch() throws Exception{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -317,8 +299,8 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	@Test(groups="regression")
 	public void verificationOfInvalidSearch() throws InterruptedException{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -333,8 +315,8 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	@Test(groups="regression")
 	public void VerificationOfAddNewSubsetForm() throws InterruptedException{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -351,8 +333,8 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	@Test(groups="regression")
 	public void verificationOfAddNewSubset() throws Exception{
 		landingPage()
-	.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+	.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -368,8 +350,8 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	@Test(groups="regression")
 	public void verificationofSubsetName() throws InterruptedException{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -387,8 +369,8 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	@Test(groups="regression")
 	public void verificationofEditSubsetFields() throws Exception{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -405,8 +387,8 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	@Test(groups="regression")
 	public void verificationofupdateSubset() throws Exception{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -425,8 +407,8 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	@Test(groups="regression")
 	public void VerificationOfCatalogBuilderViewPage() throws Exception{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -451,8 +433,8 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	 * @author:yogish.mt
 
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -485,8 +467,8 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	 * @author:yogish.mt
 
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -519,8 +501,8 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	 * @author:yogish.mt
 
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -552,8 +534,8 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	 * @author:yogish.mt
 
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -589,8 +571,8 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	 * @author:yogish.mt
 
 		landingPage()
-	.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+	.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -617,8 +599,8 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	 * @author:yogish.mt
 
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -651,8 +633,8 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	 * @author:yogish.mt
 
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -670,8 +652,8 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	 * @author:yogish.mt
 
 	landingPage()
-	.enterUsername(data.getUserName())
-	.enterPassword(data.getPassword())
+	.enterUsername(userName)
+	.enterPassword(password)
 	.clickOnLogin()
 	.homePage()
 	.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -718,8 +700,8 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	 * @author:yogish.mt
 
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -738,8 +720,8 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	 * @author:yogish.mt
 
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -758,8 +740,8 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	 * @author:yogish.mt
 
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -777,8 +759,8 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	 * @author:yogish.mt
 
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())

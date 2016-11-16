@@ -9,6 +9,14 @@ import org.testng.annotations.DataProvider;
 public class SearchData
 {
 
+	@DataProvider(name="loginTestData")
+	public static Object[][] loginCredentials(){
+		return new  Object[][]{
+			{"automationUser","unilog123##","Welcome, Automation !"}
+		};
+		
+	}
+	
 	@DataProvider(name="excelSheetDataRead")
 	public static Object[][] excelSheetDataRead(Method methodName) throws Exception
 	{

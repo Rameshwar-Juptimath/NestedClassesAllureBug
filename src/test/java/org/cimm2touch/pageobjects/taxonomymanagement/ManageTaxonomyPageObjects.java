@@ -643,16 +643,13 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 
 
 	@Step("To Verify 500 Characters Limit in Category Description Field")
-	public ManageTaxonomyPageObjects verifyCharacterLimitInCategoryDescField() throws Exception 
+	public ManageTaxonomyPageObjects verifyCharacterLimitInCategoryDescField(String description) throws Exception 
 	{
 		SoftAssert softassert = new SoftAssert();
 		Thread.sleep(5000);
 		categoryDescriptionTextArea.clear();
-		for (int i=0; i< 525; i++)
-		{
-			categoryDescriptionTextArea.sendKeys("i");
-		}
-		Thread.sleep(2000);
+			categoryDescriptionTextArea.sendKeys(description);
+	
 		String enteredText = categoryDescriptionTextArea.getAttribute("value");
 		int enteredTextLength = enteredText.length();
 		softassert.assertEquals(enteredTextLength, 500);
@@ -661,16 +658,13 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	}
 
 	@Step("To Verify 500 Characters Limit in Marketing Description Field")
-	public ManageTaxonomyPageObjects verifyCharacterLimitInMarketingDescField() throws Exception 
+	public ManageTaxonomyPageObjects verifyCharacterLimitInMarketingDescField(String marketingDescription) throws Exception 
 	{
 		SoftAssert softassert = new SoftAssert();
 		Thread.sleep(5000);
 		marketingDescriptionTextArea.clear();
-		for (int i=0; i< 525; i++)
-		{
-			marketingDescriptionTextArea.sendKeys("i");
-		}
-		Thread.sleep(2000);
+
+			marketingDescriptionTextArea.sendKeys(marketingDescription);
 		String enteredText = marketingDescriptionTextArea.getAttribute("value");
 		int enteredTextLength = enteredText.length();
 		softassert.assertEquals(enteredTextLength, 500);

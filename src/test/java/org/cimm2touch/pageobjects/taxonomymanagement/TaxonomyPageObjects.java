@@ -231,19 +231,16 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 		return this; 
 	}
 	
-	public TaxonomyPageObjects enteringMoretha500charactersinTaxonomyDescField() throws Exception 
-	{
-		Thread.sleep(5000);
-		for (int i=0; i< 525; i++)
-		{
-			taxonomyDesctextarea.sendKeys("i");
-		}
+	public TaxonomyPageObjects enteringMoretha500charactersinTaxonomyDescField(String taxonomyDescription) throws Exception 
+	{		waiting.explicitWaitVisibilityOfElement(taxonomyDesctextarea, 15);
+			taxonomyDesctextarea.sendKeys(taxonomyDescription);
 		return this;
 	}
-
+	
+	@Step("verification of taxonomy description entered more than accepted chars")
 	public TaxonomyPageObjects verifyEnterdCharactersInTaxonomyDescfield() throws Exception 
 	{
-		Thread.sleep(3000);
+		waiting.explicitWaitVisibilityOfElement(taxonomyDesctextarea, 15);
 		String enteredText = taxonomyDesctextarea.getAttribute("value");
 		int enteredTextLength = enteredText.length();
 		Assert.assertEquals(enteredTextLength, 500);

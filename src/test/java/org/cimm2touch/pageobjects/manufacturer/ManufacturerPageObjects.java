@@ -1185,13 +1185,12 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	}
 
 	@Step("To Verify the Character Limit for 'Manufacturer Name'")
-	public ManufacturerPageObjects verifyCharacterLimitForManufacturersName() throws Exception 
+	public ManufacturerPageObjects verifyCharacterLimitForManufacturersName(String maxChars) throws Exception 
 	{
 		waiting.explicitWaitVisibilityOfElement(newManufacturersNameLocator, 5);
-		for (int i=0; i< 100; i++)
-		{
-			newManufacturersNameLocator.sendKeys("a");
-		}
+		
+			newManufacturersNameLocator.sendKeys(maxChars);
+		
 		String enteredText=newManufacturersNameLocator.getAttribute("value");
 		int enteredTextLength=enteredText.length();
 		Assert.assertEquals(enteredTextLength, Integer.parseInt(newManufacturersNameLocator.getAttribute("maxlength")));
@@ -1199,13 +1198,11 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	}
 
 	@Step("To Verify the Character Limit for 'Manufacturer Code'")
-	public ManufacturerPageObjects verifyCharacterLimitForManufacturersCode() 
+	public ManufacturerPageObjects verifyCharacterLimitForManufacturersCode(String maxLimitNum) 
 	{
 		waiting.explicitWaitVisibilityOfElement(newManufacturersCodeLocator, 5);
-		for (int i=0; i< 100; i++)
-		{
-			newManufacturersCodeLocator.sendKeys("0");
-		}
+		
+			newManufacturersCodeLocator.sendKeys(maxLimitNum);
 		String enteredText=newManufacturersCodeLocator.getAttribute("value");
 		int enteredTextLength=enteredText.length();
 		Assert.assertEquals(enteredTextLength, Integer.parseInt(newManufacturersCodeLocator.getAttribute("maxlength")));

@@ -491,7 +491,7 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 	 public AddNewItemPageObjects enterPartNumberField(String partNumberField) {
 		 waiting.explicitWaitVisibilityOfElement(enterPartNumberLocator, 30);
 		 RandomGenerator generateRandom = new RandomGenerator();
-		 generateRandom.random(6, PermittedCharacters.NUMERIC);
+		// generateRandom.random(6, PermittedCharacters.NUMERIC);
 		 enterPartNumberLocator.sendKeys( generateRandom.random(6, PermittedCharacters.NUMERIC));
 			return this;
 		}
