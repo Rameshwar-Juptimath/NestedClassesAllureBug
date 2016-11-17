@@ -27,7 +27,7 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 	@Test(groups={"regression"})
 	public void verifyProductsPage() throws Exception{
 	
-		loginObj.login();
+		landingPage().loginToCimm2v4Site().
 		homePage()
 		.clickOnProductsLink()
 		.productsPage()
@@ -53,7 +53,7 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 	@Test(groups={"regression"})
 	public void verifyAddNewProductFields() throws Exception{
 	
-		loginObj.login();
+		landingPage().loginToCimm2v4Site().
 		homePage()
 		.clickOnProductsLink()
 		.productsPage()
@@ -67,7 +67,7 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 	@Test(groups={"regression"})
 	public void verifyAddingNewProduct() throws Exception {
 	
-		loginObj.login();
+		landingPage().loginToCimm2v4Site().
 		homePage()
 		.clickOnProductsLink()
 		.productsPage()
@@ -97,7 +97,7 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 	@TestCaseId("TC_PRODUCTS_004")
 	@Test(groups={"regression"})
 	public void verifyEditProductPage() throws Exception{
-		loginObj.login();
+		landingPage().loginToCimm2v4Site().
 		homePage()
 		.clickOnProductsLink()
 		.productsPage()
@@ -185,7 +185,7 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 	@TestCaseId("TC_PRODUCTS_005")
 	@Test(groups={"regression"})
 	public void verifyGeneralInfoInEditProductPage() throws Exception{
-		loginObj.login();
+		landingPage().loginToCimm2v4Site().
 		homePage()
 		.clickOnProductsLink()
 		.productsPage()
@@ -201,7 +201,7 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 	@TestCaseId("TC_PRODUCTS_006")
 	@Test(groups={"regression"})
 	public void verifyUpdateProductInfo() throws Exception{
-		loginObj.login();
+		landingPage().loginToCimm2v4Site().
 		homePage()
 		.clickOnProductsLink()
 		.productsPage()
@@ -234,7 +234,7 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 	@TestCaseId("TC_PRODUCTS_007")
 	@Test(groups={"regression"})
 	public void verifyProductImagesTab() throws Exception{
-		loginObj.login();
+		landingPage().loginToCimm2v4Site().
 		homePage()
 		.clickOnProductsLink()
 		.productsPage()
@@ -252,7 +252,7 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 	@TestCaseId("TC_PRODUCTS_008")
 	@Test(groups={"regression"})
 	public void verifyAddNewProductImage() throws Exception{
-		loginObj.login();
+		landingPage().loginToCimm2v4Site().
 		homePage()
 		.clickOnProductsLink()
 		.productsPage()
@@ -272,7 +272,7 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 	@TestCaseId("TC_PRODUCTS_009")
 	@Test(groups={"regression"})
 	public void verifyAddProductImageUsingURL() throws Exception{
-		loginObj.login();
+		landingPage().loginToCimm2v4Site().
 		homePage()
 		.clickOnProductsLink()
 		.productsPage()
@@ -611,7 +611,7 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 	public void verifyAddProductImageUsingUploadImage() throws Exception{
 		File file = new File(data.getImageFilePath());
 		System.out.println(file.getAbsolutePath());
-		loginObj.login();
+		landingPage().loginToCimm2v4Site().
 		homePage()
 		.clickOnProductsLink()
 		.productsPage()
@@ -645,7 +645,7 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 	@TestCaseId("TC_PRODUCTS_011")
 	@Test(groups={"regression"})
 	public void verifyRemoveAddedProductImage() throws Exception{
-		loginObj.login();
+		landingPage().loginToCimm2v4Site().
 		homePage()
 		.clickOnProductsLink()
 		.productsPage()
@@ -683,7 +683,7 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 	@TestCaseId("TC_PRODUCTS_012")
 	@Test(groups={"regression"})
 	public void verifyItemListTab() throws Exception{
-		loginObj.login();
+		landingPage().loginToCimm2v4Site().
 		homePage()
 		.clickOnProductsLink()
 		.productsPage()

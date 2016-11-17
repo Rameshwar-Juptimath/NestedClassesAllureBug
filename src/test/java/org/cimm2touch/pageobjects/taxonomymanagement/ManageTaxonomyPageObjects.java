@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.utils.SearchDataPropertyFile;
-import org.cimm2touch.utils.TaxonomyDataPropertyFile;
 import org.cimm2touch.utils.TestUtilityMethods;
 import org.framework.utils.TestUtility;
 import org.framework.utils.Waiting;
@@ -23,7 +22,6 @@ import ru.yandex.qatools.allure.annotations.Step;
 public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 {
 	SearchDataPropertyFile data = new SearchDataPropertyFile();
-	TaxonomyDataPropertyFile taxData = new TaxonomyDataPropertyFile();
 	Waiting waiting=new Waiting(getDriver());
 	TestUtility tu=new TestUtility(getDriver());
 	TestUtilityMethods utility = new TestUtilityMethods(getDriver());

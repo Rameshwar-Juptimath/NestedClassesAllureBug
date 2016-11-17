@@ -4,7 +4,6 @@ import java.util.HashMap;
 import org.cimm2touch.dataprovider.SearchData;
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.utils.SearchDataPropertyFile;
-import org.cimm2touch.utils.TaxonomyDataPropertyFile;
 import org.framework.utils.ApplicationSetUpPropertyFile;
 import org.framework.utils.PermittedCharacters;
 import org.framework.utils.RandomGenerator;
@@ -24,7 +23,6 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 {
 
 	SearchDataPropertyFile data = new SearchDataPropertyFile();
-	TaxonomyDataPropertyFile taxData = new TaxonomyDataPropertyFile();
 	ApplicationSetUpPropertyFile setUp = new ApplicationSetUpPropertyFile();
 
 	RandomGenerator generateRandom = new RandomGenerator();

@@ -5,6 +5,7 @@ import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.utils.SearchDataPropertyFile;
 import org.cimm2touch.utils.TestUtilityMethods;
 import org.framework.utils.ApplicationSetUpPropertyFile;
+import org.framework.utils.RandomGenerator;
 import org.testng.annotations.Test;
 
 import ru.yandex.qatools.allure.annotations.Description;
@@ -17,81 +18,98 @@ public class TaxonomyManagementModuleTest extends PageFactoryInitializer{
 	ApplicationSetUpPropertyFile setUp = new ApplicationSetUpPropertyFile();
 	LoginModuleTest loginObj = new LoginModuleTest();
 	TestUtilityMethods utility=new TestUtilityMethods(getDriver());
+	RandomGenerator random=new RandomGenerator();
 	
 	@Features(value = {"Taxonomy Management Module"})
 	@Description("This is a test case which verifies the category edit/modification")
 	@TestCaseId("TC_T-Mgmt_31")
-	@Test(groups={"regression"})
-	public void verificationOfCategoryUpdation() throws InterruptedException{
+	@Test(groups={"regression"}, dataProvider="TaxonomyManagementModuleTest", dataProviderClass=SearchData.class)
+	public void verificationOfCategoryUpdation(String testCaseId, String userName, String password, String taxonomyName, String categoryName,String expSuccessMessge) throws InterruptedException{
 		landingPage()
-		.loginToCimm2v4Site()
+		.enterUsername(userName).enterPassword(password).clickOnLogin()
 		.homePage()
-		.clickOnTaxonomyLink().taxonomyPage()
-		.searchForTaxonomy(data.getTaxonomyName())
+		.clickOnTaxonomyLink()
+		.taxonomyPage()
+		.searchForTaxonomy(taxonomyName)
 		.clickOnManageTaxonomy();
 		categoryAndAttributesPage()
 		.clickOnLeftPanel()
-		.searchForTheCategory(data.getCategoryName())
-		.doubleClickOnCategoryName(data.getCategoryName())
+		.searchForTheCategory(categoryName)
+		.doubleClickOnCategoryName(categoryName)
 		.categoryAndAttributesPage()
-		.enterTheCategoryName(data.getCategoryName())
-		.clickOnSave().verifySuccesfulMessage(data.expSuccesfulMessageForCate());
+		.enterTheCategoryName(categoryName)
+		.clickOnSave().verifySuccesfulMessage(expSuccessMessge);
 	}
 	@Features(value = {"Taxonomy Management Module"})
 	@Description("This is a test case which verifies the category remove")
 	@TestCaseId("TC_T-Mgmt_32")
-	@Test(groups={"regression"})
-	public void verificationOfCategoryRemove() throws InterruptedException{
+	@Test(groups={"regression"}, dataProvider="TaxonomyManagementModuleTest", dataProviderClass=SearchData.class)
+	public void verificationOfCategoryRemove(String testCaseId, String userName, String password, String taxonomyName, String categoryName, String alertText) throws InterruptedException
+	{
 		landingPage()
-		.loginToCimm2v4Site()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin()
 		.homePage()
-		.clickOnTaxonomyLink().taxonomyPage().searchForTaxonomy(data.getTaxonomyName()).clickOnManageTaxonomy();
+		.clickOnTaxonomyLink()
+		.taxonomyPage()
+		.searchForTaxonomy(taxonomyName)
+		.clickOnManageTaxonomy();
 		categoryAndAttributesPage()
 		.clickOnLeftPanel()
-		.searchForTheCategory(data.getCategoryName())
-		.doubleClickOnCategoryName(data.getCategoryName())
+		.searchForTheCategory(categoryName)
+		.doubleClickOnCategoryName(categoryName)
 		.categoryAndAttributesPage()
-		.enterTheCategoryName(data.getCategoryName()).clickOnSave()
-		.clickOnRemove().verifyAlertAndAccept(data.getexpAlertTextForCatDel().trim());
+		.enterTheCategoryName(categoryName)
+		.clickOnSave()
+		.clickOnRemove()
+		.verifyAlertAndAccept(alertText.trim());
 	}
 	@Features(value = {"Taxonomy Management Module"})
 	@Description("This is a test case which verifies the category image upload")
 	@TestCaseId("TC_T-Mgmt_33")
-	@Test(enabled = false,priority=1,groups={"regression"})
-	public void verificationCategoryImageUpload() throws InterruptedException{
+	@Test(groups={"regression"}, dataProvider="TaxonomyManagementModuleTest", dataProviderClass=SearchData.class)
+	public void verificationCategoryImageUpload(String testCaseId, String userName, String password, String taxonomyName, String categoryName) throws InterruptedException{
 		landingPage()
-		.loginToCimm2v4Site()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin()
 		.homePage()
-		.clickOnTaxonomyLink().taxonomyPage().searchForTaxonomy(data.getTaxonomyName()).clickOnManageTaxonomy();
+		.clickOnTaxonomyLink()
+		.taxonomyPage()
+		.searchForTaxonomy(taxonomyName)
+		.clickOnManageTaxonomy();
 		categoryAndAttributesPage()
 		.clickOnLeftPanel()
-		.searchForTheCategory(data.getCategoryName())
-		.doubleClickOnCategoryName(data.getCategoryName())
+		.searchForTheCategory(categoryName)
+		.doubleClickOnCategoryName(categoryName)
 		.categoryAndAttributesPage()
-		.enterTheCategoryName(data.getCategoryName())
+		.enterTheCategoryName(categoryName)
 		.clickOnSave()
 		.clickOnImageUpload();
 		imageUploadPage()
-		.clickOnImageToSelectFromRep().SelectImageFromRepo().categoryAndAttributesPage();
+		.clickOnImageToSelectFromRep()
+		.SelectImageFromRepo()
+		.categoryAndAttributesPage();
 		
 	}
 	@Features(value = {"Taxonomy Management Module"})
 	@Description("This is a test case which verifies the category Revision History activities")
 	@TestCaseId("TC_T-Mgmt_34")
-	@Test(groups={"regression"})
-	public void verificationRevisionHistory() throws InterruptedException{
+	@Test(groups={"regression"}, dataProvider="TaxonomyManagementModuleTest", dataProviderClass=SearchData.class)
+	public void verificationRevisionHistory(String testCaseId, String userName, String password, String taxonomyName, String categoryName, String expHistoryPageTitleForCategory) throws InterruptedException{
 		landingPage()
-		.loginToCimm2v4Site()
+		.enterUsername(userName).enterPassword(password).clickOnLogin()
 		.homePage()
-		.clickOnTaxonomyLink().taxonomyPage().searchForTaxonomy(data.getTaxonomyName()).clickOnManageTaxonomy();
+		.clickOnTaxonomyLink().taxonomyPage().searchForTaxonomy(taxonomyName).clickOnManageTaxonomy();
 		categoryAndAttributesPage()
 		.clickOnLeftPanel()
-		.searchForTheCategory(data.getCategoryName())
-		.doubleClickOnCategoryName(data.getCategoryName())
+		.searchForTheCategory(categoryName)
+		.doubleClickOnCategoryName(categoryName)
 		.categoryAndAttributesPage()
-		.enterTheCategoryName(data.getCategoryName())
+		.enterTheCategoryName(categoryName)
 		.clickOnSave()
-		.clickOnHistoryLink().verifyHistoryPage(data.getExpectedHistoryPageTitleForCategory());
+		.clickOnHistoryLink().verifyHistoryPage(expHistoryPageTitleForCategory);
 		
 	}
 	
@@ -101,7 +119,7 @@ public class TaxonomyManagementModuleTest extends PageFactoryInitializer{
 	@Test(groups={"regression"})
 	public void verificationPagination() throws InterruptedException{
 		landingPage()
-		.loginToCimm2v4Site()
+		.enterUsername(userName).enterPassword(password).clickOnLogin()
 		.homePage()
 		.clickOnTaxonomyLink()
 		.taxonomyPage()
@@ -111,11 +129,13 @@ public class TaxonomyManagementModuleTest extends PageFactoryInitializer{
 	@Features(value = {"Taxonomy Management Module"})
 	@Description("This is a test case which gives Verification of 'Display Records' in Taxonomy page")
 	@TestCaseId("TC_T-Mgmt_39")
-	@Test(groups={"regression"})
-	public void verifyDisplayOfNumberRecordsChosenInTaxonomyPage() throws Exception{
+	@Test(groups={"regression"}, dataProvider="TaxonomyManagementModuleTest", dataProviderClass=SearchData.class)
+	public void verifyDisplayRecordsChosenTax(String testCaseId, String userName, String password) throws Exception{
 		data.setNumberOfRecordsToDisplay("10");
 		landingPage()
-		.loginToCimm2v4Site()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin()
 		.homePage()
 		.clickOnTaxonomyLink()
 		.taxonomyPage()
@@ -138,36 +158,44 @@ public class TaxonomyManagementModuleTest extends PageFactoryInitializer{
 	@Features(value = {"Taxonomy Management Module"})
 	@Description("This is a test case which verifies Attributes list page")
 	@TestCaseId("TC_T-Mgmt_40")
-	@Test(groups={"regression"})
-	public void verificationOfAttributesListPage() throws InterruptedException{
+	@Test(groups={"regression"}, dataProvider="TaxonomyManagementModuleTest", dataProviderClass=SearchData.class)
+	public void verifyOfAttributListPage(String testCaseId, String userName, String password, String expAttributesTableHeader ) throws InterruptedException{
 		landingPage()
-		.loginToCimm2v4Site()
-		.homePage().clickOnAttributesLink();
-		attributesPage().verifyAttributesTableHeaders(data.expectedAttributsTableHeaders());
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin()
+		.homePage()
+		.clickOnAttributesLink();
+		attributesPage()
+		.verifyAttributesTableHeaders(expAttributesTableHeader);
 		
 		
 	}
 	@Features(value = {"Taxonomy Management Module"})
 	@Description("This is a test case which verifies creating new Attribute")
 	@TestCaseId("TC_T-Mgmt_41_42")
-	@Test(groups={"regression"})
-	public void verificationOfCreatingNewAttributes() throws InterruptedException{
+	@Test(groups={"regression"}, dataProvider="TaxonomyManagementModuleTest", dataProviderClass=SearchData.class)
+	public void verifyOfCreateNewAttribute(String testCaseId, String userName, String password, String attributeName, String attributeDescription) throws InterruptedException{
 		landingPage()
-		.loginToCimm2v4Site();
-		homePage().clickOnAttributesLink();
-		attributesPage().clickOnNewAttributeToCreate()
-		.enterAttributeName(data.getAttributeName())
-		.enterAttributeDescription(data.getAttributeDescription())
-		.clickOnSaveAttribute().verifyCreatedAttribute(data.getAttributeName()).removeAttribute(data.getAttributeName());	
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin();
+		homePage()
+		.clickOnAttributesLink();
+		attributesPage()
+		.clickOnNewAttributeToCreate()
+		.enterAttributeName(attributeName)
+		.enterAttributeDescription(attributeDescription)
+		.clickOnSaveAttribute().verifyCreatedAttribute(attributeName).removeAttribute(attributeName);	
 		
 	}
 	@Features(value = {"Taxonomy Management Module"})
 	@Description("This is a test case which verifies error messageif attribute name left as blank")
 	@TestCaseId("TC_T-Mgmt_43")
 	@Test(groups={"regression"})
-	public void verificationOfErrorMessage() throws InterruptedException{
+	public void verificationOfErrorMessage(String testCaseId, String userName, String password) throws InterruptedException{
 		landingPage()
-		.loginToCimm2v4Site()
+		.enterUsername(userName).enterPassword(password).clickOnLogin()
 		.homePage().clickOnAttributesLink();
 		attributesPage().clickOnNewAttributeToCreate()
 		.clickOnSaveAttribute().verifyErrorMessage(data.expErrorMessage());
@@ -178,13 +206,13 @@ public class TaxonomyManagementModuleTest extends PageFactoryInitializer{
 	@Description("This is a test case which verifies error message if attribue name exceeds 50 chars")
 	@TestCaseId("TC_T-Mgmt_44")
 	@Test(groups={"regression"})
-	public void verificationOfErrorMessageForAttributeName() throws InterruptedException{
+	public void verificationOfErrorMessageForAttributeName(String testCaseId, String userName, String password, String attributeDescription) throws InterruptedException{
 		landingPage()
-		.loginToCimm2v4Site()
+		.enterUsername(userName).enterPassword(password).clickOnLogin()
 		.homePage().clickOnAttributesLink();
 		attributesPage().clickOnNewAttributeToCreate()
 		.enterAttributeName(data.getAttributeNameMoreThan50Chars())
-		.enterAttributeDescription(data.getAttributeDescription())
+		.enterAttributeDescription(attributeDescription)
 		.clickOnSaveAttribute().verifyErrorMessageMoreAttributeName(data.getAttributeNameMoreThan50Chars()+data.getSuccessfulMessageAfterCreationAttribute().trim())
 		.verifyCreatedAttribute(data.getAttributeNameMoreThan50CharsPartial()).removeAttribute(data.getAttributeNameMoreThan50CharsPartial());
 		
@@ -195,12 +223,12 @@ public class TaxonomyManagementModuleTest extends PageFactoryInitializer{
 	@Description("This is a test case which verifies error message if description exceeds 500 chars")
 	@TestCaseId("TC_T-Mgmt_45")
 	@Test(groups={"regression"})
-	public void verificationOfErrorMessageForDescription() throws InterruptedException{
+	public void verificationOfErrorMessageForDescription(String testCaseId, String userName, String password, String attributeName) throws InterruptedException{
 		landingPage()
-		.loginToCimm2v4Site()
+		.enterUsername(userName).enterPassword(password).clickOnLogin()
 		.homePage().clickOnAttributesLink();
 		attributesPage().clickOnNewAttributeToCreate()
-		.enterAttributeName(data.getAttributeName())
+		.enterAttributeName(attributeName)
 		.enterAttributeDescription(data.getAttributeDescriptionMoreText())
 		.clickOnSaveAttribute().verifyErrorMessageMoreDescription(data.expErrorMessageIfDesc().trim());
 		
@@ -210,9 +238,9 @@ public class TaxonomyManagementModuleTest extends PageFactoryInitializer{
 	@Description("This is a test case which verifies the pagination functionality for Attributes in T-Management")
 	@TestCaseId("TC_T-Mgmt_46_47_48_49")
 	@Test(groups={"regression"})
-	public void verificationPaginationInAttributesPage() throws InterruptedException{
+	public void verificationPaginationInAttributesPage(String testCaseId, String userName, String password) throws InterruptedException{
 		landingPage()
-		.loginToCimm2v4Site()
+		.enterUsername(userName).enterPassword(password).clickOnLogin()
 		.homePage()
 		.clickOnAttributesLink();
 		attributesPage()
@@ -224,10 +252,10 @@ public class TaxonomyManagementModuleTest extends PageFactoryInitializer{
 	 @Description("This is a test case which gives Verification of 'Display Records' in Attributes page")
 	 @TestCaseId("TC_T-Mgmt_50")
 	 @Test(groups={"regression"})
-	 public void verifyDisplayOfNumberRecordsChosenInAttributesPage() throws Exception{
+	 public void verifyDisplayOfNumberRecordsChosenInAttributesPage(String testCaseId, String userName, String password) throws Exception{
 	  data.setNumberOfRecordsToDisplay("10");
 	  landingPage()
-	  .loginToCimm2v4Site()
+	  .enterUsername(userName).enterPassword(password).clickOnLogin()
 	  .homePage()
 	  .clickOnAttributesLink();
 	  attributesPage()
@@ -247,31 +275,26 @@ public class TaxonomyManagementModuleTest extends PageFactoryInitializer{
 	  .verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
 	}
 	
-	
-	/*
-	 * @author:Anusha
-	 * 
-	 */
 
 	@Features(value = {"Taxonomy Management Module"})
 	@Description("This is a test case which verifies creating new Attribute")
 	@TestCaseId("TC_T-Mgmt_51_52_54")
 	@Test(groups={"regression"})
-	public void VerifyAddNewAttributes() throws Exception{
+	public void VerifyAddNewAttributes(String testCaseId, String userName, String password, String welcomeMessage, String attributeName, String attributeDescription) throws Exception{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
-		.verifyWelcomeMessage(data.getwelcomeMessage())
+		.verifyWelcomeMessage(welcomeMessage)
 		.clickOnAttributesLink()
 		.attributesPage()
 		.clickOnAddNewAttributeLink()
-		.enterAttributeNameField(data.getAttributeName())
-		.enterAttributeDescriptionField(data.getAttributeDescription())
+		.enterAttributeNameField(attributeName)
+		.enterAttributeDescriptionField(attributeDescription)
 		.clickOnAttributeSaveButtonLink()
 		.verifyAttributeSavedSuccessfulMessage(data.getAttributeSavedSuccessfulMessage())
-		.enterTheAttributeNameInSearchField(data.getAttributeName())
+		.enterTheAttributeNameInSearchField(attributeName)
 		.clickOnSearchButton()
 		.clickOnEditAttribute()
 		.editAttributeNameField(data.getEditAttributeNameField())
@@ -292,13 +315,13 @@ public class TaxonomyManagementModuleTest extends PageFactoryInitializer{
 	@Description("This is a test case which verifies creating new Attribute Group")
 	@TestCaseId("TC_T-Mgmt_55_56_58_59_68_69")
 	@Test(groups={"regression"})
-	public void VerifyAddingNewAttributeGroup() throws Exception{
+	public void VerifyAddingNewAttributeGroup(String testCaseId, String userName, String password, String welcomeMessage) throws Exception{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
-		.verifyWelcomeMessage(data.getwelcomeMessage())
+		.verifyWelcomeMessage(welcomeMessage)
 		.clickOnAttributeGroupsLink()
 		.attributeGroupsPage()
 		.verifyActionInAttributeGroupsPage()
@@ -334,13 +357,13 @@ public class TaxonomyManagementModuleTest extends PageFactoryInitializer{
 	@Description("This is a test case which verifies InvalidSearch Attribute Group")
 	@TestCaseId("TC_T-Mgmt_57_60")
 	@Test(groups={"regression"})
-	public void VerifyInvalidSearchAttributeGroup() throws Exception{
+	public void VerifyInvalidSearchAttributeGroup(String testCaseId, String userName, String password, String welcomeMessage) throws Exception{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
-		.verifyWelcomeMessage(data.getwelcomeMessage())
+		.verifyWelcomeMessage(welcomeMessage)
 		.clickOnAttributeGroupsLink()
 		.attributeGroupsPage()
 		.clickOnAddNewAttributeGroupLink()
@@ -357,13 +380,13 @@ public class TaxonomyManagementModuleTest extends PageFactoryInitializer{
 	@Description("This is a test case which verifies Pagination InAttributeGroups Page")
 	@TestCaseId("TC_T-Mgmt_63_64_65_66")
 	@Test(groups={"regression"})
-	public void VerifyPaginationInAttributeGroupsPage() throws Exception{
+	public void VerifyPaginationInAttributeGroupsPage(String testCaseId, String userName, String password, String welcomeMessage) throws Exception{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
-		.verifyWelcomeMessage(data.getwelcomeMessage())
+		.verifyWelcomeMessage(welcomeMessage)
 		.clickOnAttributeGroupsLink()
 		.attributeGroupsPage()
 		.verifyPaginationInAttributeGroupsPage();	
@@ -373,14 +396,14 @@ public class TaxonomyManagementModuleTest extends PageFactoryInitializer{
 	@Description("This is a test case which verifies Pagination InAttributeGroups Page")
 	@TestCaseId("TC_T-Mgmt_63_64_65_66")
 	@Test(groups="regression",dataProvider="excelSheetDataRead",dataProviderClass=SearchData.class)
-	public void validationOfTextboxesInAttributeGroupsPage(String testCaseId,@Parameter("Field Name") String fieldName,@Parameter("Text to be entered in the textbox") String textToBeEnteredInTheTextbox,@Parameter("maximum number of characters that the textbox") String maximumNumberOfCharactersAcceptedByTheTexbox) throws Exception {
+	public void validationOfTextboxesInAttributeGroupsPage(String testCaseId, String userName, String password, String welcomeMessage,@Parameter("Field Name") String fieldName,@Parameter("Text to be entered in the textbox") String textToBeEnteredInTheTextbox,@Parameter("maximum number of characters that the textbox") String maximumNumberOfCharactersAcceptedByTheTexbox) throws Exception {
 		
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
-		.verifyWelcomeMessage(data.getwelcomeMessage())
+		.verifyWelcomeMessage(welcomeMessage)
 		.clickOnAttributeGroupsLink()
 		.attributeGroupsPage()
 		.clickOnAddNewAttributeGroupLink()
@@ -391,13 +414,13 @@ public class TaxonomyManagementModuleTest extends PageFactoryInitializer{
 	@Description("This is a test case which verifies history link in AttributeGroups ")
 	@TestCaseId("TC_T-Mgmt_70")
 	@Test(groups="regression")
-	public void verifyAttributeGroupHistoryLink() throws Exception {
+	public void verifyAttributeGroupHistoryLink(String testCaseId, String userName, String password, String welcomeMessage) throws Exception {
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
-		.verifyWelcomeMessage(data.getwelcomeMessage())
+		.verifyWelcomeMessage(welcomeMessage)
 		.clickOnAttributeGroupsLink()
 		.attributeGroupsPage()
 		.clickOnAddNewAttributeGroupLink()
@@ -428,21 +451,21 @@ public class TaxonomyManagementModuleTest extends PageFactoryInitializer{
 	@Description("This is a test case which verifies history link in AttributeGroups ")
 	@TestCaseId("TC_T-Mgmt_53")
 	@Test(groups="regression")
-	public void verifyAttributeHistoryLink() throws Exception {
+	public void verifyAttributeHistoryLink(String testCaseId, String userName, String password, String welcomeMessage, String attributeName, String attributeDescription) throws Exception {
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
-		.verifyWelcomeMessage(data.getwelcomeMessage())
+		.verifyWelcomeMessage(welcomeMessage)
 		.clickOnAttributesLink()
 		.attributesPage()
 		.clickOnAddNewAttributeLink()
-		.enterAttributeNameField(data.getAttributeName())
-		.enterAttributeDescriptionField(data.getAttributeDescription())
+		.enterAttributeNameField(attributeName)
+		.enterAttributeDescriptionField(attributeDescription)
 		.clickOnAttributeSaveButtonLink()
 		.verifyAttributeSavedSuccessfulMessage(data.getAttributeSavedSuccessfulMessage())
-		.enterTheAttributeNameInSearchField(data.getAttributeName())
+		.enterTheAttributeNameInSearchField(attributeName)
 		.clickOnSearchButton()
 		.clickOnEditAttribute()
 		.clickOnHistoryLink()
@@ -453,12 +476,12 @@ public class TaxonomyManagementModuleTest extends PageFactoryInitializer{
 	    .homePage()
 		.clickOnAttributesLink()
 		.attributesPage()
-		.enterTheAttributeNameInSearchField(data.getAttributeName())
+		.enterTheAttributeNameInSearchField(attributeName)
 		.clickOnSearchButton()
-		.clickOnRemoveAttribute(data.getAttributeName())
+		.clickOnRemoveAttribute(attributeName)
 		.verifyRemoveAlertMsg(data.getAlertTextWhenRemoveAttributeIsClicked())
 		.verifySuccessfulMessageAfterDeletionAttribute(data.getAttributetRemoveSuccessfulMessage())
-		.verifyeAttributeDeletion(data.getAttributeName());
+		.verifyeAttributeDeletion(attributeName);
 	}
 	
 	

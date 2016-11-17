@@ -8,6 +8,7 @@ import org.cimm2touch.dataprovider.SearchData;
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.utils.SearchDataPropertyFile;
 import org.framework.utils.ApplicationSetUpPropertyFile;
+import org.framework.utils.PermittedCharacters;
 import org.framework.utils.RandomGenerator;
 import org.testng.annotations.Test;
 
@@ -173,9 +174,10 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	@Features(value = {"Subset/Catlog Module"})
 	@Description("This test case Verifies the Character Limit for ' Subset Name' Field.")
 	@TestCaseId("TC_Subset_24")
-	@Test(priority=9,groups={"regression"})
-	public void TC_Subset_24() throws Exception
+	@Test(groups={"regression"},dataProvider="SubsetModuleTest",dataProviderClass=SearchData.class)
+	public void TC_Subset_24(String testCaseID,String userName,String password) throws Exception
 	{
+		String moreThanAccept=random.random(51, PermittedCharacters.ALPHABETS);
 		landingPage()
 		.enterUsername(userName)
 		.enterPassword(password)
@@ -186,7 +188,7 @@ public class SubsetModuleTest extends PageFactoryInitializer
 		.verifySubsetPageItems()
 		.clickOnAddNewSubset()
 		.verifyAddNewSubsetFormItems()
-		.verifyCharacterLimitForSubsetName();
+		.verifyCharacterLimitForSubsetName(moreThanAccept);
 	}
 
 

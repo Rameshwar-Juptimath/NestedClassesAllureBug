@@ -1122,14 +1122,10 @@ public class SubsetPageObjects extends PageFactoryInitializer
 	}
 
 	@Step("To Verify the Character Limit for Subset Name Field.")
-	public SubsetPageObjects verifyCharacterLimitForSubsetName() 
+	public SubsetPageObjects verifyCharacterLimitForSubsetName(String moreThanAccept) 
 	{
-		waiting.explicitWaitVisibilityOfElement(addSubset_SubsetName, 5);
-		//addSubset_SubsetName.clear();
-		for (int i=0; i< 50; i++)
-		{
-			addSubset_SubsetName.sendKeys("0");
-		}
+		waiting.explicitWaitVisibilityOfElement(addSubset_SubsetName, 15);
+		addSubset_SubsetName.sendKeys(moreThanAccept);
 		String enteredText=addSubset_SubsetName.getAttribute("value");
 		int enteredTextLength=enteredText.length();
 		Assert.assertEquals(enteredTextLength, Integer.parseInt(addSubset_SubsetName.getAttribute("maxlength")));

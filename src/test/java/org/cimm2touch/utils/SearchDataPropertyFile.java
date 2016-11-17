@@ -5,6 +5,9 @@ import org.framework.utils.PropertyFileReader;
 
 public class SearchDataPropertyFile extends MainController
 {
+	
+	
+	
 
 	private String userName = PropertyFileReader.propertiesReader(searchData, "userName");
 
