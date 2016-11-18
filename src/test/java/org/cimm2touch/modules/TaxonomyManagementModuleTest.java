@@ -1,6 +1,7 @@
 package org.cimm2touch.modules;
 
 import org.cimm2touch.dataprovider.SearchData;
+
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.utils.SearchDataPropertyFile;
 import org.cimm2touch.utils.TestUtilityMethods;
@@ -39,7 +40,9 @@ public class TaxonomyManagementModuleTest extends PageFactoryInitializer{
 		.categoryAndAttributesPage()
 		.enterTheCategoryName(categoryName)
 		.clickOnSave().verifySuccesfulMessage(expSuccessMessge);
+
 	}
+	
 	@Features(value = {"Taxonomy Management Module"})
 	@Description("This is a test case which verifies the category remove")
 	@TestCaseId("TC_T-Mgmt_32")
@@ -110,21 +113,10 @@ public class TaxonomyManagementModuleTest extends PageFactoryInitializer{
 		.enterTheCategoryName(categoryName)
 		.clickOnSave()
 		.clickOnHistoryLink().verifyHistoryPage(expHistoryPageTitleForCategory);
+
 		
 	}
 	
-/*	@Features(value = {"Taxonomy Management Module"})
-	@Description("This is a test case which verifies the pagination functionality in T-Management")
-	@TestCaseId("TC_T-Mgmt_35_36_37_38")
-	@Test(groups={"regression"})
-	public void verificationPagination() throws InterruptedException{
-		landingPage()
-		.enterUsername(userName).enterPassword(password).clickOnLogin()
-		.homePage()
-		.clickOnTaxonomyLink()
-		.taxonomyPage()
-		.verifyPagination();
-	}*/
 	
 	@Features(value = {"Taxonomy Management Module"})
 	@Description("This is a test case which gives Verification of 'Display Records' in Taxonomy page")
@@ -195,7 +187,9 @@ public class TaxonomyManagementModuleTest extends PageFactoryInitializer{
 	@Test(groups={"regression"})
 	public void verificationOfErrorMessage(String testCaseId, String userName, String password) throws InterruptedException{
 		landingPage()
-		.enterUsername(userName).enterPassword(password).clickOnLogin()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin()
 		.homePage().clickOnAttributesLink();
 		attributesPage().clickOnNewAttributeToCreate()
 		.clickOnSaveAttribute().verifyErrorMessage(data.expErrorMessage());
@@ -274,7 +268,6 @@ public class TaxonomyManagementModuleTest extends PageFactoryInitializer{
 	  attributesPage().selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
 	  .verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
 	}
-	
 
 	@Features(value = {"Taxonomy Management Module"})
 	@Description("This is a test case which verifies creating new Attribute")

@@ -20,7 +20,7 @@ public class ItemsModuleTest extends PageFactoryInitializer
 	SearchDataPropertyFile data = new SearchDataPropertyFile();
 	TestUtilityMethods utility=new TestUtilityMethods(getDriver());
 	TestUtility tu=new TestUtility(getDriver());
-	
+
 	@Test(groups={"smoke","regression"}, dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
 	public void createNewCategory(String testCaseId, String userName, String password, String welComeMessage, String taxonomyName, String categoryName) throws InterruptedException{
 		landingPage()
@@ -546,6 +546,7 @@ public class ItemsModuleTest extends PageFactoryInitializer
 		.verifySuccessMsg(data.getWorkbookSuccessmsg())
 		.clickOnSelectAllCheckBox();
 		tu.alertDismiss();
+
 		itemsPage()
 		.clickOnWorkbookDropdown()
 		.selectWorkbook()

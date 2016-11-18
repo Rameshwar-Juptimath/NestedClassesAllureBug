@@ -125,4 +125,5 @@ public class RemoveDataConfigTest extends PageFactoryInitializer{
 		.verifyLeftPanelTaxonomyName(taxonomy)
 		.removeCreatedCategory(categoryName,noOfCategories,expSuccessMsgForRemoveCategory);
 }
+
 }

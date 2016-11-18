@@ -6,6 +6,8 @@ import java.lang.reflect.Method;
 import org.framework.utils.ExcelLibrary;
 import org.testng.annotations.DataProvider;
 
+
+
 public class SearchData
 {
 
@@ -16,13 +18,14 @@ public class SearchData
 		};
 		
 	}
-	
+
 	@DataProvider(name="excelSheetDataRead")
 	public static Object[][] excelSheetDataRead(Method methodName) throws Exception
 	{
 		File file = new File("resources/ExcelSheetData/"+methodName.getName()+".xlsx");
 		ExcelLibrary excel = new ExcelLibrary("resources/ExcelSheetData/"+methodName.getName()+".xlsx");
 		Object data[][] =	excel.readFromExcelDataForTestNGDataProvider(file.getAbsolutePath());
+
 		return data;
 	}
 	@DataProvider(name="CreateDataConfigTest")
@@ -31,12 +34,14 @@ public class SearchData
 		File file = new File("resources/ExcelSheetData/CreateDataConfigTest.xlsx");
 		ExcelLibrary excel = new ExcelLibrary("resources/ExcelSheetData/CreateDataConfigTest.xlsx");
 		Object data[][] = excel.readFromExcelDataForTestNGDataProvider(file.getAbsolutePath(),methodName.getName());
+
 		return data;
 	}
 	@DataProvider(name="RemoveDataConfigTest")
 	public static Object[][] removeDataConfigTest(Method methodName) throws Exception
 	{
 		File file = new File("resources/ExcelSheetData/RemoveDataConfigTest.xlsx");
+
 		ExcelLibrary excel = new ExcelLibrary("resources/ExcelSheetData/RemoveDataConfigTest.xlsx");
 		Object data[][] = excel.readFromExcelDataForTestNGDataProvider(file.getAbsolutePath(),methodName.getName());
 		return data;
@@ -47,6 +52,7 @@ public class SearchData
 		File file = new File("resources/ExcelSheetData/AdvancedSearchModuleTest.xlsx");
 		ExcelLibrary excel = new ExcelLibrary("resources/ExcelSheetData/AdvancedSearchModuleTest.xlsx");
 		Object data[][] = excel.readFromExcelDataForTestNGDataProvider(file.getAbsolutePath(),methodName.getName());
+
 		return data;
 	}
 	
@@ -56,6 +62,7 @@ public class SearchData
 		File file = new File("resources/ExcelSheetData/ItemsModuleTest.xlsx");
 		ExcelLibrary excel = new ExcelLibrary("resources/ExcelSheetData/ItemsModuleTest.xlsx");
 		Object data[][] = excel.readFromExcelDataForTestNGDataProvider(file.getAbsolutePath(),methodName.getName());
+
 		return data;
 	}
 	@DataProvider(name="TaxonomyModuleTest")
@@ -64,6 +71,7 @@ public class SearchData
 		File file = new File("resources/ExcelSheetData/TaxonomyModuleTest.xlsx");
 		ExcelLibrary excel = new ExcelLibrary("resources/ExcelSheetData/TaxonomyModuleTest.xlsx");
 		Object data[][] = excel.readFromExcelDataForTestNGDataProvider(file.getAbsolutePath(),methodName.getName());
+
 		return data;
 	}
 
@@ -82,6 +90,7 @@ public class SearchData
 		File file = new File("resources/ExcelSheetData/SubsetModuleTest.xlsx");
 		ExcelLibrary excel = new ExcelLibrary("resources/ExcelSheetData/SubsetModuleTest.xlsx");
 		Object data[][] = excel.readFromExcelDataForTestNGDataProvider(file.getAbsolutePath(),methodName.getName());
+
 		return data;
 	}
 

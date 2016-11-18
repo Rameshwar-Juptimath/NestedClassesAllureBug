@@ -22,6 +22,7 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	ApplicationSetUpPropertyFile setUp = new ApplicationSetUpPropertyFile();
 	RandomGenerator random=new RandomGenerator();
 
+
 	@Features(value = {"Subset/Catlog Module"})
 	@Description("This is a Method that Creates Subset.")
 	@TestCaseId("TC_Subset_01, TC_Subset_03, TC_Subset_04, TC_Subset_05, TC_Subset_06, TC_Subset_07")
@@ -230,8 +231,13 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	 * @author:yogish.mt
 
 		landingPage()
+<<<<<<< HEAD
 		.enterUsername(userName)
 		.enterPassword(password)
+=======
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -256,8 +262,13 @@ public class SubsetModuleTest extends PageFactoryInitializer
 
 		 data.setTheNumberofRecordsToDisplay("10");
 		landingPage()
+<<<<<<< HEAD
 		.enterUsername(userName)
 		.enterPassword(password)
+=======
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -284,8 +295,13 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	@Test(groups="regression")
 	public void verificationOfValidSearch() throws Exception{
 		landingPage()
+<<<<<<< HEAD
 		.enterUsername(userName)
 		.enterPassword(password)
+=======
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -301,8 +317,13 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	@Test(groups="regression")
 	public void verificationOfInvalidSearch() throws InterruptedException{
 		landingPage()
+<<<<<<< HEAD
 		.enterUsername(userName)
 		.enterPassword(password)
+=======
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -317,8 +338,13 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	@Test(groups="regression")
 	public void VerificationOfAddNewSubsetForm() throws InterruptedException{
 		landingPage()
+<<<<<<< HEAD
 		.enterUsername(userName)
 		.enterPassword(password)
+=======
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -335,8 +361,13 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	@Test(groups="regression")
 	public void verificationOfAddNewSubset() throws Exception{
 		landingPage()
+<<<<<<< HEAD
 	.enterUsername(userName)
 		.enterPassword(password)
+=======
+	.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -352,8 +383,13 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	@Test(groups="regression")
 	public void verificationofSubsetName() throws InterruptedException{
 		landingPage()
+<<<<<<< HEAD
 		.enterUsername(userName)
 		.enterPassword(password)
+=======
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -371,8 +407,13 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	@Test(groups="regression")
 	public void verificationofEditSubsetFields() throws Exception{
 		landingPage()
+<<<<<<< HEAD
 		.enterUsername(userName)
 		.enterPassword(password)
+=======
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -389,8 +430,13 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	@Test(groups="regression")
 	public void verificationofupdateSubset() throws Exception{
 		landingPage()
+<<<<<<< HEAD
 		.enterUsername(userName)
 		.enterPassword(password)
+=======
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -409,8 +455,13 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	@Test(groups="regression")
 	public void VerificationOfCatalogBuilderViewPage() throws Exception{
 		landingPage()
+<<<<<<< HEAD
 		.enterUsername(userName)
 		.enterPassword(password)
+=======
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -435,8 +486,13 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	 * @author:yogish.mt
 
 		landingPage()
+<<<<<<< HEAD
 		.enterUsername(userName)
 		.enterPassword(password)
+=======
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -469,8 +525,13 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	 * @author:yogish.mt
 
 		landingPage()
+<<<<<<< HEAD
 		.enterUsername(userName)
 		.enterPassword(password)
+=======
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -503,8 +564,13 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	 * @author:yogish.mt
 
 		landingPage()
+<<<<<<< HEAD
 		.enterUsername(userName)
 		.enterPassword(password)
+=======
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -536,8 +602,13 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	 * @author:yogish.mt
 
 		landingPage()
+<<<<<<< HEAD
 		.enterUsername(userName)
 		.enterPassword(password)
+=======
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -573,8 +644,13 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	 * @author:yogish.mt
 
 		landingPage()
+<<<<<<< HEAD
 	.enterUsername(userName)
 		.enterPassword(password)
+=======
+	.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -601,8 +677,13 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	 * @author:yogish.mt
 
 		landingPage()
+<<<<<<< HEAD
 		.enterUsername(userName)
 		.enterPassword(password)
+=======
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -635,8 +716,13 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	 * @author:yogish.mt
 
 		landingPage()
+<<<<<<< HEAD
 		.enterUsername(userName)
 		.enterPassword(password)
+=======
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -654,8 +740,13 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	 * @author:yogish.mt
 
 	landingPage()
+<<<<<<< HEAD
 	.enterUsername(userName)
 	.enterPassword(password)
+=======
+	.enterUsername(data.getUserName())
+	.enterPassword(data.getPassword())
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 	.clickOnLogin()
 	.homePage()
 	.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -702,8 +793,13 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	 * @author:yogish.mt
 
 		landingPage()
+<<<<<<< HEAD
 		.enterUsername(userName)
 		.enterPassword(password)
+=======
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -722,8 +818,13 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	 * @author:yogish.mt
 
 		landingPage()
+<<<<<<< HEAD
 		.enterUsername(userName)
 		.enterPassword(password)
+=======
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -742,8 +843,13 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	 * @author:yogish.mt
 
 		landingPage()
+<<<<<<< HEAD
 		.enterUsername(userName)
 		.enterPassword(password)
+=======
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -761,8 +867,13 @@ public class SubsetModuleTest extends PageFactoryInitializer
 	 * @author:yogish.mt
 
 		landingPage()
+<<<<<<< HEAD
 		.enterUsername(userName)
 		.enterPassword(password)
+=======
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())

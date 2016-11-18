@@ -1,4 +1,5 @@
 package org.cimm2touch.pageobjects.taxonomymanagement;
+
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.framework.utils.TestUtility;
 import org.framework.utils.Waiting;
@@ -10,9 +11,11 @@ import ru.yandex.qatools.allure.annotations.Step;
 
 public class ImageUploadSectionPageObjects extends PageFactoryInitializer{
 	
+
 	Waiting waiting=new Waiting(getDriver());
 	TestUtility tu=new TestUtility(getDriver());
 	
+
 	@FindBy(xpath=".//*[@id='main-item-container']/li[1]/figure/a/div[1]/div/img")   //((//ul[contains(@id,'main-item-container')]/li)[1]//a)[1]
 	private WebElement imageLocatorSelection;
 	
@@ -22,12 +25,15 @@ public class ImageUploadSectionPageObjects extends PageFactoryInitializer{
 	
 	@Step("select image from the repositorey.")
 	public ImageUploadSectionPageObjects clickOnImageToSelectFromRep() throws InterruptedException {
+
 		/*Set<String> set=getDriver().getWindowHandles();
+
 		System.out.println(set.size());
 		
 		Iterator<String> it=set.iterator();
 		String pId=it.next();
 		String cId=it.next();*/
+
 		//getDriver().switchTo().window("ifame");
 		//getDriver().switchTo().frame(1);
 		getDriver().switchTo().frame(getDriver().findElement(By.tagName("iframe")));
@@ -44,6 +50,7 @@ public class ImageUploadSectionPageObjects extends PageFactoryInitializer{
 	}
 	@Step("select image from existing repository.")
 	public ImageUploadSectionPageObjects SelectImageFromRepo() throws InterruptedException {
+
 		waiting.explicitWaitVisibilityOfElement(imageLocatorSelection, 10);
 		imageLocatorSelection.click();
 		Thread.sleep(4000);

@@ -1,7 +1,5 @@
 package org.cimm2touch.pageobjects.taxonomymanagement;
-
 import java.util.List;
-
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.utils.SearchDataPropertyFile;
 import org.framework.utils.TestUtility;
@@ -158,6 +156,7 @@ public class AttributesPageObjects extends PageFactoryInitializer
 	public AttributesPageObjects verifyErrorMessage(String errorMessage) {
 
 		waiting.explicitWaitVisibilityOfElement(actualErrorMessage, 10);
+
 		Assert.assertEquals(actualErrorMessage.getText().trim(), errorMessage);
 		return this;
 	}
@@ -346,6 +345,7 @@ public class AttributesPageObjects extends PageFactoryInitializer
 	@Step(" verify the Attribute SaveButtonLink ")
 	public AttributesPageObjects clickOnAttributeSaveButtonLink() {
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",attributeSaveButtonLocator); 
+
 		return this;
 	}
 
@@ -404,6 +404,7 @@ public class AttributesPageObjects extends PageFactoryInitializer
 	public AttributesPageObjects clickOnAttributeUpdateButtonLink() {
 		waiting.explicitWaitVisibilityOfElement(attributeUpdateButtonLocator, 60);
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",attributeUpdateButtonLocator);
+
 		return this;
 	}
 
@@ -426,6 +427,7 @@ public class AttributesPageObjects extends PageFactoryInitializer
 	public AttributesPageObjects clickOnRemoveAttribute(String attributeName) throws InterruptedException {
 		Thread.sleep(3000);
 		WebElement wb=getDriver().findElement(By.xpath("(//td[contains(text(),'"+attributeName+"')]/preceding-sibling::td[@class='rich-table-cell']/div/input)[2]"));
+
 		wb.click();
 		return this;
 	}
@@ -547,6 +549,7 @@ public class AttributesPageObjects extends PageFactoryInitializer
 		taxonomyNameComboBoxField.sendKeys(string);
 		tu.hitEnter();*/
 		getDriver().findElement(By.id("searchFormId:taxonomyListComboIdcomboboxButton")).click();
+
 		return this;
 	}	
 

@@ -2,6 +2,7 @@ package org.cimm2touch.pageobjects.products;
 
 import java.util.List;
 
+
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.utils.SearchDataPropertyFile;
 import org.framework.utils.PermittedCharacters;
@@ -12,14 +13,18 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
+
 import org.cimm2touch.pageobjects.items.EditItemsPageObjects;
+
 import org.testng.Assert;
 
 import ru.yandex.qatools.allure.annotations.Step;
 
 public class ProductsPageObjects extends PageFactoryInitializer {
+
 	Waiting waiting=new Waiting(getDriver());
 	TestUtility tu=new TestUtility(getDriver());
+
 	
 	SearchDataPropertyFile data = new SearchDataPropertyFile();
 	
@@ -116,6 +121,7 @@ public class ProductsPageObjects extends PageFactoryInitializer {
 	
 	   @Step("click on add new product")
 		public ProductsPageObjects clickOnAddNewProductLink() throws Exception {
+
 		   	waiting.explicitWaitVisibilityOfElement(addNewProductLocator, 15);
 			((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",addNewProductLocator);
 			return this;
@@ -123,13 +129,16 @@ public class ProductsPageObjects extends PageFactoryInitializer {
 	   
 	   @Step("This method is used to enter the product number in search field {0}")
 	   public ProductsPageObjects enterTheProductNameInSearchField(String productName) {
+
 	    waiting.explicitWaitVisibilityOfElement(productSearchPlaceHolder, 15);
+
 	    productSearchPlaceHolder.sendKeys(productName);
 	    return this;
 	   }
 	   
 	   @Step("This method is used to clickon search buton in products page")
 	   public ProductsPageObjects clickOnSearchButton() throws InterruptedException {
+
 	    waiting.explicitWaitVisibilityOfElement(searchButton, 15);
 	    searchButton.click(); 
 	    return this;
@@ -137,6 +146,7 @@ public class ProductsPageObjects extends PageFactoryInitializer {
 	   
 	   @Step("This method is used to remove the product")
 	   public ProductsPageObjects clickOnRemoveProduct() {
+
 	    waiting.explicitWaitVisibilityOfElement(removeProductLink, 15);
 	    removeProductLink.click();
 	    return this;
@@ -144,6 +154,7 @@ public class ProductsPageObjects extends PageFactoryInitializer {
 	    
 	   @Step("This method is used accept the alert popup")
 	   public ProductsPageObjects alertToAccept() {
+
 	    waiting.explicitWaitForAlert(15);
 	    tu.alertAccept();
 	    return this;  
@@ -152,6 +163,7 @@ public class ProductsPageObjects extends PageFactoryInitializer {
 	   	   
 	   @Step("This method is used verify the message after deleting the product")
 	   public ProductsPageObjects verifySuccessfulMessageAfterDeletionProduct(String productRemovedSuccessfulMessage) {
+
 	    waiting.explicitWaitVisibilityOfElement(deletedSuccessfulMessageOfProductLocator, 15);
 	    Assert.assertTrue(deletedSuccessfulMessageOfProductLocator.getText().trim().equals(productRemovedSuccessfulMessage),"Invalid  message. Getting "+deletedSuccessfulMessageOfProductLocator.getText().trim()+"."); 
 	    return this;
@@ -159,6 +171,7 @@ public class ProductsPageObjects extends PageFactoryInitializer {
 	   
 	   @Step("This method is used verify the product name")
 	   public ProductsPageObjects verifyProduct(String productName) {
+
 	    waiting.explicitWaitVisibilityOfElement(productNameColumn, 15);
 	   // System.out.println(productNameColumn.getText());
 	    Assert.assertEquals(productNameColumn.getText(), productName);
@@ -167,6 +180,7 @@ public class ProductsPageObjects extends PageFactoryInitializer {
 	   
 	   @Step("This method is used to enter the product number in search field {0}")
 	   public ProductsPageObjects enterTheUpdateProductNameInSearchField(String updateProductName) {
+
 	    waiting.explicitWaitVisibilityOfElement(productSearchPlaceHolder, 15);
 	    productSearchPlaceHolder.sendKeys(updateProductName);
 	    return this;
@@ -174,6 +188,7 @@ public class ProductsPageObjects extends PageFactoryInitializer {
 	   
 	   @Step("This method is used verify the product name")
 	   public ProductsPageObjects verifyUpdateProduct(String updateProductName) {
+
 	    waiting.explicitWaitVisibilityOfElement(productNameColumn, 15);
 	   // System.out.println(productNameColumn.getText());
 	    Assert.assertEquals(productNameColumn.getText(), updateProductName);
@@ -182,13 +197,16 @@ public class ProductsPageObjects extends PageFactoryInitializer {
 	   
 	   @Step("This method is used to remove the product")
 	   public ProductsPageObjects clickOnRemoveUpdateProduct() {
+
 	    waiting.explicitWaitVisibilityOfElement(removeProductLink, 15);
+
 	    removeProductLink.click();
 	    return this;
 	   }
 	   
 		@Step("verify whether non mandatory are {0}")
 		public ProductsPageObjects verifyAllFields(String[] allFieldsAddNewProductsPage) {
+
 			waiting.explicitWaitVisibilityOfElements(allFieldsLocator, 10);
 			for(int i=0;i<allFieldsLocator.size();i++)
 			{
@@ -203,6 +221,7 @@ public class ProductsPageObjects extends PageFactoryInitializer {
 		@Step("This method is used verify the product name field")
 		public ProductsPageObjects enterProductNameField(String productName) {
 
+
 			 waiting.explicitWaitVisibilityOfElement(productNameTextBoxLocator, 15);
 			 productNameTextBoxLocator.sendKeys(productName);	 
 			 return this;
@@ -210,6 +229,7 @@ public class ProductsPageObjects extends PageFactoryInitializer {
 
 		@Step("enter product number {0}")
 		public ProductsPageObjects enterProductNumberField(String textToBeEnterInTheProductNumberTextbox) {
+
 			 waiting.explicitWaitVisibilityOfElement(productNumberTextBoxLocator, 15);
 			 RandomGenerator generateRand=new RandomGenerator();
 			 productNumberTextBoxLocator.sendKeys(textToBeEnterInTheProductNumberTextbox+generateRand.random(8, PermittedCharacters.NUMERIC));
@@ -257,6 +277,7 @@ public class ProductsPageObjects extends PageFactoryInitializer {
 
 		@Step("This method is used verify the product SaveButtonLink ")
 		 public ProductsPageObjects clickOnProducSaveButtonLink() {
+
 			 waiting.explicitWaitVisibilityOfElement(productSaveButtonLocator, 60);
 			 ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",productSaveButtonLocator); 
 		     return this;
@@ -264,6 +285,7 @@ public class ProductsPageObjects extends PageFactoryInitializer {
 		 
 		@Step("This method is used verify the product SavedSuccessfulMessage ")
 		 public ProductsPageObjects verifyProductSavedSuccessfulMessage(String poductSavedSuccessfulMessage) { 
+
 		   	 waiting.explicitWaitVisibilityOfElement(productSavedSuccessfulMessageLocator, 6);
 		     Assert.assertTrue(productSavedSuccessfulMessageLocator.getText().trim().equalsIgnoreCase(poductSavedSuccessfulMessage),"Invalid  message. Getting "+productSavedSuccessfulMessageLocator.getText().trim()+".");
 		     return this;
@@ -271,6 +293,7 @@ public class ProductsPageObjects extends PageFactoryInitializer {
 		 
 		@Step("This method is used verify the EditProduct link ")
 		 public EditItemsPageObjects clickOnEditProduct() {
+
 			 waiting.explicitWaitVisibilityOfElement(editProductLocator, 30);
 			 editProductLocator.click();
 		     return new EditItemsPageObjects();
@@ -278,6 +301,7 @@ public class ProductsPageObjects extends PageFactoryInitializer {
 		 
 		@Step("This method is used verify the UploadImage link ")
 		 public ProductsPageObjects clickOnUploadImageLink() {
+
 			 waiting.explicitWaitVisibilityOfElement(uploadImageLocator, 15);
 			 uploadImageLocator.click();
 			 return this;
@@ -287,6 +311,7 @@ public class ProductsPageObjects extends PageFactoryInitializer {
 		 public ProductsPageObjects verifyTheProductsPageBreadCrumbs() {
 			 
 			 String breadcrumpsList[] =data.getBreadcrumpsList().split(",");
+
 		     waiting.explicitWaitVisibilityOfElements(breadCrumbsLink, 15);  
 		     for(int i=0;i<breadCrumbsLink.size();i++)
 		     Assert.assertEquals(breadCrumbsLink.get(i).getText().trim(),breadcrumpsList[i].trim());

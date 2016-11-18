@@ -1,7 +1,5 @@
 package org.cimm2touch.pageobjects.taxonomymanagement;
-
 import java.util.List;
-
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.utils.SearchDataPropertyFile;
 import org.framework.utils.TestUtility;
@@ -15,6 +13,9 @@ import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
 
 import ru.yandex.qatools.allure.annotations.Step;
+
+
+
 /**
  * 
  * @author thiruveedhi Chinna
@@ -181,7 +182,6 @@ public class AttributeGroupsPageObjects extends PageFactoryInitializer{
 	  @Step("This method is used to clickon search buton in products page")
 	   public AttributeGroupsPageObjects clickOnSearchButton()  {
 	    waiting.explicitWaitVisibilityOfElement(searchButton, 15);
-	    searchButton.click(); 
 	    return this;
 	   }
 	  
@@ -244,7 +244,8 @@ public class AttributeGroupsPageObjects extends PageFactoryInitializer{
 		 public AttributeGroupsPageObjects clickOnAttributeGroupUpdateButtonLink() {
 		 waiting.explicitWaitVisibilityOfElement(attributeGroupUpdateButtonLocator, 60);
 		 ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",attributeGroupUpdateButtonLocator);
-		 return this;
+		return this;
+
 		}
 		
 		@Step("This method is used verify the Attribute SavedSuccessfulMessage ")
@@ -358,6 +359,7 @@ public class AttributeGroupsPageObjects extends PageFactoryInitializer{
 			 
 			 @Step("This method is used verify the message after deleting the Attribute Group")
 			 public AttributeGroupsPageObjects verifySuccessfulMessageAfterDeletionAttributeGroup(String attributeGroupRemovedSuccessfulMessage) {
+
 			 waiting.explicitWaitVisibilityOfElement(deletedSuccessfulMessageOfAttributeGroupLocator, 15);
 			 Assert.assertEquals(deletedSuccessfulMessageOfAttributeGroupLocator.getText().trim().equals(attributeGroupRemovedSuccessfulMessage.trim()),"Invalid  message. Getting "+deletedSuccessfulMessageOfAttributeGroupLocator.getText().trim()+".");
 			 return this;
@@ -367,6 +369,7 @@ public class AttributeGroupsPageObjects extends PageFactoryInitializer{
 		   public AttributeGroupsPageObjects clickOnHistoryLinkInAttributeGroup() throws InterruptedException {
 		   Thread.sleep(3000);
 		   ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",historylinkLocator);
+
 		   return this;
 		   }
 		   
@@ -380,7 +383,7 @@ public class AttributeGroupsPageObjects extends PageFactoryInitializer{
 			 @Step("This method is used verify the update attribute Group")
 			 public AttributeGroupsPageObjects verifyUpdateAttributeGroup(String updateAttributeGroupName) {
 			 waiting.explicitWaitVisibilityOfElement(updateAttributeGroupNameColumn, 15);
-			 System.out.println(updateAttributeGroupNameColumn.getText());
+			 //System.out.println(updateAttributeGroupNameColumn.getText());
 			 Assert.assertEquals(updateAttributeGroupNameColumn.getText(), updateAttributeGroupName);
 			 return this;
 			  }
@@ -423,6 +426,7 @@ public class AttributeGroupsPageObjects extends PageFactoryInitializer{
 		   {
 			   try
 			   {
+
 				   if(getDriver().findElement(By.xpath("updateAttributeGroupName")).isDisplayed())
 				   {
 					   return false;
@@ -480,6 +484,7 @@ public class AttributeGroupsPageObjects extends PageFactoryInitializer{
 				case "Attribute GroupDes":
 					Thread.sleep(4000);
 					waiting.explicitWaitVisibilityOfElement(attributeGroupDesTextBoxLocator, 15);
+
 					attributeGroupDesTextBoxLocator.sendKeys(textToBeEnterInTheTextbox);
 					Assert.assertEquals(attributeGroupDesTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)));
 					break;

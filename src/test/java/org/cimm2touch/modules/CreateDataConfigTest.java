@@ -2,7 +2,6 @@ package org.cimm2touch.modules;
 
 import org.cimm2touch.dataprovider.SearchData;
 import org.cimm2touch.initializer.PageFactoryInitializer;
-import org.cimm2touch.utils.SearchDataPropertyFile;
 import org.testng.annotations.Test;
 
 import ru.yandex.qatools.allure.annotations.Description;
@@ -15,7 +14,7 @@ import ru.yandex.qatools.allure.annotations.Features;
 
 
 public class CreateDataConfigTest extends PageFactoryInitializer{
-	
+
 	@Description("create a new subset.")
 	@Features(value={"CreateDataConfigTest"})
 	@Test(enabled=true,priority=0,groups={"regression"},dataProvider="CreateDataConfigTest",dataProviderClass=SearchData.class)
@@ -113,13 +112,15 @@ public class CreateDataConfigTest extends PageFactoryInitializer{
 		.manageTaxonomyPage()
 		.verifyLeftPanelTaxonomyName(taxonomy)
 		.addNewCategoryAndVerify(categoryCode, categoryName, displaySequence, noOfCategories,expSuccessMsgForNewCategoryCreation);
-		
+
 	}
 
 	@Features(value = {"Taxonomy Module"})
 	@Description(" Create L1 Child Category to the Above Created Categories")
 	@Test(enabled=true,priority=4, groups={"regression"},dataProvider="CreateDataConfigTest",dataProviderClass=SearchData.class)
+
 	public void createChildCategories(String testCaseNo, String userName, String password, String welcomeMessage,String taxonomyName, String categoryName,  
+
 			String childCategoryName, String childCategoryCode, String displaySequence) throws Exception
 	{
 		landingPage()

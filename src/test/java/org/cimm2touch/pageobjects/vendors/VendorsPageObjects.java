@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.isEmptyString;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.RandomStringUtils;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
@@ -13,6 +14,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
+
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.pageobjects.items.ItemsPageObjects;
 import org.framework.utils.TestUtility;
@@ -20,9 +22,14 @@ import org.framework.utils.Waiting;
 import org.testng.Assert;
 
 import ru.yandex.qatools.allure.annotations.Step;
-
+/**
+ * 
+ * @author thiruveedhi Chinna
+ *
+ */
 public class VendorsPageObjects extends PageFactoryInitializer
 {
+
 	
 	Waiting waiting=new Waiting(getDriver());
 	TestUtility tu=new TestUtility(getDriver());
@@ -138,6 +145,7 @@ public class VendorsPageObjects extends PageFactoryInitializer
 	@Step("To Verify Vendors Page Items")
 	public VendorsPageObjects verifyVendorsPageItems() 
 	{
+
 		waiting.explicitWaitVisibilityOfElement(vendors_SearchBox, 20);
 		Assert.assertTrue(vendors_SearchBox.isDisplayed(),"Search Box is not Displayed");
 		Assert.assertTrue(vendors_SearchIcon.isDisplayed(),"Search Icon is not Displayed");
@@ -168,6 +176,7 @@ public class VendorsPageObjects extends PageFactoryInitializer
 		addVendor_State.sendKeys(state);
 		addVendor_Zip.clear();
 		addVendor_Zip.sendKeys(zip);
+
 		getDriver().findElement(By.xpath("//select[@id='addNewSupplierForm:country']/option[text()='"+country+"']")).click();
 		addVendor_Email.clear();
 		addVendor_Email.sendKeys(email);
@@ -176,6 +185,7 @@ public class VendorsPageObjects extends PageFactoryInitializer
 		addVendor_URL.sendKeys(url);
 		addVendor_TaxID.clear();
 		addVendor_TaxID.sendKeys(taxID);
+
 		getDriver().findElement(By.xpath("//select[@id='addNewSupplierForm:status']/option[text()='"+status+"']")).click();
 		return this;
 	}
@@ -190,6 +200,7 @@ public class VendorsPageObjects extends PageFactoryInitializer
 	@Step("To Verify the Message after Adding a New Vendor")
 	public VendorsPageObjects verifyMessageAfterAddingNewVendor(String saveMessage) 
 	{
+
 		waiting.explicitWaitVisibilityOfElement(addVendor_SaveMessage, 15);
 		assertThat(addVendor_SaveMessage.getText(), containsString(saveMessage));
 		return this;
@@ -199,6 +210,7 @@ public class VendorsPageObjects extends PageFactoryInitializer
 	public VendorsPageObjects verifyMessageAfterSavingVendorWithoutVendorName(String nameErrorMessage) throws Exception 
 	{
 		Thread.sleep(5000);
+
 		Assert.assertTrue(getDriver().findElement(By.xpath("//input[@id='addNewSupplierForm:supplierName']/following-sibling::span[contains(@style,'red')]")).isDisplayed());
 		assertThat(getDriver().findElement(By.xpath("//input[@id='addNewSupplierForm:supplierName']/following-sibling::span[contains(@style,'red')]")).getText(),
 				containsString(nameErrorMessage));
@@ -208,6 +220,7 @@ public class VendorsPageObjects extends PageFactoryInitializer
 	@Step("To Verify the Error Message after saving Vendor without Short Name ")
 	public VendorsPageObjects verifyMessageAfterSavingVendorWithoutShortName(String shortNameErrorMessage) 
 	{
+
 		assertThat(getDriver().findElement(By.xpath("//input[@id='addNewSupplierForm:shortName']/following-sibling::span[contains(@style,'red')]")).getText(),
 				containsString(shortNameErrorMessage));
 		return this;
@@ -216,6 +229,7 @@ public class VendorsPageObjects extends PageFactoryInitializer
 	@Step("To Verify the Error Message after saving Vendor without Address")
 	public VendorsPageObjects verifyMessageAfterSavingVendorWithoutAddress1(String address1ErrorMessage) 
 	{
+
 		assertThat(getDriver().findElement(By.xpath("//textarea[@id='addNewSupplierForm:address1']/following-sibling::span[contains(@style,'red')]")).getText(),
 				containsString(address1ErrorMessage));
 		return this;
@@ -224,6 +238,7 @@ public class VendorsPageObjects extends PageFactoryInitializer
 	@Step("To Verify the Error Message after saving Vendor without E-Mail ID")
 	public VendorsPageObjects verifyMessageAfterSavingVendorWithoutEmail(String emailErrorMessage) 
 	{
+
 		assertThat(getDriver().findElement(By.xpath("//input[@id='addNewSupplierForm:email']/following-sibling::span[contains(@style,'red')]")).getText(),
 				containsString(emailErrorMessage));
 		return this;
@@ -373,13 +388,15 @@ public class VendorsPageObjects extends PageFactoryInitializer
 	public VendorsPageObjects verifySearchResultForVendors(String vendorsName) throws Exception 
 	{
 		Thread.sleep(5000);
-		Assert.assertTrue(getDriver().findElement(By.xpath("//table[@id='listSupplierForm:listSupplierTableId']/descendant::td[contains(.,'"+vendorsName+"')]")).isDisplayed());	
+
+		Assert.assertTrue(getDriver().findElement(By.xpath("//table[@id='listSupplierForm:listSupplierTableId']/descendant::td[contains(.,'"+vendorsName+"')]")).isDisplayed());
 		return this;
 	}
 
 	@Step("To Click on Specific Vendors Name {0}")
 	public VendorsPageObjects clickOnEditVendors(String vendorsName)
 	{
+
 		getDriver().findElement(By.xpath("//table[@id='listSupplierForm:listSupplierTableId']/descendant::td[contains(.,'"+vendorsName+"')]/preceding::input[@title='Edit Vendor']")).click();
 		return this;
 	}
@@ -416,6 +433,7 @@ public class VendorsPageObjects extends PageFactoryInitializer
 	public VendorsPageObjects verifytheWorkingOfTheLastPageOption() throws Exception
 	{
 		int totalPagesCount = Integer.parseInt(pagination_CurrentPageCount.getText());
+
 		Actions action = new Actions(getDriver());
 		action.click(pagination_LastButton).build().perform();
 		pagination_LastButton.click();
@@ -428,6 +446,7 @@ public class VendorsPageObjects extends PageFactoryInitializer
 	@Step("To Click on First Page Option and Verify the Functionality.")
 	public VendorsPageObjects verifytheWorkingOfTheFirstPageOption() throws Exception
 	{
+
 		((JavascriptExecutor)getDriver()).executeScript("arguments[0].click();",pagination_NextButton);
 		Thread.sleep(5000);
 		int currentPageNumber1 =  Integer.parseInt(pagination_CurrentPageCount.getText());
@@ -441,6 +460,7 @@ public class VendorsPageObjects extends PageFactoryInitializer
 	@Step("To Click on 'NoOfItems Dropdown' and verify contents dispalyed.")
 	public VendorsPageObjects verifyDisplayNoOfItemsDropdown() throws Exception
 	{
+
 		getDriver().findElement(By.xpath("//div[@class='centerPanelRightIcons ']/select/option[@value='25']")).click();
 		Thread.sleep(5000);
 		Assert.assertEquals(new Select(getDriver().findElement(By.xpath("//div[@class='centerPanelRightIcons ']/select"))).getFirstSelectedOption().getText(), "25");
@@ -470,12 +490,14 @@ public class VendorsPageObjects extends PageFactoryInitializer
 	@Step("verify vendor's page title {0}")
 	public VendorsPageObjects checkVendorPage(String title) throws InterruptedException {
 		Thread.sleep(3000);
+
 		System.out.println(getDriver().getTitle());
 		Assert.assertEquals(getDriver().getTitle(), title.trim());
 		return this;
 	}
 	@Step("enter vendor name: {0}")
 	public VendorsPageObjects typeVendorNameInSearch(String vendorName) {
+
 
 			waiting.explicitWaitVisibilityOfElement(vendors_SearchBox, 10);
 			vendors_SearchBox.sendKeys(vendorName);
@@ -487,6 +509,7 @@ public class VendorsPageObjects extends PageFactoryInitializer
 	
 	public boolean vendorSearchResultHelp(String vendorName) throws Exception
 	{
+
 		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		try {
 			if(getDriver().findElement(By.xpath("//tbody[@id='listSupplierForm:listSupplierTableId:tb']/tr/descendant::td[contains(text(),'"+vendorName+"')]")).isDisplayed())
@@ -510,6 +533,7 @@ public class VendorsPageObjects extends PageFactoryInitializer
 	}
 	@Step("enter the vendor name as {0}")
 	public VendorsPageObjects typeInVendorName(String vendorName) {
+
 		waiting.explicitWaitVisibilityOfElement(addVendor_VendorName, 10);
 		addVendor_VendorName.clear();
 		addVendor_VendorName.sendKeys(vendorName);
@@ -517,6 +541,7 @@ public class VendorsPageObjects extends PageFactoryInitializer
 	}
 	@Step("enter vendor short name : {0}")
 	public VendorsPageObjects typeInVendorshortname(String vendorshortname) {
+
 		waiting.explicitWaitVisibilityOfElement(addVendor_ShortName, 10);
 		addVendor_ShortName.clear();
 		addVendor_ShortName.sendKeys(vendorshortname);
@@ -526,6 +551,7 @@ public class VendorsPageObjects extends PageFactoryInitializer
 	@Step("select customer type {0}")
 	public VendorsPageObjects selectCustomerType(String customerType) {
 		
+
 		waiting.explicitWaitVisibilityOfElement(selectCustomerTypeLocator, 10);
 		
 		new Select(selectCustomerTypeLocator).selectByVisibleText(customerType);
@@ -534,6 +560,7 @@ public class VendorsPageObjects extends PageFactoryInitializer
 	}
 	@Step("enter vendor address {0}")
 	public VendorsPageObjects typeInVendorAddress(String vendorAddress) {
+
 		waiting.explicitWaitVisibilityOfElement(addVendor_Address1, 10);
 		addVendor_Address1.clear();
 		addVendor_Address1.sendKeys(vendorAddress);
@@ -542,6 +569,7 @@ public class VendorsPageObjects extends PageFactoryInitializer
 	}
 	@Step("enter vendor email addres as : {0}")
 	public VendorsPageObjects typeInVendorEmailAddress(String vendorEmailAddress) {
+
 		waiting.explicitWaitVisibilityOfElement(addVendor_Email, 10);
 		addVendor_Email.clear();
 		addVendor_Email.sendKeys(vendorEmailAddress);
@@ -559,6 +587,7 @@ public class VendorsPageObjects extends PageFactoryInitializer
 	}
 	@Step("verify  newly created vendor success message: {0}")
 	public VendorsPageObjects checkCreatedVendorSaveMessage(String vendorSavemessage) {
+
 		waiting.explicitWaitVisibilityOfElement(successfulMessageForNewlyCreatedVendorLocator, 10);
 		
 		Assert.assertEquals(successfulMessageForNewlyCreatedVendorLocator.getText(), vendorSavemessage);
@@ -567,6 +596,7 @@ public class VendorsPageObjects extends PageFactoryInitializer
 	}
 	@Step("verify and remove the {0} vendor ")
 	public VendorsPageObjects verifyAndRemoveVendore(String vendorName) {
+
 		Assert.assertTrue(getDriver().findElement(By.xpath("//span[contains(text(),'Vendor Name')]/ancestor::table/descendant::td[contains(text(),'"+vendorName+"')]")).isDisplayed(),"Vendor :"+vendorName+" is not available.");
 		WebElement wb=getDriver().findElement(By.xpath("//span[contains(text(),'Vendor Name')]/ancestor::table/descendant::td[contains(text(),'"+vendorName+"')]/preceding-sibling::td/descendant::input[@title='Remove Vendor']"));
 		waiting.explicitWaitVisibilityOfElement(wb, 10);
@@ -577,6 +607,7 @@ public class VendorsPageObjects extends PageFactoryInitializer
 	}
 
 	public VendorsPageObjects verifySuccessMessageForRemove(String vendorName) {
+
 		waiting.explicitWaitVisibilityOfElement(successfulMessageRemoveVendorLocator, 10);
 		Assert.assertEquals(successfulMessageRemoveVendorLocator.getText(), "Vendor : '"+vendorName+"' removed Successfully");
 
@@ -585,16 +616,19 @@ public class VendorsPageObjects extends PageFactoryInitializer
 
 	@Step("to check the required checkboxes in {0} for desktop view")
 	public VendorsPageObjects clickOnGenricColumnSetting(String genericColumnSetting) throws Exception {
+
 		waiting.explicitWaitVisibilityOfElement(genericColumnSettingIconLocator, 10);
 		Assert.assertTrue(genericColumnSettingIconLocator.isDisplayed(), "generic column setting is not available ");
 		genericColumnSettingIconLocator.click();
 		switch(genericColumnSetting)
 		{
+
 			case "Show fields": waiting.explicitWaitVisibilityOfElement(showFieldsSettingLoc, 5);
 								Assert.assertTrue(showFieldsSettingLoc.isDisplayed(),"Show fields table setting option is not available");
 								showFieldsSettingLoc.click();
 				break;
 				
+
 			case "Sort Order":	 waiting.explicitWaitVisibilityOfElement(showSortSettingLoc, 5);
 								Assert.assertTrue(showSortSettingLoc.isDisplayed(),"Sort order setting option is not available");
 								showSortSettingLoc.click();
@@ -608,6 +642,7 @@ public class VendorsPageObjects extends PageFactoryInitializer
 		
 		switch(genericColumnSettingType)
 		{
+
 		case "Show fields" :	waiting.explicitWaitVisibilityOfElement(dynamicTableSettingSection, 5);
 								Assert.assertTrue(dynamicTableSettingSection.isDisplayed(), "dynamic table setting table is not available");
 		break;
@@ -627,6 +662,7 @@ public class VendorsPageObjects extends PageFactoryInitializer
 		for(int i=0;i<fields.length;i++) {
 		
 		
+
 				//Assert.assertTrue(getDriver().findElement(By.xpath("//span[text()='"+fields[i]+"']/ancestor::td/following-sibling::td/descendant::label/input[contains(@name,'ITMSLCT1')]/following-sibling::span")).isDisplayed(),"Manufacturer part number field is not available");
 	
 			Assert.assertTrue(getDriver().findElement(By.xpath("//tr/th/div[text()='Field Names']/../../../../tbody/tr/td[span='"+fields[i]+"']")).isDisplayed(),fields[i]+" -> not available");
@@ -640,6 +676,7 @@ public class VendorsPageObjects extends PageFactoryInitializer
 						Thread.sleep(1000);
 					}		
 	}
+
 		getDriver().findElement(By.xpath("//div[contains(text(),'Dynamic Table Settings')]/following-sibling::div/descendant::input[contains(@title,'Save')]")).click();
 	
 		return this;
@@ -650,6 +687,7 @@ public class VendorsPageObjects extends PageFactoryInitializer
 		Thread.sleep(3000);
 		for(int i=0; i<fields.length; i++)
 		{
+
 		Assert.assertTrue(getDriver().findElement(By.xpath("//thead[@class='rich-table-thead']/descendant::*[text()='"+fields[i]+"']")).isDisplayed());
 		}
 		

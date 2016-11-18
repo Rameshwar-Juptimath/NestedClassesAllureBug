@@ -1,27 +1,20 @@
 package org.cimm2touch.modules;
-/**
- * 
- * @author Thiruveedhi Chinna
- *
- */
+
+
 import java.io.File;
 
 import org.cimm2touch.dataprovider.SearchData;
 import org.cimm2touch.initializer.PageFactoryInitializer;
-import org.cimm2touch.utils.SearchDataPropertyFile;
-import org.framework.utils.ApplicationSetUpPropertyFile;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-
-import com.fasterxml.jackson.databind.BeanDescription;
 
 import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Features;
-import ru.yandex.qatools.allure.annotations.Parameter;
 import ru.yandex.qatools.allure.annotations.TestCaseId;
 
+
 public class AdvancedSearchModuleTest extends PageFactoryInitializer {
-	
+
+
 	
 	
 	@Description("pre setting for Desktop view - show fields for Automation.")

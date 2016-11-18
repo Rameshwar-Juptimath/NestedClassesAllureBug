@@ -1,8 +1,10 @@
 
+
 package org.cimm2touch.pageobjects.manufacturer;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
+
 
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.framework.utils.TestUtility;
@@ -15,11 +17,12 @@ import org.testng.Assert;
 import ru.yandex.qatools.allure.annotations.Step;
 
 /**
- * @author Gladson Antony
+ * @author Thiruveedhi Chinna
  *
  */
 public class EditBrandsPageObjects extends PageFactoryInitializer
 {
+
 	TestUtility tu = new TestUtility(getDriver());
 	Waiting waiting =new Waiting(getDriver());
 
@@ -95,6 +98,7 @@ public class EditBrandsPageObjects extends PageFactoryInitializer
 	public EditBrandsPageObjects verifyTheMessageAfterSavingBrandWithoutName(String errorMessage) throws Exception
 	{
 		Thread.sleep(5000);
+
 		assertThat(getDriver().findElement(By.xpath("//input[@id='EditBrandForm:brandId']//following-sibling::span[contains(@style,'red')]")).getText(), containsString(errorMessage));
 		return this;
 	}
@@ -102,6 +106,7 @@ public class EditBrandsPageObjects extends PageFactoryInitializer
 	@Step("To Verify the Character Limit for 'Brand Name'")
 	public EditBrandsPageObjects verifyCharacterLimitForEditBrandName() 
 	{
+
 		waiting.explicitWaitVisibilityOfElement(editBrand_BrandName, 5);
 		editBrand_BrandName.clear();
 		for (int i=0; i< 100; i++)
@@ -117,6 +122,7 @@ public class EditBrandsPageObjects extends PageFactoryInitializer
 	@Step("To Verify the Character Limit for 'Brand Desc'")
 	public EditBrandsPageObjects verifyCharacterLimitForEditBrandDesc() 
 	{
+
 		waiting.explicitWaitVisibilityOfElement(editBrand_BrandDesc, 5);
 		editBrand_BrandDesc.clear();
 		for (int i=0; i< 500; i++)
@@ -132,6 +138,7 @@ public class EditBrandsPageObjects extends PageFactoryInitializer
 	@Step("To Verify the Character Limit for 'Brand Desc'")
 	public EditBrandsPageObjects verifyCharacterLimitForEditBrandURL() 
 	{
+
 		waiting.explicitWaitVisibilityOfElement(editBrand_BrandURL, 5);
 		editBrand_BrandURL.clear();
 		for (int i=0; i< 400; i++)
@@ -147,6 +154,7 @@ public class EditBrandsPageObjects extends PageFactoryInitializer
 	@Step("To Click on Back Button'")
 	public EditBrandsPageObjects clickOnBackButtonInEditBrandsPage() 
 	{
+
 		getDriver().findElement(By.xpath("//div[@class='breadCrumbs']/ul/li/form/input[@type='image'and @title='Goto PreviousPage']")).click();
 		return this;
 	}
@@ -154,6 +162,7 @@ public class EditBrandsPageObjects extends PageFactoryInitializer
 	@Step("To Click on Custom Fields Tab'")
 	public EditBrandsPageObjects clickOnCustomFieldsTab() 
 	{
+
 		waiting.explicitWaitVisibilityOfElement(tab_CustomFields, 5);
 		tab_CustomFields.click();
 		return this;

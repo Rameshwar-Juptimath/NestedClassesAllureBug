@@ -1,6 +1,10 @@
 package org.cimm2touch.pageobjects.manufacturer;
 /**
+
  * @author Thiruveedhi Chinna
+=======
+ * @author Gladson Antony
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
  *
  */
 import static org.hamcrest.CoreMatchers.containsString;
@@ -8,6 +12,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
 
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.utils.TestUtilityMethods;
@@ -25,10 +30,11 @@ import ru.yandex.qatools.allure.annotations.Step;
 
 public class ManufacturerPageObjects extends PageFactoryInitializer
 {
+
 	TestUtility tu = new TestUtility(getDriver());
 	Waiting waiting=new Waiting(getDriver());
 	TestUtilityMethods utility = new TestUtilityMethods(getDriver());
-	
+
 	@FindBy(xpath="//input[contains(@id,searchKeywordId) and @placeholder='Enter Manufacturer Name to Search' and @type='text']")
 	private WebElement manufacturersSearchBox;
 
@@ -312,6 +318,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	public boolean isBrandpresentHelp(String brandname) throws Exception
 	{
+
 		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		try {
 
@@ -338,6 +345,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	@Step("assert element present manufacturerbrandtextLocator ")
 	public  ManufacturerPageObjects assrtManufacturerbrandtextLocator() throws Exception{
+
 
 		utility.assertElementnotPresent(manufacturerbrandtextLocator);
 		return this;
@@ -370,6 +378,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	@Step("Click on save button")
 	public ManufacturerPageObjects clickOnSaveButton() throws Exception{
+
 		waiting.explicitWaitVisibilityOfElement(saveButtonLocator, 5);
 		saveButtonLocator.click();
 		return this;
@@ -379,6 +388,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	@Step("Verify whether unsuccessful message is  {0}")
 	public ManufacturerPageObjects verifyUnsuccessfullMessage(String unsuccessfullMessageOfManufacturerSave)throws Exception {
+
 		waiting.explicitWaitVisibilityOfElement(manufacturerUnsuccessfullMessageLocator, 8);
 		Assert.assertEquals(manufacturerUnsuccessfullMessageLocator.getText().trim(), "Manufacturer Name required");
 		return this;
@@ -387,6 +397,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	@Step("Enter manufacturer name as {0}")
 	public ManufacturerPageObjects enterNewManufacturerNames(String manufacturerNewName) throws Exception {
+
 		waiting.explicitWaitVisibilityOfElement(manufacturerNewNameLocator, 5);
 		manufacturerNewNameLocator.sendKeys(manufacturerNewName);
 		return this;
@@ -394,6 +405,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	}
 	@Step("verify creation of new manufacturer name contains {0}")
 	public ManufacturerPageObjects verifySuccessMessageNewManuCreation(String manufacturerName)throws Exception {
+
 		waiting.explicitWaitVisibilityOfElement(verifySuccessMessageNewManuCreationLocator, 8);
 		Assert.assertEquals(verifySuccessMessageNewManuCreationLocator.getText().trim(),manufacturerName.substring(0,Math.min(manufacturerName.length(),60))+" Manufacturer saved Successfully");
 		return this;
@@ -401,6 +413,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	@Step("Enter manufacturer name {0} to delete")
 	public ManufacturerPageObjects enterCreatedManufacturerToDelete(String createdManufacturerToDelete) throws Exception {
+
 		waiting.explicitWaitVisibilityOfElement(enterCreatedManufacturerToDeleteLocator, 5);
 		enterCreatedManufacturerToDeleteLocator.sendKeys(createdManufacturerToDelete);
 		return this;
@@ -409,6 +422,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	@Step("click on search button")
 	public ManufacturerPageObjects clickOnSearchManufacturerList()throws Exception {
+
 		waiting.explicitWaitVisibilityOfElement(clickOnSearchManufacturerListLocator, 5);
 		clickOnSearchManufacturerListLocator.click();
 		return this;
@@ -416,6 +430,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	@Step("click on delete manufacturer button")
 	public ManufacturerPageObjects clickOnDeleteManufacturerButton() throws Exception {
+
 		waiting.explicitWaitVisibilityOfElement(clickOnDeleteManufacturerButtonLocator, 5);
 		clickOnDeleteManufacturerButtonLocator.click();
 		return this;
@@ -424,6 +439,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	public boolean assertAlertText(String alertTextToDeleteManufacturer)throws Exception
 	{
+
 		boolean returnStatus = tu.getAlertText().trim().equals(alertTextToDeleteManufacturer);
 		tu.alertAccept();
 		return returnStatus;
@@ -440,6 +456,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	@Step("verify success message on removal of manufacturer")
 	public ManufacturerPageObjects verifyManufacturerDeletion() throws Exception {
+
 		waiting.explicitWaitVisibilityOfElement(verifyManufacturerDeletionLocator, 8);
 		Assert.assertEquals(verifyManufacturerDeletionLocator.getText().trim(),
 				"Manufacturer removed Successfully(No Brands and Items were present under this manufacturer).");
@@ -450,6 +467,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	@Step("Verify no items displayed when wrong manufacturer name entered")
 	public ManufacturerPageObjects verifyZeroManufacturersFound() throws Exception {
+
 		waiting.explicitWaitVisibilityOfElement(verifyZeroManufacturersFoundLocator, 8);
 		Assert.assertEquals(verifyZeroManufacturersFoundLocator.getCssValue("color").trim(),"rgba(98, 98, 98, 1)");
 		Thread.sleep(2000);
@@ -464,6 +482,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 		int totalNumberOfPages = Integer.parseInt(storeTotalNumberOfPagesLocator.getText().trim());
 		if(totalNumberOfPages>1)
 		{
+
 			waiting.explicitWaitVisibilityOfElement(storeThePageNumberLocator, 3);
 			int currentPageNumber = Integer.parseInt(storeThePageNumberLocator.getAttribute("value").trim());
 			Assert.assertEquals(currentPageNumber, 1);
@@ -488,6 +507,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	@Step("click on new manufacturer field")
 	public ManufacturerPageObjects clickOnNewManufacturerName()throws Exception {
+
 		waiting.explicitWaitVisibilityOfElement(manufacturerNewNameLocator, 8);
 		manufacturerNewNameLocator.click();
 		return this;
@@ -495,6 +515,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	@Step("click on manufacturer code")
 	public ManufacturerPageObjects clickOnManufacturerCode()throws Exception {
+
 		waiting.explicitWaitVisibilityOfElement(manufacturerCodeLocator, 8);
 		manufacturerCodeLocator.click();
 		return this;
@@ -502,18 +523,21 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	@Step("verify presence of action field")
 	public ManufacturerPageObjects clickOnAction() throws Exception {
+
 		waiting.explicitWaitVisibilityOfElement(clickOnActionLocator, 8);
 		Assert.assertTrue(clickOnActionLocator.isDisplayed(),"the text 'action' is not displayed");
 		return this;
 	}
 	@Step("verify presence of SI.No field")
 	public ManufacturerPageObjects clickOnSiNumber() throws Exception{
+
 		waiting.explicitWaitVisibilityOfElement(clickOnSiLocator, 8);
 		Assert.assertTrue(clickOnSiLocator.isDisplayed(),"the text 'SI.No' is not displayed");
 		return this;
 	}
 	@Step("verify presence of manufacturer name field")
 	public ManufacturerPageObjects clickOnManufacturerName()throws Exception {
+
 		waiting.explicitWaitVisibilityOfElement(clickOnManufacturerNameLocator, 8);
 		Assert.assertTrue(clickOnManufacturerNameLocator.isDisplayed(),"the text 'manufacturer name' is not displayed");
 		return this;
@@ -521,6 +545,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	@Step("verify presence of brands field")
 	public ManufacturerPageObjects clickOnNumberOfBrands() throws Exception{
+
 		waiting.explicitWaitVisibilityOfElement(clickOnNumberofBrandsLocator, 8);
 		Assert.assertTrue(clickOnNumberofBrandsLocator.isDisplayed(),"the text 'manufacturer name' is not displayed");
 		return this;
@@ -535,6 +560,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	@Step("verify presence of show fields")
 	public ManufacturerPageObjects verifyShowFieldsText()throws Exception {
+
 		waiting.explicitWaitVisibilityOfElement(verifyShowFieldsTextLocator, 8);
 		Assert.assertEquals(verifyShowFieldsTextLocator.getText().trim(), "Show Fields");
 		return this;
@@ -542,6 +568,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	@Step("verify presence of sort order field")
 	public ManufacturerPageObjects verifySortOrderText()throws Exception {
+
 		waiting.explicitWaitVisibilityOfElement(verifySortOrderTextLocator, 8);
 		Assert.assertEquals(verifySortOrderTextLocator.getText().trim(), "Sort Order");
 		return this;
@@ -576,6 +603,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 		Thread.sleep(2500);
 		Select sel=new Select(manufacturerdropdown);
 		sel.selectByVisibleText(manufacturername);
+
 		//getDriver().findElement(By.xpath("//select[@id='addBrandForm:manufacturerListComboId']/option[contains(text(),'"+manufacturername+"')]")).click();//select[@id='addBrandForm:manufacturerListComboId']/option[contains(text(),'AS_Manufacturer_Automation_Testing')];
 		return this;
 	}
@@ -585,6 +613,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	@Step("type in brandname")
 	public ManufacturerPageObjects typeinbrandname(String brandname) {
+
 		waiting.explicitWaitVisibilityOfElement(brandnamefield, 10);
 		brandnamefield.clear();
 		brandnamefield.sendKeys(brandname);
@@ -644,6 +673,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	public boolean manufacturerSearchResultHelp(String manufacturername) throws Exception
 	{
+
 		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		try {
 			if(getDriver().findElement(By.xpath("//form/table/tbody/tr[td[3]='"+manufacturername+"']/td[3]")).isDisplayed())
@@ -718,6 +748,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	@Step("verify manufacturer save message")
 	public ManufacturerPageObjects verifymessageAfterManufacturerCreate(String mfgName, String successMessageAfterCreate) throws InterruptedException {
+
 		waiting.explicitWaitVisibilityOfElement(manufacturermessagesaveph, 10);
 		Assert.assertEquals(manufacturermessagesaveph.getText().trim(),mfgName+" "+successMessageAfterCreate);
 		return this;
@@ -725,13 +756,16 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	@Step("click on show fields")
 	public ManufacturerPageObjects clickOnShowFieldsText()throws Exception {
+
 		waiting.explicitWaitVisibilityOfElement(verifyShowFieldsTextLocator, 8);
+
 		verifyShowFieldsTextLocator.click();
 		return this;
 	}
 
 	@Step("verify the dynamic field settings text field")
 	public ManufacturerPageObjects verifyDynamicSettingsField()throws Exception {
+
 		waiting.explicitWaitVisibilityOfElement(verifyDynamicSettingsFieldLocator, 8);
 		Assert.assertEquals(verifyDynamicSettingsFieldLocator.getText().trim(), "Dynamic Table Settings");
 		return this;
@@ -739,6 +773,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	@Step("verify the field names text")
 	public ManufacturerPageObjects verifyFieldNamesField()throws Exception {
+
 		waiting.explicitWaitVisibilityOfElement(verifyFieldNamesFieldLocator, 8);
 		Assert.assertEquals(verifyFieldNamesFieldLocator.getText().trim(), "Field Names");
 		return this;
@@ -747,6 +782,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	@Step("verify the desktop view text field")
 
 	public ManufacturerPageObjects verifyDesktopViewField()throws Exception {
+
 		waiting.explicitWaitVisibilityOfElement(verifyDesktopViewFieldLocator, 8);
 		Assert.assertEquals(verifyDesktopViewFieldLocator.getText().trim(), "Desktop View");
 		return this;
@@ -754,6 +790,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	@Step("verify the mobile view text field")
 	public ManufacturerPageObjects verifyMobileViewField() throws Exception{
+
 		waiting.explicitWaitVisibilityOfElement(verifyMobileViewFieldLocator, 8);
 		Assert.assertEquals(verifyMobileViewFieldLocator.getText().trim(), "Mobile View");
 		return this;
@@ -763,6 +800,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	@Step("verify the tablet view text field")
 
 	public ManufacturerPageObjects verifyTabletViewField()throws Exception {
+
 		waiting.explicitWaitVisibilityOfElement(verifyTabletViewFieldLocator, 8);
 		Assert.assertEquals(verifyTabletViewFieldLocator.getText().trim(), "Tablet View");
 		return this;
@@ -771,6 +809,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	@Step("verify the display names text field")
 	public ManufacturerPageObjects verifyDisplayNamesField()throws Exception {
+
 		waiting.explicitWaitVisibilityOfElement(verifyDisplayNamesFieldLocator, 8);
 		Assert.assertEquals(verifyDisplayNamesFieldLocator.getText().trim(), "Display Names");
 		return this;
@@ -779,6 +818,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	@Step("verify the reset functionality")
 	public ManufacturerPageObjects verifyEmptyFieldAfterReset()throws Exception {
+
 		waiting.explicitWaitVisibilityOfElement(verifyEmptyFieldAfterResetLocator, 8);
 		Assert.assertEquals(verifyEmptyFieldAfterResetLocator.getText().trim(), "");
 		return this;
@@ -793,6 +833,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	@Step("verify manufacturer logo in mfr list page")
 	public ManufacturerPageObjects verifyManufacturerLogoPresent() throws Exception{
+
 		waiting.explicitWaitVisibilityOfElement(verifyManufacturerLogoPresentLocator, 8);
 		Assert.assertEquals(verifyManufacturerLogoPresentLocator.getText().trim(), "Manufacturer Logo");
 		return this;
@@ -800,6 +841,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	@Step("click on save fields")
 	public ManufacturerPageObjects clickOnSaveFields()throws Exception {
+
 		waiting.explicitWaitVisibilityOfElement(clickOnSaveFieldsLocator, 8);
 		clickOnSaveFieldsLocator.click();
 		return this;
@@ -807,6 +849,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	@Step("click on cancel button")
 	public ManufacturerPageObjects clickOnCancelButton() throws Exception {
+
 		waiting.explicitWaitVisibilityOfElement(clickOnCancelButtonLocator, 8);
 		clickOnCancelButtonLocator.click();
 		return this;
@@ -814,6 +857,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	@Step("enter sort field name")
 	public ManufacturerPageObjects enterSortFieldName(String SortFieldName) throws Exception {
+
 		waiting.explicitWaitVisibilityOfElement(enterSortFieldNameLocator, 8);
 		enterSortFieldNameLocator.sendKeys(SortFieldName);
 		return this;
@@ -821,6 +865,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	@Step("enter descending order option")
 	public ManufacturerPageObjects enterDescendingOrder(String descendingOrderText) throws Exception{
+
 		waiting.explicitWaitVisibilityOfElement(descendingOrderTextLocator, 8);
 		descendingOrderTextLocator.sendKeys(descendingOrderText);
 		return this;
@@ -835,6 +880,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	@Step("click on delete sort order")
 	public ManufacturerPageObjects clickOnDeleteSortOrder() {
+
 		waiting.explicitWaitVisibilityOfElement(clickOnDeleteSortOrderLocator, 8);
 		clickOnDeleteSortOrderLocator.click();
 		return this;
@@ -843,13 +889,11 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	@Step("click on close sort order")
 	public ManufacturerPageObjects clickOnCloseSortOrder() throws Exception{
+
 		waiting.explicitWaitVisibilityOfElement(clickOnCloseSortOrderLocator, 8);
 		clickOnCloseSortOrderLocator.click();
 		return this;
 	}
-
-	/*****************************************************************************************************************************************************************
-	 *****************************************************************************************************************************************************************/
 
 
 
@@ -873,6 +917,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	@Step("To Click on 'Add New Manufacturers' Button")
 	public ManufacturerPageObjects clickOnAddNewManufacturerButton() throws Exception
 	{
+
 		waiting.explicitWaitVisibilityOfElement(addNewManufacturerButtonLocator, 5);
 		addNewManufacturerButtonLocator.click();
 		return this;
@@ -916,6 +961,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	@Step("To Verify the Message after saving a Manufacturer")
 	public ManufacturerPageObjects verifyMessageAfterSavingManufacturer(String saveMessage) throws Exception 
 	{
+
 		waiting.explicitWaitVisibilityOfElement(messageAfterSavingNewManufacturerLocator, 15);
 		assertThat(messageAfterSavingNewManufacturerLocator.getText(), containsString(saveMessage));
 		return this;
@@ -924,6 +970,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	@Step("To Search for the Manufacturer {0}")
 	public ManufacturerPageObjects searchForManufacturer(String manufacturersName) throws Exception
 	{
+
 		waiting.explicitWaitVisibilityOfElement(manufacturersSearchBox, 10);
 		manufacturersSearchBox.clear();
 		manufacturersSearchBox.sendKeys(manufacturersName);
@@ -935,6 +982,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	public ManufacturerPageObjects verifyAfterSearchingForManufacturer(String manufacturersName) throws Exception
 	{
 		Thread.sleep(5000);
+
 		Assert.assertTrue(getDriver().findElement(By.xpath("//span[@id='listManufacturerForm:noResults' and contains(.,'"+manufacturersName+"')]")).isDisplayed(),"Manufacturer Results is Not Displaying");
 		Assert.assertTrue(getDriver().findElement(By.xpath("//form[@id='listManufacturerForm']//td[contains(.,'"+manufacturersName+"')]")).isDisplayed());
 		return this;
@@ -943,6 +991,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	@Step("To Click on Add New Brand")
 	public ManufacturerPageObjects clickOnAddNewBrand() throws Exception
 	{
+
 		waiting.explicitWaitVisibilityOfElement(listBrands, 10);
 		listBrands.click();
 		waiting.explicitWaitVisibilityOfElement(addNewBrandLocator, 10);
@@ -1007,6 +1056,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	@Step("To Verify the working of 'Reset' button")
 	public ManufacturerPageObjects clickOnResetManufacturersFieldsButton()throws Exception 
 	{
+
 		waiting.explicitWaitVisibilityOfElement(resetAddNewManufacturerFields, 5);
 		resetAddNewManufacturerFields.click();
 		return this;
@@ -1016,6 +1066,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	public ManufacturerPageObjects verifyErrorMessageOnSavingBrand(String errorMessage) throws Exception 
 	{
 		Thread.sleep(5000);
+
 		assertThat(getDriver().findElement(By.xpath("//span[@id='addBrandForm:hmsgBrandId']")).getText(),containsString(errorMessage));
 		return this;
 	}
@@ -1075,6 +1126,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	{
 		SoftAssert sa = new SoftAssert();
 
+
 		List<WebElement> itemsDisplayed = getDriver().findElements(By.xpath("//form[@id='listManufacturerForm']//table[contains(@id,'manufacturerTableId')]//tbody/tr[contains(@class,'rich-table-row')]"));
 		Assert.assertEquals(itemsDisplayed.size(), 10);
 
@@ -1109,6 +1161,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	@Step("To Click on 'Generic Column Settings'.")
 	public ManufacturerPageObjects clickOnGenericColumnSettings() throws Exception
 	{
+
 		waiting.explicitWaitVisibilityOfElement(manufacturers_GenericColumnSettings, 5);
 		manufacturers_GenericColumnSettings.click();
 		return this;
@@ -1126,6 +1179,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	@Step("To Click on 'Sort Order'")
 	public ManufacturerPageObjects clickOnSortOrder() throws Exception 
 	{
+
 		waiting.explicitWaitVisibilityOfElement(clickOnSortOrderLocator, 5);
 		genericColumnSettings_SortOrder.click();
 		return this;
@@ -1134,6 +1188,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	@Step("To Verify the Options displayed on clicking 'Sort Order'")
 	public ManufacturerPageObjects verifyItemsDisplayedAfterClickingSortOrder() throws InterruptedException 
 	{
+
 		waiting.explicitWaitVisibilityOfElement(sortOrder_AddNewSortOrder, 5);
 		Assert.assertTrue(sortOrder_AddNewSortOrder.isDisplayed(),"Add New Sort Order Option is Not Displayed");
 		try
@@ -1152,6 +1207,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	@Step("To Click On 'Add New Sort Order'")
 	public ManufacturerPageObjects clickOnAddNewSortOrder() throws Exception 
 	{
+
 		waiting.explicitWaitVisibilityOfElement(sortOrder_AddNewSortOrder, 5);
 		sortOrder_AddNewSortOrder.click();
 		return this;
@@ -1160,6 +1216,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	@Step("To Click On 'Add New Sort Order'")
 	public ManufacturerPageObjects clickOnRemoveSortOrder() throws Exception
 	{
+
 		waiting.explicitWaitVisibilityOfElement(sortOrder_RemoveSortOrder, 5);
 		sortOrder_RemoveSortOrder.click();
 		return this;
@@ -1180,11 +1237,13 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	public ManufacturerPageObjects verifyErrorMessageAfterSavingManufacturer(String errorMessage) throws Exception 
 	{
 		Thread.sleep(5000);
+
 		assertThat(getDriver().findElement(By.xpath("//span[@id='addNewManufacturerForm:hmsgId']")).getText(), containsString(errorMessage));
 		return this;	
 	}
 
 	@Step("To Verify the Character Limit for 'Manufacturer Name'")
+
 	public ManufacturerPageObjects verifyCharacterLimitForManufacturersName(String maxChars) throws Exception 
 	{
 		waiting.explicitWaitVisibilityOfElement(newManufacturersNameLocator, 5);
@@ -1198,11 +1257,13 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	}
 
 	@Step("To Verify the Character Limit for 'Manufacturer Code'")
+
 	public ManufacturerPageObjects verifyCharacterLimitForManufacturersCode(String maxLimitNum) 
 	{
 		waiting.explicitWaitVisibilityOfElement(newManufacturersCodeLocator, 5);
 		
 			newManufacturersCodeLocator.sendKeys(maxLimitNum);
+
 		String enteredText=newManufacturersCodeLocator.getAttribute("value");
 		int enteredTextLength=enteredText.length();
 		Assert.assertEquals(enteredTextLength, Integer.parseInt(newManufacturersCodeLocator.getAttribute("maxlength")));
@@ -1212,6 +1273,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	@Step("To Verify the Character Limit for 'Brand Name'")
 	public ManufacturerPageObjects verifyCharacterLimitForBrandNameField() 
 	{
+
 		waiting.explicitWaitVisibilityOfElement(addNewBrand_BrandName, 5);
 		for (int i=0; i< 100; i++)
 		{
@@ -1226,6 +1288,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	@Step("To Verify the Character Limit for 'Brand Description'")
 	public ManufacturerPageObjects verifyCharacterLimitForBrandDescField() 
 	{
+
 		waiting.explicitWaitVisibilityOfElement(addNewBrand_BrandDesc, 5);
 		for (int i=0; i< 500; i++)
 		{
@@ -1240,6 +1303,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	@Step("To Verify the Character Limit for 'Brand URL'")
 	public ManufacturerPageObjects verifyCharacterLimitForBrandURL() 
 	{
+
 		waiting.explicitWaitVisibilityOfElement(addNewBrand_BrandURL, 5);
 		for (int i=0; i< 500; i++)
 		{
@@ -1254,6 +1318,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	@Step("To Click on 'Reset' button for Brands")
 	public ManufacturerPageObjects clickOnResetBrandFields() 
 	{
+
 		waiting.explicitWaitVisibilityOfElement(addNewBrand_ResetBrandFields, 10);
 		addNewBrand_ResetBrandFields.click();
 		return this;
@@ -1276,6 +1341,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	public ManufacturerPageObjects clickOnEditManufacturer(String manufacturersName) throws Exception 
 	{
 		Thread.sleep(5000);
+
 		getDriver().findElement(By.xpath("//td[contains(.,'"+manufacturersName+"')]//preceding::input[@title='Edit Manufacturer']")).click();
 		return this;
 	}
@@ -1283,6 +1349,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	@Step("To Search for a 'Brand'")
 	public ManufacturerPageObjects searchForBrand(String brandName) 
 	{
+
 		waiting.explicitWaitVisibilityOfElement(manufacturersSearchBox, 10);
 		manufacturersSearchBox.clear();
 		manufacturersSearchBox.sendKeys(brandName);
@@ -1294,6 +1361,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	public ManufacturerPageObjects clickOnEditBrand(String brandName) throws Exception 
 	{
 		Thread.sleep(5000);
+
 		getDriver().findElement(By.xpath("//table[contains(@id,'brandTableId')]//td[contains(.,'"+brandName+"')]/..//div/input[@title='Edit Brand']")).click();
 		return this;		
 	}
@@ -1302,6 +1370,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	public ManufacturerPageObjects verifyAfterSearchingForBrand(String brandName) throws Exception
 	{
 		Thread.sleep(5000);
+
 		Assert.assertTrue(getDriver().findElement(By.xpath("//table[contains(@id,'brandTableId')]//td[contains(.,'"+brandName+"')]")).isDisplayed(),"Brand Results is Displayed");
 		return this;
 	}
@@ -1311,6 +1380,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	public ManufacturerPageObjects clickOnDeleteBrand() throws Exception 
 	{
 		Thread.sleep(5000);
+
 		getDriver().findElement(By.xpath("//input[@title='Remove Brand']")).click();
 		waiting.explicitWaitForAlert(10);
 		tu.alertAccept();
@@ -1321,6 +1391,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	public ManufacturerPageObjects verifyMessageAfterDeletingBrand(String brandDelMessage) throws Exception
 	{
 		Thread.sleep(5000);
+
 		assertThat(getDriver().findElement(By.xpath("//form[@id='listManufacturerForm']//span[contains(@style,'green')and @id='listManufacturerForm:noResults']")).getText(),
 				containsString(brandDelMessage));
 		return this;
@@ -1331,6 +1402,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	public ManufacturerPageObjects clickOnDeleteManufacturer() throws Exception 
 	{
 		Thread.sleep(5000);
+
 		getDriver().findElement(By.xpath("//table[@id='listManufacturerForm:manufacturerTableId']//input[@title='Remove Manufacturer']")).click();
 		waiting.explicitWaitForAlert(10);
 		tu.alertAccept();
@@ -1341,12 +1413,14 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	public ManufacturerPageObjects verifyMessageAfterDeletingManufacturer(String manuDelMessage) throws Exception
 	{
 		Thread.sleep(5000);
+
 		assertThat(getDriver().findElement(By.xpath("//form[@id='listManufacturerForm']//span[contains(@style,'green')and @id='listManufacturerForm:noResults']")).getText(),
 				containsString(manuDelMessage));
 		return this;
 	}
 
 	public ManufacturerPageObjects verifyAndRemoveBrand(String brandName) {
+
 		WebElement wb= getDriver().findElement(By.xpath("//td[contains(text(),'"+brandName+"')]/ancestor::td//preceding-sibling::td/descendant::input[@title='Remove Brand']"));
 		waiting.explicitWaitVisibilityOfElement(wb, 10);
 		wb.click();
@@ -1356,6 +1430,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	public ManufacturerPageObjects removeAndVerifyManufacturer(String manufacturerName) throws InterruptedException {
 		Thread.sleep(2000);
+
 		WebElement wb=getDriver().findElement(By.xpath("//tbody[@id='listManufacturerForm:manufacturerTableId:tb']/descendant::td[contains(text(),'"+manufacturerName+"')]/preceding-sibling::td/descendant::input[@title='Remove Manufacturer']"));
 		waiting.explicitWaitVisibilityOfElement(wb, 10);
 		wb.click();
@@ -1364,6 +1439,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	}
 
 	public ManufacturerPageObjects verifySuccessMessageAfterRemove(String successMessage) {
+
 
 		waiting.explicitWaitVisibilityOfElement(successMessageRemoveMfgLocator, 20);
 		Assert.assertEquals(successMessageRemoveMfgLocator.getText(), successMessage);

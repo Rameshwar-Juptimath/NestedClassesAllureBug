@@ -8,6 +8,7 @@ public class HistoryPageObjects extends PageFactoryInitializer
 
 	public boolean assertPageTitle(String expectedHistoryPageTitle) throws Exception 
 	{
+
 		TestUtility utility = new TestUtility(getDriver());
 		boolean t = getDriver().getTitle().replace(" ", "").trim().equals(expectedHistoryPageTitle.replace(" ", "").trim());
 		utility.closeCurrentTab();
@@ -18,16 +19,19 @@ public class HistoryPageObjects extends PageFactoryInitializer
 	
 	public HistoryPageObjects verifyPageTitle(String expectedHistoryPageTitle) throws Exception
 	{
+
 		Assert.assertTrue(assertPageTitle(expectedHistoryPageTitle),"Actual Title : "+getDriver().getTitle().trim()+" but expecting "+expectedHistoryPageTitle);
 		return this;
 	}
 	
 	public HistoryPageObjects verifyAttributesHistoryPageTitle(String expectedAttributesHistoryPageTitle) throws Exception {
+
 		Assert.assertTrue(assertPageTitle(expectedAttributesHistoryPageTitle),"Actual Title : "+getDriver().getTitle().trim()+" but expecting "+expectedAttributesHistoryPageTitle);
 		return this;
 	}
 	
 	public HistoryPageObjects verifyAttributeGroupHistoryPageTitle(String expectedAttributeGroupHistoryPageTitle) throws Exception {
+
 
 		Assert.assertTrue(assertPageTitle(expectedAttributeGroupHistoryPageTitle),"Actual Title : "+getDriver().getTitle().trim()+" but expecting "+expectedAttributeGroupHistoryPageTitle);
 		return this;

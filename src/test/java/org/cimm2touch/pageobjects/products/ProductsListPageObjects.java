@@ -2,6 +2,7 @@ package org.cimm2touch.pageobjects.products;
 
 import java.util.List;
 
+
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.framework.utils.TestUtility;
 import org.framework.utils.Waiting;
@@ -19,8 +20,10 @@ import ru.yandex.qatools.allure.annotations.Step;
 
 public class ProductsListPageObjects extends PageFactoryInitializer{
 
+
 	Waiting waiting=new Waiting(getDriver());
 	TestUtility tu=new TestUtility(getDriver());
+
 	
 	@FindAll(value={@FindBy(xpath="//div[@class='breadCrumbs']/span")})
 	private List<WebElement> breadCrumbsLink;
@@ -57,6 +60,7 @@ public class ProductsListPageObjects extends PageFactoryInitializer{
 	
 	@Step("verify the breadcrumbs of the Products page is {0}")
 	public ProductsListPageObjects verifyTheProductsPageBreadCrumbs(String breadcrumpsList[]) {
+
 		waiting.explicitWaitVisibilityOfElements(breadCrumbsLink, 15);	 
 		for(int i=0;i<breadCrumbsLink.size();i++)
 			 Assert.assertEquals(breadCrumbsLink.get(i).getText().trim(),breadcrumpsList[i].trim());
@@ -64,6 +68,7 @@ public class ProductsListPageObjects extends PageFactoryInitializer{
 	}
 	@Step("creation of Product")
 	public AddNewProductPageObjects clickOnPlusSymbolToCreateProduct() {
+
 		waiting.explicitWaitVisibilityOfElement(creatingProductLink, 15);
 		creatingProductLink.click();
 		return new AddNewProductPageObjects();
@@ -72,6 +77,7 @@ public class ProductsListPageObjects extends PageFactoryInitializer{
 	
 	@Step("enter the product number in search field {0}")
 	public ProductsListPageObjects enterTheProductNameInSearchField(String productName) {
+
 		waiting.explicitWaitVisibilityOfElement(productSearchPlaceHolder, 15);
 		productSearchPlaceHolder.clear();
 		productSearchPlaceHolder.sendKeys(productName);
@@ -79,6 +85,7 @@ public class ProductsListPageObjects extends PageFactoryInitializer{
 	}
 	@Step("click on search buton in products page")
 	public ProductsListPageObjects clickOnSearchButton() throws InterruptedException {
+
 		waiting.explicitWaitVisibilityOfElement(searchButton, 15);
 		searchButton.click();
 		
@@ -89,6 +96,7 @@ public class ProductsListPageObjects extends PageFactoryInitializer{
 	public ProductsListPageObjects clickOnRemoveProduct(String productName) throws Exception {
 		Thread.sleep(2500);
 		
+
 		((JavascriptExecutor)getDriver()).executeScript("arguments[0].click();",getDriver().findElement(By.xpath("//td[contains(text(),'"+productName+"')]/preceding-sibling::td/descendant::input[@title='Remove Product']")));
 		
 		return this;
@@ -96,6 +104,7 @@ public class ProductsListPageObjects extends PageFactoryInitializer{
 		
 	@Step("accept the alert popup to remove")
 	public ProductsListPageObjects acceptAlert() {
+
 		waiting.explicitWaitForAlert(15);
 		tu.alertAccept();
 		return this;
@@ -103,6 +112,7 @@ public class ProductsListPageObjects extends PageFactoryInitializer{
 	}
 	@Step(" verify the Successful {0} message after deleting the product")
 	public ProductsListPageObjects verifySuccessfulMessageAfterDeletion(String expectedSuccessfulMessageAfterDeletionOfProduct) {
+
 		waiting.explicitWaitVisibilityOfElement(actualSuccessfulMessageAfterDeletionOfProduct, 15);
 		Assert.assertEquals(actualSuccessfulMessageAfterDeletionOfProduct.getText(), expectedSuccessfulMessageAfterDeletionOfProduct);
 		//System.out.println(actualSuccessfulMessageAfterDeletionOfProduct.getText());
@@ -111,12 +121,14 @@ public class ProductsListPageObjects extends PageFactoryInitializer{
 	
 	@Step("verify the {0} product")
 	public ProductsListPageObjects verifyProduct(String productName) {
+
 		waiting.explicitWaitVisibilityOfElement(productNameColumn, 15);
 		Assert.assertEquals(productNameColumn.getText(), productName);
 		return this;
 	}
 	@Step("verify the alert text {0} to remove.")
 	public  ProductsListPageObjects veryfyAlert() {
+
 		waiting.explicitWaitForAlert(15);
 		Alert alert = getDriver().switchTo().alert();
 		alert.getText();
@@ -125,6 +137,7 @@ public class ProductsListPageObjects extends PageFactoryInitializer{
 	}
 	@Step("cancel the alert to remove.")
 	public ProductsListPageObjects cancelAlert() {
+
 		waiting.explicitWaitForAlert(15);
 		Alert alert = getDriver().switchTo().alert();
 		alert.dismiss();
@@ -132,12 +145,14 @@ public class ProductsListPageObjects extends PageFactoryInitializer{
 	}
 	@Step("click on the preview items.")
 	public ProductsListPageObjects clickPreviewItemLink() {
+
 		waiting.explicitWaitVisibilityOfElement(itemPreviewLink, 15);
 		itemPreviewLink.click();
 		return this;
 	}
 	@Step("click on the delink item from product.")
 	public ProductsListPageObjects clickOnDelinkItemIcon() {
+
 	waiting.explicitWaitVisibilityOfElement(delinkItemLink, 15);	
 	delinkItemLink.click();
 		return this;
@@ -160,6 +175,7 @@ public ProductsListPageObjects verifyTheNumberOfRecordsDisplayed(String getNumbe
 	}
 	catch(StaleElementReferenceException e)
 	{
+
 		getDriver().navigate().refresh();
 		verifyTheNumberOfRecordsDisplayed(getNumberOfRecordsToDisplay);
 	}

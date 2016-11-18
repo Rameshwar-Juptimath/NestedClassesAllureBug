@@ -69,32 +69,39 @@ public class HomePageObjects extends PageFactoryInitializer{
 	
 	@Step("clicking on items link")
 	public ItemsPageObjects clickOnItemsLink() {
+
 		((JavascriptExecutor)getDriver()).executeScript("arguments[0].click();",itemslinkLocator);
 		return itemsPage();
 	}
 
 	@Step("clicking on subset/catelog link")
 	public SubsetPageObjects clickonSubsetlink(){
+
 		((JavascriptExecutor)getDriver()).executeScript("arguments[0].click();",subsetlinkLocator);
+
 		return new SubsetPageObjects();
 	}
 	
 	
 	@Step("click on left navigation bar")
 	public HomePageObjects clickOnLeftNavigationbar() {
+
 		waiting.explicitWaitVisibilityOfElement(leftNavigationArrowLocator, 5);
+
 		leftNavigationArrowLocator.click();
 		return this;
 	}
 
 	@Step("click on system settings link")
 	public SystemSettingsPageObjects clickOnSystemSettingsLink() {
+
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",systemSettingsLinkLocator);
 		return new SystemSettingsPageObjects();
 	}
 
 	 @Step("click on right navigation bar")
 		public AddNewItemPageObjects clickOnRightNavigationBar() throws Exception {
+
 		 waiting.explicitWaitVisibilityOfElement(rightNavigationArrowLocator, 17);
 			((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",rightNavigationArrowLocator);
 			return new AddNewItemPageObjects();
@@ -104,18 +111,21 @@ public class HomePageObjects extends PageFactoryInitializer{
 
 	@Step("click on the manufacturer and brands link")
 	public ManufacturerPageObjects clickOnManufacturerAndBrands() throws Exception {
+
 		((JavascriptExecutor)getDriver()).executeScript("arguments[0].click();",ManufacturerlinkLocator);
 		return new ManufacturerPageObjects();
 	}
 
 	@Step("Click on Products link in Home page")
 	public ProductsListPageObjects clickOnProductsLink() {
+
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",productslinkLocator);
 		return new ProductsListPageObjects();
 	}
 	
 	@Step("enter the created item part number {0} in  advanced search field & click on search ")
 	public HomePageObjects searchForCreatedItem(String partNumber){
+
 		waiting.explicitWaitVisibilityOfElement(seachInputTextField, 10);
 		seachInputTextField.clear();
 		seachInputTextField.sendKeys(partNumber);
@@ -159,6 +169,7 @@ public class HomePageObjects extends PageFactoryInitializer{
 	
 	@Step("clicking on Manufacturers & Brands link")
 		public HomePageObjects clickonManufactureBrandsLink() throws InterruptedException {
+
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",MBlinkLocator);
 		return this;
 		}
@@ -177,6 +188,7 @@ public class HomePageObjects extends PageFactoryInitializer{
 	@Step("verifying welcome message {0}")
 	public HomePageObjects verifyWelcomeMessage(String welcomeMessage)
 	{
+
 		waiting.explicitWaitVisibilityOfElement(welcomeMessageLocator, 15);
 		Assert.assertEquals(welcomeMessageLocator.getText(), welcomeMessage,"Invalid welcome message. Getting "+welcomeMessageLocator.getText()+".");
 		return this;
@@ -185,6 +197,7 @@ public class HomePageObjects extends PageFactoryInitializer{
 	@Step("clicking on subset link")
 	public HomePageObjects clickOnSubset(){
 
+
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",subsetlink);
 		return this;
 	}
@@ -192,11 +205,13 @@ public class HomePageObjects extends PageFactoryInitializer{
 	@Step("clicking on vendors link")
 	public HomePageObjects clickOnVendorLink() {
 
+
 	((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",vendorlinkLocator);
 	return this;
 }
 	@Step("clicking on taxonomy link")
 	public TaxonomyPageObjects clickOnTaxonomyLink() {
+
 		((JavascriptExecutor)getDriver()).executeScript("arguments[0].click();",taxonomylinkLocator);
 		return new TaxonomyPageObjects();
 	}
@@ -204,17 +219,20 @@ public class HomePageObjects extends PageFactoryInitializer{
 	@Step("clicking on attributes link")
 	public AttributesPageObjects clickOnAttributesLink()
 	{
+
 		((JavascriptExecutor)getDriver()).executeScript("arguments[0].click();",attributeslinkLocator);
 		return new AttributesPageObjects();
 	}
 	
 	@Step("clicking on attribute Groups link")
 	public AttributeGroupsPageObjects clickOnAttributeGroupsLink() {
+
 		((JavascriptExecutor)getDriver()).executeScript("arguments[0].click();",attributesGroupsLinkLocator);
 		return new AttributeGroupsPageObjects();
 	}
 
 	public HomePageObjects clickOnUserOptionsIcon() throws InterruptedException {
+
 		waiting.explicitWaitVisibilityOfElement(userOptionsLink, 15);
 		Thread.sleep(3000);
 		userOptionsLink.click();
@@ -222,6 +240,7 @@ public class HomePageObjects extends PageFactoryInitializer{
 	}
 
 	public HomePageObjects verifyUserUserConfigurationLink() {
+
 		waiting.explicitWaitVisibilityOfElement(userConfigurationLink, 15);
 		Assert.assertTrue(userConfigurationLink.isDisplayed());
 		return this;
@@ -230,6 +249,7 @@ public class HomePageObjects extends PageFactoryInitializer{
 	}
 
 	public HomePageObjects verifytheLinksUnderUserOptions() {
+
 		waiting.explicitWaitVisibilityOfElements(linksUnderUserOptions, 20);
 			Assert.assertNotNull(linksUnderUserOptions,"user options list are :"+linksUnderUserOptions+"");
 		
@@ -237,6 +257,7 @@ public class HomePageObjects extends PageFactoryInitializer{
 	}
 
 	public HomePageObjects clickOnUserConfigurationLink() {
+
 		waiting.explicitWaitVisibilityOfElement(userConfigurationLink, 15);
 		userConfigurationLink.click();
 		return this;

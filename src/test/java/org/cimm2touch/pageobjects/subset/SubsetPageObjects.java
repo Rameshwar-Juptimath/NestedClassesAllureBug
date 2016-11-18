@@ -1,5 +1,6 @@
 package org.cimm2touch.pageobjects.subset;
 /**
+
  * @author Thiruveedhi Chinna
  *
  */
@@ -9,6 +10,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
 import org.cimm2touch.utils.SearchDataPropertyFile;
 import org.cimm2touch.utils.TestUtilityMethods;
 import org.framework.utils.TestUtility;
@@ -20,6 +22,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
@@ -35,6 +38,7 @@ import ru.yandex.qatools.allure.annotations.Step;
 
 public class SubsetPageObjects extends PageFactoryInitializer
 {
+
 	Waiting waiting=new Waiting(getDriver());
 	TestUtility tu=new TestUtility(getDriver());
 	TestUtilityMethods utility = new TestUtilityMethods(getDriver());
@@ -49,6 +53,8 @@ public class SubsetPageObjects extends PageFactoryInitializer
 		
 		waitForElement.until(ExpectedConditions.visibilityOf(element));
 	}
+
+
 
 	SearchDataPropertyFile data = new SearchDataPropertyFile();
 
@@ -496,6 +502,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 	}
 
 	public String getOverallCount(){
+
 		waiting.explicitWaitVisibilityOfElement(totalSubsetCountLocator, 5);
 		String count = totalSubsetCountLocator.getText();
 		return count;	
@@ -566,6 +573,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",subsetFormSaveLocator);
 		return this;
 	}
@@ -585,6 +593,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 		try
 		{
 			Thread.sleep(1500);
+
 			if(getDriver().findElement(By.xpath("//span[@id='subsetForm:noResults']")).isDisplayed())
 			{
 				clickOnnewSubsetLink();
@@ -609,6 +618,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 		Thread.sleep(1500);
 		serchSubset(subsetName);
 		Thread.sleep(1500);
+
 		WebElement verifySubsetNameLocator= getDriver().findElement(By.xpath("//span[contains(text(),'"+data.getsubsetNamedata()+"')]"));
 		if(subsetName.trim().equals(verifySubsetNameLocator.getText().trim())){
 			String substId = getsubsetId();
@@ -629,6 +639,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 	public HomePageObjects searchSubsetInvlaidData(String subsetName,String subsetErrorMessage) throws InterruptedException {
 		serchSubset(subsetName);
 		Thread.sleep(1500);
+
 		Assert.assertEquals(getDriver().findElement(By.xpath("//span[@id='subsetForm:noResults']")).getText().trim(), subsetErrorMessage.trim());	
 		return new HomePageObjects();
 	}
@@ -704,6 +715,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 	@Step("Verifies update of subsets")
 	public SubsetPageObjects updateSubset(String newSubsetDescription,String subsetsucmsg) throws InterruptedException {
 		Thread.sleep(2000);
+
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",subsetEditDescriptionLocator);
 		subsetEditDescriptionLocator.sendKeys(newSubsetDescription);
 		clickOnUpdateSubset();
@@ -748,6 +760,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 	}
 	public SubsetPageObjects clickOnSelectedLink() throws InterruptedException {
 		Thread.sleep(2000);
+
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",selectedLocator);
 		return this;
 	}
@@ -757,6 +770,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 		return this;
 	}
 	public SubsetPageObjects verifyingcontentSelectedTabs(String action,String EntityName,String EntityType) {
+
 		waiting.explicitWaitVisibilityOfElement(selectedActionLocator, 3);
 		Assert.assertEquals(selectedActionLocator.getText().trim(), action);
 		Assert.assertEquals(selectedEntityNameLocator.getText().trim(), EntityName);
@@ -765,6 +779,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 	}
 	public SubsetPageObjects clickonRemoveMB(String Manufacturername) throws InterruptedException {
 		Thread.sleep(5000);
+
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",deleteIconLocator);		
 		//deleteIconLocator.click();
 		tu.alertAccept();
@@ -772,6 +787,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 		return this;
 	}
 	public SubsetPageObjects clickOnSpecificManufacturer(String getmanufacturername) {
+
 		getDriver().findElement(By.xpath("//td[contains(text(),'"+getmanufacturername+"')]/preceding-sibling::td/label")).click();
 		return this;
 	}
@@ -804,6 +820,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 		return this;
 	}
 	public SubsetPageObjects clickOnAdditionalItemsLink() throws InterruptedException {
+
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",additionalItemsLocator);
 		//additionalItemsLocator.click();
 		Thread.sleep(2000);
@@ -811,6 +828,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 	}
 	public SubsetPageObjects dragDropAnItem() throws InterruptedException {
 		Thread.sleep(3000);
+
 		//WebElement src = getDriver().findElement(By.xpath("//td[contains(text(),'123123123123')]/ancestor::td/preceding-sibling::td/table/descendant::span"));
 		//WebElement Target = getDriver().findElement(By.xpath("//div[@class='tableLayout']"));
 		Actions builder = new Actions(getDriver());
@@ -826,6 +844,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 
 	public SubsetPageObjects clickOnRemoveItem() {
 		itemRemoveFromAdditionalItemsTab.click();
+
 		tu.alertAccept();
 		return this;
 	}
@@ -867,6 +886,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 	}
 	public SubsetPageObjects clickOnSaveIcon() throws InterruptedException {
 		Thread.sleep(3000);
+
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",saveIconFeaturedProductdisplayprice);
 		return this;
 	}
@@ -877,6 +897,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 	}
 
 	public SubsetPageObjects clickOnSpecificDeleteButton(String subsetName) {
+
 		getDriver().findElement(By.xpath("//span[contains(text(),'"+subsetName+"')]/ancestor::td/preceding-sibling::td/input[@title='Remove Subset Item']")).click();
 		return this;
 	}
@@ -885,11 +906,13 @@ public class SubsetPageObjects extends PageFactoryInitializer
 		Thread.sleep(1500);
 		serchSubset(subsetName);
 		Thread.sleep(1500);
+
 		WebElement verifySubsetNameLocator= getDriver().findElement(By.xpath("//span[contains(text(),'"+data.getsubsetNamedata()+"')]"));
 		if(subsetName.trim().equals(verifySubsetNameLocator.getText().trim())){
 			String substId = getsubsetId();
 			Thread.sleep(1500);
 			clickOnSpecificDeleteButton(subsetName);
+
 			tu.alertAccept();
 			Thread.sleep(3000);
 			Assert.assertEquals(subsetRemoveMessage.getText(),"Subset - : '"+data.getsubsetNamedata()+"'with Subset Id -'"+substId+"' removed Successfully");
@@ -904,6 +927,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 
 	@Step("check whether page is subset page")
 	public  SubsetPageObjects checkSubsetPage() throws Exception{
+
 
 		utility.assertElementPresent(subsetbreadcrumb);
 		return this;
@@ -931,6 +955,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 
 	public boolean subsetSearchResultHelp(String subsetname) throws Exception
 	{
+
 		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		try {
 			if(getDriver().findElement(By.xpath("//tr[td[4]='"+subsetname+"']")).isDisplayed())
@@ -1049,6 +1074,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 		addSubset_SubsetName.sendKeys(subsetName);
 		addSubset_SubsetDescription.clear();
 		addSubset_SubsetDescription.sendKeys(subsetDesc);
+
 		getDriver().switchTo().frame(addSubset_BannerText);
 		Thread.sleep(2000);
 		getDriver().findElement(By.xpath("//body[@id='tinymce']")).clear();
@@ -1060,6 +1086,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 	@Step("To Save new Subset ")
 	public SubsetPageObjects clickOnSaveNewSubset() 
 	{
+
 		waiting.explicitWaitElementToBeClickable(addSubset_SaveNewSubset, 5);
 		addSubset_SaveNewSubset.click();
 		return this;
@@ -1076,6 +1103,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 	@Step("To Search for an Subset {0}.")
 	public SubsetPageObjects searchForAnSubset(String subsetName) 
 	{
+
 		waiting.explicitWaitVisibilityOfElement(subset_SearchBox, 5);
 		subset_SearchBox.clear();
 		subset_SearchBox.sendKeys(subsetName);
@@ -1087,6 +1115,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 	public SubsetPageObjects verifyAfterSearchingForSubset(String subsetName) throws Exception 
 	{
 		Thread.sleep(5000);
+
 		Assert.assertTrue(getDriver().findElement(By.xpath("//table[@id='subsetForm:subsetTableId']//span[contains(.,'"+subsetName+"')]")).isDisplayed());
 		return this;
 	}
@@ -1094,6 +1123,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 	@Step("To Click on 'NoOfItems Dropdown' and verify contents dispalyed.")
 	public SubsetPageObjects verifyDisplayNoOfItemsDropdown() throws Exception
 	{
+
 		getDriver().findElement(By.xpath("//select[@id='searchFormId:nrpp']/option[@value='25']")).click();
 		Thread.sleep(5000);
 		Assert.assertEquals(new Select(getDriver().findElement(By.xpath("//select[@id='searchFormId:nrpp']"))).getFirstSelectedOption().getText(), "25");
@@ -1122,6 +1152,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 	}
 
 	@Step("To Verify the Character Limit for Subset Name Field.")
+
 	public SubsetPageObjects verifyCharacterLimitForSubsetName(String moreThanAccept) 
 	{
 		waiting.explicitWaitVisibilityOfElement(addSubset_SubsetName, 15);
@@ -1136,6 +1167,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 	public SubsetPageObjects clickOnEditSubset(String subsetName) throws Exception 
 	{
 		Thread.sleep(5000);
+
 		getDriver().findElement(By.xpath("//table[@id='subsetForm:subsetTableId']//span[contains(.,'"+subsetName+"')]//preceding::input[@title='Edit Subset']")).click();
 		return this;
 	}
@@ -1182,6 +1214,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 		Thread.sleep(5000);
 		try
 		{
+
 			new Actions(getDriver()).doubleClick(catalogBuilderView).build().perform();
 		}
 		catch (Exception e) 
@@ -1220,12 +1253,14 @@ public class SubsetPageObjects extends PageFactoryInitializer
 		CBV_Available_AddManufacurer_SearchBox.click();
 		CBV_Available_AddManufacurer_SearchBox.sendKeys(manufacturerName);
 		//Thread.sleep(2000);
+
 		getDriver().findElement(By.xpath("//td[contains(@id,'subsetList:MnfListTabId') and contains(text(),'"+manufacturerName+"')]/preceding-sibling::td/label")).click();
 		//Thread.sleep(2000);
 
 		CBV_Available_AddBrand.click();
 		CBV_Available_AddBrand_SearchBox.click();
 		CBV_Available_AddBrand_SearchBox.sendKeys(brandName);
+
 		getDriver().findElement(By.xpath("//td[contains(@id,'subsetList:brandTableId') and contains(text(),'"+brandName+"')]/preceding-sibling::td/label")).click();
 		return this;
 	}
@@ -1251,6 +1286,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 	{
 		Thread.sleep(5000);
 		FluentWaitForVisibilityOfElement(20, 500, CBV_Selected);
+
 		Assert.assertTrue(getDriver().findElement(By.xpath("//table[@id='subsetList:SelectedMfrAndBrandForCatalogList1']/descendant::td[contains(.,'"+manufacturerName+"')]")).isDisplayed());
 		return this;
 	}
@@ -1258,6 +1294,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 	@Step("To click on Delete Button of the Selected Manufacturer in  'Selected' Tab in the left SideBar.")
 	public SubsetPageObjects clickOnDeleteSelectedManufacturerInCatalogBuilder(String manufacturerName)
 	{
+
 		getDriver().findElement(By.xpath("//table[@id='subsetList:SelectedMfrAndBrandForCatalogList1']/descendant::td[contains(.,'"+manufacturerName+"')]/preceding-sibling::td/input")).click();
 		waiting.explicitWaitForAlert(5);
 		tu.alertAccept();
@@ -1268,6 +1305,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 	public SubsetPageObjects verifyMessageAfterDeletingManufacturerInCatalogBuilder(String saveMessage) throws Exception 
 	{
 		Thread.sleep(5000);
+
 		assertThat(getDriver().findElement(By.xpath("//span[@id='saveMessage']")).getText(),containsString(saveMessage));
 		return this;
 	}

@@ -18,6 +18,7 @@ import ru.yandex.qatools.allure.annotations.Step;
 public class AddNewItemPageObjects extends PageFactoryInitializer{
 
 	
+
 	TestUtility tu = new TestUtility(getDriver());
 	Waiting waiting = new Waiting(getDriver());
 	
@@ -197,6 +198,7 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 
 	 @Step("verify whether general info tab is enabled and others are enabled.")
 		public AddNewItemPageObjects verifyEnableTabsOfItemEdit() {
+
 			waiting.explicitWaitVisibilityOfElement(generalInfoTabLocator, 10);
 			Assert.assertTrue(generalInfoTabLocator.getAttribute("class").contains("active"),"General info tab is enabled");
 			Assert.assertTrue(descriptionsTabLocator.getAttribute("class").contains("active"),"descriptions tab is  enabled");
@@ -247,72 +249,85 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 		{
 		
 		case "Part Number":
+
 			waiting.explicitWaitVisibilityOfElement(partNumberTextBoxLocator, 15);
 			partNumberTextBoxLocator.sendKeys(textToBeEnterInTheTextbox);
 			Assert.assertEquals(partNumberTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)));
 			break;
 			
 		case "Manufacturer Part Number":
+
 			waiting.explicitWaitVisibilityOfElement(manufacturerPartNumberTextBoxLocator, 15);
 			manufacturerPartNumberTextBoxLocator.sendKeys(textToBeEnterInTheTextbox);
 			Assert.assertEquals(manufacturerPartNumberTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)));
 			break;
 			
 		case "Competitor Part Number":
+
 			waiting.explicitWaitVisibilityOfElement(competitorPartNumberTextBoxLocator, 15);
 			competitorPartNumberTextBoxLocator.sendKeys(textToBeEnterInTheTextbox);
 			Assert.assertEquals(competitorPartNumberTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)));
 			break;
 			
 		case "UPC":
+
 			waiting.explicitWaitVisibilityOfElement(upcTextBoxLocator, 15);
 			upcTextBoxLocator.sendKeys(textToBeEnterInTheTextbox);
 			Assert.assertEquals(upcTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)));
 			break;
 			
 		case "Data Source":
+
 			waiting.explicitWaitVisibilityOfElement(dataSourceTextBoxLocator, 15);
 			dataSourceTextBoxLocator.sendKeys(textToBeEnterInTheTextbox);
 			Assert.assertEquals(dataSourceTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)));
 			break;
 			
 		case "Length":
+
 			waiting.explicitWaitVisibilityOfElement(lengthTextBoxLocator, 15);
 			lengthTextBoxLocator.sendKeys(textToBeEnterInTheTextbox);
 			Assert.assertEquals(lengthTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)));
 			break;
 			
 		case "Width":
+
 			waiting.explicitWaitVisibilityOfElement(widthTextBoxLocator, 15);
+
 			widthTextBoxLocator.sendKeys(textToBeEnterInTheTextbox);
 			Assert.assertEquals(widthTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)));
 			break;
 			
 		case "Height":
+
 			waiting.explicitWaitVisibilityOfElement(heightTextBoxLocator, 15);
 			heightTextBoxLocator.sendKeys(textToBeEnterInTheTextbox);
 			Assert.assertEquals(heightTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)));
 			break;
 			
 		case "Weight":
+
 			waiting.explicitWaitVisibilityOfElement(weightTextBoxLocator, 15);
 			weightTextBoxLocator.sendKeys(textToBeEnterInTheTextbox);
 			Assert.assertEquals(weightTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)));
 			break;
 			
 		case "Quantity Available":
+
 			waiting.explicitWaitVisibilityOfElement(quantityAvailableTextBoxLocator, 15);
 			quantityAvailableTextBoxLocator.sendKeys(textToBeEnterInTheTextbox);
 			Assert.assertEquals(quantityAvailableTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)));
 			break;
 			
 		case "List Price":
+
 			waiting.explicitWaitVisibilityOfElement(listPriceTextBoxLocator, 15);
 			listPriceTextBoxLocator.sendKeys(textToBeEnterInTheTextbox);
 			Assert.assertEquals(listPriceTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)));
 			break;
 			
 		case "Cost Price":
+
 			waiting.explicitWaitVisibilityOfElement(costPriceTextBoxLocator, 15);
 			costPriceTextBoxLocator.sendKeys(textToBeEnterInTheTextbox);
 			Assert.assertEquals(costPriceTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)));
@@ -338,6 +353,7 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 
 	@Step("verify whether general info tab is enabled and others are disabled.")
 	public AddNewItemPageObjects verifyEnableAndDisableOfTabs() {
+
 		waiting.explicitWaitVisibilityOfElement(generalInfoTabLocator, 10);
 		Assert.assertTrue(generalInfoTabLocator.getAttribute("class").contains("active"),"General info tab is not enabled");
 		Assert.assertFalse(generalInfoTabLocator.getAttribute("class").contains("disabled"),"General info tab is not enabled");
@@ -392,6 +408,7 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 
 	@Step("verify whether error message is {0} ")
 	public AddNewItemPageObjects verifyErrorMessage(String errorMessage[]) {
+
 		waiting.explicitWaitVisibilityOfElements(errorMessageLocator, 10);
 		for(int i=0;i<errorMessageLocator.size();i++)
 		{
@@ -422,12 +439,14 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 	@Step("choose {0} and verify {1} is selected.")
 	public AddNewItemPageObjects selectAndVerifyItemStatusOptions(String[] itemStatusOptions,String [] valuesAssignedToEachOption) {
 		
+
 		waiting.explicitWaitVisibilityOfElement(itemStatusLocator, 10);
 		for(int i = 0 ; i < itemStatusOptions.length ; i++)
 		{
 		Select select = new Select(itemStatusLocator);
 		select.selectByVisibleText(itemStatusOptions[i]);
 		String idOfSelect = itemStatusLocator.getAttribute("id").trim();
+
 		Assert.assertEquals(((JavascriptExecutor) getDriver()).executeScript("return document.getElementById('"+idOfSelect+"').value;"), valuesAssignedToEachOption[i]);
 		
 		}		
@@ -441,6 +460,7 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 		{
 		case "Display Online":
 			Thread.sleep(1500);
+
 			((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",displayOnlineCheckboxLocator);
 			Assert.assertTrue(displayOnlineCheckboxLocator.isSelected(),"Display Online Checkbox is not selected.");
 			((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",displayOnlineCheckboxLocator);
@@ -449,6 +469,7 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 			
 		case "Drop Ship": 
 			Thread.sleep(1200);
+
 			((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",dropShipCheckboxLocator);
 			Assert.assertTrue(dropShipCheckboxLocator.isSelected(),"Drop Ship Checkbox is not selected.");
 			((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",dropShipCheckboxLocator);
@@ -457,6 +478,7 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 			
 		case "Print": 
 			Thread.sleep(1200);
+
 			((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",printCheckboxLocator);
 			Assert.assertTrue(printCheckboxLocator.isSelected(),"Print Checkbox is not selected.");
 			((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",printCheckboxLocator);
@@ -470,6 +492,7 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 	}
 	
 	 public AddNewItemPageObjects clickOnManufacturerDropdown() throws InterruptedException {
+
 			waiting.explicitWaitVisibilityOfElement(manufacturerDropDownArrowLocator, 15);
 			((JavascriptExecutor)getDriver()).executeScript("arguments[0].click();",manufacturerDropDownArrowLocator);
 			return this;
@@ -489,6 +512,7 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 	  }
 	 
 	 public AddNewItemPageObjects enterPartNumberField(String partNumberField) {
+
 		 waiting.explicitWaitVisibilityOfElement(enterPartNumberLocator, 30);
 		 RandomGenerator generateRandom = new RandomGenerator();
 		// generateRandom.random(6, PermittedCharacters.NUMERIC);
@@ -499,6 +523,7 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 	 public AddNewItemPageObjects clickOnBrandDropdown() throws InterruptedException {
 		 
 		 Thread.sleep(500);
+
 		 ((JavascriptExecutor)getDriver()).executeScript("arguments[0].click();",brandDropDownLocator);
 			
 			return this;
@@ -520,6 +545,7 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 	 
 
 	 public AddNewItemPageObjects clickOnSaveButtonLink() {
+
 		 waiting.explicitWaitVisibilityOfElement(ItemsaveButtonLocator, 30);
 		 saveButtonLocator.click();
 	    	 return this;
@@ -527,6 +553,7 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 	 
 	 public AddNewItemPageObjects verifyItemSavedSuccessfulMessage(String itemsavedsuccessfulmessage) {
 	   	  
+
 	   	 waiting.explicitWaitVisibilityOfElement(ItemSavedSuccessfulMessageLocator, 30);
 	     Assert.assertTrue(ItemSavedSuccessfulMessageLocator.getText().equalsIgnoreCase(itemsavedsuccessfulmessage),"Invalid  message. Getting "+ItemSavedSuccessfulMessageLocator.getText()+".");
 		 return this;

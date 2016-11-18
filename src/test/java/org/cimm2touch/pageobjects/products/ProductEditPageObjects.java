@@ -1,4 +1,5 @@
 package org.cimm2touch.pageobjects.products;
+
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.framework.utils.Waiting;
 import org.openqa.selenium.JavascriptExecutor;
@@ -10,6 +11,7 @@ import org.testng.Assert;
 import ru.yandex.qatools.allure.annotations.Step;
 
 public class ProductEditPageObjects extends PageFactoryInitializer{
+
 	Waiting waiting=new Waiting(getDriver());
 	
 	@FindBy(xpath="(//input[@title='Edit Product'])[1]")
@@ -33,12 +35,15 @@ public class ProductEditPageObjects extends PageFactoryInitializer{
 	
 	@Step("click on edit icon.")
 	public ProductEditPageObjects clickOnEditIcon() {
+
 		waiting.explicitWaitVisibilityOfElement(editProductIcon, 15);
+
 		editProductIcon.click();
 		return this;
 	}
 	@Step("Click on items list tab.")
 	public ProductEditPageObjects clickOnItemsListTab() {
+
 		waiting.explicitWaitVisibilityOfElement(itemsListTab, 15);
 		itemsListTab.click();
 		return this;
@@ -46,6 +51,7 @@ public class ProductEditPageObjects extends PageFactoryInitializer{
 	@Step("declaration for drag and drop operation.")
 	public void elementHighlight(WebElement element) {
 		  for (int i = 0; i < 2; i++) {
+
 		   JavascriptExecutor js = (JavascriptExecutor) getDriver();
 		   js.executeScript(
 		     "arguments[0].setAttribute('style', arguments[1]);",
@@ -58,6 +64,7 @@ public class ProductEditPageObjects extends PageFactoryInitializer{
 	@Step("performing drad and drop")
 	public ProductEditPageObjects dragAndDropTheItemsToProduct() throws Exception {
 	
+
 		waiting.explicitWaitVisibilityOfElement(sourceElement, 15);
 			  
 			  Actions builder = new Actions(getDriver());
@@ -79,6 +86,7 @@ public class ProductEditPageObjects extends PageFactoryInitializer{
 			 builder.release().build().perform();
 			  Thread.sleep(4000);
 		
+
 		/*waiting.explicitWaitVisibilityOfElement(sourceElement, 15);
 		new Actions(getDriver()).dragAndDrop(sourceElement, destinationElement).build().perform();
 		Thread.sleep(6000);
@@ -94,6 +102,7 @@ public class ProductEditPageObjects extends PageFactoryInitializer{
 		*/
 		
 		
+
 		/*WebElement src = getDriver().findElement(By.xpath("(//div[contains(@class,'draggable')])[1]"));
 		WebElement target  = getDriver().findElement(By.xpath("(//div[contains(@class,'dropTargetPanel')])[1]"));
 		new Actions(getDriver()).dragAndDrop(src, target).build().perform();
@@ -101,6 +110,7 @@ public class ProductEditPageObjects extends PageFactoryInitializer{
 		
 		
 		
+
 		/*Actions action = new Actions(getDriver());  // Configure the Action
 		action.clickAndHold(sourceElement);
 		  Thread.sleep(5000);
@@ -113,6 +123,7 @@ public class ProductEditPageObjects extends PageFactoryInitializer{
 		
 		
 		
+
 		/*Actions action = new Actions(getDriver());
 		
 		try {
@@ -130,6 +141,7 @@ public class ProductEditPageObjects extends PageFactoryInitializer{
 	}
 	@Step("click on save button.")
 	public ProductEditPageObjects clickOnSaveButton() {
+
 		waiting.explicitWaitVisibilityOfElement(saveItemsToProductLink, 15);
 		saveItemsToProductLink.click();
 		waiting.explicitWaitVisibilityOfElement(actualSuccesMessageItemAssignedToProduct, 10);

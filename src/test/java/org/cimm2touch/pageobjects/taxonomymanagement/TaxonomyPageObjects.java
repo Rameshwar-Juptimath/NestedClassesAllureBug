@@ -6,6 +6,7 @@ import static org.hamcrest.Matchers.containsString;
 import java.util.Arrays;
 import java.util.List;
 
+
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.utils.SearchDataPropertyFile;
 import org.framework.utils.TestUtility;
@@ -22,9 +23,12 @@ import org.testng.Assert;
 import ru.yandex.qatools.allure.annotations.Step;
 
 public class TaxonomyPageObjects extends PageFactoryInitializer {
+
 	
 	Waiting waiting=new Waiting(getDriver());
 	TestUtility tu=new TestUtility(getDriver());
+
+	
 	SearchDataPropertyFile data = new SearchDataPropertyFile();
 
 	@FindAll(value={@FindBy(xpath="//tr[@class='rich-table-subheader']/th/div")})
@@ -112,6 +116,7 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 	@Step("enter {0} in the search textbox of the taxonomy tree.")
 	public TaxonomyPageObjects enterSearchTaxonomy(String searchTaxonomy) 
 	{
+
 		waiting.explicitWaitVisibilityOfElement(searchTextboxInTaxonomySectionLocator, 5);
 		searchTextboxInTaxonomySectionLocator.clear();
 		searchTextboxInTaxonomySectionLocator.sendKeys(searchTaxonomy);
@@ -120,6 +125,7 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 
 	public TaxonomyPageObjects enterInvalidTaxonomy(String searchInvalidTaxonomy) 
 	{
+
 		waiting.explicitWaitVisibilityOfElement(searchTextboxInTaxonomySectionLocator, 5);
 		searchTextboxInTaxonomySectionLocator.clear();
 		searchTextboxInTaxonomySectionLocator.sendKeys(searchInvalidTaxonomy);
@@ -129,6 +135,7 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 
 	public TaxonomyPageObjects verifysearchfunctionalityforValidAndInvalidKey(String expectedErrorMessage) 
 	{
+
 		waiting.explicitWaitVisibilityOfElement(searchsuccesfullMessageLocator, 8);
 		Assert.assertEquals(searchsuccesfullMessageLocator.getText().trim(), "Manufacturer Name required");
 		return this;
@@ -136,6 +143,7 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 
 	public TaxonomyPageObjects clickOnSearchTaxonomy() 
 	{
+
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",searchIconInTaxonomySectionLocator);
 		return this;
 	}
@@ -143,12 +151,14 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 	public TaxonomyPageObjects verifyWhetherSearchedTaxonomyStyleIsGreen(String searchTaxonomy) throws Exception 
 	{
 		Thread.sleep(3000);
+
 		Assert.assertTrue(getDriver().findElement(By.xpath("//span[text()='"+searchTaxonomy+"']")).getAttribute("style").trim().contains("green"));
 		return this;
 	}
 
 	public TaxonomyPageObjects verifyNameIsPresent(String taxonomyToSearch) 
 	{
+
 		Assert.assertTrue(getDriver().findElement(By.xpath("//span[text()='"+taxonomyToSearch+"']")).isDisplayed(),"Searched taxonomy is not present. Searched for "+taxonomyToSearch+".");
 		return this;
 	}
@@ -156,12 +166,14 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 	public TaxonomyPageObjects verifyForinavalidInput(String inavalidTaxonomyName) throws InterruptedException 
 	{
 		Thread.sleep(3000);
+
 		Assert.assertTrue(getDriver().findElement(By.xpath("//span[@id='searchId:savmsg2']")).isDisplayed(),"Searched taxonomy is not present. Searched for "+inavalidTaxonomyName+".");
 		return this;
 	}
 
 	public TaxonomyPageObjects clickOnAddnewTaxonomy() 
 	{
+
 		waiting.explicitWaitVisibilityOfElement(addnewtaxonomyFieldLocator, 5);
 		addnewtaxonomyFieldLocator.click();
 		return this;
@@ -176,6 +188,7 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 
 	public TaxonomyPageObjects clearTaxonomyDesciptionField() 
 	{
+
 		waiting.explicitWaitVisibilityOfElement(taxonomyDesctextarea, 10);
 		taxonomyDesctextarea.clear();
 		return this;
@@ -231,6 +244,7 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 		return this; 
 	}
 	
+
 	public TaxonomyPageObjects enteringMoretha500charactersinTaxonomyDescField(String taxonomyDescription) throws Exception 
 	{		waiting.explicitWaitVisibilityOfElement(taxonomyDesctextarea, 15);
 			taxonomyDesctextarea.sendKeys(taxonomyDescription);
@@ -241,6 +255,7 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 	public TaxonomyPageObjects verifyEnterdCharactersInTaxonomyDescfield() throws Exception 
 	{
 		waiting.explicitWaitVisibilityOfElement(taxonomyDesctextarea, 15);
+
 		String enteredText = taxonomyDesctextarea.getAttribute("value");
 		int enteredTextLength = enteredText.length();
 		Assert.assertEquals(enteredTextLength, 500);
@@ -251,6 +266,7 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 	public TaxonomyPageObjects verifyTaxonomyfieldsAfterclickingOnAddNewTaxonomyIcon(String[] taxonomyheaderslocators) throws Exception 
 	{
 		Thread.sleep(3000);
+
 		List<WebElement> taxonomyTableContents = getDriver().findElements(By.xpath("//div[@class='rightHalfColumn']/div/form/div/div[@class='cimm_formLabel']"));
 		System.out.println(Arrays.toString(taxonomyheaderslocators));
 		for(WebElement we:taxonomyTableContents) //(int i=0; i< taxonomyheaderslocators.length; i++)
@@ -277,6 +293,7 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 		//String taxonomydescription = taxonomyDesctextarea.getText();
 		Assert.assertEquals(taxonomynametextfield.getAttribute("value"), taxonomyName);
 		Assert.assertEquals(taxonomyDesctextarea.getAttribute("value"), taxonomyDesc);
+
 		Assert.assertEquals(new Select(getDriver().findElement(By.id("taxonomyAddEditForm:supplierId"))).getFirstSelectedOption().getText(),supplier);
 		Assert.assertEquals(new Select(getDriver().findElement(By.id("taxonomyAddEditForm:vlbanner"))).getFirstSelectedOption().getText(),topBanner);
 		Assert.assertEquals(new Select(getDriver().findElement(By.id("taxonomyAddEditForm:vlbanner2"))).getFirstSelectedOption().getText(),rightBanner);
@@ -287,6 +304,7 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 	}
 	@Step("click on goto taxonomy management of : {0}")
 	public TaxonomyPageObjects clickOnGoToManageTaxonomyIcon(String taxonomyName) {
+
 		WebElement goToTaxonomy=getDriver().findElement(By.xpath("//tbody[@id='taxonomyTableForm:taxonomyDataTable:tb']/descendant::span[contains(text(),'"+taxonomyName+"')]/ancestor::td/preceding-sibling::td/descendant::input[@title='Goto Manage Taxonomy']"));
 		waiting.explicitWaitElementToBeClickable(goToTaxonomy, 10);
 		goToTaxonomy.click();
@@ -295,6 +313,7 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 
 	@Step("search for taxonomy{0}.")
 	public TaxonomyPageObjects searchForTaxonomy(String taxonomyName){
+
 		waiting.explicitWaitVisibilityOfElement(taxonomySearchField, 10);
 		taxonomySearchField.clear();
 		taxonomySearchField.sendKeys(taxonomyName);
@@ -307,6 +326,7 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 
 	@Step("click on manage taxonomy link.")
 	public TaxonomyPageObjects clickOnManageTaxonomy() throws InterruptedException{
+
 		waiting.explicitWaitVisibilityOfElement(manageTaxonomyLink, 10);
 		manageTaxonomyLink.click();
 		Thread.sleep(5000);
@@ -349,6 +369,7 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 
 	@Step("selecting {0} number of records to display.")
 	public TaxonomyPageObjects selectNumberOfRecordsToDisplayInThePage(String selectNumberOfRecordsToDisplay) throws Exception{
+
 		waiting.explicitWaitVisibilityOfElement(selectRecordsDropdownInTaxonomyLocator, 15);
 		Select select = new Select(selectRecordsDropdownInTaxonomyLocator);
 		select.selectByVisibleText(selectNumberOfRecordsToDisplay);
@@ -366,6 +387,7 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 		}
 		catch(StaleElementReferenceException e)
 		{
+
 			getDriver().navigate().refresh();
 			verifyTheNumberOfRecordsDisplayed(getNumberOfRecordsToDisplay);
 		}
@@ -386,6 +408,7 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 	@Step("To Select the Supplier Name")
 	public TaxonomyPageObjects selectSupplier(String supplierName) throws InterruptedException 
 	{
+
 		WebElement ele = getDriver().findElement(By.xpath("//select[@id='taxonomyAddEditForm:supplierId']//option[contains(.,'"+supplierName+"')]"));
 		ele.click();
 		return this;
@@ -394,6 +417,7 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 	@Step("To Select the Top Banner")
 	public TaxonomyPageObjects selectTopBanner(String topBannerName) 
 	{
+
 		WebElement ele = getDriver().findElement(By.xpath("//select[@id='taxonomyAddEditForm:vlbanner']//option[contains(.,'"+topBannerName+"')]"));
 		ele.click();
 		return this;
@@ -402,6 +426,7 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 	@Step("To Select the Right Banner")
 	public TaxonomyPageObjects selectRightBanner(String rightBannerName) 
 	{
+
 		WebElement ele = getDriver().findElement(By.xpath("//select[@id='taxonomyAddEditForm:vlbanner2']//option[contains(.,'"+rightBannerName+"')]"));
 		ele.click();
 		return this;
@@ -410,6 +435,7 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 	@Step("To Select the Left Banner")
 	public TaxonomyPageObjects selectLeftBanner(String leftBannerName) 
 	{
+
 		WebElement ele = getDriver().findElement(By.xpath("//select[@id='taxonomyAddEditForm:vlbanner3']//option[contains(.,'"+leftBannerName+"')]"));
 		ele.click();
 		return this;
@@ -418,6 +444,7 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 	@Step("To Select the Bottom Banner")
 	public TaxonomyPageObjects selectBottomBanner(String bottomBannerName) 
 	{
+
 		WebElement ele = getDriver().findElement(By.xpath("//select[@id='taxonomyAddEditForm:vlbanner4']//option[contains(.,'"+bottomBannerName+"')]"));
 		ele.click();
 		return this;
@@ -425,6 +452,7 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 	
 	public TaxonomyPageObjects saveAs(String saveAsType) throws Exception
 	{
+
 		WebElement ele = getDriver().findElement(By.xpath("//td/label[contains(.,'"+saveAsType+"')]//preceding-sibling::input"));
 		ele.click();
 		return this;
@@ -441,6 +469,7 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 	{
 		Thread.sleep(2000);
 		
+
 		WebElement ele=getDriver().findElement(By.xpath("//table[@id='taxonomyTableForm:taxonomyDataTable']//span[contains(@id,'taxonomyName') and contains(.,'"+taxonomyName+"')]"));
 		Assert.assertTrue(ele.isDisplayed(), "Taxonomy "+taxonomyName+" is not Present");
 		return this;
@@ -450,6 +479,7 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 	public TaxonomyPageObjects verifyTaxonomyisNotPresent(String invalidTaxonomyName) throws Exception 
 	{
 		Thread.sleep(5000);
+
 		WebElement ele=getDriver().findElement(By.id("searchId:savmsg2"));
 		Assert.assertTrue(ele.isDisplayed(), "Taxonomy "+invalidTaxonomyName+" is Present");
 		return this;
@@ -459,6 +489,7 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 	public TaxonomyPageObjects verifyTaxonomyNameErrorMessageInTaxonomyPage(String message) throws Exception 
 	{
 		Thread.sleep(5000);
+
 		assertThat(getDriver().findElement(By.xpath("//span[@id='taxonomyAddEditForm:txnme']")).getText().trim(),containsString(message));
 		return this;
 	}
@@ -467,6 +498,7 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 	public TaxonomyPageObjects verifyTaxonomyDescErrorMessageInTaxonomyPage(String message) throws Exception
 	{
 		Thread.sleep(3000);
+
 		assertThat(getDriver().findElement(By.xpath("//span[@id='taxonomyAddEditForm:txndesc']")).getText().trim(),containsString(message));
 		return this;
 	}
@@ -520,6 +552,7 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 	}
 	@Step("click on create new category icon")
 	public TaxonomyPageObjects clickOnCreateNewCategoryIcon() {
+
 		waiting.explicitWaitElementToBeClickable(createNewCategoryIconLocator, 10);
 		createNewCategoryIconLocator.click();
 		return this;

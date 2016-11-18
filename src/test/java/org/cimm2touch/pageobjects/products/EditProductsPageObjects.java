@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.cimm2touch.pageobjects.products;
 
 import java.awt.Robot;
@@ -8,6 +5,7 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
 import java.util.List;
+
 
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.utils.SearchDataPropertyFile;
@@ -25,8 +23,11 @@ import org.testng.Assert;
 import ru.yandex.qatools.allure.annotations.Step;
 
 public class EditProductsPageObjects  extends PageFactoryInitializer{
+
 	TestUtility tu=new TestUtility(getDriver());
 	Waiting waiting=new Waiting(getDriver());
+	
+	
 	SearchDataPropertyFile data = new SearchDataPropertyFile();
 	ApplicationSetUpPropertyFile setUp = new ApplicationSetUpPropertyFile();
 	
@@ -135,6 +136,7 @@ public class EditProductsPageObjects  extends PageFactoryInitializer{
 	
 	  @Step("This method is used verify General Info tab")
 	  public EditProductsPageObjects clickOnGeneralInfoTab() throws Exception {
+
 		   	waiting.explicitWaitVisibilityOfElement(generalInfoTabLocator, 6);
 			((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",generalInfoTabLocator);
 			return this;
@@ -154,7 +156,9 @@ public class EditProductsPageObjects  extends PageFactoryInitializer{
 	  
 	  @Step("This method is used verify Product Images tab")
 		public EditProductsPageObjects clickOnProductImagesTab() throws Exception {
+
 		   	waiting.explicitWaitVisibilityOfElement(productImagesTabLocator, 6);
+
 		   	productImagesTabLocator.click();
 			return this;
 	  }
@@ -174,6 +178,7 @@ public class EditProductsPageObjects  extends PageFactoryInitializer{
 	  
 	  @Step("This method is used verify display of product image checkbox in ProductImagesTab")
 		public EditProductsPageObjects verifyProductImageCheckbox() {
+
 		 	waiting.explicitWaitVisibilityOfElement(productImageCheckboxLocator, 6);
 		    Assert.assertTrue(productImageCheckboxLocator.isDisplayed(),"productImageCheckbox link is not displayed.");
 			return this;
@@ -187,6 +192,7 @@ public class EditProductsPageObjects  extends PageFactoryInitializer{
 	  
 	  @Step("This method is used verify Add New Product Image")
 		public EditProductsPageObjects clickOnAddNewProductImage() throws Exception {
+
 		   	waiting.explicitWaitVisibilityOfElement(addNewProductImageLocator, 15);
 		   	
 			((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",addNewProductImageLocator);
@@ -234,6 +240,7 @@ public class EditProductsPageObjects  extends PageFactoryInitializer{
 	  
 	  @Step("This method is used verify Item List tab")
 		public EditProductsPageObjects clickOnItemListTab() throws Exception {
+
 		   	waiting.explicitWaitVisibilityOfElement(itemListTabLocator, 15);
 			((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",itemListTabLocator);
 			return this;
@@ -241,6 +248,7 @@ public class EditProductsPageObjects  extends PageFactoryInitializer{
 	  
 	  @Step("This method is used verify edit ProductName Field ")
 	  public EditProductsPageObjects editProductNameField(String updateProductName) {
+
 			 waiting.explicitWaitVisibilityOfElement(updateProductNameTextBoxLocator, 15);
 			 updateProductNameTextBoxLocator.sendKeys(updateProductName);
 			 return this;
@@ -248,6 +256,7 @@ public class EditProductsPageObjects  extends PageFactoryInitializer{
 	  
 	   @Step("This method is used verify Produc UpdateButton Link ")
 	   public EditProductsPageObjects clickOnProducUpdateButtonLink() {
+
 			 waiting.explicitWaitVisibilityOfElement(productUpdateButtonLocator, 60);
 			 ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",productUpdateButtonLocator);
 		     return this;
@@ -255,6 +264,7 @@ public class EditProductsPageObjects  extends PageFactoryInitializer{
 	  
 	   @Step("This method is used verify Produc Update Saved SuccessfulMessage ")
 	   public EditProductsPageObjects verifyProductUpdateSavedSuccessfulMessage(String productUpdateSuccessfulMessage) { 
+
 		   	 waiting.explicitWaitVisibilityOfElement(productUpdateSavedSuccessfulMessageLocator, 6);
 		     Assert.assertTrue(productUpdateSavedSuccessfulMessageLocator.getText().trim().equalsIgnoreCase(productUpdateSuccessfulMessage),"Invalid  message. Getting "+productUpdateSavedSuccessfulMessageLocator.getText().trim()+".");
 		     return this;
@@ -262,6 +272,7 @@ public class EditProductsPageObjects  extends PageFactoryInitializer{
 	  
 	   @Step("This method is used verify Produc ImageDesc Field ")
 	   public EditProductsPageObjects enterImageDescField(String textToBeEnterInImageDesc) {
+
 			 waiting.explicitWaitVisibilityOfElement(imageDescTextBoxLocator, 15);
 			 imageDescTextBoxLocator.sendKeys(textToBeEnterInImageDesc);
 			 return this;
@@ -269,6 +280,7 @@ public class EditProductsPageObjects  extends PageFactoryInitializer{
 		  
 	   @Step("This method is used verify Produc ImageURL Field")
 	   public EditProductsPageObjects enterProductImageURLField(String textToBeEnterInProductImageURL) {
+
 			waiting.explicitWaitVisibilityOfElement(productImageURLTextBoxLocator, 15);
 			productImageURLTextBoxLocator.sendKeys(textToBeEnterInProductImageURL);
 			return this;
@@ -276,6 +288,7 @@ public class EditProductsPageObjects  extends PageFactoryInitializer{
 		  
 	   @Step("This method is used verify Produc SaveImageURL Link ")
 	   public EditProductsPageObjects clickOnSaveImageURLLink() {
+
 			waiting.explicitWaitVisibilityOfElement(saveProductImageURLLocator, 60);
 			((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",saveProductImageURLLocator);
 			return this;
@@ -283,6 +296,7 @@ public class EditProductsPageObjects  extends PageFactoryInitializer{
 	  
 	  @Step("This method is used verify Produc UploadImage Link ") 
 	  public EditProductsPageObjects clickOnUploadImageLink() throws Exception { 
+
 		   waiting.explicitWaitVisibilityOfElement(uploadImageLinkLocator, 15);
 		   ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",uploadImageLinkLocator);
 			Thread.sleep(10000);
@@ -293,6 +307,7 @@ public class EditProductsPageObjects  extends PageFactoryInitializer{
 	   @Step("This method is used verify Produc FileUpload")
 		  public EditProductsPageObjects verifyFileUpload(String fileLocation) throws Exception{
 		   Thread.sleep(2000);
+
 		   WebElement imageButton = getDriver().findElement(By.xpath("//td/div[contains(@class,'fileupload')]/descendant::div[text()='Image']"));
 		   Actions action = new Actions(getDriver());
 		   action.click(imageButton).build().perform();
@@ -314,6 +329,7 @@ public class EditProductsPageObjects  extends PageFactoryInitializer{
 	   
 	  @Step("This method is used verify Produc UpdateButton Link ")
 	  public EditProductsPageObjects verifyImageURLSavedSuccessfulMessage(String imageURLSuccessfulMessage) {
+
 			 waiting.explicitWaitVisibilityOfElement(ImageURLSavedSuccessfulMessageLocator, 6);
 			 Assert.assertTrue(ImageURLSavedSuccessfulMessageLocator.getText().trim().equalsIgnoreCase(imageURLSuccessfulMessage),"Invalid  message. Getting "+ImageURLSavedSuccessfulMessageLocator.getText().trim()+".");
 			 return this;	
@@ -322,6 +338,7 @@ public class EditProductsPageObjects  extends PageFactoryInitializer{
 	  
 	  @Step("This method is used verify the searchForItemsList Field")
 		    public EditProductsPageObjects verifySearchForItemsListField() {
+
 		    waiting.explicitWaitVisibilityOfElement(searchForItemsListFieldLocator, 10);
 		    Assert.assertTrue(searchForItemsListFieldLocator.isDisplayed(),"searchForItemsList Field is not displayed.");
 		    return this;
@@ -329,6 +346,7 @@ public class EditProductsPageObjects  extends PageFactoryInitializer{
 	  
 	  @Step("This method is used verify the SearchIcon ")
 	       public EditProductsPageObjects verifySearchIconLocator() {
+
 		   waiting.explicitWaitVisibilityOfElement(searchIconLocator, 10);
 	       Assert.assertTrue(searchIconLocator.isDisplayed(),"searchForItemsList Field is not displayed.");
 	       return this;
@@ -361,6 +379,7 @@ public class EditProductsPageObjects  extends PageFactoryInitializer{
 	
 	 @Step("This method is used to remove the product image")
 	     public EditProductsPageObjects clickOnRemoveProductImage() {
+
 		 waiting.explicitWaitVisibilityOfElement(removeProductImageLocator, 10);
 		 removeProductImageLocator.click();
 	     return this;
@@ -368,6 +387,7 @@ public class EditProductsPageObjects  extends PageFactoryInitializer{
 	 
 	 @Step("This method is used accept the alert popup")
 	    public EditProductsPageObjects alertToAccept() {
+
 	    waiting.explicitWaitForAlert(15);
 	    tu.alertAccept();
 	    return this; 

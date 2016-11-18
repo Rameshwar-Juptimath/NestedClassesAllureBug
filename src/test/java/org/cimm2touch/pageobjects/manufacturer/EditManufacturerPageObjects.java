@@ -1,14 +1,14 @@
-/**
- * 
- */
+
 package org.cimm2touch.pageobjects.manufacturer;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 
+
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.framework.utils.TestUtility;
 import org.framework.utils.Waiting;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -17,11 +17,12 @@ import org.testng.Assert;
 import ru.yandex.qatools.allure.annotations.Step;
 
 /**
- * @author Gladson Antony
+ * @author Thiruveedhi Chinna
  *
  */
 public class EditManufacturerPageObjects extends PageFactoryInitializer 
 {
+
 	TestUtility tu = new TestUtility(getDriver());
 	Waiting waiting=new Waiting(getDriver());
 
@@ -92,7 +93,9 @@ public class EditManufacturerPageObjects extends PageFactoryInitializer
 	@Step("To Clear Manufacturer Name")
 	public EditManufacturerPageObjects clearEditManufacturerNameField() 
 	{
+
 		waiting.explicitWaitElementToBeClickable(editManu_ManufacturerName, 5);
+
 		editManu_ManufacturerName.clear();
 		return this;
 	}
@@ -100,6 +103,7 @@ public class EditManufacturerPageObjects extends PageFactoryInitializer
 	@Step("To Update Edited Manufacturer")
 	public EditManufacturerPageObjects clickOnUpdateEditedManufacturer() 
 	{
+
 		waiting.explicitWaitElementToBeClickable(editManu_UpdateManufacturer, 5);
 		editManu_UpdateManufacturer.click();
 		return this;
@@ -109,6 +113,7 @@ public class EditManufacturerPageObjects extends PageFactoryInitializer
 	public EditManufacturerPageObjects verifyMessageAfterUpdatingManufacturer(String errorMessage) throws Exception 
 	{
 		Thread.sleep(5000);
+
 		assertThat(getDriver().findElement(By.xpath("//span[@id='EditManufacturerForm:MName']")).getText(), containsString(errorMessage));
 		return this;
 	}
@@ -116,6 +121,7 @@ public class EditManufacturerPageObjects extends PageFactoryInitializer
 	@Step("To Click on 'Back Button' in Edit Manufacturer's Page")
 	public EditManufacturerPageObjects clickOnBackButtonInEditPage() 
 	{
+
 		waiting.explicitWaitElementToBeClickable(editManu_BackButton, 5);
 		editManu_BackButton.click();
 		return this;
@@ -124,6 +130,7 @@ public class EditManufacturerPageObjects extends PageFactoryInitializer
 	@Step("To Verify the Message after Updating Manufacturer without Name")
 	public EditManufacturerPageObjects clickOnCustomFieldsTab() 
 	{
+
 		waiting.explicitWaitElementToBeClickable(tabs_CustomFields, 5);
 		tabs_CustomFields.click();
 		return this;

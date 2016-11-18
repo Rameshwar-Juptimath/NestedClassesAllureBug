@@ -6,8 +6,8 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>example.webappframework</groupId>
-	<artifactId>Example-WebAppFramework</artifactId>
+	<groupId>implementation.cimm2touch</groupId>
+	<artifactId>Implementation.CIMM2Touch</artifactId>
 	<packaging>jar</packaging>
 	<version>1.0</version>
 	<url>http://maven.apache.org</url>
@@ -19,7 +19,7 @@
 	</properties>
 
 
-	<name>Example-WebAppFramework</name>
+	<name>Implementation.CIMM2Touch</name>
 	<description>This is project which gives an example on how to use WebAppFramework.jar which is present in maven central.</description>
 
 

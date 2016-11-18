@@ -1,4 +1,5 @@
 package org.cimm2touch.modules;
+
 import java.util.HashMap;
 
 import org.cimm2touch.dataprovider.SearchData;
@@ -32,9 +33,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 		loginMap.put("userName", userName);
 		loginMap.put("password", password);
 		loginMap.put("welcomeMessage", welcomMessage);
-
 	}
-
 	@Features(value = {"Taxonomy Module"})
 	@Description("This is a Test Case to Verify the Taxonomy Page Items.")
 	@TestCaseId("TC_TaxMgt_001")
@@ -771,6 +770,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 	@Description("This Test Case is to Verify the Character Limits of 'Attribute Name' Field")
 	@TestCaseId("TC_T-Mgmt_64")
 	@Test(groups={"regression"},dataProvider="TaxonomyModuleTest",dataProviderClass=SearchData.class)
+
 	public void TC_TaxMgt_64(String testCaseID,String userName, String password, String taxonomyName) throws Exception
 	{
 		landingPage()
@@ -795,6 +795,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 	@Description("This Test Case is to Verify the Character Limits of 'Attribute Desc' Field")
 	@TestCaseId("TC_T-Mgmt_65")
 	@Test(groups={"regression"},dataProvider="TaxonomyModuleTest",dataProviderClass=SearchData.class)
+
 	public void TC_TaxMgt_65(String testCaseID,String userName, String password, String taxonomyName) throws Exception
 	{
 		landingPage()
@@ -819,6 +820,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 	@Description("This Test Case is to Verify the Working of the 'Next Option' in Pagination in Attributes Page.")
 	@TestCaseId("TC_T-Mgmt_66")
 	@Test(groups={"regression"},dataProvider="TaxonomyModuleTest",dataProviderClass=SearchData.class)
+
 	public void TC_TaxMgt_66(String testCaseID, String userName, String password,String taxonomyName) throws Exception
 	{
 		landingPage()
@@ -842,6 +844,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 	@Description("This Test Case is to Verify the Working of the 'Previous Option' in Pagination in Attributes Page.")
 	@TestCaseId("TC_T-Mgmt_67")
 	@Test(groups={"regression"},dataProvider="TaxonomyModuleTest",dataProviderClass=SearchData.class)
+
 	public void TC_TaxMgt_67(String testCaseID,String userName, String password, String taxonomyName) throws Exception
 	{
 		landingPage()
@@ -865,6 +868,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 	@Description("This Test Case is to Verify the Working of the 'Last Option' in Pagination in Attributes Page.")
 	@TestCaseId("TC_T-Mgmt_68")
 	@Test(groups={"regression"},dataProvider="TaxonomyModuleTest",dataProviderClass=SearchData.class)
+
 	public void TC_TaxMgt_68(String testCaseID,String userName, String password, String taxonomyName) throws Exception
 	{
 		landingPage()
@@ -888,6 +892,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 	@Description("This Test Case is to Verify the Working of the 'First Option' in Pagination in Attributes Page.")
 	@TestCaseId("TC_T-Mgmt_69")
 	@Test(groups={"regression"},dataProvider="TaxonomyModuleTest",dataProviderClass=SearchData.class)
+
 	public void TC_TaxMgt_69(String testCaseID, String userName, String password,String taxonomyName) throws Exception
 	{
 		landingPage()
@@ -911,6 +916,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 	@Description("This Test Case is to Verify the Working of the 'No. Of Items Dropdown' in Attributes Page.")
 	@TestCaseId("TC_T-Mgmt_70")
 	@Test(groups={"regression"},dataProvider="TaxonomyModuleTest",dataProviderClass=SearchData.class)
+
 	public void TC_TaxMgt_70(String testCaseID,String userName, String password, String taxonomyName) throws Exception
 	{
 		landingPage()
@@ -934,6 +940,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 	@Description("This Test Case is to Verify the Working of the Search Feature and Edit Feature Attributes Page.")
 	@TestCaseId("TC_T-Mgmt_71,TC_T-Mgmt_72,TC_T-Mgmt_73")
 	@Test(groups={"regression"},dataProvider="TaxonomyModuleTest",dataProviderClass=SearchData.class)
+
 	public void TC_TaxMgt_71(String testCaseID,String userName, String password, String taxonomyName, String attributeName, 
 			String editAttributeName, String attributeDesc, String saveMessage) throws Exception
 	{
@@ -964,6 +971,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 	@Description("This Test Case is to Verify the Characters Limit in Edit Attributes Name Field.")
 	@TestCaseId("TC_T-Mgmt_74")
 	@Test(groups={"regression"},dataProvider="TaxonomyModuleTest",dataProviderClass=SearchData.class)
+
 	public void TC_TaxMgt_74(String testCaseID,String userName, String password, String taxonomyName, String attributeName) throws Exception
 	{
 		landingPage()
@@ -992,6 +1000,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 	@Description("This Test Case is to Verify the Characters Limit in Edit Attributes Name Field.")
 	@TestCaseId("TC_T-Mgmt_75")
 	@Test(groups={"regression"},dataProvider="TaxonomyModuleTest",dataProviderClass=SearchData.class)
+
 	public void TC_TaxMgt_75(String testCaseID,String userName, String password, String taxonomyName, String attributeName) throws Exception
 	{
 		landingPage()
@@ -1020,6 +1029,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 	@Description("This Test Case is to Verify the Characters Limit in Edit Attributes Name Field.")
 	@TestCaseId("TC_T-Mgmt_76")
 	@Test(enabled=false,groups={"regression"},dataProvider="TaxonomyModuleTest",dataProviderClass=SearchData.class)
+
 	public void TC_TaxMgt_76(String testCaseID, String userName, String password,String taxonomyName, String attributeName) throws Exception
 	{
 		landingPage()
@@ -1048,6 +1058,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 	@Description("This Test Case is to Delete an Attribute")
 	@TestCaseId("TC_T-Mgmt_77")
 	@Test(groups={"regression"},dataProvider="TaxonomyModuleTest",dataProviderClass=SearchData.class)
+
 	public void TC_TaxMgt_77(String testCaseID,String userName, String password, String taxonomyName, String attributeName) throws Exception
 	{
 		landingPage()
@@ -1073,6 +1084,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 	@Description("This  Test Case is to Click on 'Attribute Groups' tab and Verify the page contents")
 	@TestCaseId("TC_T-Mgmt_78, TC_T-Mgmt_81")
 	@Test(groups={"regression"},dataProvider="TaxonomyModuleTest",dataProviderClass=SearchData.class)
+
 	public void TC_TaxMgt_78(String testCaseID, String userName, String password,String taxonomyName) throws Exception
 	{
 		landingPage()
@@ -1097,6 +1109,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 	@Description("This Test Case is to Save a Attribute Group and Verify the Success Message.")
 	@TestCaseId("TC_T-Mgmt_81, TC_T-Mgmt_82, TC_T-Mgmt_83")
 	@Test(groups={"regression"},dataProvider="TaxonomyModuleTest",dataProviderClass=SearchData.class)
+
 	public void TC_TaxMgt_81(String testCaseID,String userName, String password, String taxonomyName, String attributeGroupName, String attributeGroupDesc, String saveMessage) throws Exception
 	{
 		landingPage()
@@ -1123,6 +1136,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 	@Description("This Test Case is to Verify the Character Limit for Attribute Groups Name Field.")
 	@TestCaseId("TC_T-Mgmt_84")
 	@Test(groups={"regression"},dataProvider="TaxonomyModuleTest",dataProviderClass=SearchData.class)
+
 	public void TC_TaxMgt_84(String testCaseID, String userName, String password,String taxonomyName) throws Exception
 	{
 		landingPage()
@@ -1147,12 +1161,12 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 	@Description("This Test Case is to Verify the Character Limit for Attribute Groups Name Field.")
 	@TestCaseId("TC_T-Mgmt_85")
 	@Test(groups={"regression"},dataProvider="TaxonomyModuleTest",dataProviderClass=SearchData.class)
+
 	public void TC_TaxMgt_85(String testCaseID,String userName, String password, String taxonomyName) throws Exception
 	{
 		landingPage()
 		.enterUsername(userName)
 		.enterPassword(password)
-		.clickOnLogin()
 		.homePage()
 		.clickOnTaxonomyLink()
 		.taxonomyPage()
@@ -1171,6 +1185,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 	@Description("This Test Case is to Verify Search Feature in Attribute Groups Page and Edit Feature of Attribute Groups.")
 	@TestCaseId("TC_TaxMgt_79, TC_TaxMgt_91, TC_TaxMgt_92, TC_TaxMgt_93")
 	@Test(groups={"regression"},dataProvider="TaxonomyModuleTest",dataProviderClass=SearchData.class)
+
 	public void TC_TaxMgt_79(String testCaseID,String userName, String password, String taxonomyName, String attributeGroupName, String editedAttributedGroupName, 
 			String editedAttributeGroupDesc, String saveMessage) throws Exception
 	{
@@ -1200,6 +1215,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 	@Description("This Test Case is to Verify the Character Limit for Edit Attribute Groups Name Field.")
 	@TestCaseId("TC_TaxMgt_94")
 	@Test(groups={"regression"},dataProvider="TaxonomyModuleTest",dataProviderClass=SearchData.class)
+
 	public void TC_TaxMgt_94(String testCaseID,String userName, String password, String taxonomyName, String attributeGroupName) throws Exception
 	{
 		landingPage()
@@ -1226,6 +1242,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 	@Description("This Test Case is to Verify the Character Limit for Edit Attribute Groups Desc Field.")
 	@TestCaseId("TC_T-Mgmt_95")
 	@Test(groups={"regression"},dataProvider="TaxonomyModuleTest",dataProviderClass=SearchData.class)
+
 	public void TC_TaxMgt_95(String testCaseID, String userName, String password,String taxonomyName, String attributeGroupName) throws Exception
 	{
 		landingPage()
@@ -1252,6 +1269,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 	@Description("This Test Case is to View History of a Attribute Group.")
 	@TestCaseId("TC_T-Mgmt_96")
 	@Test(groups={"regression"},dataProvider="TaxonomyModuleTest",dataProviderClass=SearchData.class)
+
 	public void TC_TaxMgt_96(String testCaseID,String userName, String password, String taxonomyName, String attributeGroupName) throws Exception
 	{
 		landingPage()
@@ -1280,6 +1298,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 	@Description("This Test Case is to Delete already created Attribute Group.")
 	@TestCaseId("TC_T-Mgmt_97")
 	@Test(groups={"regression"},dataProvider="TaxonomyModuleTest",dataProviderClass=SearchData.class)
+
 	public void TC_TaxMgt_97(String testCaseID,String userName, String password, String taxonomyName, String attributeGroupName) throws Exception
 	{
 		landingPage()

@@ -1,6 +1,7 @@
 package org.cimm2touch.pageobjects.userconfiguration;
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.framework.utils.Waiting;
+
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;

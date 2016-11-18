@@ -2,7 +2,6 @@ package org.cimm2touch.pageobjects.items;
 import java.awt.AWTException;
 import java.awt.Robot;
 import java.util.List;
-
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.utils.TestUtilityMethods;
 import org.framework.utils.TestUtility;
@@ -667,7 +666,11 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 /*	@Step("click on categorization tab")
 	public EditItemsPageObjects clickOnCategorizationTab()
 	{
+
 		waiting.explicitWaitVisibilityOfElement(categorizationTabLocator, 14);
+=======
+		Waiting.explicitWaitVisibilityOfElement(categorizationTabLocator, 14);
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		categorizationTabLocator.click();
 		return this;
 	}*/
@@ -683,12 +686,14 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		}
 
 
+
 		Assert.assertTrue(getDriver().findElement(By.xpath("//table[@id='tabs']/descendant::span[text()='"+categoryToSearch+"']")).isDisplayed(),"The item does not belong to the category that was filtered.");
 		return this;
 	}
 
 	@Step("click on results link.")
 	public EditItemsPageObjects clickOnResultsLink() {
+
 		waiting.explicitWaitVisibilityOfElement(resultsLinkLocator, 6);
 		resultsLinkLocator.click();
 		return this;	
@@ -708,6 +713,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 	@Step("click on item link in the right navigation bar")
 	public EditItemsPageObjects clickOnItemLink() {
+
 		waiting.explicitWaitVisibilityOfElement(itemLinkLocator, 6);
 		itemLinkLocator.click();
 		return this;
@@ -725,9 +731,11 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 
 	public EditItemsPageObjects verifyEditItemsBreadCrumbAndCimmItemIdValue(String getBreadCrump, String itemId) {
+
 		waiting.explicitWaitVisibilityOfElement(cimmItemIdValueLocator, 10);
 		Assert.assertTrue(assertEditItemsCimmItemIdValue(cimmItemIdValueLocator.getText().trim(), itemId));
 		waiting.explicitWaitVisibilityOfElement(editItemsBreadcrumbLocator, 4);
+
 		Assert.assertTrue(assertEditItemsBreadCrumb(editItemsBreadcrumbLocator.getText().trim(), getBreadCrump));
 		return this;
 	}
@@ -735,13 +743,16 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 	@Step("click on linked items tab.")
 	public EditItemsPageObjects clickOnLinkedItemsTab() {
+
 		waiting.explicitWaitVisibilityOfElement(linkedItemsTabLocator, 10);
+
 		linkedItemsTabLocator.click();
 		return this;
 	}
 
 	@Step("verify tabs under Linked Items tab to be setUpLinkedItemsLocator,availableLinkedItemsLocator,listItemLinkTypesLocator.")
 	public EditItemsPageObjects verifyTabsUnderLinkedItemsTab() {
+
 		waiting.explicitWaitVisibilityOfElement(setUpLinkedItemsLocator, 10);
 		Assert.assertTrue(setUpLinkedItemsLocator.getAttribute("class").contains("active"),"Setup Linked Items tab is by default not active.");
 		Assert.assertTrue(availableLinkedItemsLocator.getAttribute("class").contains("inactive"),"Available linked items tab is by default active.");
@@ -752,6 +763,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@Step("verify tabs under Linked Items tab to be setUpLinkedItemsLocator,availableLinkedItemsLocator,listItemLinkTypesLocator.")
 
 	public EditItemsPageObjects verifySetUpLinkedItemsTab(String [] getExepectedSearchInDropdownValues) {
+
 		waiting.explicitWaitVisibilityOfElement(searchItemsForItemLinkTypeTabNameLocator, 10);
 		Assert.assertTrue(searchItemsForItemLinkTypeTabNameLocator.isDisplayed(),"Search Items For LinkType tab name is not displayed.");
 		Assert.assertTrue(searchItemLinkTypeSearchTextboxLocator.isDisplayed(),"Search Item For Link Type textbox is not displayed.");
@@ -767,6 +779,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	}
 
 	public EditItemsPageObjects clickOnHistoryLink() {
+
 		waiting.explicitWaitVisibilityOfElement(historyLinkLocator, 10);
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",historyLinkLocator);
 		return this;
@@ -774,6 +787,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 
 	public boolean assertAlertMsg(String alertText) {
+
 		boolean t = tu.getAlertText().trim().equals(alertText.trim());
 		tu.alertAccept();
 		return t;
@@ -799,6 +813,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@Step("click on CPN tab")
 	public EditItemsPageObjects clickonCpnTab() 
 	{
+
 		waiting.explicitWaitVisibilityOfElement(cpnTabLocator, 10);
 		cpnTabLocator.click();
 		return this;
@@ -807,6 +822,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 	@Step("click on add button")
 	public EditItemsPageObjects clickOnAddNewCpn() {
+
 		waiting.explicitWaitVisibilityOfElement(addNewCpnLocator, 10);
 		addNewCpnLocator.click();
 		return this;
@@ -816,6 +832,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 	@Step("enter customer name")
 	public EditItemsPageObjects enterNewCpn(String cpnTextEnter) {
+
 		waiting.explicitWaitVisibilityOfElement(addNewCpnTextboxLocator, 3);
 		addNewCpnTextboxLocator.sendKeys(cpnTextEnter);
 		return this;
@@ -826,6 +843,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 	@Step("click on add new number")
 	public EditItemsPageObjects clickOnAddNewNumber() {
+
 		waiting.explicitWaitVisibilityOfElement(addNewNumber, 3);
 		addNewNumber.click();
 		return this;
@@ -834,6 +852,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 	@Step("enter new CPN")
 	public EditItemsPageObjects enterNewNumber(String cpnNumberEnter) {		
+
 		waiting.explicitWaitVisibilityOfElement(enterNewNumberLocator, 5);
 		enterNewNumberLocator.sendKeys(cpnNumberEnter);
 		return this;
@@ -849,6 +868,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 	@Step("verify the success message")
 	public EditItemsPageObjects verifyNewCpnSavedSuccessMessage(String successMessageOfCreationOfNewCpn) {
+
 		waiting.explicitWaitVisibilityOfElement(cpnSuccessMessageLocator, 8);
 		Assert.assertEquals(cpnSuccessMessageLocator.getText().trim(), "Customer Part Numbers Saved Successfully .");
 		return this;
@@ -856,8 +876,8 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	}
 
 	public EditItemsPageObjects VerifyPartnumber(String partNumberField) {
+
 		waiting.explicitWaitVisibilityOfElement(addNewItemPage().enterPartNumberLocator, 10);
-		
 		Assert.assertEquals(addNewItemPage().enterPartNumberLocator.getAttribute("value"),partNumberField);
 		return this;
 	}
@@ -920,7 +940,9 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 	public EditItemsPageObjects clickOnDescriptionTabLink() {
 		
+
 		waiting.explicitWaitVisibilityOfElement(itemDescriptionLocator, 10);
+
 		itemDescriptionLocator.click();
 		return this;
 	}
@@ -1148,6 +1170,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	public PageFactoryInitializer removeAssignedDocument(String documentremoveMsg) throws InterruptedException {
 		DocumentURLcheckboxLocator.click();
 		DocumentdeleteButtonLocator.click();
+
 		tu.alertAccept();
 		Thread.sleep(3000);
 		Assert.assertEquals(DocumentSuccessMsgLocator.getText().trim(), documentremoveMsg);
@@ -1296,6 +1319,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@Step("Click on delete button without selecting an video chekbox")
 	public EditItemsPageObjects clickOnAllVideoDeleteButton() throws InterruptedException {
 		DeleteAllVideoLocator.click();
+
 		tu.alertDismiss();
 		Thread.sleep(2000);
 		return this;
@@ -1313,6 +1337,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@Step("clicking on assigned video delete button")
 	public EditItemsPageObjects clickOnAssignedVideoDeleteButton() {
 		assignedVideoDeleteButtonLocator.click();
+
 		tu.alertAccept();
 		return this;
 	}
@@ -1382,6 +1407,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@Step("deleting created link type and alert pop up close ")
 	public EditItemsPageObjects deletelinktype(String getlinktypename) throws InterruptedException {
 		deleteButtonLinkType.click();
+
 		tu.alertDismiss();
 		Thread.sleep(2000);
 		deleteButtonLinkType.click();
@@ -1423,6 +1449,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 	@Step("click on Attributes link")
 	public EditItemsPageObjects clickOnAttributesTab() {
+
 		waiting.explicitWaitVisibilityOfElement(attributesLink, 15);
 		attributesLink.click();
 		return this;
@@ -1615,7 +1642,9 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@Step("Verifying item update success message in custom prices tab")
 	public EditItemsPageObjects deleteItemFromSubset() {
 		DeleteButtonCFLocator.click();
+
 		tu.alertAccept();
+
 		return this;
 	}
 
@@ -1625,6 +1654,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 	@Step("click on history in custom prices tab")
 	public EditItemsPageObjects clickOnCPhistoryLink() throws InterruptedException {
+
 		waiting.explicitWaitVisibilityOfElement(CustomPricesHistoryLocator, 10);
 		CustomPricesHistoryLocator.click();
 		Thread.sleep(2000);
@@ -1633,8 +1663,9 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 	@Step("To Edit the Long Description in the Descriptions Tab")
 	public EditItemsPageObjects editLongDescription(String longdesc)
+
 	{	waiting.explicitWaitVisibilityOfElement(longDescription, 10);
-		longDescription.clear();
+	longDescription.clear();
 		longDescription.sendKeys(longdesc);
 		return this;
 	}
@@ -1656,6 +1687,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@Step("To Click On Images Tab")
 	public EditItemsPageObjects clickOnImagesTab()
 		{	
+
 		waiting.explicitWaitVisibilityOfElement(imagesTab, 15);
 		imagesTab.click();
 		return this;
@@ -1664,6 +1696,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@Step("To Click on 'Add New Image' Button in the Images Tab")
 	public EditItemsPageObjects clickOnAddNewImageButton()  throws Exception
 	{
+
 		waiting.explicitWaitVisibilityOfElement(addNewImageButton, 15);
 		addNewImageButton.click();
 		return this;
@@ -1672,6 +1705,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@Step("To Enter the URL of the Image in the Image Tab")
 	public EditItemsPageObjects enterImageURL(String imageURL)
 	{	
+
 		waiting.explicitWaitVisibilityOfElement(enterImageURL, 15);
 		enterImageURL.sendKeys(imageURL);
 		return this;
@@ -1680,6 +1714,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@Step("To Click on 'Save Image URL' ")
 	public EditItemsPageObjects clickSaveImageURL() throws Exception
 	{
+
 		waiting.explicitWaitVisibilityOfElement(saveImageURL, 15);
 		saveImageURL.click();
 		
@@ -1689,6 +1724,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@Step("To Enter the 'Image Caption' in the Images Tab")
 	public EditItemsPageObjects enterImageCaption()
 	{	
+
 		waiting.explicitWaitVisibilityOfElement(imageCaption, 15);
 		imageCaption.clear();
 		imageCaption.sendKeys("Image Caption");
@@ -1713,6 +1749,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@Step("To Enter the 'Document Caption' in 'Documents' Tab")
 	public EditItemsPageObjects enterDocumentCaption()
 	{
+
 		waiting.explicitWaitVisibilityOfElement(documentCaption, 10);
 		documentCaption.sendKeys("Document Caption");
 		return this;
@@ -1722,6 +1759,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@SuppressWarnings("static-access")
 	public EditItemsPageObjects UploadDocument(String fileToUpload) throws Exception
 	{
+
 		waiting.explicitWaitVisibilityOfElement(addDocumentButton, 10);
 		addDocumentButton.click();
 		tu.fileUpload(fileToUpload);
@@ -1743,6 +1781,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	public EditItemsPageObjects verifyLongDescription() throws Exception
 	{
 		Thread.sleep(2000);
+
 		utility.assertElementPresent(longDescription_SubFilter);
 		return this;
 	}
@@ -1754,6 +1793,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		Thread.sleep(2500);
 		switch(longDescription){
 		
+
 	case "LongDesc": utility.assertElementPresent(longDescription_SubFilter);
 	break;
 	
@@ -1768,7 +1808,11 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		}	
 	return this;
 	}
+
 	/*	Assert.assertEquals(((JavascriptExecutor) getDriver()).executeScript("return $x('boolean(//div[@id=\"longDescEditor\"]/*[string-length(//div[@id=\"longDescEditor\"]) > 0])');"),true,"remember me checkbox is not checked");
+=======
+	/*	Assert.assertEquals(((JavascriptExecutor) driver).executeScript("return $x('boolean(//div[@id=\"longDescEditor\"]/*[string-length(//div[@id=\"longDescEditor\"]) > 0])');"),true,"remember me checkbox is not checked");
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		Thread.sleep(2000);
 	tu.assertElementPresent(noLongDescription_SubFilter);
 		return this;
@@ -1780,6 +1824,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	public EditItemsPageObjects verifyIgnorelongDescPartNumbers() throws Exception
 	{
 		Thread.sleep(2000);
+
 		utility.assertElementPresent(longDescription);
 		return this;
 
@@ -1791,6 +1836,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		Thread.sleep(2500);
 		switch(attributeValue){
 		
+
 	case "Attributes": utility.assertElementPresent(getDriver().findElement(By.xpath("//input[contains(@id,':colAVD') and @value]")));
 	break;
 	
@@ -1798,6 +1844,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	break;
 	
 	case "Ignore": Assert.assertTrue( utility.assertElementPresent(getDriver().findElement(By.xpath("//input[contains(@id,':colAVD') and @value]"))) || utility.assertElementPresent(getDriver().findElement(By.xpath("//span[contains(text(),'"+expMsgForNoAttribute+"')]"))));
+
 	break;
 	
 	default : throw new Exception("invalid selection");			
@@ -1820,6 +1867,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 			try 
 			{
+
 				bool1=utility.assertElementPresent(getDriver().findElement(By.xpath("//input[contains(@id,':colAVD') and @value]")));
 			}
 			catch(Exception e)
@@ -1828,6 +1876,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 			}
 
 			try {
+
 				bool2=utility.assertElementPresent(getDriver().findElement(By.xpath("//span/table/tbody/tr/td/table/tbody/tr[*]/td[5]/input[@value])")));
 			}
 
@@ -1837,6 +1886,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 			}
 
 			try {
+
 				bool3=utility.assertElementPresent(getDriver().findElement(By.xpath("//span/table/tbody/tr/td/table/tbody/tr[*]/td[6]/input[@value])")));
 			}
 
@@ -1870,6 +1920,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 			try 
 			{
+
 				bool1=utility.assertElementPresent(getDriver().findElement(By.xpath("//span/table/tbody/tr/td/table/tbody/tr[*]/td[4]/input[@value])")));
 			}
 			catch(Exception e)
@@ -1878,6 +1929,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 			}
 
 			try {
+
 				bool2=utility.assertElementPresent(getDriver().findElement(By.xpath("//span/table/tbody/tr/td/table/tbody/tr[*]/td[5]/input[@value])")));
 			}
 
@@ -1887,7 +1939,9 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 			}
 
 			try {
+
 				bool3=utility.assertElementPresent(getDriver().findElement(By.xpath("//span/table/tbody/tr/td/table/tbody/tr[*]/td[6]/input[@value])")));
+
 			}
 
 			catch(Exception e)
@@ -1908,6 +1962,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 	@Step("click on categorization tab")
 	public EditItemsPageObjects clickOnCategorizationTab() throws InterruptedException{
+
 		waiting.explicitWaitElementToBeClickable(categorizationTabLocator, 10);
 		categorizationTabLocator.click();
 		Thread.sleep(5000);
@@ -1923,6 +1978,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		{
 			try 
 			{
+
 				waiting.explicitWaitVisibilityOfElement(nextItemIconLocator, 10);
 				nextItemIconLocator.click();
 			switch(categoryStatus)
@@ -1931,6 +1987,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 				break;
 			case "UnCategorized": Assert.assertFalse(categoryUnderCategorizationTab.isDisplayed());
 				break;
+
 			case "Ignore": Assert.assertTrue(utility.assertElementPresent(categoryUnderCategorizationTab) || utility.assertElementnotPresent(categoryUnderCategorizationTab));
 				
 				break;
@@ -1957,6 +2014,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 			String xpath="//table[@id='itemCategoryFormId:categoryListTableId']/tbody[not(tr)]";
 
 
+
 			Assert.assertFalse(getDriver().findElement(By.xpath(xpath)).isDisplayed());
 		}
 		clickOnNextItem_EditPage.click();
@@ -1969,6 +2027,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		Thread.sleep(2500);
 		switch(operator){
 		
+
 	case "AND": Assert.assertTrue(utility.assertElementPresent(getDriver().findElement(By.xpath("//input[contains(@id,':colAVD') and @value]"))) && utility.assertElementPresent(getDriver().findElement(By.xpath("//div[@class='imageHolder']/descendant::img"))));
 	break;
 	
@@ -1983,6 +2042,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	}
 	@Step("search for taxonomy {0}")
 	public EditItemsPageObjects  searchForTaxonomy(String taxonomyName) throws AWTException {
+
 		waiting.explicitWaitVisibilityOfElement(taxonomySearchFieldLocator, 10);
 		taxonomySearchFieldLocator.clear();
 		taxonomySearchFieldLocator.sendKeys(taxonomyName);
@@ -1996,6 +2056,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		
 		int var = Integer.parseInt(noOfitemsToBeCategorized);
 		for(int i=0; i< var; i++){
+
 			waiting.explicitWaitElementToBeClickable(categorizationTabLocator, 10);
 			categorizationTabLocator.click();
 			searchForTaxonomy(taxonomyName);
@@ -2009,6 +2070,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		
 	}
 	public EditItemsPageObjects verifySuccessMessageForCategoryAssign(String expSuccessMessage) {
+
 		waiting.explicitWaitVisibilityOfElement(itemCategorySaveMessageLoator, 10);
 		Assert.assertEquals(itemCategorySaveMessageLoator.getText(), expSuccessMessage);
 
@@ -2017,6 +2079,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 	@Step("seect category to assign {0}")
 	public  EditItemsPageObjects selectCategory(String categoryName) throws InterruptedException {
+
 		waiting.explicitWaitVisibilityOfElement(By.xpath("//div[@id='ttformid:taxonomyTreeId']/descendant::td/descendant::span[contains(@id,'ttformid:taxonomyTreeId') and text()='"+categoryName+"']"), 10);
 		WebElement element= getDriver().findElement(By.xpath("//div[@id='ttformid:taxonomyTreeId']/descendant::td/descendant::span[contains(@id,'ttformid:taxonomyTreeId') and text()='"+categoryName+"']"));
 		WebElement target= getDriver().findElement(By.xpath("//form[@id='itemCategoryFormId']/descendant::div[@class='itemTabContentWrap']"));
@@ -2027,6 +2090,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	}
 	@Step("click on save link")
 	public EditItemsPageObjects saveCategory(){
+
 		waiting.explicitWaitElementToBeClickable(categorySaveLocator, 10);
 		categorySaveLocator.click();
 		return this;

@@ -2,6 +2,7 @@ package org.cimm2touch.pageobjects.taxonomymanagement;
 
 import java.util.List;
 
+
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.utils.SearchDataPropertyFile;
 import org.cimm2touch.utils.TestUtilityMethods;
@@ -11,6 +12,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
@@ -22,6 +24,7 @@ import ru.yandex.qatools.allure.annotations.Step;
 public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 {
 	SearchDataPropertyFile data = new SearchDataPropertyFile();
+
 	Waiting waiting=new Waiting(getDriver());
 	TestUtility tu=new TestUtility(getDriver());
 	TestUtilityMethods utility = new TestUtilityMethods(getDriver());
@@ -266,6 +269,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//*[@id='categoryid:ctgMsgId' and contains(text(),'Category Deleted Successfully')]")
 	private WebElement successfulMessageLocatorForDelCatecory;
 	
+
 	@FindBy(xpath="//span[@id='categoryid:ctgMsgId']")
 	private WebElement categoryRemoveSuccesMessage;
 	
@@ -279,6 +283,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 
 	public ManageTaxonomyPageObjects clickOnLeftArrow() 
 	{
+
 		waiting.explicitWaitElementToBeClickable(leftarrowLocator, 5);
 		leftarrowLocator.click();
 		return this;
@@ -287,7 +292,9 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	public ManageTaxonomyPageObjects doubleClickOnCategory(int specificCategory) throws InterruptedException 
 	{
 		Thread.sleep(2000);
+
 		new Actions(getDriver()).doubleClick(categoryLocator.get(specificCategory-1)).build().perform();
+
 		return this;
 	}
 
@@ -300,6 +307,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	}
 
 	public ManageTaxonomyPageObjects clickOnSearchIcon() {
+
 		waiting.explicitWaitElementToBeClickable(searchiconlocator, 5);
 		categorysearchiconlocator.click();
 		return this;
@@ -307,6 +315,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 
 	}
 	public ManageTaxonomyPageObjects clickOnRefreshIcon() {
+
 		waiting.explicitWaitElementToBeClickable(refreshlocator, 3);
 		refreshlocator.click();
 		return this;
@@ -327,6 +336,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	public ManageTaxonomyPageObjects verifyWhetherSearchedTaxonomyStyleIsGreen(String categoryName1) throws Exception 
 	{
 		Thread.sleep(3000);
+
 		Assert.assertTrue(getDriver().findElement(By.xpath("//span[contains(text(),'"+categoryName1+"')]")).getAttribute("style").trim().contains("green"));
 		return this;
 	}
@@ -335,6 +345,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	public ManageTaxonomyPageObjects verifyWhetherSearchedTaxonomyStyleIsInNotGreen(String categoryName1) throws Exception {
 
 		Thread.sleep(3000);
+
 		Assert.assertFalse((getDriver().findElement(By.xpath("//span[contains(text(),'"+categoryName1+"')]")).getAttribute("style").trim().contains("green")));
 		return this;
 	}
@@ -343,6 +354,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	public ManageTaxonomyPageObjects verifyUserIsAblToViewTheHierarchyLevelsOfTheCategories(String categoryName) throws Exception 
 	{
 		Thread.sleep(3000);
+
 		Assert.assertTrue(getDriver().findElement(By.xpath("//span[contains(text(),'"+categoryName+"')]//ancestor::tr[contains(@title,'"
 				+categoryName+"')]/td/div/a/img[contains(@id,'collapsed')]")).isEnabled());
 
@@ -359,6 +371,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 
 	public ManageTaxonomyPageObjects clickOnPlusIcon() throws InterruptedException {
 		Thread.sleep(3000);
+
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",plusiconForCreatingNewCategory);
 		return this;
 	}
@@ -386,10 +399,12 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 		return this;
 	}
 	public ManageTaxonomyPageObjects clickOnSaveButton() throws InterruptedException {
+
 		/*	waiting.explicitWaitElementToBeClickable(savebutton, 5);
 		savebutton.click();*/
 		Thread.sleep(3000);
 		((JavascriptExecutor)getDriver()).executeScript("arguments[0].click();", savebutton); 
+
 		return this;
 
 
@@ -399,13 +414,16 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	public ManageTaxonomyPageObjects verifyDifferentMessageDisplayedAfterSavinCategory(String errorMessage) throws Exception 
 	{
 		Thread.sleep(7000);
+
 		Assert.assertTrue(getDriver().findElement(By.xpath("//td/span[@style='color:red;' and contains(text(),'"+errorMessage+"')]")).isDisplayed());
+
 		return this;	 
 	}
 
 
 	public ManageTaxonomyPageObjects clickOnSaveButtonForCategorySave() throws InterruptedException {
 		Thread.sleep(2500);
+
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",saveButtonForCategorySave);
 
 		return this;
@@ -433,6 +451,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	}
 	public ManageTaxonomyPageObjects validatingCategoryNameFieldByLeavingEmpty(String ErrorMessageAfterClickingSaveButton)
 	{
+
 		waiting.explicitWaitElementToBeClickable(errorMessagelocatorForcategoryName, 5);
 		Assert.assertEquals(errorMessagelocatorForcategoryName.getText().trim(), ErrorMessageAfterClickingSaveButton);
 		return this;
@@ -446,6 +465,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 
 	}
 	public ManageTaxonomyPageObjects enteringCategoryCode(String categoryCode) {
+
 		waiting.explicitWaitElementToBeClickable(editcategoryCodelocator, 5);
 		editcategoryCodelocator.clear();
 		editcategoryCodelocator.sendKeys(categoryCode);
@@ -468,6 +488,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 
 	public ManageTaxonomyPageObjects clearTheDisplaySequenceField() 
 	{
+
 		waiting.explicitWaitElementToBeClickable(displaySequencefieldloctor, 5);
 		displaySequencefieldloctor.clear();
 		return this;
@@ -475,6 +496,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 
 	public ManageTaxonomyPageObjects deleteCategory() 
 	{
+
 		waiting.explicitWaitElementToBeClickable(deletincategory, 5);
 		deletincategory.click();
 		String text = getDriver().switchTo().alert().getText();
@@ -493,6 +515,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 		Assert.assertTrue(categoryCode.isDisplayed());
 		Assert.assertTrue(displaySequence.isDisplayed());
 		Assert.assertTrue(levelNumber.isDisplayed());
+
 		Assert.assertTrue(getDriver().findElement(By.xpath("//td/span[contains(text(),'Category Static')]//following::select[@class='cimmEditCategoryText'][1]")).isDisplayed());
 		Assert.assertTrue(editTopBanner.isDisplayed());
 		Assert.assertTrue(editRightBanner.isDisplayed());
@@ -509,6 +532,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 		Assert.assertTrue(categoryCode.isDisplayed());
 		Assert.assertTrue(displaySequence.isDisplayed());
 		Assert.assertTrue(levelNumber.isDisplayed());
+
 		Assert.assertTrue(getDriver().findElement(By.xpath("//td/span[contains(text(),'Category Static')]//following::select[@class='cimmEditCategoryText'][1]")).isDisplayed());
 		Assert.assertTrue(editTopBanner.isDisplayed());
 		Assert.assertTrue(editRightBanner.isDisplayed());
@@ -521,6 +545,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	{
 
 		Thread.sleep(2000);
+
 		WebElement ele = getDriver().findElement(By.xpath("//div[@class='editTaxonomyWrap']/descendant::input[contains(@value,'"+taxonomyname+"')]"));
 		Assert.assertTrue(ele.isDisplayed(), "Taxonomy "+taxonomyname+" is not Present in the Left Side Panel");
 		return this;
@@ -528,6 +553,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 
 	public ManageTaxonomyPageObjects clickOnAddNewCategory(String categoryName) throws InterruptedException 
 	{
+
 		try
 		{
 			waiting.explicitWaitElementToBeClickable(By.xpath("//span[text()='"+categoryName+"']"), 15);
@@ -539,6 +565,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 		{
 			System.out.println(e);
 		}
+
 		waiting.explicitWaitVisibilityOfElement(addNewCategoryButton, 15);
 		addNewCategoryButton.click();
 	
@@ -575,6 +602,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	}
 	@Step("enter parent category code {0}")
 	public ManageTaxonomyPageObjects enterParentCategoryCode(String categoryCodeforParentCategory) throws InterruptedException{
+
 		waiting.explicitWaitVisibilityOfElement(categoryCode, 15);
 		categoryCode.clear();
 		categoryCode.sendKeys(categoryCodeforParentCategory);
@@ -602,6 +630,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 		return this;
 	}
 
+
 	public ManageTaxonomyPageObjects clickOnCategory(String categoryName) 
 	{
 		Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class='treeCategoryName']/descendant::span[contains(@id,'treeNodeDataId') and text()='"+categoryName+"']")).getText(), categoryName);
@@ -626,6 +655,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	@Step("To Save Category")
 	public ManageTaxonomyPageObjects saveNewCategory() throws InterruptedException 
 	{
+
 		
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",saveCategory);
 		return this;		
@@ -635,19 +665,21 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	public ManageTaxonomyPageObjects clickOnRespectiveCategory(String categoryName) throws Exception 
 	{
 		Thread.sleep(5000);
+
 		getDriver().findElement(By.xpath("//span[contains(text(),'"+categoryName+"')]")).click();
 		return this;
 	}
 
 
 	@Step("To Verify 500 Characters Limit in Category Description Field")
+
 	public ManageTaxonomyPageObjects verifyCharacterLimitInCategoryDescField(String description) throws Exception 
 	{
 		SoftAssert softassert = new SoftAssert();
 		Thread.sleep(5000);
 		categoryDescriptionTextArea.clear();
+
 			categoryDescriptionTextArea.sendKeys(description);
-	
 		String enteredText = categoryDescriptionTextArea.getAttribute("value");
 		int enteredTextLength = enteredText.length();
 		softassert.assertEquals(enteredTextLength, 500);
@@ -656,11 +688,13 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	}
 
 	@Step("To Verify 500 Characters Limit in Marketing Description Field")
+
 	public ManageTaxonomyPageObjects verifyCharacterLimitInMarketingDescField(String marketingDescription) throws Exception 
 	{
 		SoftAssert softassert = new SoftAssert();
 		Thread.sleep(5000);
 		marketingDescriptionTextArea.clear();
+
 
 			marketingDescriptionTextArea.sendKeys(marketingDescription);
 		String enteredText = marketingDescriptionTextArea.getAttribute("value");
@@ -673,6 +707,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	@Step("To Verify the Message Displayed after succesfully saving a Category")
 	public ManageTaxonomyPageObjects verifySuccessMessageAfterSavingCategory(String expectedNewSavedCategorySuccesfulMessage) throws Exception 
 	{
+
 		waiting.explicitWaitVisibilityOfElement(By.xpath("//span[@id='categoryid:ctgMsgId' and contains(text(),'"+expectedNewSavedCategorySuccesfulMessage+"')]"), 20);
 		Assert.assertEquals(getDriver().findElement(By.xpath("//span[@id='categoryid:ctgMsgId' and contains(text(),'"+expectedNewSavedCategorySuccesfulMessage+"')]")).getText(),expectedNewSavedCategorySuccesfulMessage);
 		return this;
@@ -700,6 +735,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	public ManageTaxonomyPageObjects clickOnExpandViewForRespectiveCategory(String categoryName) throws Exception
 	{
 		Thread.sleep(5000);
+
 		getDriver().findElement(By.xpath("//span[contains(text(),'"+categoryName+"')]/../../../..//a/img[contains(@src,'plus')]")).click();
 		return null;
 	}
@@ -719,6 +755,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	public ManageTaxonomyPageObjects saveEditedCategory() throws Exception
 	{
 		Thread.sleep(5000);
+
 		getDriver().findElement(By.xpath("//input[@title='Save']")).click();
 		return this;
 	}
@@ -738,6 +775,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	public ManageTaxonomyPageObjects switchToNewlyOpenedWindowAndVerifyCategoryName(String categoryName1) throws Exception 
 	{
 		Thread.sleep(5000);
+
 		utility.switchToRecentWindow();
 		Thread.sleep(5000);
 		Assert.assertTrue(getDriver().findElement(By.xpath("//td/span[contains(.,'"+categoryName1+"')]")).isDisplayed());
@@ -810,6 +848,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 		Thread.sleep(5000);
 		try
 		{
+
 			Assert.assertTrue(getDriver().findElement(By.xpath("//span[contains(.,'"+saveMessage+"') and contains(@style,'red')]")).isDisplayed());
 		}
 		catch(Exception e)
@@ -818,6 +857,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 		}
 		try
 		{
+
 			Assert.assertTrue(getDriver().findElement(By.xpath("//span[contains(@style,'green') and contains(.,'"+saveMessage+"')]")).isDisplayed());
 		}
 		catch(Exception e)
@@ -910,6 +950,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	{
 		SoftAssert sa = new SoftAssert();
 
+
 		List<WebElement> itemsDisplayed = getDriver().findElements(By.xpath("(//div[@class='cimmAttributesColumn1']//tbody)[2]/tr"));
 		Assert.assertEquals(itemsDisplayed.size(), 10);
 
@@ -954,6 +995,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	public ManageTaxonomyPageObjects verifyAfterAttributeSearch(String attributeName) throws Exception
 	{
 		Thread.sleep(5000);
+
 		Assert.assertTrue(getDriver().findElement(By.xpath("//td[contains(@id,'attributeNameCol') and contains(text(),'"+attributeName+"')]")).isDisplayed());
 		return this;
 	}
@@ -961,6 +1003,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	@Step("To Click on 'Edit' button of an Atribute")
 	public ManageTaxonomyPageObjects clickOnEditAttributeButton(String attributeName)throws Exception
 	{
+
 		getDriver().findElement(By.xpath("//td[contains(@id,'attributeNameCol') and contains(text(),'"+attributeName+"')]//preceding-sibling::td/div/input[@title='Edit Attribute']")).click();
 		return this;
 	}
@@ -998,6 +1041,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 		Thread.sleep(5000);
 		try
 		{
+
 			Assert.assertTrue(getDriver().findElement(By.xpath("//span[contains(.,'"+saveMessage+"') and contains(@style,'red')]")).isDisplayed());
 		}
 		catch(Exception e)
@@ -1006,6 +1050,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 		}
 		try
 		{
+
 			Assert.assertTrue(getDriver().findElement(By.xpath("//span[contains(@style,'green') and contains(.,'"+saveMessage+"')]")).isDisplayed());
 		}
 		catch(Exception e)
@@ -1062,6 +1107,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	public ManageTaxonomyPageObjects switchToNewlyOpenedWindowAndVerifyAttributeName(String attributeName) throws Exception
 	{
 		Thread.sleep(5000);
+
 		utility.switchToRecentWindow();
 		Assert.assertTrue(getDriver().findElement(By.xpath("//td/span[contains(.,'"+attributeName+"')]")).isDisplayed());
 		Thread.sleep(5000);
@@ -1074,6 +1120,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	public ManageTaxonomyPageObjects clickOnDeleteAttributeButton(String attributeName) throws Exception
 	{
 		Thread.sleep(5000);
+
 		getDriver().findElement(By.xpath("//td[contains(@id,'attributeNameCol') and contains(text(),'"+attributeName+"')]//preceding-sibling::td/div/input[contains(@src,'delete')]")).click();
 		tu.alertAccept();
 		Thread.sleep(5000);
@@ -1144,6 +1191,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 		Thread.sleep(5000);
 		try
 		{
+
 			Assert.assertTrue(getDriver().findElement(By.xpath("//span[contains(.,'"+saveMessage+"') and contains(@style,'red')]")).isDisplayed());
 		}
 		catch(Exception e)
@@ -1152,6 +1200,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 		}
 		try
 		{
+
 			Assert.assertTrue(getDriver().findElement(By.xpath("//span[contains(@style,'green') and contains(.,'"+saveMessage+"')]")).isDisplayed());
 		}
 		catch(Exception e)
@@ -1196,6 +1245,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	@Step("To Search for an Attribute Group Item.")
 	public ManageTaxonomyPageObjects searchForAttributeGroup(String attributeGroupName) throws Exception
 	{
+
 		waiting.explicitWaitVisibilityOfElement(attributesGroupSearchBox, 15);
 		attributesGroupSearchBox.clear();
 		attributesGroupSearchBox.sendKeys(attributeGroupName);
@@ -1207,6 +1257,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	public ManageTaxonomyPageObjects verifyAfterSearchingForAttributeGorup(String attributeGroupName) throws Exception 
 	{
 		Thread.sleep(5000);
+
 		Assert.assertTrue(getDriver().findElement(By.xpath("//td[contains(@id,'attributeGroupNameCol') and contains(.,'"+attributeGroupName+"')]")).isDisplayed());
 		return this;
 	}
@@ -1215,6 +1266,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	public ManageTaxonomyPageObjects clickOnEditSpecificAttributeGroup(String attributeGroupName) throws Exception
 	{		
 		Thread.sleep(5000);
+
 		getDriver().findElement(By.xpath("//td[contains(@id,'attributeGroupNameCol') and contains(.,'"+attributeGroupName+"')]//preceding::input[@title='Edit Attribute Group']")).click();
 		return this;
 	}
@@ -1234,6 +1286,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	public ManageTaxonomyPageObjects saveEditedAttributeGroup() throws Exception 
 	{
 		Thread.sleep(5000);
+
 		getDriver().findElement(By.xpath("//input[@title='Update Attribute Group']")).click();
 		return this;		
 	}
@@ -1244,6 +1297,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 		Thread.sleep(5000);
 		try
 		{
+
 			Assert.assertTrue(getDriver().findElement(By.xpath("//span[contains(.,'"+saveMessage+"') and contains(@style,'red')]")).isDisplayed());
 		}
 		catch(Exception e)
@@ -1252,6 +1306,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 		}
 		try
 		{
+
 			Assert.assertTrue(getDriver().findElement(By.xpath("//span[contains(@style,'green') and contains(.,'"+saveMessage+"')]")).isDisplayed());
 		}
 		catch(Exception e)
@@ -1266,6 +1321,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	public ManageTaxonomyPageObjects clickOnDeleteAttributeGroupButton(String attributeGroupName) throws Exception 
 	{
 		Thread.sleep(3000);
+
 		getDriver().findElement(By.xpath("//td[contains(@id,'attributeGroupNameCol') and contains(.,'"+attributeGroupName+"')]//preceding::input[contains(@src,'delete.png')]")).click();
 		Thread.sleep(2000);
 		tu.alertAccept();
@@ -1276,7 +1332,9 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	public ManageTaxonomyPageObjects verifyMessageAfterDeletingAttributeGroup() throws Exception 
 	{
 		Thread.sleep(5000);
+
 		Assert.assertTrue(getDriver().findElement(By.xpath("//span[contains(@style,'green') and contains(.,'removed successfully')]")).isDisplayed());
+
 		return this;
 	}
 
@@ -1285,6 +1343,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	public ManageTaxonomyPageObjects clickOnViewHistoryButtonForAttributesGroup() throws Exception 
 	{
 		Thread.sleep(2000);
+
 		getDriver().findElement(By.xpath("//a[@title='History']")).click();
 		Thread.sleep(2000);
 		tu.alertAccept();
@@ -1296,6 +1355,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	public ManageTaxonomyPageObjects switchToNewlyOpenedWindowAndVerifyAttributeGroupName(String attributeGroupName) throws Exception 
 	{
 		Thread.sleep(2000);
+
 		utility.switchToRecentWindow();
 		Thread.sleep(3000);
 		Assert.assertTrue(getDriver().findElement(By.xpath("//span[contains(@style,'bold') and contains(.,'"+attributeGroupName+"')]")).isDisplayed());
@@ -1333,4 +1393,5 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 		tu.alertAccept();
 		return this;
 	}
+
 }

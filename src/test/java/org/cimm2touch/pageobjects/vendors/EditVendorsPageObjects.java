@@ -6,6 +6,7 @@ package org.cimm2touch.pageobjects.vendors;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 
+
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.utils.TestUtilityMethods;
 import org.framework.utils.TestUtility;
@@ -23,6 +24,7 @@ import ru.yandex.qatools.allure.annotations.Step;
  */
 public class EditVendorsPageObjects extends PageFactoryInitializer
 {
+
 	TestUtilityMethods utility=new TestUtilityMethods(getDriver());
 	Waiting waiting=new Waiting(getDriver());
 	TestUtility tu=new TestUtility(getDriver());
@@ -105,6 +107,7 @@ public class EditVendorsPageObjects extends PageFactoryInitializer
 		editVendors_VendorName.clear();
 		editVendors_UpdateVendor.click();
 		Thread.sleep(5000);
+
 		assertThat(getDriver().findElement(By.xpath("//input[@id='editSupplierForm:supplierName']/following-sibling::span[contains(@style,'red')]")).getText(), 
 				containsString(vendorNameMessage));
 		return this;
@@ -116,6 +119,7 @@ public class EditVendorsPageObjects extends PageFactoryInitializer
 		editVendors_ShortName.clear();
 		editVendors_UpdateVendor.click();
 		Thread.sleep(5000);
+
 		assertThat(getDriver().findElement(By.xpath("//input[@id='editSupplierForm:shortName']/following-sibling::span[contains(@style,'red')]")).getText(), 
 				containsString(shortNameMessage));
 		return this;
@@ -127,6 +131,7 @@ public class EditVendorsPageObjects extends PageFactoryInitializer
 		editVendors_Address1.clear();
 		editVendors_UpdateVendor.click();
 		Thread.sleep(5000);
+
 		assertThat(getDriver().findElement(By.xpath("//textarea[@id='editSupplierForm:address1']/following-sibling::span[contains(@style,'red')]")).getText(), 
 				containsString(address1Message));
 		return this;
@@ -138,6 +143,7 @@ public class EditVendorsPageObjects extends PageFactoryInitializer
 		editVendors_Email.clear();
 		editVendors_UpdateVendor.click();
 		Thread.sleep(5000);
+
 		assertThat(getDriver().findElement(By.xpath("//input[@id='editSupplierForm:email']/following-sibling::span[contains(@style,'red')]")).getText(), 
 				containsString(emailMessage));
 		return this;
@@ -147,6 +153,7 @@ public class EditVendorsPageObjects extends PageFactoryInitializer
 	public EditVendorsPageObjects clickOnHistoryButton() 
 	{
 		editVendors_History.click();
+
 		tu.alertAccept();
 		return this;
 	}
@@ -155,6 +162,7 @@ public class EditVendorsPageObjects extends PageFactoryInitializer
 	public EditVendorsPageObjects switchToNewlyOpenedWindowAndVerifyVendorName(String vendorsName) throws Exception
 	{
 		Thread.sleep(2000);
+
 		utility.switchToRecentWindow();
 		Thread.sleep(2000);
 		Assert.assertTrue(getDriver().findElement(By.xpath("//div[@class='tableLayout']/table/tbody/tr/descendant::tr/td[contains(.,'"+vendorsName+"')]")).isDisplayed());

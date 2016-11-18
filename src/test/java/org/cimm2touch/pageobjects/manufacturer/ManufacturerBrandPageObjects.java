@@ -1,4 +1,5 @@
 package org.cimm2touch.pageobjects.manufacturer;
+
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.utils.TestUtilityMethods;
 import org.framework.utils.TestUtility;
@@ -14,6 +15,7 @@ import ru.yandex.qatools.allure.annotations.Step;
 
 public class ManufacturerBrandPageObjects extends PageFactoryInitializer 
 {
+
 	TestUtility tu=new TestUtility(getDriver());
 	Waiting waiting=new Waiting(getDriver());
 	TestUtilityMethods utility = new TestUtilityMethods(getDriver());
@@ -23,6 +25,7 @@ public class ManufacturerBrandPageObjects extends PageFactoryInitializer
 
 	@Step("assert element present manufacturerbrandtextLocator ")
 	public  ManufacturerBrandPageObjects assrtManufacturerbrandtextLocator() throws Exception{
+
 
 		utility.assertElementPresent(manufacturerbrandtextLocator);
 		return this;
@@ -34,6 +37,7 @@ public class ManufacturerBrandPageObjects extends PageFactoryInitializer
 	@Step("assert element present manufacturerbrandtextLocator ")
 	public ManufacturerBrandPageObjects assrtasManufacturerbrandtextLocatornp() throws Exception{
 		//Thread.sleep(2500);
+
 		utility.assertElementPresent(asmanufacturerbrandtextLocator);
 		return this;
 	}
@@ -63,6 +67,7 @@ public class ManufacturerBrandPageObjects extends PageFactoryInitializer
 		String count="count(//form/table/thead/tr/th/div/span[text()='Manufacturer Name']/../../preceding-sibling::*)+1";
 		System.out.println("count is"+count);
 		try {
+
 			if(getDriver().findElement(By.xpath("//form/table/tbody/tr[td["+count+"]='"+manufacturername+"']/td["+count+"]")).isDisplayed())
 			{
 				return false;
@@ -135,6 +140,7 @@ public class ManufacturerBrandPageObjects extends PageFactoryInitializer
 
 	@Step("verify manufacturer save message")
 	public ManufacturerBrandPageObjects verifymessage(String message) throws InterruptedException {
+
 		waiting.explicitWaitVisibilityOfElement(manufacturermessagesaveph, 10);
 		Assert.assertEquals(manufacturermessagesaveph.getText().trim(),message );
 		return this;
@@ -157,6 +163,7 @@ public class ManufacturerBrandPageObjects extends PageFactoryInitializer
 	public ManufacturerBrandPageObjects clickOnlisticon() throws Exception {
 		brandList.click();
 		//Thread.sleep(4000);
+
 		utility.waitforElementPresent("//th/div[contains(text(),'Brand Name')]", 10);
 		return this;
 	}
@@ -165,6 +172,7 @@ public class ManufacturerBrandPageObjects extends PageFactoryInitializer
 	{
 
 		try {
+
 			if(getDriver().findElement(By.xpath("//td[contains(text(),'"+brandname+"')]")).isDisplayed())
 			{
 				return false;
@@ -191,6 +199,7 @@ public class ManufacturerBrandPageObjects extends PageFactoryInitializer
 	@Step("click on add new brand button")
 	public ManufacturerBrandPageObjects clickOnaddnewbrandbutton() throws Exception {
 		addnewbrandbutton.click();
+
 		//tu.waitforElementPresent("//form/div[contains(text(),'Add New Brand')]", 10);
 		Thread.sleep(4000);
 
@@ -272,6 +281,7 @@ public class ManufacturerBrandPageObjects extends PageFactoryInitializer
 
 	@Step("check brand is saved succesfully")
 	public ManufacturerBrandPageObjects checkBrandSaveMessage(String brandsavemsg) throws Exception {
+
 		utility.waitforElementPresent("//*[@id='addBrandForm:saveMsgBrandId' and contains(text(),'"+brandsavemsg+"')]", 10);
 		Assert.assertEquals(brandsavemsgloc.getText(), brandsavemsg);
 		return this;

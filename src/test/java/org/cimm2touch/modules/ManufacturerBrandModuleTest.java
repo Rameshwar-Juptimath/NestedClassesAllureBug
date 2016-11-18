@@ -23,6 +23,49 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 	RandomGenerator random=new RandomGenerator();
 
 	
+	@Features(value = {"Manufacturers & Brands Module"})
+	@Description("This is a Method that Creates Manufacturers.")
+	@Test(priority=1, enabled=true, groups={"regression"},dataProvider="ManufacturerBrandModuleTest",dataProviderClass=SearchData.class)
+	public void createManufacturers(String testCaseID, String manufacturersName, String manufacturersCode, String manufacturerActiveStatus, String saveMessage) throws Exception
+	{
+		landingPage()
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+		.clickOnLogin()
+		.homePage()
+		.clickOnManufacturerAndBrands()
+		.manufacturersAndBrandsPage()
+		.verifyManufacturersAndBrandsPageItems()
+		.clickOnAddNewManufacturerButton()
+		.verifyAddNewManufacturerFormItems()
+		.addNewManufacture(manufacturersName, manufacturersCode, manufacturerActiveStatus)
+		.clickOnSaveNewManufacturer()
+		.verifyMessageAfterSavingManufacturer(saveMessage);
+	}
+
+	@Features(value = {"Manufacturers & Brands Module"})
+	@Description("This is a Method that Creates Brands for Specific Manufactures {1}.")
+	@Test(priority=2,enabled=true, groups={"regression"},dataProvider="ManufacturerBrandModuleTest",dataProviderClass=SearchData.class)
+	public void createBrands(String testCaseID, String manufacturersName, String brandName, String brandDesc, String brandActiveStatus,
+			String brandURL, String saveMessage) throws Exception
+	{
+		landingPage()
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+		.clickOnLogin()
+		.homePage()
+		.clickOnManufacturerAndBrands()
+		.manufacturersAndBrandsPage()
+		.verifyManufacturersAndBrandsPageItems()
+		.searchForManufacturer(manufacturersName)
+		.verifyAfterSearchingForManufacturer(manufacturersName)
+		.clickOnAddNewBrand()
+		.verifyAddNewBrandFormItems()
+		.verifyPreSelectedManufacturerWhenAddingBrand(manufacturersName)
+		.addNewBrand(brandName, brandDesc, brandActiveStatus, brandURL)
+		.clickOnSaveNewBrand()
+		.verifyMessageAfterSavingBrands(saveMessage);
+	}
 
 	@Features(value = {"Manufacturers & Brands Module"})
 	@Description("This Test Case is to verify the 'Add New Manufacturer' Form Items")
@@ -215,6 +258,7 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 	@Features(value = {"Manufacturers & Brands Module"})
 	@Description("This Test Case is to Verify the Working of the 'Sort Order' Option under 'Generic Column Settings'  in Manufacturers & Brands Page.")
 	@TestCaseId("TC_MB_019, TC_MB_020, TC_MB_022")
+
 	@Test(groups = {"regression"},dataProvider="ManufacturerBrandModuleTest",dataProviderClass=SearchData.class)
 	public void TC_MB_019(String testCaseID,String userName,String password) throws Exception
 	{
@@ -423,11 +467,13 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 	@Description("This test case is to Verify the Character Limit for 'Edit BrandName'.")
 	@TestCaseId("TC_MB_039")
 	@Test(priority=22,groups={"regression"},dataProvider="ManufacturerBrandModuleTest",dataProviderClass=SearchData.class)
+
 	public void TC_MB_039_1(String testCaseID,String userName,String password, String brandName) throws Exception
 	{
 		landingPage()
 		.enterUsername(userName)
 		.enterPassword(password)
+
 		.clickOnLogin()
 		.homePage()
 		.clickOnManufacturerAndBrands()
@@ -445,11 +491,13 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 	@Description("This test case is to Verify the Character Limit for 'Edit BrandName'.")
 	@TestCaseId("TC_MB_041")
 	@Test(priority=23,groups={"regression"},dataProvider="ManufacturerBrandModuleTest",dataProviderClass=SearchData.class)
+
 	public void TC_MB_041(String testCaseID,String userName,String password, String brandName) throws Exception
 	{
 		landingPage()
 		.enterUsername(userName)
 		.enterPassword(password)
+
 		.clickOnLogin()
 		.homePage()
 		.clickOnManufacturerAndBrands()
@@ -469,6 +517,7 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 	@Description("This test case is to Verify the 'Custom Fields' Tab in Edit Brands Page.")
 	@TestCaseId("TC_MB_042")
 	@Test(priority=24,groups={"regression"},dataProvider="ManufacturerBrandModuleTest",dataProviderClass=SearchData.class)
+
 	public void TC_MB_042(String testCaseID,String userName,String password, String brandName) throws Exception
 	{
 		landingPage()
@@ -491,6 +540,7 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 	@Description("This test case is to add 'new Manufacturer and Brand'")
 	@TestCaseId("TC_MB_043")
 	@Test(priority=25,groups={"regression"},dataProvider="ManufacturerBrandModuleTest",dataProviderClass=SearchData.class)
+
 	public void TC_MB_043(String testCaseID,String userName,String password, String manufacturersName, String manufacturersCode, String manufacturerActiveStatus, 
 			String manufacturerSaveMessage, String brandName, String brandDesc, String brandActiveStatus, String brandURL, String brandSaveMessage) throws Exception
 	{
@@ -523,6 +573,7 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 	@Description("This test case is to remove newly added 'Manufacturer and Brand'")
 	@TestCaseId("TC_MB_043_1")
 	@Test(priority=26,groups={"regression"},dataProvider="ManufacturerBrandModuleTest",dataProviderClass=SearchData.class)
+
 	public void TC_MB_043_1(String testCaseID,String userName,String password, String manufacturerName, String brandName, String manuDelMessage, String brandDelMessage) throws Exception
 	{
 		landingPage()
@@ -548,6 +599,7 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 	@Features(value = {"Manufacturers & Brands Module"})
 	@Description("This Test Case is to verify the Character Limit for 'Manufacturer Name' ")
 	@TestCaseId("TC_MB_045")
+
 	@Test(groups={"regression"},dataProvider="ManufacturerBrandModuleTest",dataProviderClass=SearchData.class)
 	public void verifyCharLimitManuName(String testcaseId, String userName, String password) throws Exception 
 	{
@@ -569,6 +621,7 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 	@Features(value = {"Manufacturers & Brands Module"})
 	@Description("This Test Case is to verify the Character Limit for 'Manufacturer Code' ")
 	@TestCaseId("TC_MB_046")
+
 	@Test(groups={"regression"},dataProvider="ManufacturerBrandModuleTest",dataProviderClass=SearchData.class)
 	public void verifyCharLimitManuCode(String testcaseId, String userName, String password) throws Exception 
 	{
@@ -583,6 +636,7 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 		.verifyManufacturersAndBrandsPageItems()
 		.clickOnAddNewManufacturerButton()
 		.verifyAddNewManufacturerFormItems()
+
 		.verifyCharacterLimitForManufacturersCode(maxNums);
 	}
 
@@ -590,6 +644,7 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 	@Description("This test case is to Verify the Character Limit for 'Edit BrandDesc'.")
 	@TestCaseId("TC_MB_047")
 	@Test(priority=29,groups={"regression"},dataProvider="ManufacturerBrandModuleTest",dataProviderClass=SearchData.class)
+
 	public void TC_MB_047(String testCaseID,String userName,String password, String brandName) throws Exception
 	{
 		landingPage()
@@ -611,6 +666,7 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 	@Description("This test case is to Verify the Character Limit for 'Edit Brand URL'.")
 	@TestCaseId("TC_MB_048")
 	@Test(priority=30,groups={"regression"},dataProvider="ManufacturerBrandModuleTest",dataProviderClass=SearchData.class)
+
 	public void TC_MB_048(String testCaseID,String userName,String password, String brandName) throws Exception
 	{
 		landingPage()
@@ -636,8 +692,13 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 	 * @author:yogish.mt
 
 		landingPage()
+
 		.enterUsername(userName)
 		.enterPassword(password)
+=======
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -667,8 +728,13 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 
 
 		landingPage()
+
 		.enterUsername(userName)
 		.enterPassword(password)
+=======
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(data.getwelcomeMessage())
@@ -703,8 +769,13 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 	 * 
 
 		landingPage()
+
 		.enterUsername(userName)
 		.enterPassword(password)
+=======
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
 		.clickOnManufacturerAndBrands()
@@ -735,8 +806,13 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 	 * 
 
 		landingPage()
+
 		.enterUsername(userName)
 		.enterPassword(password)
+=======
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
 		.clickOnManufacturerAndBrands()
@@ -758,8 +834,13 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 	 * 
 
 		landingPage()
+
 		.enterUsername(userName)
 		.enterPassword(password)
+=======
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
 		.clickOnManufacturerAndBrands()
@@ -779,8 +860,13 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 	 * 
 
 		landingPage()
+
 		.enterUsername(userName)
 		.enterPassword(password)
+=======
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
 		.clickOnManufacturerAndBrands()
@@ -804,8 +890,13 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 	 * 
 
 		landingPage()
+
 		.enterUsername(userName)
 		.enterPassword(password)
+=======
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
 		.clickOnManufacturerAndBrands()
@@ -829,8 +920,13 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 	 * 
 
 		landingPage()
+
 		.enterUsername(userName)
 		.enterPassword(password)
+=======
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
 		.clickOnManufacturerAndBrands()
@@ -848,8 +944,13 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 	@Test(groups = {"regression"})
 	public void verifyShowFieldsFields() throws Exception{
 		landingPage()
+
 		.enterUsername(userName)
 		.enterPassword(password)
+=======
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
 		.clickOnManufacturerAndBrands()
@@ -871,8 +972,13 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 	@Test(groups = {"regression"})
 	public void verifyResetButton() throws Exception {
 		landingPage()
+
 		.enterUsername(userName)
 		.enterPassword(password)
+=======
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
 		.clickOnManufacturerAndBrands()
@@ -889,8 +995,13 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 	@Test(groups = {"regression"})
 	public void viewSelectedFieldInManufacturerList() throws Exception {
 		landingPage()
+
 		.enterUsername(userName)
 		.enterPassword(password)
+=======
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
 		.clickOnManufacturerAndBrands()
@@ -915,8 +1026,13 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 	@Test(groups = {"regression"})
 	public void viewSortOrderSettings() throws Exception {
 		landingPage()
+
 		.enterUsername(userName)
 		.enterPassword(password)
+=======
+		.enterUsername(data.getUserName())
+		.enterPassword(data.getPassword())
+>>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
 		.clickOnManufacturerAndBrands()
