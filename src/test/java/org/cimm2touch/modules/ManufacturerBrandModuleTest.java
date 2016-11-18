@@ -18,19 +18,17 @@ import ru.yandex.qatools.allure.annotations.TestCaseId;
 public class ManufacturerBrandModuleTest extends PageFactoryInitializer 
 {
 
-	SearchDataPropertyFile data = new SearchDataPropertyFile();
-	ApplicationSetUpPropertyFile setUp = new ApplicationSetUpPropertyFile();
 	RandomGenerator random=new RandomGenerator();
 
 	
 	@Features(value = {"Manufacturers & Brands Module"})
 	@Description("This is a Method that Creates Manufacturers.")
 	@Test(priority=1, enabled=true, groups={"regression"},dataProvider="ManufacturerBrandModuleTest",dataProviderClass=SearchData.class)
-	public void createManufacturers(String testCaseID, String manufacturersName, String manufacturersCode, String manufacturerActiveStatus, String saveMessage) throws Exception
+	public void createManufacturers(String testCaseID,String userName,String password, String manufacturersName, String manufacturersCode, String manufacturerActiveStatus, String saveMessage) throws Exception
 	{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
 		.clickOnManufacturerAndBrands()
@@ -46,12 +44,12 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 	@Features(value = {"Manufacturers & Brands Module"})
 	@Description("This is a Method that Creates Brands for Specific Manufactures {1}.")
 	@Test(priority=2,enabled=true, groups={"regression"},dataProvider="ManufacturerBrandModuleTest",dataProviderClass=SearchData.class)
-	public void createBrands(String testCaseID, String manufacturersName, String brandName, String brandDesc, String brandActiveStatus,
+	public void createBrands(String testCaseID,String userName,String password, String manufacturersName, String brandName, String brandDesc, String brandActiveStatus,
 			String brandURL, String saveMessage) throws Exception
 	{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 		.clickOnLogin()
 		.homePage()
 		.clickOnManufacturerAndBrands()
@@ -696,8 +694,8 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 		.enterUsername(userName)
 		.enterPassword(password)
 =======
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 >>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
@@ -732,8 +730,8 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 		.enterUsername(userName)
 		.enterPassword(password)
 =======
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 >>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
@@ -773,8 +771,8 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 		.enterUsername(userName)
 		.enterPassword(password)
 =======
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 >>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
@@ -810,8 +808,8 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 		.enterUsername(userName)
 		.enterPassword(password)
 =======
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 >>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
@@ -838,8 +836,8 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 		.enterUsername(userName)
 		.enterPassword(password)
 =======
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 >>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
@@ -864,8 +862,8 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 		.enterUsername(userName)
 		.enterPassword(password)
 =======
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 >>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
@@ -894,8 +892,8 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 		.enterUsername(userName)
 		.enterPassword(password)
 =======
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 >>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
@@ -924,8 +922,8 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 		.enterUsername(userName)
 		.enterPassword(password)
 =======
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 >>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
@@ -948,8 +946,8 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 		.enterUsername(userName)
 		.enterPassword(password)
 =======
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 >>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
@@ -976,8 +974,8 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 		.enterUsername(userName)
 		.enterPassword(password)
 =======
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 >>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
@@ -999,8 +997,8 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 		.enterUsername(userName)
 		.enterPassword(password)
 =======
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 >>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()
@@ -1030,8 +1028,8 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 		.enterUsername(userName)
 		.enterPassword(password)
 =======
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(userName)
+		.enterPassword(password)
 >>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
 		.clickOnLogin()
 		.homePage()

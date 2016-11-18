@@ -619,13 +619,13 @@ public class SubsetPageObjects extends PageFactoryInitializer
 		serchSubset(subsetName);
 		Thread.sleep(1500);
 
-		WebElement verifySubsetNameLocator= getDriver().findElement(By.xpath("//span[contains(text(),'"+data.getsubsetNamedata()+"')]"));
+		WebElement verifySubsetNameLocator= getDriver().findElement(By.xpath("//span[contains(text(),'"+subsetName+"')]"));
 		if(subsetName.trim().equals(verifySubsetNameLocator.getText().trim())){
 			String substId = getsubsetId();
 			clickOnSpecificDeleteButton(1);
 			tu.alertAccept();
 			Thread.sleep(2000);
-			Assert.assertEquals(subsetRemoveMessage.getText(),"Subset - : '"+data.getsubsetNamedata()+"'with Subset Id -'"+substId+"' removed Successfully");
+			Assert.assertEquals(subsetRemoveMessage.getText(),"Subset - : '"+subsetName+"'with Subset Id -'"+substId+"' removed Successfully");
 			//'subset_qa'with Subset Id -'1039' removed Successfully
 		}
 		return this;
@@ -907,7 +907,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 		serchSubset(subsetName);
 		Thread.sleep(1500);
 
-		WebElement verifySubsetNameLocator= getDriver().findElement(By.xpath("//span[contains(text(),'"+data.getsubsetNamedata()+"')]"));
+		WebElement verifySubsetNameLocator= getDriver().findElement(By.xpath("//span[contains(text(),'"+subsetName+"')]"));
 		if(subsetName.trim().equals(verifySubsetNameLocator.getText().trim())){
 			String substId = getsubsetId();
 			Thread.sleep(1500);
@@ -915,7 +915,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 
 			tu.alertAccept();
 			Thread.sleep(3000);
-			Assert.assertEquals(subsetRemoveMessage.getText(),"Subset - : '"+data.getsubsetNamedata()+"'with Subset Id -'"+substId+"' removed Successfully");
+			Assert.assertEquals(subsetRemoveMessage.getText(),"Subset - : '"+subsetName+"'with Subset Id -'"+substId+"' removed Successfully");
 			//'subset_qa'with Subset Id -'1039' removed Successfully
 		}
 		return this;

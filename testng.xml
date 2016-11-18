@@ -1,12 +1,12 @@
-<<<<<<< HEAD
+
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Google Test" data-provider-thread-count="4" parallel="methods" thread-count="4">
+<suite name="CIMM2Touch Test" data-provider-thread-count="4" parallel="methods" thread-count="4">
  
-<test name="Regression Testing">
- <parameter name="browser" value="chrome"></parameter>
-  <parameter name="Node Url" value="http://10.200.1.188:4444/wd/hub"></parameter>
+<test name="regression">
+ <parameter name="browser" value="chrome"/>
+  <parameter name="Node Url" value="http://10.200.1.188:4444/wd/hub"/>
     <classes>
-        <class name="org.google.modules.SearchModuleTest" ></class>
+         <class name="org.cimm2touch.modules.AdvancedSearchModuleTest"/>
     </classes>
 </test>
  
@@ -20,24 +20,4 @@
 </test> -->
 
 </suite>
-=======
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="CIMM2Touch Automation Suite">
-	<listeners>
-		<listener class-name="org.cimm2touch.maincontroller.MainController" />
-	</listeners>
-	<test name="End to End Testing">
 
-		<groups>
-			<run>
-				<include name="regression" />
-			</run>
-		</groups>
-		<classes>
-			<class name="org.cimm2touch.modules.CreateDataConfigTest" />
-			<class name="org.cimm2touch.modules.AdvancedSearchModuleTest" />			
-		</classes>
-	</test> <!-- Regression Testing -->
-</suite> <!-- CIMM2Touch Automation Suite -->
->>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74

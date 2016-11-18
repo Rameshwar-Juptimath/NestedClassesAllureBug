@@ -18,8 +18,7 @@ import ru.yandex.qatools.allure.annotations.TestCaseId;
 
 public class SubsetModuleTest extends PageFactoryInitializer
 {
-	SearchDataPropertyFile data = new SearchDataPropertyFile();
-	ApplicationSetUpPropertyFile setUp = new ApplicationSetUpPropertyFile();
+
 	RandomGenerator random=new RandomGenerator();
 
 

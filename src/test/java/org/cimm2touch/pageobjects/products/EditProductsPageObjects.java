@@ -123,9 +123,9 @@ public class EditProductsPageObjects  extends PageFactoryInitializer{
 	private WebElement productUploadImageLocator;
 	
 	 @Step("This method is used verify product page all tabs")
-	 public EditProductsPageObjects verifyProductsPageTabs() throws Exception{
+	 public EditProductsPageObjects verifyProductsPageTabs(String productsTabNames) throws Exception{
 	
-		String productPageTabsNames[] =data.getProductPageTabsNames().split(",");
+		String productPageTabsNames[] =productsTabNames.split(",");
 		
 		for(int i=0;i<productPageTabsLocator.size();i++)
 		{
@@ -143,9 +143,9 @@ public class EditProductsPageObjects  extends PageFactoryInitializer{
 	  }
 	
 	  @Step("This method is used verify FieldNames InGeneralInfoTab")
-	  public EditProductsPageObjects verifyFieldNamesInGeneralInfoTab() throws Exception{
+	  public EditProductsPageObjects verifyFieldNamesInGeneralInfoTab(String generalInFoFieldNames) throws Exception{
 			
-			String fieldNamesInGeneralInfoTab[] =data.getFieldNamesInGeneralInfoTab().split(",");
+			String fieldNamesInGeneralInfoTab[] =generalInFoFieldNames.split(",");
 			
 			for(int i=0;i<fieldNamesInGeneralInfoTabLocator.size();i++)
 			{
@@ -164,9 +164,9 @@ public class EditProductsPageObjects  extends PageFactoryInitializer{
 	  }
 	  
 	  @Step("This method is used verify FieldNames InProductImagesTab")
-	  public EditProductsPageObjects verifyFieldNamesInProductImagesTab() throws Exception{
+	  public EditProductsPageObjects verifyFieldNamesInProductImagesTab(String fieldNameProductImagesTab) throws Exception{
 			
-			String fieldNamesInProductImagesTab[] =data.getFieldNamesInProductImagesTab().split(",");
+			String fieldNamesInProductImagesTab[] =fieldNameProductImagesTab.split(",");
 			
 			for(int i=0;i<fieldNamesInProductImagesTabLocator.size();i++)
 			{
@@ -200,9 +200,9 @@ public class EditProductsPageObjects  extends PageFactoryInitializer{
 	    }
 	  
 	  @Step("This method is used verify FieldNames InAddNewProductImage")
-	  public EditProductsPageObjects verifyFieldNamesInAddNewProductImage() throws Exception{
+	  public EditProductsPageObjects verifyFieldNamesInAddNewProductImage(String fieldsNameInAddNewProductImage) throws Exception{
 			
-			String fieldNamesInAddNewProductImage[] =data.getFieldNamesInAddNewProductImage().split(",");
+			String fieldNamesInAddNewProductImage[] =fieldsNameInAddNewProductImage.split(",");
 			
 			for(int i=0;i<fieldNamesInAddNewProductImageLocator.size();i++)
 			{

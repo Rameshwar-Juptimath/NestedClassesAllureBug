@@ -11,7 +11,7 @@ import org.testng.annotations.DataProvider;
 public class SearchData
 {
 
-	@DataProvider(name="loginTestData")
+	@DataProvider(name="loginTestData",parallel = true)
 	public static Object[][] loginCredentials(){
 		return new  Object[][]{
 			{"automationUser","unilog123##","Welcome, Automation !"}
@@ -19,7 +19,7 @@ public class SearchData
 		
 	}
 
-	@DataProvider(name="excelSheetDataRead")
+	@DataProvider(name="excelSheetDataRead",parallel = true)
 	public static Object[][] excelSheetDataRead(Method methodName) throws Exception
 	{
 		File file = new File("resources/ExcelSheetData/"+methodName.getName()+".xlsx");
@@ -28,73 +28,75 @@ public class SearchData
 
 		return data;
 	}
-	@DataProvider(name="CreateDataConfigTest")
+	@DataProvider(name="CreateDataConfigTest",parallel = true)
 	public static Object[][] createDataConfigTest(Method methodName) throws Exception
 	{
 		File file = new File("resources/ExcelSheetData/CreateDataConfigTest.xlsx");
-		ExcelLibrary excel = new ExcelLibrary("resources/ExcelSheetData/CreateDataConfigTest.xlsx");
+		ExcelLibrary excel = new ExcelLibrary("resources/ExcelSheetData/CreateDataConfigTest.xlsx",methodName.getName());
 		Object data[][] = excel.readFromExcelDataForTestNGDataProvider(file.getAbsolutePath(),methodName.getName());
 
 		return data;
 	}
-	@DataProvider(name="RemoveDataConfigTest")
+	@DataProvider(name="RemoveDataConfigTest",parallel = true)
 	public static Object[][] removeDataConfigTest(Method methodName) throws Exception
 	{
 		File file = new File("resources/ExcelSheetData/RemoveDataConfigTest.xlsx");
 
-		ExcelLibrary excel = new ExcelLibrary("resources/ExcelSheetData/RemoveDataConfigTest.xlsx");
+		ExcelLibrary excel = new ExcelLibrary("resources/ExcelSheetData/RemoveDataConfigTest.xlsx",methodName.getName());
 		Object data[][] = excel.readFromExcelDataForTestNGDataProvider(file.getAbsolutePath(),methodName.getName());
 		return data;
 	}
-	@DataProvider(name="AdvancedSearchModuleTest")
+	
+	
+	@DataProvider(name="AdvancedSearchModuleTest",parallel = true)
 	public static Object[][] advancedSearchModuleTest(Method methodName) throws Exception
 	{
 		File file = new File("resources/ExcelSheetData/AdvancedSearchModuleTest.xlsx");
-		ExcelLibrary excel = new ExcelLibrary("resources/ExcelSheetData/AdvancedSearchModuleTest.xlsx");
+		ExcelLibrary excel = new ExcelLibrary("resources/ExcelSheetData/AdvancedSearchModuleTest.xlsx",methodName.getName());
 		Object data[][] = excel.readFromExcelDataForTestNGDataProvider(file.getAbsolutePath(),methodName.getName());
 
 		return data;
 	}
 	
-	@DataProvider(name="ItemsModuleTest")
+	@DataProvider(name="ItemsModuleTest",parallel = true)
 	public static Object[][] itemsModuleTest(Method methodName) throws Exception
 	{
 		File file = new File("resources/ExcelSheetData/ItemsModuleTest.xlsx");
-		ExcelLibrary excel = new ExcelLibrary("resources/ExcelSheetData/ItemsModuleTest.xlsx");
+		ExcelLibrary excel = new ExcelLibrary("resources/ExcelSheetData/ItemsModuleTest.xlsx",methodName.getName());
 		Object data[][] = excel.readFromExcelDataForTestNGDataProvider(file.getAbsolutePath(),methodName.getName());
 
 		return data;
 	}
-	@DataProvider(name="TaxonomyModuleTest")
+	@DataProvider(name="TaxonomyModuleTest",parallel = true)
 	public static Object[][] taxonomyModuleTest(Method methodName) throws Exception
 	{
 		File file = new File("resources/ExcelSheetData/TaxonomyModuleTest.xlsx");
-		ExcelLibrary excel = new ExcelLibrary("resources/ExcelSheetData/TaxonomyModuleTest.xlsx");
+		ExcelLibrary excel = new ExcelLibrary("resources/ExcelSheetData/TaxonomyModuleTest.xlsx",methodName.getName());
 		Object data[][] = excel.readFromExcelDataForTestNGDataProvider(file.getAbsolutePath(),methodName.getName());
 
 		return data;
 	}
 
-	@DataProvider(name="ManufacturerBrandModuleTest")
+	@DataProvider(name="ManufacturerBrandModuleTest",parallel = true)
 	public static Object[][] manufacturerBrandModuleTest(Method methodName) throws Exception
 	{
-		File file = new File("resources/ExcelSheetData/ManufacturerBrandModuleTest.xlsx");
+		File file = new File("resources/ExcelSheetData/ManufacturerBrandModuleTest.xlsx",methodName.getName());
 		ExcelLibrary excel = new ExcelLibrary("resources/ExcelSheetData/ManufacturerBrandModuleTest.xlsx");
 		Object data[][] = excel.readFromExcelDataForTestNGDataProvider(file.getAbsolutePath(),methodName.getName());
 		return data;
 	}
 
-	@DataProvider(name="SubsetModuleTest")
+	@DataProvider(name="SubsetModuleTest",parallel = true)
 	public static Object[][] SubsetModuleTest(Method methodName) throws Exception
 	{
 		File file = new File("resources/ExcelSheetData/SubsetModuleTest.xlsx");
-		ExcelLibrary excel = new ExcelLibrary("resources/ExcelSheetData/SubsetModuleTest.xlsx");
+		ExcelLibrary excel = new ExcelLibrary("resources/ExcelSheetData/SubsetModuleTest.xlsx",methodName.getName());
 		Object data[][] = excel.readFromExcelDataForTestNGDataProvider(file.getAbsolutePath(),methodName.getName());
 
 		return data;
 	}
 
-	@DataProvider(name="VendorsModuleTest")
+	@DataProvider(name="VendorsModuleTest",parallel = true)
 	public static Object[][] VendorsModuleTest(Method methodName) throws Exception
 	{
 		File file = new File("resources/ExcelSheetData/VendorsModuleTest.xlsx");

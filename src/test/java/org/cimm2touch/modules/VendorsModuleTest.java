@@ -1,4 +1,6 @@
 package org.cimm2touch.modules;
+import java.util.HashMap;
+
 /**
  * @author Thiruveedhi Chinna
  *
@@ -7,6 +9,7 @@ import org.cimm2touch.dataprovider.SearchData;
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.utils.SearchDataPropertyFile;
 import org.framework.utils.ApplicationSetUpPropertyFile;
+import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import ru.yandex.qatools.allure.annotations.Description;
@@ -17,7 +20,16 @@ public class VendorsModuleTest extends PageFactoryInitializer
 {
 	SearchDataPropertyFile data = new SearchDataPropertyFile();
 	ApplicationSetUpPropertyFile setUp = new ApplicationSetUpPropertyFile();
+HashMap<String, String> loginData;
 	
+	
+	@Factory(dataProvider="loginTestData", dataProviderClass=SearchData.class)
+	public VendorsModuleTest(String userName, String password, String welcomMessage){
+		loginData=new HashMap<String, String>();
+		loginData.put("userName", userName);
+		loginData.put("password", password);
+		loginData.put("welcomeMessage", welcomMessage);
+	}
 	
 	@Description("pre setting for Desktop view in vendors page- show fields for Automation.")
 	@Features(value={"Vendors Module"})
@@ -48,8 +60,8 @@ public class VendorsModuleTest extends PageFactoryInitializer
 			String state, String zip, String country, String email, String subset, String url, String taxID, String status, String saveMessage) throws Exception
 	{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
 		.clickOnLogin()
 		.homePage()
 		.clickOnVendorLink()
@@ -67,8 +79,8 @@ public class VendorsModuleTest extends PageFactoryInitializer
 	public void TC_Vendors_001()
 	{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
 		.clickOnLogin()
 		.homePage()
 		.clickOnVendorLink()
@@ -84,8 +96,8 @@ public class VendorsModuleTest extends PageFactoryInitializer
 			String state, String zip, String country, String email, String subset, String url, String taxID, String status, String saveMessage) throws Exception
 	{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
 		.clickOnLogin()
 		.homePage()
 		.clickOnVendorLink()
@@ -104,8 +116,8 @@ public class VendorsModuleTest extends PageFactoryInitializer
 			String address1ErrorMessage, String emailErrorMessage) throws Exception
 	{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
 		.clickOnLogin()
 		.homePage()
 		.clickOnVendorLink()
@@ -125,8 +137,8 @@ public class VendorsModuleTest extends PageFactoryInitializer
 	public void TC_Vendors_003_1() throws Exception
 	{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
 		.clickOnLogin()
 		.homePage()
 		.clickOnVendorLink()
@@ -151,8 +163,8 @@ public class VendorsModuleTest extends PageFactoryInitializer
 			String state, String zip, String country, String email, String subset, String url, String taxID, String status, String saveMessage) throws Exception
 	{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
 		.clickOnLogin()
 		.homePage()
 		.clickOnVendorLink()
@@ -170,8 +182,8 @@ public class VendorsModuleTest extends PageFactoryInitializer
 	public void TC_Vendors_017(String testCaseID, String vendorsName) throws Exception
 	{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
 		.clickOnLogin()
 		.homePage()
 		.clickOnVendorLink()
@@ -188,8 +200,8 @@ public class VendorsModuleTest extends PageFactoryInitializer
 	public void TC_Vendors_019(String testCaseID, String vendorsName, String vendorNameMessage, String shortNameMessage, String address1Message, String emailMessage) throws Exception
 	{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
 		.clickOnLogin()
 		.homePage()
 		.clickOnVendorLink()
@@ -213,8 +225,8 @@ public class VendorsModuleTest extends PageFactoryInitializer
 	public void TC_Vendors_026(String testCaseID, String vendorsName) throws Exception
 	{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
 		.clickOnLogin()
 		.homePage()
 		.clickOnVendorLink()
@@ -236,8 +248,8 @@ public class VendorsModuleTest extends PageFactoryInitializer
 	public void TC_Vendors_027(String testCaseID, String vendorsName) throws Exception
 	{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
 		.clickOnLogin()
 		.homePage()
 		.clickOnVendorLink()
@@ -260,8 +272,8 @@ public class VendorsModuleTest extends PageFactoryInitializer
 	public void TC_Vendors_032() throws Exception
 	{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
 		.clickOnLogin()
 		.homePage()
 		.clickOnVendorLink()
@@ -277,8 +289,8 @@ public class VendorsModuleTest extends PageFactoryInitializer
 	public void TC_Vendors_033() throws Exception
 	{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
 		.clickOnLogin()
 		.homePage()
 		.clickOnVendorLink()
@@ -294,8 +306,8 @@ public class VendorsModuleTest extends PageFactoryInitializer
 	public void TC_Vendors_034() throws Exception
 	{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
 		.clickOnLogin()
 		.homePage()
 		.clickOnVendorLink()
@@ -311,8 +323,8 @@ public class VendorsModuleTest extends PageFactoryInitializer
 	public void TC_Vendors_035() throws Exception
 	{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
 		.clickOnLogin()
 		.homePage()
 		.clickOnVendorLink()
@@ -328,8 +340,8 @@ public class VendorsModuleTest extends PageFactoryInitializer
 	public void TC_Vendors_036() throws Exception
 	{
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
 		.clickOnLogin()
 		.homePage()
 		.clickOnVendorLink()

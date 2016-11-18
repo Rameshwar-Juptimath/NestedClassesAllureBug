@@ -1,17 +1,30 @@
 package org.cimm2touch.pageobjects.landingpage;
 
+import java.util.HashMap;
+
+import org.cimm2touch.dataprovider.SearchData;
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.pageobjects.homepage.HomePageObjects;
 import org.cimm2touch.utils.SearchDataPropertyFile;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-
+import org.testng.annotations.Factory;
 
 import ru.yandex.qatools.allure.annotations.Step;
 
 public class LandingPageObjects extends PageFactoryInitializer{
 
 	SearchDataPropertyFile data = new SearchDataPropertyFile();
+HashMap<String, String> loginData;
+	
+	
+	@Factory(dataProvider="loginTestData", dataProviderClass=SearchData.class)
+	public LandingPageObjects(String userName, String password, String welcomMessage){
+		loginData=new HashMap<String, String>();
+		loginData.put("userName", userName);
+		loginData.put("password", password);
+		loginData.put("welcomeMessage", welcomMessage);
+	}
 
 	@FindBy(id="login:userName")
 	private WebElement usernameLocator;
@@ -48,8 +61,8 @@ public class LandingPageObjects extends PageFactoryInitializer{
 	@Step("login to cimm2v4 site with username{0}, password{1}")
 	public LandingPageObjects loginToCimm2v4Site(){
 		landingPage()
-		.enterUsername(data.getUserName())
-		.enterPassword(data.getPassword())
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
 		.clickOnLogin();
 		return this;
 	}

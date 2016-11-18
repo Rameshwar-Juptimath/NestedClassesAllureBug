@@ -270,9 +270,9 @@ public class AttributeGroupsPageObjects extends PageFactoryInitializer{
 		}
 		
 		 @Step("This method is used verify FieldNames In Add New AttributeGroup")
-		 public AttributeGroupsPageObjects verifyFieldNamesInAddNewAttributeGroup() throws Exception{
+		 public AttributeGroupsPageObjects verifyFieldNamesInAddNewAttributeGroup(String fieldsNamesInAddNewAttributeGroup) throws Exception{
 				
-		 String fieldNamesInAddNewAttributeGroup[] =data.getFieldNamesInAddNewAttributeGroup().split(",");
+		 String fieldNamesInAddNewAttributeGroup[] =fieldsNamesInAddNewAttributeGroup.split(",");
 				
 				for(int i=0;i<fieldNamesInAddNewAttributeGroupLocator.size();i++)
 				{

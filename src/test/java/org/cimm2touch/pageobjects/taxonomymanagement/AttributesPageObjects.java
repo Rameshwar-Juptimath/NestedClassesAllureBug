@@ -482,9 +482,9 @@ public class AttributesPageObjects extends PageFactoryInitializer
 
 
 	@Step("This method is used verify FieldNames In Add New Attribute")
-	public AttributesPageObjects verifyFieldNamesInAddNewAttribute() throws Exception{
+	public AttributesPageObjects verifyFieldNamesInAddNewAttribute(String FieldNamesInAddNewAttribute) throws Exception{
 
-		String fieldNamesInAddNewAttribute[] =data.getFieldNamesInAddNewAttribute().split(",");
+		String fieldNamesInAddNewAttribute[] =FieldNamesInAddNewAttribute.split(",");
 
 		for(int i=0;i<fieldNamesInAddNewAttributeLocator.size();i++)
 		{

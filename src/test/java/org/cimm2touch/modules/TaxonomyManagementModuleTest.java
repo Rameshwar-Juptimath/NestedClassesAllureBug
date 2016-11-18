@@ -1,4 +1,4 @@
-package org.cimm2touch.modules;
+/*package org.cimm2touch.modules;
 
 import org.cimm2touch.dataprovider.SearchData;
 
@@ -479,3 +479,4 @@ public class TaxonomyManagementModuleTest extends PageFactoryInitializer{
 	
 	
 }
+*/

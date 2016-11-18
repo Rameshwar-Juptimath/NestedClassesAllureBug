@@ -23,16 +23,17 @@ import ru.yandex.qatools.allure.annotations.TestCaseId;
 public class TaxonomyModuleTest extends PageFactoryInitializer 
 {
 
-	SearchDataPropertyFile data = new SearchDataPropertyFile();
-	ApplicationSetUpPropertyFile setUp = new ApplicationSetUpPropertyFile();
 
 	RandomGenerator generateRandom = new RandomGenerator();
-	HashMap<String, String> loginMap;
+	HashMap<String, String> loginData;
+	
+	
 	@Factory(dataProvider="loginTestData", dataProviderClass=SearchData.class)
 	public TaxonomyModuleTest(String userName, String password, String welcomMessage){
-		loginMap.put("userName", userName);
-		loginMap.put("password", password);
-		loginMap.put("welcomeMessage", welcomMessage);
+		loginData=new HashMap<String, String>();
+		loginData.put("userName", userName);
+		loginData.put("password", password);
+		loginData.put("welcomeMessage", welcomMessage);
 	}
 	@Features(value = {"Taxonomy Module"})
 	@Description("This is a Test Case to Verify the Taxonomy Page Items.")
@@ -41,8 +42,8 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 	public void TC_TaxMgt_001(String testCaseId, String userName, String password, String welcomeMessage, String taxonomyTableHeaders) throws Exception
 	{	
 		landingPage()
-		.enterUsername(userName)
-		.enterPassword(password)
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(welcomeMessage)

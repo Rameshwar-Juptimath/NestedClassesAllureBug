@@ -159,7 +159,7 @@ public class CategoryAndAttributesPageObjects extends PageFactoryInitializer{
 	}
 
 	@Step("verify history page.")
-	public CategoryAndAttributesPageObjects verifyHistoryPage(String expPageHistory) {
+	public CategoryAndAttributesPageObjects verifyHistoryPage(String expPageHistory, String categoryName) {
 		
 		
 
@@ -172,7 +172,7 @@ public class CategoryAndAttributesPageObjects extends PageFactoryInitializer{
 
 		getDriver().switchTo().window(cId);
 		waiting.explicitWaitVisibilityOfElement(actCategoryHistPageName, 10);
-		Assert.assertEquals(actCategoryHistPageName.getText().trim(), expPageHistory+data.getCategoryName());
+		Assert.assertEquals(actCategoryHistPageName.getText().trim(), expPageHistory+categoryName);
 		getDriver().close();
 		getDriver().switchTo().window(pId);
 		
