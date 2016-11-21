@@ -6,15 +6,17 @@ import org.cimm2touch.dataprovider.SearchData;
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.pageobjects.homepage.HomePageObjects;
 import org.cimm2touch.utils.SearchDataPropertyFile;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Factory;
 
 import ru.yandex.qatools.allure.annotations.Step;
 
 public class LandingPageObjects extends PageFactoryInitializer{
 
-	SearchDataPropertyFile data = new SearchDataPropertyFile();
+	//SearchDataPropertyFile data = new SearchDataPropertyFile();
 HashMap<String, String> loginData;
 	
 	
@@ -24,6 +26,10 @@ HashMap<String, String> loginData;
 		loginData.put("userName", userName);
 		loginData.put("password", password);
 		loginData.put("welcomeMessage", welcomMessage);
+	}
+
+	public LandingPageObjects(WebDriver driver) {
+		PageFactory.initElements(driver, this);
 	}
 
 	@FindBy(id="login:userName")

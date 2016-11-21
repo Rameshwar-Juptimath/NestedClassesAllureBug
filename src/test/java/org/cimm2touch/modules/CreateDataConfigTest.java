@@ -8,25 +8,25 @@ import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Features;
 /**
  * 
- * @author thiruveedhi Chinna
+ * @author thiruveedhi.Chinna
  *
  */
 
 
 public class CreateDataConfigTest extends PageFactoryInitializer{
-
+	
 	@Description("create a new subset.")
 	@Features(value={"CreateDataConfigTest"})
-	@Test(enabled=true,priority=0,groups={"regression"},dataProvider="CreateDataConfigTest",dataProviderClass=SearchData.class)
+	@Test(groups={"regression"},dataProvider="CreateDataConfigTest",dataProviderClass=SearchData.class)
 	public void createNewSubset(String testCaseId, String userName, String password,String welComeMessage,String subsetName, String ExpSuccessfulMessageForCreatedSubset) throws InterruptedException, Exception 
 	{
+		
 		landingPage()
 		.enterUsername(userName)
 		.enterPassword(password)
-		.clickOnLogin();
-		homePage()
-		.verifyWelcomeMessage(welComeMessage);
-		homePage()
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(welComeMessage)
 		.clickOnSubset()
 		.subsetPage()
 		.checkSubsetPage()

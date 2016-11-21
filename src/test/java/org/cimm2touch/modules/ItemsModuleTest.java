@@ -1,10 +1,13 @@
 package org.cimm2touch.modules;
+import java.util.HashMap;
+
 import org.cimm2touch.dataprovider.SearchData;
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.utils.SearchDataPropertyFile;
 import org.cimm2touch.utils.TestUtilityMethods;
 import org.framework.utils.TestUtility;
 import org.testng.Assert;
+import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import ru.yandex.qatools.allure.annotations.Description;
@@ -20,6 +23,17 @@ public class ItemsModuleTest extends PageFactoryInitializer
 	SearchDataPropertyFile data = new SearchDataPropertyFile();
 	TestUtilityMethods utility=new TestUtilityMethods(getDriver());
 	TestUtility tu=new TestUtility(getDriver());
+	
+HashMap<String, String> loginData;
+	
+	
+	@Factory(dataProvider="loginTestData", dataProviderClass=SearchData.class)
+	public ItemsModuleTest(String userName, String password, String welcomMessage){
+		loginData=new HashMap<String, String>();
+		loginData.put("userName", userName);
+		loginData.put("password", password);
+		loginData.put("welcomeMessage", welcomMessage);
+	}
 
 	@Test(groups={"smoke","regression"}, dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
 	public void createNewCategory(String testCaseId, String userName, String password, String welComeMessage, String taxonomyName, String categoryName) throws InterruptedException{
@@ -204,12 +218,12 @@ public class ItemsModuleTest extends PageFactoryInitializer
 	@Features(value = {"Items Module"})
 	@Description("This is a test case which verifies adding and clearing filter functionality in the taxonomy tree completely.")
 	@TestCaseId("TC_ITEMS_013,TC_ITEMS_014")
-	@Test(groups="regression")
-	public void verifyAddingAndClearingOfFilter(String testCaseId, String userName, String password,String categoryName) throws Exception {
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void verifyAddingAndClearingOfFilter(String testCaseId,String categoryName) throws Exception {
 		
 		 landingPage()
-		.enterUsername(userName)
-		.enterPassword(password)
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
 		.clickOnLogin()
 		.homePage()
 		.clickOnItemsLink()
@@ -249,10 +263,9 @@ public class ItemsModuleTest extends PageFactoryInitializer
 	@TestCaseId("TC_ITEMS_016,TC_ITEMS_017,TC_ITEMS_020,TC_ITEMS_021,TC_ITEMS_022")
 	@Test(groups="regression",dataProvider="excelSheetDataRead",dataProviderClass=SearchData.class)
 	public void verifyGenralSearch(String testCaseId, String userName, String password,@Parameter("Drop down value") String Dropdownvalue,@Parameter("Searchable data") String Searchabledata) throws Exception {
-		
-		 landingPage()
-		.enterUsername(userName)
-		.enterPassword(password)
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
 		.clickOnLogin()
 		.homePage()
 		.clickOnItemsLink()

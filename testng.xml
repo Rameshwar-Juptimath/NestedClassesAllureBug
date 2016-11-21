@@ -1,12 +1,13 @@
 
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="CIMM2Touch Test" data-provider-thread-count="4" parallel="methods" thread-count="4">
+<suite name="CIMM2Touch Test" data-provider-thread-count="2" parallel="methods" thread-count="2">
  
 <test name="regression">
  <parameter name="browser" value="chrome"/>
-  <parameter name="Node Url" value="http://10.200.1.188:4444/wd/hub"/>
+  <parameter name="Node Url" value="http://192.168.2.117:4444/wd/hub"/>
     <classes>
-         <class name="org.cimm2touch.modules.AdvancedSearchModuleTest"/>
+         <class name="org.cimm2touch.modules.AdvancedSearchModuleTest">
+       </class>
     </classes>
 </test>
  

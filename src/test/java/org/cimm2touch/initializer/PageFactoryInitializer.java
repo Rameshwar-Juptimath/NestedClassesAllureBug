@@ -17,6 +17,7 @@ import org.cimm2touch.pageobjects.items.ItemsPageObjects;
 import org.cimm2touch.pageobjects.userconfiguration.UserConfigurationPageObjects;
 import org.cimm2touch.pageobjects.vendors.EditVendorsPageObjects;
 import org.cimm2touch.pageobjects.vendors.VendorsPageObjects;
+import org.framework.maincontroller.CallApplication;
 import org.framework.maincontroller.MainController;
 import org.cimm2touch.pageobjects.taxonomymanagement.AttributeGroupsPageObjects;
 import org.cimm2touch.pageobjects.taxonomymanagement.AttributesPageObjects;
@@ -29,7 +30,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.cimm2touch.pageobjects.subset.SubsetPageObjects;
 import org.cimm2touch.pageobjects.homepage.HomePageObjects;
 
-public class PageFactoryInitializer extends MainController
+public class PageFactoryInitializer extends CallApplication
 {
 	public HomePageObjects homePage()
 	{
