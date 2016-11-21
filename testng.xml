@@ -4,7 +4,7 @@
  
 <test name="regression">
  <parameter name="browser" value="chrome"/>
-  <parameter name="Node Url" value="http://192.168.2.117:4444/wd/hub"/>
+  <parameter name="Node Url" value="http://10.200.1.188:4444/wd/hub"/>
     <classes>
          <class name="org.cimm2touch.modules.AdvancedSearchModuleTest">
        </class>

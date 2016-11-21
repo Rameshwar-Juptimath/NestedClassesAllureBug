@@ -463,6 +463,8 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.clickOnbottomSeacrhButton()
 		.verifySubsetItemResults(expectedItems);
 		}
+	@Features(value={"AdvancedSearch Module"})
+	@Description("adding the description to item(s)")
 	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
 	public void addDescriptiontoItems(String testCaseId, String userName,String password,String expWelcomeMsg,String partNumberDesc, String longDesc1, String longDesc2) throws Exception
 	{
@@ -483,6 +485,8 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.saveDescription();
 	}
 
+	@Features(value={"AdvancedSearch Module"})
+	@Description("adding the image url to item(s)")
 	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
 	public void addImageURLtoItems(String testCaseId, String userName,String password,String expWelcomeMsg,String partNumber, String imageURL) throws Exception
 	{
@@ -505,6 +509,8 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	}
 
 	String resourceLocation = System.getProperty("user.dir") + File.separator + "resources" + File.separator;
+	@Features(value={"AdvancedSearch Module"})
+	@Description("adding the document to item(s)")
 	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
 	public void addDocumenttoItems(String testCaseId, String userName,String password,String expWelcomeMsg,String partNumber, String documentLocation) throws Exception
 	{
