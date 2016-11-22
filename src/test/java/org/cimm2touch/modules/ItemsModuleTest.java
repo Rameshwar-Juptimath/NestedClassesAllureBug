@@ -5,6 +5,8 @@ import org.cimm2touch.dataprovider.SearchData;
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.utils.SearchDataPropertyFile;
 import org.cimm2touch.utils.TestUtilityMethods;
+import org.framework.utils.PermittedCharacters;
+import org.framework.utils.RandomGenerator;
 import org.framework.utils.TestUtility;
 import org.testng.Assert;
 import org.testng.annotations.Factory;
@@ -23,6 +25,7 @@ public class ItemsModuleTest extends PageFactoryInitializer
 	SearchDataPropertyFile data = new SearchDataPropertyFile();
 	TestUtilityMethods utility=new TestUtilityMethods(getDriver());
 	TestUtility tu=new TestUtility(getDriver());
+	RandomGenerator random=new RandomGenerator();
 	
 HashMap<String, String> loginData;
 	
@@ -228,23 +231,24 @@ HashMap<String, String> loginData;
 		.homePage()
 		.clickOnItemsLink()
 		.homePage()
-		.clickOnLeftNavigationbar()
+		//.clickOnLeftNavigationbar()
 		.itemsPage()
 		.clickOnSpecificCategory(categoryName)
 		.clickOnFilter()
 		.homePage()
-		.clickOnLeftNavigationbar()
+		//.clickOnLeftNavigationbar()
 		.itemsPage()
 		.verifyCategoryChosenIsSelected(categoryName)
-		.homePage().clickOnLeftNavigationbar()
+		.homePage()
+		//.clickOnLeftNavigationbar()
 		.itemsPage()
 		.clickOnRemoveFilter()
 		.homePage()
-		.clickOnLeftNavigationbar()
+		//.clickOnLeftNavigationbar()
 		.itemsPage()
 		.verifyCategoryChosenIsNotSelected(categoryName)
 		.homePage()
-		.clickOnLeftNavigationbar()
+		//.clickOnLeftNavigationbar()
 		.itemsPage()
 		.clickOnSpecificCategory(categoryName)
 		.clickOnFilter()
@@ -253,16 +257,16 @@ HashMap<String, String> loginData;
 		.clickOnCategorizationTab()
 		.verifyWhetherTheProductBelongsToTheCategory(categoryName)
 		.homePage()
-		.clickOnLeftNavigationbar()
+		//.clickOnLeftNavigationbar()
 		.itemsPage()
 		.verifyWhetherTheCategoryIsHighLighted(categoryName);
 	}
 	
 	@Features(value = {"Items Module"})
-	@Description("This is a test case which verifies searching an item general search in Item List page")
+	@Description("verification of general search in Item List page {0}")
 	@TestCaseId("TC_ITEMS_016,TC_ITEMS_017,TC_ITEMS_020,TC_ITEMS_021,TC_ITEMS_022")
-	@Test(groups="regression",dataProvider="excelSheetDataRead",dataProviderClass=SearchData.class)
-	public void verifyGenralSearch(String testCaseId, String userName, String password,@Parameter("Drop down value") String Dropdownvalue,@Parameter("Searchable data") String Searchabledata) throws Exception {
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void verifyGenralSearch(String testCaseId,@Parameter("Drop down value") String Dropdownvalue,@Parameter("Searchable data") String Searchabledata) throws Exception {
 		landingPage()
 		.enterUsername(loginData.get("userName"))
 		.enterPassword(loginData.get("password"))
@@ -278,12 +282,12 @@ HashMap<String, String> loginData;
 	@Description("This is a test case which validates of list price,cost price, Quantity available, Data source, Length, Width, Height, Weight textboxes in General Info Tab.")
 	@TestCaseId("{0}")
 	//TC_ITEMS_028-to-TC_ITEMS_031,TC_ITEMS_36-to-TC_ITEMS_43
-	@Test(groups="regression",dataProvider="excelSheetDataRead",dataProviderClass=SearchData.class)
-	public void validationOfTextboxesInGeneralInfoTab(String testCaseId, String userName, String password,@Parameter("Field Name") String fieldName,@Parameter("Text to be entered in the textbox") String textToBeEnteredInTheTextbox,@Parameter("maximum number of characters that the textbox") String maximumNumberOfCharactersAcceptedByTheTexbox) throws Exception {
-		
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void validationOfTextboxes(String testCaseId,@Parameter("Field Name") String fieldName,@Parameter("maximum number of characters that the textbox") String maximumNumberOfCharactersAcceptedByTheTexbox) throws Exception {
+		String  textToBeEnteredInTheTextbox=random.random(52, PermittedCharacters.ALPHABETS);
 		landingPage()
-		.enterUsername(userName)
-		.enterPassword(password)
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
 		.clickOnLogin()
 		.homePage()
 		.clickOnItemsLink()
@@ -296,7 +300,7 @@ HashMap<String, String> loginData;
 	@Features(value = {"Items Module"})
 	@Description("This is a test case which verifies add new items page.")
 	@TestCaseId("TC_ITEMS_023")
-	@Test(groups="regression")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
 	public void verifyRightNavigationBarInAddNewItemsPage(String testCaseId, String userName, String password,String allMandotoryFieldsInAddItem, String AttributesInRightNavigationBarOfAddNewItemsPage) throws Exception {
 		
 		landingPage()

@@ -1,6 +1,5 @@
 package org.cimm2touch.utils;
 import org.framework.maincontroller.MainController;
-import org.framework.utils.PropertyFileReader;
 
 public class SearchDataPropertyFile extends MainController
 {

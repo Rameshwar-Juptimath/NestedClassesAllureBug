@@ -17,7 +17,7 @@ public class CreateDataConfigTest extends PageFactoryInitializer{
 	
 	@Description("create a new subset.")
 	@Features(value={"CreateDataConfigTest"})
-	@Test(groups={"regression"},dataProvider="CreateDataConfigTest",dataProviderClass=SearchData.class)
+	@Test(groups={"regression"},priority=0,dataProvider="CreateDataConfigTest",dataProviderClass=SearchData.class)
 	public void createNewSubset(String testCaseId, String userName, String password,String welComeMessage,String subsetName, String ExpSuccessfulMessageForCreatedSubset) throws InterruptedException, Exception 
 	{
 		

@@ -420,10 +420,10 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	}
 
 	@Step("select the checkbox for {0}")
-	public ItemsPageObjects clickOnSpecificCategory(String categoryToSearch) {
-
+	public ItemsPageObjects clickOnSpecificCategory(String categoryToSearch) throws InterruptedException {
+		
+		Thread.sleep(3000);
 		WebElement specificCategory = getDriver().findElement(By.xpath("//span[text()='"+categoryToSearch+"']/ancestor::div[@class='treeCategoryName']/descendant::label[@class='custChkBx']"));
-		waiting.explicitWaitVisibilityOfElement(specificCategory, 6);
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",specificCategory);
 		return this;
 	}
@@ -465,6 +465,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	@Step("select item option from the drop down & search ")
 	public ItemsPageObjects verifyGeneralSearch(String dropdownvalue, String searchabledata) throws Exception {
+	waiting.explicitWaitVisibilityOfElement(generalSearchDropDown, 15);
 		Select s = new Select(generalSearchDropDown);
 		switch(dropdownvalue) {
 
