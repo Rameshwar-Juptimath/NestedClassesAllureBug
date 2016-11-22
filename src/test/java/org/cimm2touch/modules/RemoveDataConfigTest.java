@@ -14,7 +14,7 @@ import ru.yandex.qatools.allure.annotations.Features;
 public class RemoveDataConfigTest extends PageFactoryInitializer{
 	@Features("RemoveDataConfig Module")
 	@Description("delete the created item(s)")
-	@Test(enabled=true,priority=0,groups="regression",dataProvider ="RemoveDataConfigTest", dataProviderClass=SearchData.class)
+	@Test(priority=0,groups="regression",dataProvider ="RemoveDataConfigTest", dataProviderClass=SearchData.class)
 	public void deleteCreatedItem(String testCaseId, String userName, String password, String welcomeMessage, String partNumber, String expSuccesfulMessageForDeletion, String noOfItemsToBeDelete) throws Exception{
 		landingPage()
 		.enterUsername(userName)
@@ -33,7 +33,7 @@ public class RemoveDataConfigTest extends PageFactoryInitializer{
 	}
 	@Features("RemoveDataConfig Module")
 	@Description("delete the created subset")
-	@Test(enabled=true,priority=1,groups="regression",dataProvider ="RemoveDataConfigTest", dataProviderClass=SearchData.class)
+	@Test(priority=1,groups="regression",dataProvider ="RemoveDataConfigTest", dataProviderClass=SearchData.class)
 	public void deleteCreatedSubset(String testCaseId, String userName, String password, String welcomeMessage,String subsetName) throws Exception{
 		landingPage()
 		.enterUsername(userName)
@@ -52,7 +52,7 @@ public class RemoveDataConfigTest extends PageFactoryInitializer{
 	}
 	@Features("RemoveDataConfig Module")
 	@Description("delete the created Brand")
-	@Test(enabled=true,priority=2,groups="regression",dataProvider ="RemoveDataConfigTest", dataProviderClass=SearchData.class)
+	@Test(priority=2,groups="regression",dataProvider ="RemoveDataConfigTest", dataProviderClass=SearchData.class)
 	public void deleteCreatedBrand(String testCaseId, String userName, String password, String welcomeMessage,String manufacturerName,String brandName) throws Exception{
 		landingPage()
 		.enterUsername(userName)
@@ -71,7 +71,7 @@ public class RemoveDataConfigTest extends PageFactoryInitializer{
 	}
 	@Features("RemoveDataConfig Module")
 	@Description("delete the created manufacturer")
-	@Test(enabled=true,priority=3,groups="regression",dataProvider ="RemoveDataConfigTest", dataProviderClass=SearchData.class)
+	@Test(priority=3,groups="regression",dataProvider ="RemoveDataConfigTest", dataProviderClass=SearchData.class)
 	public void deleteCreatedManufactures(String testCaseId, String userName, String password, String welcomeMessage,String manufacturerName,String brandName, String successMessage) throws Exception{
 		landingPage()
 		.enterUsername(userName)
@@ -89,7 +89,7 @@ public class RemoveDataConfigTest extends PageFactoryInitializer{
 	}
 	@Features("RemoveDataConfig Module")
 	@Description("delete the created vendor")
-	@Test(enabled=true,priority=4,groups="regression",dataProvider ="RemoveDataConfigTest", dataProviderClass=SearchData.class)
+	@Test(priority=4,groups="regression",dataProvider ="RemoveDataConfigTest", dataProviderClass=SearchData.class)
 	public void deleteCreatedVendor(String testCaseId, String userName, String password, String welcomeMessage,String title,String vendorName) throws Exception{
 		landingPage()
 		.enterUsername(userName)
@@ -107,7 +107,7 @@ public class RemoveDataConfigTest extends PageFactoryInitializer{
 	}
 	@Features(value = {"RemoveDataConfig Module"})
 	@Description(" remove Categoryies {0}")
-	@Test(enabled=true,priority=5, groups={"regression"},dataProvider="RemoveDataConfigTest",dataProviderClass=SearchData.class)
+	@Test(priority=5, groups={"regression"},dataProvider="RemoveDataConfigTest",dataProviderClass=SearchData.class)
 	public void removeCategories(String testCaseNo, String userName, String password, String welcomeMessage,String taxonomy, String categoryName, String expSuccessMsgForRemoveCategory, String noOfCategories) throws Exception
 	{
 		landingPage()
