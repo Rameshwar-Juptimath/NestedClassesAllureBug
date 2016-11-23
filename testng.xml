@@ -6,11 +6,7 @@
  <parameter name="browser" value="chrome"/>
   <parameter name="Node Url" value="http://10.1.200.188:4444/wd/hub"/>
     <classes>
-         <class name="org.cimm2touch.modules.ItemsModuleTest">
-        <methods>
-         <include name="verifyAddingNewItem_ES"></include>
-         </methods>
-       </class>
+         <class name="org.cimm2touch.modules.AdvancedSearchModuleTest"/>
     </classes>
 </test>
  
