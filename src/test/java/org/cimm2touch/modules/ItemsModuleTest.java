@@ -8,10 +8,8 @@ import org.cimm2touch.utils.TestUtilityMethods;
 import org.framework.utils.PermittedCharacters;
 import org.framework.utils.RandomGenerator;
 import org.framework.utils.TestUtility;
-import org.testng.Assert;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
-
 import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Features;
 import ru.yandex.qatools.allure.annotations.Issue;
@@ -289,11 +287,11 @@ HashMap<String, String> loginData;
 	@Description("This is a test case which verifies add new items page.")
 	@TestCaseId("TC_ITEMS_023")
 	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
-	public void verifyRightNavigationBarInAddNewItemsPage(String testCaseId, String userName, String password,String allMandotoryFieldsInAddItem, String AttributesInRightNavigationBarOfAddNewItemsPage) throws Exception {
+	public void verifyRightNavigationBar(String testCaseId,String allMandotoryFieldsInAddItem, String AttributesInRightNavigationBarOfAddNewItemsPage) throws Exception {
 		
 		landingPage()
-		.enterUsername(userName)
-		.enterPassword(password)
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
 		.clickOnLogin()
 		.homePage()
 		.clickOnItemsLink()
@@ -302,22 +300,19 @@ HashMap<String, String> loginData;
 		.addNewItemPage()
 		.verifyEnableAndDisableOfTabs()
 		.verifyAllMandatoryFields(allMandotoryFieldsInAddItem.split(","))
-		//.homePage()
-		//.clickOnRightNavigationBar()
-		//.addNewItemPage()
 		.verifyAttributtesInTheRightNavigationBar(AttributesInRightNavigationBarOfAddNewItemsPage.split(","));
 	}
 	
-	 @Features(value = {"Items Module"})
+	/* @Features(value = {"Items Module"})
 	 @Description("This is a test case which verifies adding new items")
 	 @TestCaseId("TC_ITEMS_024")
-	 @Test(groups={"regression"})
-		public void verifyAddingNewItem(String testCaseId, String userName, String password, String manufacturerName,String partNumberField, String brandName, String succesMessage) throws Exception
+	 @Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	 public void verifyAddingNewItem(String testCaseId, String manufacturerName,String partNumberField, String brandName, String succesMessage) throws Exception
 		{
 		 
 		  landingPage()
-		   .enterUsername( userName)
-		   .enterPassword(password)
+		  .enterUsername(loginData.get("userName"))
+		  .enterPassword(loginData.get("password"))
 		   .clickOnLogin()
 		   .homePage()
 		   .clickOnItemsLink()
@@ -330,20 +325,19 @@ HashMap<String, String> loginData;
 		   .clickOnBrandDropdown()
 		   .selectBrandField(brandName)
 		   .clickOnSaveButtonLink()
-		   .verifyItemSavedSuccessfulMessage(succesMessage);//data.getItemSavedSuccessfulMessage() 
-		} 
+		   .verifyItemSavedSuccessfulMessage(succesMessage);
+		} */
 	
 	
 	@Features(value = {"Items Module"})
 	@Description("This is a test case which verifies the error message when save is clicked without entering details.")
 	@TestCaseId("{0}")
-	//TC_ITEMS_025,26,27
-	@Test(groups="regression",dataProvider="excelSheetDataRead",dataProviderClass=SearchData.class)
-	public void verifyErrorMessageWhenSaveIsClickedWithoutEnteringMandatoryFields(String testCaseId, String userName, String password, String manufacturerPartNumber,String partNumber,@Parameter("Brand") String brand, String errorMessage) throws Exception {
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void verifyAddingNewItem_ES(String testCaseId,String manufacturerPartNumber,String partNumber, String brand, String errorMessage) throws Exception {
 		
 		landingPage()
-		.enterUsername(userName)
-		.enterPassword(password)
+		.enterUsername(loginData.get("userName"))
+		 .enterPassword(loginData.get("password"))
 		.clickOnLogin()
 		.homePage()
 		.clickOnItemsLink()

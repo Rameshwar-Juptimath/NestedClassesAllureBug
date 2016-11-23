@@ -778,7 +778,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 		for(int i=0;i<fieldNamesDynamicSettingsTableLocator.size();i++)
 		{
-			System.out.print(fieldNamesDynamicSettingsTableLocator.get(i).getText().trim()+", ");
+			//System.out.print(fieldNamesDynamicSettingsTableLocator.get(i).getText().trim()+", ");
 			Assert.assertEquals(fieldNamesDynamicSettingsTableLocator.get(i).getText().trim(), verifyFieldNames[i].trim());
 		}
 		return this;
@@ -930,13 +930,13 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	}
 
 	public ItemsPageObjects verifyBrowserisinItemsPage() {
-		System.out.println("displaying"+itembreadcrumb.getText());
+		//System.out.println("displaying"+itembreadcrumb.getText());
 
 		try {
 			Assert.assertEquals(itembreadcrumb.getText(),"Items");
 		}
 		catch(Exception e){
-			System.out.println(e);
+			//System.out.println(e);
 		}
 		return this;
 	}
@@ -1160,7 +1160,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 		if(!(ele.isSelected()))
 		{
 			ele.click();
-			System.out.println("\n \n\n "+ele+"CLicked");
+			//System.out.println("\n \n\n "+ele+"CLicked");
 		}
 		return this;
 	}
@@ -1335,7 +1335,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 		if(!(ele.isSelected()))
 		{
 			ele.click();
-			System.out.println("\n \n\n "+ele+"CLicked");
+			//System.out.println("\n \n\n "+ele+"CLicked");
 		}
 		return this;
 	}
@@ -1499,7 +1499,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 			catch(Exception e)
 			{
 
-				System.out.println("Online status is not available");
+				//System.out.println("Online status is not available");
 			}
 		
 	

@@ -65,7 +65,7 @@ public class CreateDataConfigTest extends PageFactoryInitializer{
 		.vendorSave()
 		.checkCreatedVendorSaveMessage(vendorSavemessage);
 	}
-	@Features(value = {"Taxonomy Module"})
+	@Features(value = {"CreateDataConfigTest"})
 	@Description("Create new Taxonomy {0}")
 	@Test(enabled=true,priority=2, groups={"regression"},dataProvider="CreateDataConfigTest",dataProviderClass=SearchData.class)
 	public void createTaxonomy(String testCaseId,String userName, String password,String welcomeMessage, String taxonomyName,String taxonomyDesc,String supplier,String topBanner, String rightBanner, 
@@ -93,7 +93,7 @@ public class CreateDataConfigTest extends PageFactoryInitializer{
 		.verifyTaxonomyPresent(taxonomyName);
 	}
 
-	@Features(value = {"Taxonomy Module"})
+	@Features(value = {"Taxonomy Module", "CreateDataConfigTest"})
 	@Description(" Create Categoryies {0}")
 	@Test(enabled=true,priority=3, groups={"regression"},dataProvider="CreateDataConfigTest",dataProviderClass=SearchData.class)
 	public void createCategories(String testCaseNo, String userName, String password, String welcomeMessage,String taxonomy,String categoryCode, String categoryName,String displaySequence, String expSuccessMsgForNewCategoryCreation, String noOfCategories) throws Exception
@@ -115,7 +115,7 @@ public class CreateDataConfigTest extends PageFactoryInitializer{
 
 	}
 
-	@Features(value = {"Taxonomy Module"})
+	@Features(value = {"Taxonomy Module", "CreateDataConfigTest"})
 	@Description(" Create L1 Child Category to the Above Created Categories")
 	@Test(enabled=true,priority=4, groups={"regression"},dataProvider="CreateDataConfigTest",dataProviderClass=SearchData.class)
 
