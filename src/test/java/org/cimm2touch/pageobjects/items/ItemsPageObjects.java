@@ -203,7 +203,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//span[@class='breadCrumb_LastChild']/following-sibling::span[contains(text(),'Add New Item')]")
 	private WebElement addNewItemsection;
 
-	@FindBy(xpath="//span/li/input[@title='Save New Item']")
+	@FindBy(xpath="//form[@id='generalInfoFormId']/descendant::input[@title='Save New Item']")
 	private WebElement savenewItem;
 
 	@FindBy(id="searchFormId:searchKeywordId")
@@ -987,12 +987,16 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	}
 
 	public ItemsPageObjects clickOnsavenewItem() throws InterruptedException {
-		savenewItem.click();
-		Thread.sleep(3000);
+		waiting.explicitWaitVisibilityOfElement(savenewItem, 10);
+		Thread.sleep(2500);
+		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",savenewItem);
+		
+
 		return this;
 	}
 
 	public ItemsPageObjects verifysavenewItemMessage(String savenewItemMessage) {
+		waiting.explicitWaitVisibilityOfElement(savenewItemMessageLocator, 15);
 		Assert.assertEquals(savenewItemMessageLocator.getText().trim(), savenewItemMessage);
 		return this;
 	}
@@ -1095,9 +1099,9 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	@Step("verify 'part number' search result {0} is displayed")
 	public ItemsPageObjects verifyadvSe007Searchresult(String advSe007searchinput) throws InterruptedException {
-		Thread.sleep(2500);
-
-		Assert.assertEquals(getDriver().findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/tr[1]/td[5]")).getText().trim(),advSe007searchinput);
+		
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/tr/td[contains(text(),'"+advSe007searchinput+"')]"), 15);
+		Assert.assertEquals(getDriver().findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/tr/td[contains(text(),'"+advSe007searchinput+"')]")).getText().trim(),advSe007searchinput);
 		return this;
 	}
 

@@ -412,15 +412,15 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 		waiting.explicitWaitVisibilityOfElements(errorMessageLocator, 10);
 		for(int i=0;i<errorMessageLocator.size();i++)
 		{
-			System.out.println(errorMessageLocator.get(i).getText());
-			//Assert.assertEquals(errorMessageLocator.get(i).getText().replace("\n", "").trim(), errorMessage[i]);
+			//System.out.println(errorMessageLocator.get(i).getText());
+			Assert.assertEquals(errorMessageLocator.get(i).getText().replace("\n", "").trim(), errorMessage[i]);
 		}
 		return this;
 	}
 
 	@Step("enter manufacturer part number {0}")
 	public AddNewItemPageObjects enterManufacturerPartNumber(String manufacturerPartNumber) throws Exception {
-		waiting.explicitWaitVisibilityOfElement(manufacturerNameLocator, 10);
+		waiting.explicitWaitVisibilityOfElement(manufacturerNameLocator, 15);
 		manufacturerNameLocator.sendKeys(manufacturerPartNumber);
 		return this;
 	}
