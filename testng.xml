@@ -4,9 +4,13 @@
  
 <test name="regression">
  <parameter name="browser" value="chrome"/>
-  <parameter name="Node Url" value="http://10.1.200.188:4444/wd/hub"/>
+  <parameter name="Node Url" value="http://10.200.1.188:5555:4444/wd/hub"/>
     <classes>
-         <class name="org.cimm2touch.modules.AdvancedSearchModuleTest"/>
+         <class name="org.cimm2touch.modules.AdvancedSearchModuleTest">
+       <!--  <methods>
+         <include name="advSearch_007"></include>
+         </methods> -->
+       </class>
     </classes>
 </test>
  
