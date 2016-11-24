@@ -1976,10 +1976,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		for(int i=0;i<=var;i++)
 		
 		{
-			try 
-			{
-
-				waiting.explicitWaitVisibilityOfElement(nextItemIconLocator, 10);
+			waiting.explicitWaitVisibilityOfElement(nextItemIconLocator, 10);
 				nextItemIconLocator.click();
 			switch(categoryStatus)
 			{
@@ -1993,12 +1990,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 				break;
 			default : throw new Exception("invalid Category selection selection");			
 			}
-			}
-			catch(Exception e)
-			{
-
-				System.out.println("Items not available ");
-			}
+			
 		clickOnCategorizationTab();
 		}
 		return this;
