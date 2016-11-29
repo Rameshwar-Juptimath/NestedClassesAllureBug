@@ -43,9 +43,9 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	
 	
 	@Features("AdvancedSearch Module")
-	@Description("Items - Advanced Search - Part No or Keyword search")
+	@Description("Verification of appropriate  search result, when searched for Part Number")
 	@TestCaseId("TC_ADV SEARCH_003")
-	@Test(groups="regression", dataProvider="AdvancedSearchModuleTest",dataProviderClass=SearchData.class) //dependsOnMethods={"createNewManufacturer","createNewBrand","createNewSubset","createNewItem"}
+	@Test(groups="regression", dataProvider="AdvancedSearchModuleTest",dataProviderClass=SearchData.class)
 	public void advSearch_003(String testCaseId,String userName, String password,String searchInput) throws Exception 
 	{
 		landingPage()
@@ -133,7 +133,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	}
 
 	@Features("AdvancedSearch Module")
-	@Description("Items - Advanced Search - Part No search- Partial search")
+	@Description("Verification of appropriate  search result, when searched for partial Part Number ")
 	@TestCaseId("TC_ADV SEARCH_008")
 	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
 	public void advSearch_008(String testCaseId,String userName, String password,String searchData, String selectValue) throws InterruptedException {

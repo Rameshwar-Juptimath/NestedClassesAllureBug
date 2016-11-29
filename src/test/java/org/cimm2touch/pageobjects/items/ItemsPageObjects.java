@@ -1064,10 +1064,10 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	@Step("verify Part number or Keyword search result - {0} ")
 	public ItemsPageObjects verifyadvSe003Searchresult(String advSesearchRes) throws Exception {
-		Thread.sleep(3000);
-
-		WebElement wb=getDriver().findElement(By.xpath("//td[contains(text(),'"+advSesearchRes+"')]"));
-		Assert.assertEquals(wb.getText().trim(), advSesearchRes);
+	
+		waiting.explicitWaitVisibilityOfElements(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+advSesearchRes+"')]"), 15);
+		List<WebElement> wb=getDriver().findElements(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+advSesearchRes+"')]"));
+		Assert.assertTrue(wb.get(0).getText().trim().contains(advSesearchRes),"Search Results not found for keyword :"+advSesearchRes+"");
 		return this;
 
 	}
