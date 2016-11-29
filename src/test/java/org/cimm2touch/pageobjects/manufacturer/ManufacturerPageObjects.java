@@ -362,8 +362,9 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	@Step("check whether searched result is desired manufactuer")
 	public ManufacturerPageObjects checkManufacturerAlreadyExist(String manufacturername) throws InterruptedException
 	{
-		Thread.sleep(3000);
-		Assert.assertEquals(manufacturersearchres.getText(),manufacturername);
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//table[@id='listManufacturerForm:manufacturerTableId']/descendant::td[contains(text(),'"+manufacturername+"')]"), 15);
+		WebElement wb= getDriver().findElement(By.xpath("//table[@id='listManufacturerForm:manufacturerTableId']/descendant::td[contains(text(),'"+manufacturername+"')]"));
+		Assert.assertEquals(wb.getText(),manufacturername);
 		return this;
 	}
 
@@ -749,7 +750,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	@Step("verify manufacturer save message")
 	public ManufacturerPageObjects verifymessageAfterManufacturerCreate(String mfgName, String successMessageAfterCreate) throws InterruptedException {
 
-		waiting.explicitWaitVisibilityOfElement(manufacturermessagesaveph, 10);
+		waiting.explicitWaitVisibilityOfElement(manufacturermessagesaveph, 15);
 		Assert.assertEquals(manufacturermessagesaveph.getText().trim(),mfgName+" "+successMessageAfterCreate);
 		return this;
 	}

@@ -2047,12 +2047,12 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	public EditItemsPageObjects assignItemToCategory(String categoryName, String noOfitemsToBeCategorized, String taxonomyName, String expSuccessMessage) throws AWTException, InterruptedException {
 		
 		int var = Integer.parseInt(noOfitemsToBeCategorized);
-		for(int i=0; i< var; i++){
+		for(int i=1; i<= var; i++){
 
 			waiting.explicitWaitElementToBeClickable(categorizationTabLocator, 10);
 			categorizationTabLocator.click();
 			searchForTaxonomy(taxonomyName);
-			selectCategory(categoryName);
+			selectCategory(categoryName+i);
 			saveCategory();
 			verifySuccessMessageForCategoryAssign(expSuccessMessage);
 			clickOnNextItem_EditPage.click();
@@ -2074,8 +2074,9 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 		waiting.explicitWaitVisibilityOfElement(By.xpath("//div[@id='ttformid:taxonomyTreeId']/descendant::td/descendant::span[contains(@id,'ttformid:taxonomyTreeId') and text()='"+categoryName+"']"), 10);
 		WebElement element= getDriver().findElement(By.xpath("//div[@id='ttformid:taxonomyTreeId']/descendant::td/descendant::span[contains(@id,'ttformid:taxonomyTreeId') and text()='"+categoryName+"']"));
-		WebElement target= getDriver().findElement(By.xpath("//form[@id='itemCategoryFormId']/descendant::div[@class='itemTabContentWrap']"));
-		(new Actions(getDriver())).dragAndDrop(element, target).perform();
+		WebElement target= getDriver().findElement(By.xpath("//form[@id='itemCategoryFormId']/descendant::thead"));
+		utility.DragandDrop(element, target);
+		//(new Actions(getDriver())).dragAndDrop(element, target).perform();
 		Thread.sleep(500);
 		return this;
 		

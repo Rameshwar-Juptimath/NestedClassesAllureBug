@@ -1075,7 +1075,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	@Step("verify 'No Items Found' message is displayed when searched for Invalid part number or Keyword")
 	public ItemsPageObjects verifyadvSe004Searchresult(String expMessage) throws InterruptedException {
 
-		waiting.explicitWaitVisibilityOfElement(advancedSearchErrorMessageLoc, 60);
+		waiting.explicitWaitVisibilityOfElement(advancedSearchErrorMessageLoc,15);
 		Assert.assertEquals(advancedSearchErrorMessageLoc.getText().trim(), expMessage,"InValid text message is :"+advancedSearchErrorMessageLoc.getText()+"Dispayed");
 		return this;
 
