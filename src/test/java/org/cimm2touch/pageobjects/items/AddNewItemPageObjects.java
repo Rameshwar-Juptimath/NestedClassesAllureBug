@@ -6,6 +6,7 @@ import org.framework.utils.PermittedCharacters;
 import org.framework.utils.RandomGenerator;
 import org.framework.utils.TestUtility;
 import org.framework.utils.Waiting;
+import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
@@ -152,7 +153,7 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 	@FindBy(xpath="//div[text()='Item Status']/following-sibling::div/descendant::select")
 	private WebElement itemStatusLocator;
 	
-	@FindBy(xpath="//li[contains(text(),'Display Online')]/input")
+	@FindBy(xpath="//span[contains(text(),'Display Online')]/following-sibling::input")
 	private WebElement displayOnlineCheckboxLocator;
 	
 	
@@ -250,87 +251,87 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 		
 		case "Part Number":
 
-			waiting.explicitWaitVisibilityOfElement(partNumberTextBoxLocator, 15);
+			waiting.explicitWaitVisibilityOfElement(partNumberTextBoxLocator, 25);
 			partNumberTextBoxLocator.sendKeys(textToBeEnterInTheTextbox);
-			Assert.assertEquals(partNumberTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)));
+			Assert.assertEquals(partNumberTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)),"PartNumber input Field is allowing more than acceptance value.");
 			break;
 			
 		case "Manufacturer Part Number":
 
-			waiting.explicitWaitVisibilityOfElement(manufacturerPartNumberTextBoxLocator, 15);
+			waiting.explicitWaitVisibilityOfElement(manufacturerPartNumberTextBoxLocator, 25);
 			manufacturerPartNumberTextBoxLocator.sendKeys(textToBeEnterInTheTextbox);
-			Assert.assertEquals(manufacturerPartNumberTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)));
+			Assert.assertEquals(manufacturerPartNumberTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox))," Manufacturer PartNumber input Field is allowing more than acceptance value.");
 			break;
 			
 		case "Competitor Part Number":
 
-			waiting.explicitWaitVisibilityOfElement(competitorPartNumberTextBoxLocator, 15);
+			waiting.explicitWaitVisibilityOfElement(competitorPartNumberTextBoxLocator, 25);
 			competitorPartNumberTextBoxLocator.sendKeys(textToBeEnterInTheTextbox);
-			Assert.assertEquals(competitorPartNumberTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)));
+			Assert.assertEquals(competitorPartNumberTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)),"CompetetorPartNumber input Field is allowing more than acceptance value.");
 			break;
 			
 		case "UPC":
 
-			waiting.explicitWaitVisibilityOfElement(upcTextBoxLocator, 15);
+			waiting.explicitWaitVisibilityOfElement(upcTextBoxLocator, 25);
 			upcTextBoxLocator.sendKeys(textToBeEnterInTheTextbox);
-			Assert.assertEquals(upcTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)));
+			Assert.assertEquals(upcTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)), "UPC input Field is allowing more than acceptance value.");
 			break;
 			
 		case "Data Source":
 
-			waiting.explicitWaitVisibilityOfElement(dataSourceTextBoxLocator, 15);
+			waiting.explicitWaitVisibilityOfElement(dataSourceTextBoxLocator, 25);
 			dataSourceTextBoxLocator.sendKeys(textToBeEnterInTheTextbox);
-			Assert.assertEquals(dataSourceTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)));
+			Assert.assertEquals(dataSourceTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)),"Data Source input Field is allowing more than acceptance value.");
 			break;
 			
 		case "Length":
 
-			waiting.explicitWaitVisibilityOfElement(lengthTextBoxLocator, 15);
+			waiting.explicitWaitVisibilityOfElement(lengthTextBoxLocator, 25);
 			lengthTextBoxLocator.sendKeys(textToBeEnterInTheTextbox);
-			Assert.assertEquals(lengthTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)));
+			Assert.assertEquals(lengthTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)),"Length input Field is allowing more than acceptance value.");
 			break;
 			
 		case "Width":
 
-			waiting.explicitWaitVisibilityOfElement(widthTextBoxLocator, 15);
+			waiting.explicitWaitVisibilityOfElement(widthTextBoxLocator, 25);
 
 			widthTextBoxLocator.sendKeys(textToBeEnterInTheTextbox);
-			Assert.assertEquals(widthTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)));
+			Assert.assertEquals(widthTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)),"Width input Field is allowing more than acceptance value.");
 			break;
 			
 		case "Height":
 
-			waiting.explicitWaitVisibilityOfElement(heightTextBoxLocator, 15);
+			waiting.explicitWaitVisibilityOfElement(heightTextBoxLocator, 25);
 			heightTextBoxLocator.sendKeys(textToBeEnterInTheTextbox);
-			Assert.assertEquals(heightTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)));
+			Assert.assertEquals(heightTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)),"Hieght input Field is allowing more than acceptance value.");
 			break;
 			
 		case "Weight":
 
-			waiting.explicitWaitVisibilityOfElement(weightTextBoxLocator, 15);
+			waiting.explicitWaitVisibilityOfElement(weightTextBoxLocator, 25);
 			weightTextBoxLocator.sendKeys(textToBeEnterInTheTextbox);
-			Assert.assertEquals(weightTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)));
+			Assert.assertEquals(weightTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)), "Weight input Field is allowing more than acceptance value.");
 			break;
 			
 		case "Quantity Available":
 
-			waiting.explicitWaitVisibilityOfElement(quantityAvailableTextBoxLocator, 15);
+			waiting.explicitWaitVisibilityOfElement(quantityAvailableTextBoxLocator, 25);
 			quantityAvailableTextBoxLocator.sendKeys(textToBeEnterInTheTextbox);
-			Assert.assertEquals(quantityAvailableTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)));
+			Assert.assertEquals(quantityAvailableTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)), "qty availability input Field is allowing more than acceptance value.");
 			break;
 			
 		case "List Price":
 
-			waiting.explicitWaitVisibilityOfElement(listPriceTextBoxLocator, 15);
+			waiting.explicitWaitVisibilityOfElement(listPriceTextBoxLocator, 25);
 			listPriceTextBoxLocator.sendKeys(textToBeEnterInTheTextbox);
-			Assert.assertEquals(listPriceTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)));
+			Assert.assertEquals(listPriceTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)),"List price input Field is allowing more than acceptance value.");
 			break;
 			
 		case "Cost Price":
 
-			waiting.explicitWaitVisibilityOfElement(costPriceTextBoxLocator, 15);
+			waiting.explicitWaitVisibilityOfElement(costPriceTextBoxLocator, 25);
 			costPriceTextBoxLocator.sendKeys(textToBeEnterInTheTextbox);
-			Assert.assertEquals(costPriceTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)));
+			Assert.assertEquals(costPriceTextBoxLocator.getAttribute("value").trim(), textToBeEnterInTheTextbox.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)), "Cost Price input Field is allowing more than acceptance value.");
 			break;
 			
 		default: throw new Exception("invalid input");
@@ -342,7 +343,7 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 
 	@Step("verify attributes in the right navigation bar of the add new items page.")
 	public AddNewItemPageObjects verifyAttributtesInTheRightNavigationBar(String [] attributesInRightNavigationBarOfAddNewItemsPage) throws Exception {
-		Thread.sleep(1500);
+		Thread.sleep(2500);
 		for(int i = 0 ; i<attributesInTheRightNavigationBarLocator.size() ;i++)
 		{
 			Assert.assertEquals(attributesInTheRightNavigationBarLocator.get(i).getText().trim(),attributesInRightNavigationBarOfAddNewItemsPage[i] );
@@ -412,7 +413,7 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 		waiting.explicitWaitVisibilityOfElements(errorMessageLocator, 10);
 		for(int i=0;i<errorMessageLocator.size();i++)
 		{
-			//System.out.println(errorMessageLocator.get(i).getText());
+			System.out.println(errorMessageLocator.get(i).getText());
 			Assert.assertEquals(errorMessageLocator.get(i).getText().replace("\n", "").trim(), errorMessage[i]);
 		}
 		return this;
@@ -420,7 +421,7 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 
 	@Step("enter manufacturer part number {0}")
 	public AddNewItemPageObjects enterManufacturerPartNumber(String manufacturerPartNumber) throws Exception {
-		waiting.explicitWaitVisibilityOfElement(manufacturerNameLocator, 15);
+		waiting.explicitWaitVisibilityOfElement(manufacturerNameLocator, 25);
 		manufacturerNameLocator.sendKeys(manufacturerPartNumber);
 		return this;
 	}
@@ -447,7 +448,6 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 		Select select = new Select(itemStatusLocator);
 		select.selectByVisibleText(itemStatusOptions[i]);
 		String idOfSelect = itemStatusLocator.getAttribute("id").trim();
-
 		Assert.assertEquals(((JavascriptExecutor) getDriver()).executeScript("return document.getElementById('"+idOfSelect+"').value;"), valuesAssignedToEachOption[i]);
 		
 		}		
@@ -460,8 +460,7 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 		switch(checkboxes)
 		{
 		case "Display Online":
-			Thread.sleep(1500);
-
+			waiting.explicitWaitVisibilityOfElement(displayOnlineCheckboxLocator, 20);
 			((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",displayOnlineCheckboxLocator);
 			Assert.assertTrue(displayOnlineCheckboxLocator.isSelected(),"Display Online Checkbox is not selected.");
 			((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",displayOnlineCheckboxLocator);
@@ -469,7 +468,7 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 			break;
 			
 		case "Drop Ship": 
-			Thread.sleep(1200);
+			waiting.explicitWaitVisibilityOfElement(dropShipCheckboxLocator, 20);
 
 			((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",dropShipCheckboxLocator);
 			Assert.assertTrue(dropShipCheckboxLocator.isSelected(),"Drop Ship Checkbox is not selected.");
@@ -478,7 +477,7 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 			break;
 			
 		case "Print": 
-			Thread.sleep(1200);
+			waiting.explicitWaitVisibilityOfElement(printCheckboxLocator, 20);
 
 			((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",printCheckboxLocator);
 			Assert.assertTrue(printCheckboxLocator.isSelected(),"Print Checkbox is not selected.");
@@ -494,7 +493,7 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 	
 	 public AddNewItemPageObjects clickOnManufacturerDropdown() throws InterruptedException {
 
-			waiting.explicitWaitVisibilityOfElement(manufacturerDropDownArrowLocator, 15);
+			waiting.explicitWaitVisibilityOfElement(manufacturerDropDownArrowLocator, 25);
 			((JavascriptExecutor)getDriver()).executeScript("arguments[0].click();",manufacturerDropDownArrowLocator);
 			return this;
 		}

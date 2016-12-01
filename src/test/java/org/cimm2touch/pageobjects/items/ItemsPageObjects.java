@@ -422,7 +422,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	@Step("select the checkbox for {0}")
 	public ItemsPageObjects clickOnSpecificCategory(String categoryToSearch) throws InterruptedException {
 		
-		Thread.sleep(3000);
+		waiting.explicitWaitElementToBeClickable(By.xpath("//span[text()='"+categoryToSearch+"']/ancestor::div[@class='treeCategoryName']/descendant::label[@class='custChkBx']"), 20);
 		WebElement specificCategory = getDriver().findElement(By.xpath("//span[text()='"+categoryToSearch+"']/ancestor::div[@class='treeCategoryName']/descendant::label[@class='custChkBx']"));
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",specificCategory);
 		return this;
@@ -900,8 +900,8 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	}
 
 	public ItemsPageObjects verifyWhetherSearchedTaxonomyStyleIsGreen(String searchTaxonomy) throws Exception {
-		Thread.sleep(3000);
-
+		
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//span[text()='"+searchTaxonomy+"']"), 20);
 		Assert.assertTrue(getDriver().findElement(By.xpath("//span[text()='"+searchTaxonomy+"']")).getAttribute("style").trim().contains("green"));
 		return this;
 	}

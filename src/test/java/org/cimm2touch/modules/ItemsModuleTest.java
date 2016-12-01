@@ -204,8 +204,6 @@ HashMap<String, String> loginData;
 		.homePage()
 		.verifyWelcomeMessage(welcomeMessage)
 		.clickOnItemsLink()
-		.homePage()
-		.clickOnLeftNavigationbar()
 		.itemsPage()
 		.enterSearchCategory(category)
 		.clickOnSearchCategory()
@@ -303,32 +301,6 @@ HashMap<String, String> loginData;
 		.verifyAttributtesInTheRightNavigationBar(AttributesInRightNavigationBarOfAddNewItemsPage.split(","));
 	}
 	
-	/* @Features(value = {"Items Module"})
-	 @Description("This is a test case which verifies adding new items")
-	 @TestCaseId("TC_ITEMS_024")
-	 @Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
-	 public void verifyAddingNewItem(String testCaseId, String manufacturerName,String partNumberField, String brandName, String succesMessage) throws Exception
-		{
-		 
-		  landingPage()
-		  .enterUsername(loginData.get("userName"))
-		  .enterPassword(loginData.get("password"))
-		   .clickOnLogin()
-		   .homePage()
-		   .clickOnItemsLink()
-		   .itemsPage()
-		   .clickOnAddNewItem()
-		   .addNewItemPage()
-		   .clickOnManufacturerDropdown()
-		   .selectManufacturerField(manufacturerName)
-		   .enterPartNumberField(partNumberField)
-		   .clickOnBrandDropdown()
-		   .selectBrandField(brandName)
-		   .clickOnSaveButtonLink()
-		   .verifyItemSavedSuccessfulMessage(succesMessage);
-		} */
-	
-	
 	@Features(value = {"Items Module"})
 	@Description("This is a test case which verifies the error message when save is clicked without entering details.")
 	@TestCaseId("{0}")
@@ -353,14 +325,14 @@ HashMap<String, String> loginData;
 	
 	@Features(value = {"Items Module"})
 	@Description("This is a test case which verifies Item status dropdown.")
-	@TestCaseId("{0}")
-	//TC_ITEMS_032
-	@Test(groups="regression",dataProvider="excelSheetDataRead",dataProviderClass=SearchData.class)
-	public void verifyItemStatusDropdown(String testCaseId, String userName, String password,@Parameter("Item Status Options") String statusOptions,@Parameter("Corresponding values for each status") String valueForEachStatus) throws Exception {
+	@TestCaseId("TC_ITEMS_032")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void verifyItemStatusDropdown(String testCaseId, String statusOptions, String valueForEachStatus) throws Exception {
 		
 		landingPage()
-		.enterUsername(userName)
-		.enterPassword(password)
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+
 		.clickOnLogin()
 		.homePage()
 		.clickOnItemsLink()
@@ -374,13 +346,12 @@ HashMap<String, String> loginData;
 	@Features(value = {"Items Module"})
 	@Description("This is a test case which verifies the existence of display online,drop ship and print checkboxes.")
 	@TestCaseId("{0}")
-	//TC_ITEMS_033,TC_ITEMS_034,TC_ITEMS_035
-	@Test(groups="regression",dataProvider="excelSheetDataRead",dataProviderClass=SearchData.class)
-	public void verifyCheckboxesInAddNewItemsPage(String testCaseId, String userName, String password,@Parameter("Checkbox under test")String checkbox) throws Exception {
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void verifyCheckboxes(String testCaseId,String checkbox) throws Exception {
 		
 		landingPage()
-		.enterUsername(userName)
-		.enterPassword(password)
+		.enterUsername(loginData.get("userName"))
+		 .enterPassword(loginData.get("password"))
 		.clickOnLogin()
 		.homePage()
 		.clickOnItemsLink()
@@ -394,18 +365,16 @@ HashMap<String, String> loginData;
 	@Description("This is a test case which verifies that on clicking the results link in the right navigation bar of edit items page opens items list page.")
 	@TestCaseId("TC_ITEMS_053")
 	@Test(groups="regression")
-	public void verifyResultsLinkInEditItemsPage(String testCaseId, String userName, String password) throws Exception {
+	public void verifyResultsLinkInEditItemsPage() throws Exception {
 		
 		landingPage()
-		.enterUsername(userName)
-		.enterPassword(password)
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
 		.clickOnLogin()
 		.homePage()
 		.clickOnItemsLink()
 		.itemsPage()
 		.clickOnSpecificEditButton(1)
-		.homePage()
-		.clickOnRightNavigationBar()
 		.editItemsPage()
 		.clickOnResultsLink()
 		.itemsPage()
