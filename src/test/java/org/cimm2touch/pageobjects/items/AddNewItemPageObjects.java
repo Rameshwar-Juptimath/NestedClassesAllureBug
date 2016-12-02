@@ -410,11 +410,10 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 	@Step("verify whether error message is {0} ")
 	public AddNewItemPageObjects verifyErrorMessage(String errorMessage[]) {
 
-		waiting.explicitWaitVisibilityOfElements(errorMessageLocator, 10);
+		waiting.explicitWaitVisibilityOfElements(errorMessageLocator, 20);
 		for(int i=0;i<errorMessageLocator.size();i++)
 		{
-			System.out.println(errorMessageLocator.get(i).getText());
-			Assert.assertEquals(errorMessageLocator.get(i).getText().replace("\n", "").trim(), errorMessage[i]);
+			Assert.assertEquals(errorMessageLocator.get(i).getText().replace("\n", "").trim(), errorMessage[i],"expected Error Message is: "+errorMessage[i]+"");
 		}
 		return this;
 	}
@@ -422,18 +421,23 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 	@Step("enter manufacturer part number {0}")
 	public AddNewItemPageObjects enterManufacturerPartNumber(String manufacturerPartNumber) throws Exception {
 		waiting.explicitWaitVisibilityOfElement(manufacturerNameLocator, 25);
+		manufacturerNameLocator.click();
 		manufacturerNameLocator.sendKeys(manufacturerPartNumber);
 		return this;
 	}
 
 	@Step("enter part number {0}")
 	public AddNewItemPageObjects enterPartNumber(String partNumber) {
+		waiting.explicitWaitVisibilityOfElement(partNumberTextBoxLocator, 20);
+		partNumberTextBoxLocator.click();
 		partNumberTextBoxLocator.sendKeys(partNumber);
 		return this;
 	}
 
 	@Step("enter brand {0}")
 	public AddNewItemPageObjects enterBrand(String brand) {
+		waiting.explicitWaitVisibilityOfElement(brandLocator, 20);
+		brandLocator.click();
 		brandLocator.sendKeys(brand);
 		return this;
 	}
@@ -442,7 +446,7 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 	public AddNewItemPageObjects selectAndVerifyItemStatusOptions(String[] itemStatusOptions,String [] valuesAssignedToEachOption) {
 		
 
-		waiting.explicitWaitVisibilityOfElement(itemStatusLocator, 10);
+		waiting.explicitWaitVisibilityOfElement(itemStatusLocator, 20);
 		for(int i = 0 ; i < itemStatusOptions.length ; i++)
 		{
 		Select select = new Select(itemStatusLocator);

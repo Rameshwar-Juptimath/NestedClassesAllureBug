@@ -2063,7 +2063,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	}
 	public EditItemsPageObjects verifySuccessMessageForCategoryAssign(String expSuccessMessage) {
 
-		waiting.explicitWaitVisibilityOfElement(itemCategorySaveMessageLoator, 10);
+		waiting.explicitWaitVisibilityOfElement(itemCategorySaveMessageLoator, 20);
 		Assert.assertEquals(itemCategorySaveMessageLoator.getText(), expSuccessMessage);
 
 		return this;
@@ -2072,7 +2072,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@Step("seect category to assign {0}")
 	public  EditItemsPageObjects selectCategory(String categoryName) throws InterruptedException {
 
-		waiting.explicitWaitVisibilityOfElement(By.xpath("//div[@id='ttformid:taxonomyTreeId']/descendant::td/descendant::span[contains(@id,'ttformid:taxonomyTreeId') and text()='"+categoryName+"']"), 10);
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//div[@id='ttformid:taxonomyTreeId']/descendant::td/descendant::span[contains(@id,'ttformid:taxonomyTreeId') and text()='"+categoryName+"']"), 20);
 		WebElement element= getDriver().findElement(By.xpath("//div[@id='ttformid:taxonomyTreeId']/descendant::td/descendant::span[contains(@id,'ttformid:taxonomyTreeId') and text()='"+categoryName+"']"));
 		WebElement target= getDriver().findElement(By.xpath("//form[@id='itemCategoryFormId']/descendant::thead"));
 		utility.DragandDrop(element, target);

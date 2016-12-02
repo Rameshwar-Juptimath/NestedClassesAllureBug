@@ -8,6 +8,7 @@ import org.cimm2touch.utils.TestUtilityMethods;
 import org.framework.utils.PermittedCharacters;
 import org.framework.utils.RandomGenerator;
 import org.framework.utils.TestUtility;
+import org.testng.Assert;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import ru.yandex.qatools.allure.annotations.Description;
@@ -36,24 +37,6 @@ HashMap<String, String> loginData;
 		loginData.put("welcomeMessage", welcomMessage);
 	}
 
-	@Test(groups={"smoke","regression"}, dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
-	public void createNewCategory(String testCaseId, String userName, String password, String welComeMessage, String taxonomyName, String categoryName) throws InterruptedException{
-		landingPage()
-		.enterUsername(userName)
-		.enterPassword(password)
-		.clickOnLogin()
-		.homePage()
-		.verifyWelcomeMessage(welComeMessage)
-		.clickOnTaxonomyLink()
-		.taxonomyPage()
-		.searchForTaxonomy(taxonomyName)
-		.verifyTaxonomyPresent(taxonomyName)
-		.clickOnGoToManageTaxonomyIcon(taxonomyName);
-		
-		
-		
-		
-	}
 	
 	@Features(value = {"Items Module"})
 	@Description("This is a test case which verifies display of records per page based on the filter chosen. 25,50,75,100 are the filter values.")
@@ -147,8 +130,6 @@ HashMap<String, String> loginData;
 		.homePage()
 		.verifyWelcomeMessage(welcomeMessage)
 		.clickOnItemsLink()
-		.homePage()
-		.clickOnLeftNavigationbar()
 		.itemsPage()
 		.verifySearchTextboxInLeftNavigationbar()
 		.verifyEditTaxonomyTree()
@@ -164,8 +145,6 @@ HashMap<String, String> loginData;
 		.getDefaultTaxonomy();
 		homePage()
 		.clickOnItemsLink()
-		.homePage()
-		.clickOnLeftNavigationbar()
 		.itemsPage()
 		.verifyDefaultTaxonomyInTaxonomyTree(defaultTaxonomy);
 	}
@@ -193,7 +172,6 @@ HashMap<String, String> loginData;
 	@Features(value = {"Items Module"})
 	@Description("This is a test case which verifies the refresh functionality in the taxonomy tree.")
 	@TestCaseId("TC_ITEMS_008")
-	@Issues(value = { @Issue(value = "CIM-901") })
 	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
 	public void verifyRefreshInTaxonomyTree(String testCaseId, String userName, String password,String welcomeMessage,String category ) throws Exception {
 		
@@ -230,12 +208,7 @@ HashMap<String, String> loginData;
 		.clickOnFilter()
 		.itemsPage()
 		.verifyCategoryChosenIsSelected(categoryName)
-		.itemsPage()
-		.clickOnRemoveFilter()
-		.itemsPage()
 		.verifyCategoryChosenIsNotSelected(categoryName)
-	
-		.itemsPage()
 		.clickOnSpecificCategory(categoryName)
 		.clickOnFilter()
 		.clickOnSpecificEditButton(1)
@@ -362,6 +335,109 @@ HashMap<String, String> loginData;
 	}
 	
 	@Features(value = {"Items Module"})
+	@Description("Verification of 'Select Workbook' drop down")
+	@TestCaseId("TC_ITEMS_044")
+	@Test(groups="regression")
+	public void VerificationOfSelectWorkbookDropDown() throws Exception {
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.verifyWorkbookDropdownLocator();
+	}
+	@Features(value = {"Items Module"})
+	@Description("This Test case verifies Adding and rename of new workbook")
+	@TestCaseId("TC_ITEMS_45, TC_ITEMS_46")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void addNewWorkbook(String testCaseId, String workBookName, String workBookSuccesMsg, String reNameErroMsg,String workBookRemoveMsg) throws Exception {
+		
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.verifyWorkbookDropdownLocator()
+		.clickOnWorkbookDropdown()
+		.enterWorkbookName(workBookName)
+		.clickOnSaveIcon()
+		.verifySuccessMsg(workBookName,workBookSuccesMsg)
+		.clickOnWorkbookDropdown()
+		.enterWorkbookName(workBookName)
+		.clickOnSaveIcon()
+		.verifyErrorMessageForReName(workBookName,reNameErroMsg)
+		.deleteWorkbook(workBookName,workBookRemoveMsg);
+	}
+	@Features(value = {"Items Module"})
+	@Description("This Test case verifies Adding items to workbook")
+	@TestCaseId("TC_ITEMS_47")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void addItemsToWorkbook(String testCaseId, String workBookName, String workBookSuccesMsg, String noOfItemsToBeSelect, String additemWorkbooksuccessmsg, String workbookRemovemsg) throws Exception {
+	
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.verifyWorkbookDropdownLocator()
+		.clickOnWorkbookDropdown()
+		.enterWorkbookName(workBookName)
+		.clickOnSaveIcon()
+		.verifySuccessMsg(workBookName,workBookSuccesMsg)
+		.clickOnSpecficCheckBoxes(noOfItemsToBeSelect)
+		.clickOnWorkbookDropdown()
+		.selectWorkbook()
+		.clickOnWorkbookName()
+		.verifyAddItemSucessMsg(additemWorkbooksuccessmsg)
+		.homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.clickOnWorkbookDropdown()
+		.verifyWorkbookItemCount(noOfItemsToBeSelect)
+		.homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.deleteWorkbook(workBookName,workbookRemovemsg);
+	}
+	@Features(value = {"Items Module"})
+	@Description("This Test case verifies message in add items to workbook alert popup")
+	@TestCaseId("TC_ITEMS_49")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void MessageofAddItemsToWorkbook(String testCaseId, String alertTextMessage) throws Exception {
+		
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.clickOnSelectAllCheckBox()
+		.verifyAlertMessage(alertTextMessage);
+	}
+	@Features(value = {"Items Module"})
+	@Description("Verification of item edit page")
+	@TestCaseId("TC_ITEMS_51")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void verificationOfEditItemPage(String testCaseId, String alertTextMessage) throws Exception {
+		
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.clickOnSelectAllCheckBox()
+		.verifyAlertMessage(alertTextMessage);
+	}
+	@Features(value = {"Items Module"})
 	@Description("This is a test case which verifies that on clicking the results link in the right navigation bar of edit items page opens items list page.")
 	@TestCaseId("TC_ITEMS_053")
 	@Test(groups="regression")
@@ -380,7 +456,4 @@ HashMap<String, String> loginData;
 		.itemsPage()
 		.verifyItemsPageBreadCrump();
 	}
-	
-	
-	
 }
