@@ -438,6 +438,41 @@ HashMap<String, String> loginData;
 		.verifyAlertMessage(alertTextMessage);
 	}
 	@Features(value = {"Items Module"})
+	@Description("This Test case verifies the fields of right panel in edit item page")
+	@TestCaseId("TC_ITEMS_52")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void verificationOfRightPanel(String testCaseId, String manufacturerName,String brandName, String partNumber,
+			String manufacturerPartNumber, String listPrice, String costPrice, String itemSaveSuccessMsg,String userRating, String hits, String popularity) throws Exception {
+		
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"))
+		.clickOnItemsLink()
+		.itemsPage()
+		.clickOnAddNewItem()
+		.addNewItemPage()
+		.clickOnManufacturerDropdown()
+		.selectManufacturerField(manufacturerName)
+		.enterPartNumberField(partNumber)
+		.clickOnBrandDropdown()
+		.selectBrandField(brandName)
+		.enterManufactrerPartNumber(manufacturerPartNumber)
+		.enterListPrice(listPrice)
+		.enterCostPrice(costPrice)
+		.clickOnSaveButtonLink()
+		.verifyItemSavedSuccessfulMessage(itemSaveSuccessMsg)
+		.editItemsPage()
+		.verifyRightPanelItemFieds(manufacturerPartNumber,partNumber,listPrice,costPrice,userRating,hits,popularity)
+		.homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.deleteItem(partNumber);	
+	}
+	
+	@Features(value = {"Items Module"})
 	@Description("This is a test case which verifies that on clicking the results link in the right navigation bar of edit items page opens items list page.")
 	@TestCaseId("TC_ITEMS_053")
 	@Test(groups="regression")

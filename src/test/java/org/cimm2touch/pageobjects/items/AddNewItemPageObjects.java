@@ -169,7 +169,7 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 	@FindAll(value={@FindBy(xpath="//div[contains(@id,'manufacturerListComboIdlist')]/span")})
 	private List<WebElement> manufacturerDropdownValuesLocator;
 	
-	@FindBy(xpath="(//input[@maxlength='50'])[1]")
+	@FindBy(xpath="//input[@id='generalInfoFormId:partNumberId']")
 	public WebElement enterPartNumberLocator;
 
 	@FindBy(xpath="//input[@id='generalInfoFormId:brandListComboIdcomboboxButton']")
@@ -221,12 +221,13 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 		}
 
 	public AddNewItemPageObjects enterManufactrerPartNumber(String getmanufacturerPartNumber) throws InterruptedException {
-		Thread.sleep(2000);
+		waiting.explicitWaitVisibilityOfElement(manufacturerPartNumberTextBoxLocator, 30);
 		manufacturerPartNumberTextBoxLocator.sendKeys(getmanufacturerPartNumber);
 		return this;
 	}
 
 	public AddNewItemPageObjects enterListPrice(String getlistPrice) {
+		waiting.explicitWaitVisibilityOfElement(listPriceLocator, 20);
 		listPriceLocator.sendKeys(getlistPrice);
 		return this;
 	}
@@ -518,15 +519,13 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 	 public AddNewItemPageObjects enterPartNumberField(String partNumberField) {
 
 		 waiting.explicitWaitVisibilityOfElement(enterPartNumberLocator, 30);
-		// RandomGenerator generateRandom = new RandomGenerator();
-		// generateRandom.random(6, PermittedCharacters.NUMERIC);
 		 enterPartNumberLocator.sendKeys(partNumberField);
 			return this;
 		}
 	 
 	 public AddNewItemPageObjects clickOnBrandDropdown() throws InterruptedException {
 		 
-		 Thread.sleep(500);
+		 waiting.explicitWaitElementToBeClickable(brandDropDownLocator, 30);
 
 		 ((JavascriptExecutor)getDriver()).executeScript("arguments[0].click();",brandDropDownLocator);
 			
@@ -555,10 +554,9 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 	    	 return this;
 	    }
 	 
-	 public AddNewItemPageObjects verifyItemSavedSuccessfulMessage(String itemsavedsuccessfulmessage) {
-	   	  
-
-	   	 waiting.explicitWaitVisibilityOfElement(ItemSavedSuccessfulMessageLocator, 30);
+	 public AddNewItemPageObjects verifyItemSavedSuccessfulMessage(String itemsavedsuccessfulmessage) 
+	 {
+	 	 waiting.explicitWaitVisibilityOfElement(ItemSavedSuccessfulMessageLocator, 30);
 	     Assert.assertTrue(ItemSavedSuccessfulMessageLocator.getText().equalsIgnoreCase(itemsavedsuccessfulmessage),"Invalid  message. Getting "+ItemSavedSuccessfulMessageLocator.getText()+".");
 		 return this;
 		

@@ -139,7 +139,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//a[@class='resultBtnLabel']")
 	private WebElement itemEditRightItemButtonLocator; 
 
-	@FindBy(xpath="//form[@id='itemNavigateForm']/div/input[1]")
+	@FindBy(xpath="//form[@id='itemNavigateForm']/descendant::input[@title='Search']")
 	private WebElement itemEditRightSearchButtonLocator; 
 
 	@FindBy(xpath="//input[@id='itemNavigateForm:previousItemIcon']")
@@ -893,13 +893,25 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	public EditItemsPageObjects verifyRightPanelItemFieds(String getmanufacturerPartNumber,String partNumberField,
 			String getlistPrice, String getcostPrice, String getuserrating, String hits, String popularity) throws InterruptedException {
 		Thread.sleep(3000);
-		Assert.assertEquals(itemEditRightMPNLocator.getText().trim(), getmanufacturerPartNumber);
-		Assert.assertEquals(itemEditRightPNLocator.getText().trim(), partNumberField);
-		Assert.assertEquals(itemEditRightListPriceLocator.getText().trim(), getlistPrice);
-		Assert.assertEquals(itemEditRightCostPriceLocator.getText().trim(), getcostPrice);
-		Assert.assertEquals(itemEditRightUserRatingLocator.getText().trim(), getuserrating);
-		Assert.assertEquals(itemEditRightHitsgLocator.getText().trim(), hits);
-		Assert.assertEquals(itemEditRightPopularityLocator.getText().trim(), popularity);
+		WebElement mpnLoc=getDriver().findElement(By.xpath("//table[@class='itemAttrValueDisplayTable']/descendant::td[contains(text(),'"+getmanufacturerPartNumber+"')]"));
+		WebElement partNumberLoc=getDriver().findElement(By.xpath("//table[@class='itemAttrValueDisplayTable']/descendant::td[contains(text()='"+partNumberField+"')]"));
+		WebElement listpriceLoc=getDriver().findElement(By.xpath("//table[@class='itemAttrValueDisplayTable']/descendant::strong[contains(.,'List Price')]/ancestor::td/following-sibling::td[contains(text(),'"+getlistPrice+"')]"));
+		WebElement costPriceLoc=getDriver().findElement(By.xpath("//table[@class='itemAttrValueDisplayTable']/descendant::strong[contains(.,'Cost Price')]/ancestor::td/following-sibling::td[contains(text(),'"+getcostPrice+"')]"));
+		WebElement userRatingLoc=getDriver().findElement(By.xpath("//table[@class='itemAttrValueDisplayTable']/descendant::strong[contains(.,'User Rating')]/ancestor::td/following-sibling::td/span"));
+		WebElement hitsLoc=getDriver().findElement(By.xpath("//table[@class='itemAttrValueDisplayTable']/descendant::strong[contains(.,'Hits')]/ancestor::td/following-sibling::td/span"));
+		WebElement popularityLoc=getDriver().findElement(By.xpath("//table[@class='itemAttrValueDisplayTable']/descendant::strong[contains(.,'Popularity')]/ancestor::td/following-sibling::td/span"));
+		
+		
+
+		
+		
+		Assert.assertEquals(mpnLoc.getText().trim(), getmanufacturerPartNumber);
+		Assert.assertEquals(partNumberLoc.getText().trim(), partNumberField);
+		Assert.assertEquals(listpriceLoc.getText().trim(), getlistPrice);
+		Assert.assertEquals(costPriceLoc.getText().trim(), getcostPrice);
+		Assert.assertEquals(userRatingLoc.getText().trim(), getuserrating);
+		Assert.assertEquals(hitsLoc.getText().trim(), hits);
+		Assert.assertEquals(popularityLoc.getText().trim(), popularity);
 		Assert.assertTrue(itemEditRightResultButtonLocator.isDisplayed(),"Result button is not displayed");
 		Assert.assertTrue(itemEditRightItemButtonLocator.isDisplayed(),"item button is not displayed");
 		Assert.assertTrue(itemEditRightSearchButtonLocator.isDisplayed(),"search icon button is not displayed");

@@ -450,10 +450,10 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	@Step("click on add new Item")
 	public AddNewItemPageObjects clickOnAddNewItem() throws Exception {
-		Thread.sleep(2500);
+		waiting.explicitWaitElementToBeClickable(addNewItemLinkLocator, 30);
 
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",addNewItemLinkLocator);
-		Thread.sleep(3500);
+	
 		return new AddNewItemPageObjects();
 	}
 
