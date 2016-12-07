@@ -32,7 +32,7 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 	@FindBy(xpath="//input[@id='generalInfoFormId:lpId']")
 	private WebElement listPriceLocator;
 	
-	@FindBy(xpath="//input[@id='generalInfoFormId:cpId']")
+	@FindBy(xpath="//input[@id='generalInfoFormId:costPriceId']")
 	private WebElement costPriceLocator;
 	
 	
@@ -233,6 +233,7 @@ public class AddNewItemPageObjects extends PageFactoryInitializer{
 	}
 
 	public AddNewItemPageObjects enterCostPrice(String getcostPricer) {
+		Assert.assertTrue(costPriceLocator.isDisplayed(),"cost price locator is not displayed");
 		costPriceLocator.sendKeys(getcostPricer);
 		return this;
 	}

@@ -87,6 +87,8 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//input[contains(@id,'buyingCompanyId')]")
 	private WebElement addNewCpnTextboxLocator;
 
+	@FindBy(xpath="//td[contains(text(),'General Info')]")
+	private WebElement generalInfoTabLocator;
 	
 	@FindBy(xpath="//input[@id='itemNavigateForm:nextItemIcon']")
 	private WebElement nextItemIconLocator;
@@ -109,7 +111,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//a[@title='History']")
 	private WebElement historyButtonLocator;
 
-	@FindBy(xpath="//form[@id='generalInfoFormId']/div[1]/ul/span/li[1]/input")
+	@FindBy(xpath="//form[@id='generalInfoFormId']/descendant::input[contains(@title,'Update Item')]")
 	private WebElement itemUpdateButtonLocator;
 
 	@FindBy(xpath="//form[@id='itemDtlFm']/table/tbody/tr[2]/td[3]")
@@ -177,10 +179,16 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 	@FindBy(xpath="//div[@class='tab_descriptionForm']/div[1]/span[7]/div[1]")
 	private WebElement InvoiceDescriptionLocator; 
+	
+	@FindBy(xpath="//input[@id='advSearchFm:goBtn']")
+	private WebElement searchButtonInEditPage;
 
 	@FindBy(xpath="//div[@class='tab_descriptionForm']/div[1]/span[8]/div[1]")
 	private WebElement ItemMarketDescriptionLocator; 
 
+	@FindBy(xpath="//input[@id='generalInfoFormId:partNumberId']")
+	private WebElement partNumberInputFieldItemEditPage;
+	
 	@FindBy(xpath="(//div[@id='noEditor'])[1]")
 	private WebElement ItemPageTitleDescriptionLocator;
 
@@ -252,6 +260,9 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 	@FindBy(xpath="//span[@id='listProductForm:productTableID:ACTION']")
 	private WebElement productActionLabelLocator;
+	
+	@FindBy(xpath="//input[@id='advSearchFm:searchKeywordId']")
+	private WebElement searchFieldInEditPage;
 
 	@FindBy(xpath="//span[@id='listProductForm:productTableID:ITMIMGH']")
 	private WebElement productNameImageLabelLocator;
@@ -269,6 +280,9 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//form[@id='keywordsFormId']/div[2]/div/span[2]/div[1]")
 	private WebElement MetakeywordlinkLocator;
 
+	@FindBy(xpath="//input[@id='generalInfoFormId:manufacturerListComboIdcomboboxField']")
+	private WebElement manufacturerInputFieldInItemEdit;
+	
 	@FindBy(xpath="//form[@id='keywordsFormId']/div[2]/div/span[3]/div[1]")
 	private WebElement keywordautomgeneratedlinkLocator;
 
@@ -306,7 +320,14 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 	@FindBy(xpath="(//select[@class='cimmDocInputText'])[2]")
 	private WebElement DocumentcatdropdownLocator;
+	
+	@FindBy(xpath="//input[@id='generalInfoFormId:brandListComboIdcomboboxField']")
+	private WebElement brandInputLocatorInItemEditPage;
+	
+	@FindBy(xpath="//input[@id='generalInfoFormId:mpnTxtId']")
+	private WebElement mpnInputLocatorInItemEditPage;
 
+	
 	@FindBy(xpath="//input[@id='addDocumentId']")
 	private WebElement DocumentAddlinkLocator;
 
@@ -714,7 +735,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@Step("click on item link in the right navigation bar")
 	public EditItemsPageObjects clickOnItemLink() {
 
-		waiting.explicitWaitVisibilityOfElement(itemLinkLocator, 6);
+		waiting.explicitWaitVisibilityOfElement(itemLinkLocator, 20);
 		itemLinkLocator.click();
 		return this;
 	}
@@ -732,9 +753,9 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 	public EditItemsPageObjects verifyEditItemsBreadCrumbAndCimmItemIdValue(String getBreadCrump, String itemId) {
 
-		waiting.explicitWaitVisibilityOfElement(cimmItemIdValueLocator, 10);
+		waiting.explicitWaitVisibilityOfElement(cimmItemIdValueLocator, 20);
 		Assert.assertTrue(assertEditItemsCimmItemIdValue(cimmItemIdValueLocator.getText().trim(), itemId));
-		waiting.explicitWaitVisibilityOfElement(editItemsBreadcrumbLocator, 4);
+		waiting.explicitWaitVisibilityOfElement(editItemsBreadcrumbLocator, 20);
 
 		Assert.assertTrue(assertEditItemsBreadCrumb(editItemsBreadcrumbLocator.getText().trim(), getBreadCrump));
 		return this;
@@ -891,10 +912,12 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	}
 
 	public EditItemsPageObjects verifyRightPanelItemFieds(String getmanufacturerPartNumber,String partNumberField,
-			String getlistPrice, String getcostPrice, String getuserrating, String hits, String popularity) throws InterruptedException {
-		Thread.sleep(3000);
+		String getlistPrice, String getcostPrice, String getuserrating, String hits, String popularity) throws InterruptedException {
+		
+		String ele="//table[@class='itemAttrValueDisplayTable']/descendant::td[contains(text(),'"+getmanufacturerPartNumber+"')]";
+		waiting.explicitWaitVisibilityOfElement(By.xpath(ele), 10);
 		WebElement mpnLoc=getDriver().findElement(By.xpath("//table[@class='itemAttrValueDisplayTable']/descendant::td[contains(text(),'"+getmanufacturerPartNumber+"')]"));
-		WebElement partNumberLoc=getDriver().findElement(By.xpath("//table[@class='itemAttrValueDisplayTable']/descendant::td[contains(text()='"+partNumberField+"')]"));
+		WebElement partNumberLoc=getDriver().findElement(By.xpath("//table[@class='itemAttrValueDisplayTable']/descendant::td[contains(text(),'"+partNumberField+"')]"));
 		WebElement listpriceLoc=getDriver().findElement(By.xpath("//table[@class='itemAttrValueDisplayTable']/descendant::strong[contains(.,'List Price')]/ancestor::td/following-sibling::td[contains(text(),'"+getlistPrice+"')]"));
 		WebElement costPriceLoc=getDriver().findElement(By.xpath("//table[@class='itemAttrValueDisplayTable']/descendant::strong[contains(.,'Cost Price')]/ancestor::td/following-sibling::td[contains(text(),'"+getcostPrice+"')]"));
 		WebElement userRatingLoc=getDriver().findElement(By.xpath("//table[@class='itemAttrValueDisplayTable']/descendant::strong[contains(.,'User Rating')]/ancestor::td/following-sibling::td/span"));
@@ -934,6 +957,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	}
 
 	public EditItemsPageObjects clickonUpdateItemButton() {
+		waiting.explicitWaitElementToBeClickable(itemUpdateButtonLocator, 20);
 		itemUpdateButtonLocator.click();
 		return this;
 	}
@@ -1647,7 +1671,9 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		return this;
 	}
 	@Step("Verifying item update success message in custom prices tab")
-	public EditItemsPageObjects VerifyUpdateitemSuccessMsg() {
+	public EditItemsPageObjects VerifyUpdateitemSuccessMsg(String successMessage) {
+		waiting.explicitWaitVisibilityOfElement(custompricessuccessmsgx, 20);
+		Assert.assertEquals(custompricessuccessmsgx.getText().trim(), successMessage);
 		Assert.assertTrue(custompricessuccessmsgx.getText().trim().contains(" Item Updated Successfully"), "item is not updated successfully to the subset");
 		return this;
 	}
@@ -2073,6 +2099,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		return this;
 		
 	}
+	@Step("")
 	public EditItemsPageObjects verifySuccessMessageForCategoryAssign(String expSuccessMessage) {
 
 		waiting.explicitWaitVisibilityOfElement(itemCategorySaveMessageLoator, 20);
@@ -2099,5 +2126,114 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		waiting.explicitWaitElementToBeClickable(categorySaveLocator, 10);
 		categorySaveLocator.click();
 		return this;
+	}
+	@Step(" search for items in edit items page")
+	public EditItemsPageObjects searchForItem(String partNumber) {
+		clckOnSearchButton();
+		waiting.explicitWaitElementToBeClickable(searchFieldInEditPage, 30);
+		searchFieldInEditPage.click();
+		searchFieldInEditPage.clear();
+		searchFieldInEditPage.sendKeys(partNumber);
+		return this;
+		
+	}
+	@Step("Click on SearchButton In edit items page")
+	public EditItemsPageObjects clckOnSearchButton() {
+		waiting.explicitWaitVisibilityOfElement(searchButtonInEditPage, 20);
+		searchButtonInEditPage.click();
+		return this;
+	}
+	@Step("")
+	public EditItemsPageObjects clickOnNextItemIcon() {
+		waiting.explicitWaitVisibilityOfElement(nextItemIconLocator, 20);
+		Assert.assertTrue(nextItemIconLocator.isDisplayed(),"next item locator is not displayed");
+		nextItemIconLocator.click();
+
+		return this;
+	}
+	@Step("verify The Results For NextItem is not equals to previous search results{0}")
+	public EditItemsPageObjects verifyTheResultsForNextItem(String previousSearchResultsPartNumber) {
+		
+		waiting.explicitWaitVisibilityOfElement(partNumberInputFieldItemEditPage, 20);
+		String currentPageResults=partNumberInputFieldItemEditPage.getAttribute("value");
+		Assert.assertNotEquals(currentPageResults, previousSearchResultsPartNumber,"next item page results are equal to previous page resuts");
+
+		
+		
+		return this;
+	}
+	@Step("return the value of partNumber {0}")
+	public String getTheItemPartNumber(String partNumber) {
+		waiting.explicitWaitVisibilityOfElement(partNumberInputFieldItemEditPage, 20);
+		String getPartNumber=partNumberInputFieldItemEditPage.getAttribute("value");
+		return getPartNumber;
+	}
+	@Step("click on previous button")
+	public EditItemsPageObjects clickOnPreviousItemIcon() {
+		waiting.explicitWaitElementToBeClickable(itemEditRightpreviousButtonLocator, 20);
+		itemEditRightpreviousButtonLocator.click();
+		return this;
+	}
+	@Step("verify The Results For Previous button {0}")
+	public EditItemsPageObjects verifyTheResultsForPrevious(String searchResults) {
+		waiting.explicitWaitVisibilityOfElement(partNumberInputFieldItemEditPage, 20);
+		String currentPageResults=partNumberInputFieldItemEditPage.getAttribute("value");
+		Assert.assertEquals(currentPageResults, searchResults);
+
+		return this;
+	}
+	@Step("verification of prefilled data in edit item page")
+	public EditItemsPageObjects verifyGeneralInfoTabWithPreFilledData(String partNumber, String manufacturerName, String brandName, String mpn) {
+
+		waiting.explicitWaitVisibilityOfElement(generalInfoTabLocator, 10);
+		Assert.assertTrue(generalInfoTabLocator.getAttribute("class").contains("active"),"General info tab is enabled");
+		Assert.assertTrue(partNumberInputFieldItemEditPage.getAttribute("value").contains(partNumber),"partNumber data is not available");
+		Assert.assertTrue(manufacturerInputFieldInItemEdit.getAttribute("value").contains(manufacturerName),"ManufactureName data is not available");
+		Assert.assertTrue(mpnInputLocatorInItemEditPage.getAttribute("value").contains(mpn),"ManufacturerpartNumber data is not available");
+		Assert.assertTrue(brandInputLocatorInItemEditPage.getAttribute("value").contains(brandName),"brand data is not available");
+		
+		
+
+		return this;
+		
+	}
+
+	public EditItemsPageObjects updateThePartNumber(String updatedPartNumber) {
+		waiting.explicitWaitElementToBeClickable(partNumberInputFieldItemEditPage, 10);
+		partNumberInputFieldItemEditPage.click();
+		partNumberInputFieldItemEditPage.clear();
+		partNumberInputFieldItemEditPage.sendKeys(updatedPartNumber);
+		
+		return this;
+	}
+	@Step("update the all the mandatory fields with new values {0}")
+	public EditItemsPageObjects updateThefields(String data) {
+		
+		waiting.explicitWaitVisibilityOfElement(partNumberInputFieldItemEditPage, 20);
+		
+		partNumberInputFieldItemEditPage.clear();
+		partNumberInputFieldItemEditPage.sendKeys(data);
+		
+		manufacturerInputFieldInItemEdit.clear();
+		manufacturerInputFieldInItemEdit.sendKeys(data);
+		
+		mpnInputLocatorInItemEditPage.clear();
+		mpnInputLocatorInItemEditPage.sendKeys(data);
+		
+		brandInputLocatorInItemEditPage.clear();
+		brandInputLocatorInItemEditPage.sendKeys(data);
+		return this;
+		
+	}
+
+	public EditItemsPageObjects verifyDescriptionFields(String descriptionFields) {
+		String expected[]=descriptionFields.split(",");
+		List<WebElement> allAvailableFields =getDriver().findElements(By.xpath("//span[@id='descFormId:discEditPanel']//div[@class='tab_Label']"));
+       
+         for (int i=0; i<expected.length; i++){
+        
+        Assert.assertEquals(allAvailableFields.get(i).getText(), expected[i], "Fields available in Description: "+allAvailableFields.get(i).getText()+"");
+         }
+	return this;
 	}
 }

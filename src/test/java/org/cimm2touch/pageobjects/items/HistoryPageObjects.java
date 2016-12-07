@@ -1,26 +1,29 @@
 package org.cimm2touch.pageobjects.items;
 import org.cimm2touch.initializer.PageFactoryInitializer;
-import org.framework.utils.TestUtility;
+import org.cimm2touch.utils.TestUtilityMethods;
 import org.testng.Assert;
 
 public class HistoryPageObjects extends PageFactoryInitializer
 {
-
+	TestUtilityMethods tu= new TestUtilityMethods(getDriver());
 	public boolean assertPageTitle(String expectedHistoryPageTitle) throws Exception 
 	{
-
-		TestUtility utility = new TestUtility(getDriver());
+		
+		
 		boolean t = getDriver().getTitle().replace(" ", "").trim().equals(expectedHistoryPageTitle.replace(" ", "").trim());
-		utility.closeCurrentTab();
 		Thread.sleep(2000);
-		//utility.switchBackToFirstWindow();
+	
 		return t;
 	}
 	
 	public HistoryPageObjects verifyPageTitle(String expectedHistoryPageTitle) throws Exception
 	{
-
+		tu.switchToRecentWindow(1);
+		
 		Assert.assertTrue(assertPageTitle(expectedHistoryPageTitle),"Actual Title : "+getDriver().getTitle().trim()+" but expecting "+expectedHistoryPageTitle);
+		getDriver().close();
+		tu.switchBackToFirstWindow();
+	
 		return this;
 	}
 	

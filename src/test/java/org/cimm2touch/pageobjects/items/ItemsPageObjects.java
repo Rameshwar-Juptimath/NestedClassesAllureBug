@@ -101,6 +101,10 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//a[contains(text(),'aaaaa')]")
 	private WebElement selectWorkbookLocator;
 
+	
+	@FindBy(xpath="//input[@id='generalInfoFormId:partNumberId']")
+	private WebElement partNumberInputFieldItemEditPage;
+	
 	@FindBy(xpath="//a[@id='searchFormId:selectedWBId']")
 	private WebElement clickOnWorkbookLocator;
 
@@ -643,9 +647,9 @@ public class ItemsPageObjects extends PageFactoryInitializer
 		searchItem(partnumber);
 		Thread.sleep(5000);
 
-		String itemPartnumber=getDriver().findElement(By.xpath("//table[@id='searchFormId:itemListTableId']/tbody/tr[1]/td[5]")).getText().trim();
+		String itemPartnumber=getDriver().findElement(By.xpath("//table[@id='searchFormId:itemListTableId']/descendant::td[contains(text(),'"+partnumber+"')]")).getText().trim();
 		if(partnumber.trim().equalsIgnoreCase((itemPartnumber))){
-			Thread.sleep(4000);
+			waiting.explicitWaitElementToBeClickable(itemDeleteLocator, 20);
 			itemDeleteLocator.click();
 			tu.alertAccept();
 			Thread.sleep(2000);
@@ -657,7 +661,8 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	}
 
 	public ItemsPageObjects searchItem(String partnumber) throws InterruptedException {
-		Thread.sleep(3000);
+		waiting.explicitWaitElementToBeClickable(itemSearchLocator, 20);
+		itemSearchLocator.click();
 		itemSearchLocator.clear();
 		itemSearchLocator.sendKeys(partnumber);
 		itemSearchButtonLocator.click();
@@ -1652,7 +1657,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	public ItemsPageObjects clickOnEditButton(String partNumber)  throws Exception
 	{	
 
-		waiting.explicitWaitElementToBeClickable(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']//td[contains(text(),'"+partNumber+"')]/..//input[@title='Edit Item']"), 10);
+		waiting.explicitWaitElementToBeClickable(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']//td[contains(text(),'"+partNumber+"')]/..//input[@title='Edit Item']"), 30);
 		{
 		getDriver().findElements(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']//td[contains(text(),'"+partNumber+"')]/..//input[@title='Edit Item']")).get(0).click();
 		}
@@ -1746,9 +1751,9 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	public ItemsPageObjects clickOnFirstEditButton()  throws Exception
 	{
-		Thread.sleep(3000);
-
-		getDriver().findElement(By.xpath("//table[@id= 'searchFormId:itemListTableId']/descendant::input[@title= 'Edit Item'][1]")).click();
+		waiting.explicitWaitVisibilityOfElements(By.xpath("//table[@id= 'searchFormId:itemListTableId']/descendant::input[@title= 'Edit Item']"), 20);
+		List<WebElement>ele=getDriver().findElements(By.xpath("//table[@id= 'searchFormId:itemListTableId']/descendant::input[@title= 'Edit Item'][1]"));
+		ele.get(0).click();
 		return this;
 	}
 
@@ -1945,9 +1950,9 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	@Step("select items {0} from list to work book ")
 	public ItemsPageObjects clickOnSpecficCheckBoxes(String noOfItemsToBeSelect) throws InterruptedException {
 		int itemsToSelect=Integer.parseInt(noOfItemsToBeSelect);
-		Thread.sleep(3500);
+		waiting.explicitWaitVisibilityOfElements(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::input[contains(@id,'ITMSLCT')]"), 20);
 		for(int i=0; i< itemsToSelect; i++){
-			//waiting.explicitWaitVisibilityOfElements(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::input[contains(@id,'ITMSLCT')]"), 20);
+			
 			List<WebElement>ls=getDriver().findElements(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::input[contains(@id,'ITMSLCT')]/ancestor::label"));
 			ls.get(i).click();
 			Thread.sleep(1000);
@@ -1964,6 +1969,12 @@ public class ItemsPageObjects extends PageFactoryInitializer
 		
 
 		return this;
+	}
+
+	public String getTheItemPartNumber(String partNumber) {
+		waiting.explicitWaitVisibilityOfElement(partNumberInputFieldItemEditPage, 20);
+		String getPartNumber=partNumberInputFieldItemEditPage.getAttribute("value");
+		return getPartNumber;
 	}
 
 	

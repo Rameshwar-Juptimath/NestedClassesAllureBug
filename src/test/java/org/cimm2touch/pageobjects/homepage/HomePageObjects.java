@@ -102,7 +102,7 @@ public class HomePageObjects extends PageFactoryInitializer{
 	 @Step("click on right navigation bar")
 		public AddNewItemPageObjects clickOnRightNavigationBar() throws Exception {
 
-		 waiting.explicitWaitVisibilityOfElement(rightNavigationArrowLocator, 17);
+		 waiting.explicitWaitVisibilityOfElement(rightNavigationArrowLocator, 20);
 			((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",rightNavigationArrowLocator);
 			return new AddNewItemPageObjects();
 		}

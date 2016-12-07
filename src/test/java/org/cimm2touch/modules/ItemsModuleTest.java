@@ -1,5 +1,6 @@
 package org.cimm2touch.modules;
 import java.util.HashMap;
+import java.util.List;
 
 import org.cimm2touch.dataprovider.SearchData;
 import org.cimm2touch.initializer.PageFactoryInitializer;
@@ -8,6 +9,8 @@ import org.cimm2touch.utils.TestUtilityMethods;
 import org.framework.utils.PermittedCharacters;
 import org.framework.utils.RandomGenerator;
 import org.framework.utils.TestUtility;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
@@ -473,7 +476,7 @@ HashMap<String, String> loginData;
 	}
 	
 	@Features(value = {"Items Module"})
-	@Description("This is a test case which verifies that on clicking the results link in the right navigation bar of edit items page opens items list page.")
+	@Description("Verification of 'Results' link functionality in item edit page")
 	@TestCaseId("TC_ITEMS_053")
 	@Test(groups="regression")
 	public void verifyResultsLinkInEditItemsPage() throws Exception {
@@ -490,5 +493,185 @@ HashMap<String, String> loginData;
 		.clickOnResultsLink()
 		.itemsPage()
 		.verifyItemsPageBreadCrump();
+	}
+	@Features(value = {"Items Module"})
+	@Description("verification of clicking the item link in the right navigation bar of edit items page opens edit items list page.")
+	@TestCaseId("TC_ITEMS_054")
+	@Test(groups="regression")
+	public void verifyItemLinkInEditItemsPage() throws Exception {
+	String itemId =	landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.clickOnSpecificEditButton(1)
+		.editItemsPage()
+		.getCimmItemId();
+		String getBreadCrump = editItemsPage()
+		.getEditItemsBreadCrump();
+		homePage()
+		.editItemsPage()
+		.clickOnItemLink()
+		.editItemsPage()
+		.verifyEditItemsBreadCrumbAndCimmItemIdValue(getBreadCrump,itemId);
+	}
+	@Features(value = {"Items Module"})
+	@Description("Verification of 'Search' icon functionality in item edit page")
+	@TestCaseId("TC_ITEMS_55")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void verifySearchFnEditItem(String testCase, String partNumber) throws Exception {
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnEditButton(partNumber)
+		.editItemsPage()
+		.searchForItem(partNumber)
+		.clckOnSearchButton()
+		.itemsPage()
+		.verifyItemSearchResults(partNumber);
+		
+	}
+	@Features(value = {"Items Module"})
+	@Description("Verification of previous item displayed when 'Previous Item'and 'Next Item' icon is clicked")
+	@TestCaseId("TC_ITEMS_56, TC_ITEMS_57")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void verifyNextPreviousEditItem(String testCaseId, String partNumber) throws Exception {
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.clickOnItemsLink();
+		String searchResults=itemsPage()
+		.searchItem(partNumber)
+		.clickOnFirstEditButton()
+		.editItemsPage()
+		.getTheItemPartNumber(partNumber);
+		editItemsPage()
+		.clickOnNextItemIcon()
+		.verifyTheResultsForNextItem(searchResults)
+		.clickOnPreviousItemIcon()
+		.verifyTheResultsForPrevious(searchResults);
+	}
+	@Features(value = {"Items Module"})
+	@Description("verification 'General Info' tab in item edit page")
+	@TestCaseId("TC_ITEMS_58")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void verifyGeneralInfoTab(String testCaseId, String partNumber, String manufacturerName, String brandName, String mpn) throws Exception {
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.clickOnItemsLink();
+		itemsPage()
+		.searchItem(partNumber)
+		.clickOnEditButton(partNumber)
+		.editItemsPage()
+		.verifyGeneralInfoTabWithPreFilledData(partNumber, manufacturerName,brandName,mpn);
+	}
+	@Features(value = {"Items Module"})
+	@Description("Verification of updating item information")
+	@TestCaseId("TC_ITEMS_59")
+	@Issue("")
+	@Test(enabled=false,groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void verifyItemUpdateFunctionality(String testCaseId, String partNumber, String manufacturerName,
+			String brandName, String mpn, String itemSaveSuccessMsg, String updatedPartNumber, String updateSuccessMessage) throws Exception {
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.clickOnAddNewItem()
+		.addNewItemPage()
+		.clickOnManufacturerDropdown()
+		.selectManufacturerField(manufacturerName)
+		.enterPartNumberField(partNumber)
+		.clickOnBrandDropdown()
+		.selectBrandField(brandName)
+		.enterManufactrerPartNumber(mpn)
+		.clickOnSaveButtonLink()
+		.verifyItemSavedSuccessfulMessage(itemSaveSuccessMsg);
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnEditButton(partNumber)
+		.editItemsPage()
+		.updateThePartNumber(updatedPartNumber)
+		.clickonUpdateItemButton()
+		.VerifyUpdateitemSuccessMsg(updateSuccessMessage)
+		.homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.deleteItem(updatedPartNumber);
+	}
+	@Features(value = {"Items Module"})
+	@Description("Verification of 'Reset' icon functionality")
+	@TestCaseId("TC_ITEMS_60")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void verifyResetFunctionality(String testCaseId, String partNumber, String manufacturerName,
+			String brandName, String mpn, String dataUpdate) throws Exception {
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin();
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnEditButton(partNumber)
+		.editItemsPage()
+		.updateThefields(dataUpdate)
+		.clickOnResetButton()
+		.verifyGeneralInfoTabWithPreFilledData(partNumber, manufacturerName,brandName,mpn);
+	}
+	@Features(value = {"Items Module"})
+	@Description("Verification of 'Histoty' icon ")
+	@TestCaseId("TC_ITEMS_61")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void verifyHistory(String testCaseId, String partNumber, String alertTextWhenHistoryIsClicked,String expectedHistoryPageTitle) throws Exception {
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin();
+		homePage()
+		.clickOnItemsLink()
+		.searchItem(partNumber)
+		.clickOnEditButton(partNumber)
+		.editItemsPage()
+		.clickOnHistoryLink()
+		.verifyAlertMsg(alertTextWhenHistoryIsClicked);
+		historyPage()
+		.verifyPageTitle(expectedHistoryPageTitle);
+		
+	}
+	@Features(value = {"Items Module"})
+	@Description("Verification of 'Histoty' icon ")
+	@TestCaseId("TC_ITEMS_62")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void verifyDescriptionTab(String testCaseId, String partNumber,String descriptionFields) throws Exception {
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin();
+		homePage()
+		.clickOnItemsLink()
+		.searchItem(partNumber)
+		.clickOnEditButton(partNumber)
+		.editItemsPage()
+		.clickOnDescriptionTabLink()
+		.verifyDescriptionFields(descriptionFields);
+		
+         
 	}
 }
