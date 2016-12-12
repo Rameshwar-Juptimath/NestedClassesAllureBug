@@ -576,7 +576,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.typeinadvancedSearchTopSearchField(advSearchinput)
 		.clickOnImagesSubFilter(imageStatus)
 		.clickOnbottomSeacrhButton()
-		.verifyPartNumbers();
+		.verifyPartNumbers(advSearchinput);
 	}
 
 	@Features("AdvancedSearch Module")

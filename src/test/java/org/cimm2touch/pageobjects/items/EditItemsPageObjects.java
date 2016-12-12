@@ -997,12 +997,13 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	}
 
 	public EditItemsPageObjects verifyTinyMceEditor() throws InterruptedException {
+		waiting.explicitWaitVisibilityOfElement(ItemshortDescriptionLocator, 20);
 		ItemshortDescriptionLocator.click();
 		Assert.assertTrue(ShortTinyMCEeditorLocator.isDisplayed(), "TinyMCE editor is not displayed");
-		Thread.sleep(2000);
+		waiting.explicitWaitVisibilityOfElement(Itemlong1DescriptionLocator, 20);
 		Itemlong1DescriptionLocator.click();
 		Assert.assertTrue(long1TinyMCEeditorLocator.isDisplayed(), "TinyMCE editor is not displayed");
-		Thread.sleep(2000);
+		waiting.explicitWaitVisibilityOfElement(Itemlong1DescriptionLocator, 20);
 		ItemLongDescription2TextboxLocator.click();
 		Assert.assertTrue(long2TinyMCEeditorLocator.isDisplayed(), "TinyMCE editor is not displayed");
 		Thread.sleep(2000);
@@ -2087,7 +2088,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		int var = Integer.parseInt(noOfitemsToBeCategorized);
 		for(int i=1; i<= var; i++){
 
-			waiting.explicitWaitElementToBeClickable(categorizationTabLocator, 10);
+			waiting.explicitWaitElementToBeClickable(categorizationTabLocator, 20);
 			categorizationTabLocator.click();
 			searchForTaxonomy(taxonomyName);
 			selectCategory(categoryName+i);
@@ -2099,7 +2100,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		return this;
 		
 	}
-	@Step("")
+	@Step(" verification of success message for categorization {0}")
 	public EditItemsPageObjects verifySuccessMessageForCategoryAssign(String expSuccessMessage) {
 
 		waiting.explicitWaitVisibilityOfElement(itemCategorySaveMessageLoator, 20);
@@ -2225,7 +2226,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		return this;
 		
 	}
-
+	@Step("verification of description fields {0}")
 	public EditItemsPageObjects verifyDescriptionFields(String descriptionFields) {
 		String expected[]=descriptionFields.split(",");
 		List<WebElement> allAvailableFields =getDriver().findElements(By.xpath("//span[@id='descFormId:discEditPanel']//div[@class='tab_Label']"));
@@ -2235,5 +2236,11 @@ public class EditItemsPageObjects extends PageFactoryInitializer
         Assert.assertEquals(allAvailableFields.get(i).getText(), expected[i], "Fields available in Description: "+allAvailableFields.get(i).getText()+"");
          }
 	return this;
+	}
+	@Step("verification of description fields {0}")
+	public EditItemsPageObjects enterTheDataInRespectiveField() {
+		
+		
+		return this;
 	}
 }

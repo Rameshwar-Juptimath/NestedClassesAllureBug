@@ -467,9 +467,7 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 	@Step("To Verify If Taxonomy is  Present")
 	public TaxonomyPageObjects verifyTaxonomyPresent(String taxonomyName) throws InterruptedException
 	{
-		Thread.sleep(2000);
-		
-
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//table[@id='taxonomyTableForm:taxonomyDataTable']//span[contains(@id,'taxonomyName') and contains(.,'"+taxonomyName+"')]"), 30);
 		WebElement ele=getDriver().findElement(By.xpath("//table[@id='taxonomyTableForm:taxonomyDataTable']//span[contains(@id,'taxonomyName') and contains(.,'"+taxonomyName+"')]"));
 		Assert.assertTrue(ele.isDisplayed(), "Taxonomy "+taxonomyName+" is not Present");
 		return this;

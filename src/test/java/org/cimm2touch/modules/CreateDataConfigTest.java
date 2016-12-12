@@ -111,6 +111,7 @@ public class CreateDataConfigTest extends PageFactoryInitializer{
 		.clickOnManageTaxonomy()
 		.manageTaxonomyPage()
 		.verifyLeftPanelTaxonomyName(taxonomy)
+		.verifyCategoryPresent(categoryName)
 		.addNewCategoryAndVerify(categoryCode, categoryName, displaySequence, noOfCategories,expSuccessMsgForNewCategoryCreation);
 
 	}
@@ -187,7 +188,7 @@ public class CreateDataConfigTest extends PageFactoryInitializer{
 		.typeonMBsearch(manufacturerName)
 		.clickonMBsearch()
 		.checkManufacturerAlreadyExist(manufacturerName)
-		.clickOnlisticon()
+		.clickOnlisticon(manufacturerName)
 		.isBrandpresent(brandName)
 		.clickOnaddnewbrandbutton()
 		.checkBrandFormEnabled()
@@ -217,6 +218,8 @@ public class CreateDataConfigTest extends PageFactoryInitializer{
 		.verifyWelcomeMessage(welcomMessage)
 		.clickOnItemsLink()
 		.itemsPage()
+		.searchItem(itemNameTemplate)
+		.verifyItemsPresent(itemNameTemplate)
 		.createNewItemsinside(manufactureName, brandName,itemNameTemplate, mfgNameTemplate,
 				vendorName, succesfulMessageForCreatedItem, subsetName, numberOfItemsToCreate);
 	}

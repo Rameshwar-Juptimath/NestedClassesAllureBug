@@ -1104,7 +1104,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 	public SubsetPageObjects searchForAnSubset(String subsetName) 
 	{
 
-		waiting.explicitWaitVisibilityOfElement(subset_SearchBox, 5);
+		waiting.explicitWaitVisibilityOfElement(subset_SearchBox, 20);
 		subset_SearchBox.clear();
 		subset_SearchBox.sendKeys(subsetName);
 		subset_SearchIcon.click();
@@ -1310,11 +1310,12 @@ public class SubsetPageObjects extends PageFactoryInitializer
 		return this;
 	}
 	public String verifyandDeleteSubset(String subsetName) throws Exception {
+		Thread.sleep(3000);
 		WebElement wb=getDriver().findElement(By.xpath("//span[contains(text(),'"+subsetName+"')]/ancestor::td//preceding-sibling::td/descendant::input[@value='Remove']"));
-		waiting.explicitWaitVisibilityOfElement(wb, 10);
-		utility.assertElementPresent(wb);
+		//waiting.explicitWaitVisibilityOfElement(wb, 20);
+		Assert.assertEquals(getDriver().findElement(By.xpath("//span[contains(text(),'"+subsetName+"')]")).getText(), subsetName,""+subsetName+" is not available");
 		String subsetId=getDriver().findElement(By.xpath("//span[contains(text(),'"+subsetName+"')]/ancestor::td//preceding-sibling::td[1]")).getText();
-		wb.click();
+		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",wb);
 		tu.alertAccept();
 		return subsetId;
 	}
@@ -1325,6 +1326,30 @@ public class SubsetPageObjects extends PageFactoryInitializer
 		
 		
 		return this;
+	}
+	public SubsetPageObjects verifySubsetBeforeRemove(String subsetName) {
+		Assert.assertFalse(assertVerifySubset(subsetName),"subset not available, Please create before remove");
+		return this;
+	}
+	public SubsetPageObjects verifyIsSubsetPresent(String subsetName) {
+		Assert.assertTrue(assertVerifySubset(subsetName),"subset not available, Please create before remove");
+		return this;
+	}
+	private boolean assertVerifySubset(String subsetName) {
+		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		try {
+
+
+			if(getDriver().findElement(By.xpath("//td[contains(text(),'"+subsetName+"')]")).isDisplayed())
+			{
+				return false;
+			}
+		}
+		catch(NoSuchElementException e) {
+			return true;
+
+		}
+		return false;
 	}
 
 

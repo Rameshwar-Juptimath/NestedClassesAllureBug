@@ -1,5 +1,6 @@
 package org.cimm2touch.pageobjects.items;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.framework.utils.TestUtility;
@@ -77,7 +78,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//span[@id='searchFormId:addNewWrkBookMes']")
 	private WebElement workbookSuccessmsgLocator;
 
-	@FindBy(xpath="//tbody[@id='searchFormId:workBookDataTable:tb']/tr[1]/td[2]/input")
+	@FindBy(xpath="//tbody[@id='searchFormId:workBookDataTable:tb']/descendant::input[@title='Remove this WorkBook']")
 	private WebElement workbookDeleteIcon;
 
 	@FindBy(xpath="//span[@id='searchFormId:smid1']")
@@ -111,7 +112,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//span[@id='searchFormId:addNewWrkBookMes']")
 	private WebElement itemAddedSuccessMsgLocator;
 
-	@FindBy(xpath="//a[contains(text(),'aaaaa (10)')]")
+	@FindBy(xpath="//a[@id='searchFormId:selectedWBId']")
 	private WebElement itemcountinLocator;
 
 	@FindBy(xpath="//span[@id='searchFormId:addNewWrkBookMes']")
@@ -556,16 +557,18 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	}
 	@Step("Click on delete icon for the item name {0}")
 	public String verifyAndRemoveCreatedItem(String CreatedpartNumber, String noOfItemsTobeDelete) throws Exception {
-		Thread.sleep(2500);
+		
 		int items= Integer.parseInt(noOfItemsTobeDelete);
 		String partNuber=null;
 		for(int i=1; i<=items; i++){
-
-		partNuber=getDriver().findElement(By.xpath("//td[contains(text(),'"+CreatedpartNumber+"')]/preceding-sibling::td/descendant::span[contains(@id,'ITMID')]")).getText();
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//td[contains(text(),'"+CreatedpartNumber+i+"')]"), 30);
+		WebElement wb=getDriver().findElement(By.xpath("//td[contains(text(),'"+CreatedpartNumber+i+"')]"));
+		Assert.assertTrue(wb.isDisplayed(),"Item is not available");
+		partNuber=getDriver().findElement(By.xpath("//td[contains(text(),'"+CreatedpartNumber+i+"')]/preceding-sibling::td/descendant::span[contains(@id,'ITMID')]")).getText();
 		((JavascriptExecutor)getDriver()).executeScript("arguments[0].click();",getDriver().findElement(By.xpath("//td[contains(text(),'"+CreatedpartNumber+i+"')]/preceding-sibling::td/descendant::input[@title='Remove Item']")));
 
 		tu.alertAccept();
-		Thread.sleep(2500);
+		waiting.explicitWaitVisibilityOfElement(succesfulItemDeleteMessage, 30);
 		Assert.assertEquals(succesfulItemDeleteMessage.getText().trim(), "Item with Part No. : '"+CreatedpartNumber+i+"' removed Successfully");
 		}
 		return partNuber;
@@ -609,7 +612,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 
 	public ItemsPageObjects enterWorkbookName(String getworkbookname) throws InterruptedException {
-		Thread.sleep(3000);
+		waiting.explicitWaitVisibilityOfElement(WorkbookTextBoxLocator, 20);
 		WorkbookTextBoxLocator.clear();
 		WorkbookTextBoxLocator.sendKeys(getworkbookname);
 		return this;
@@ -675,27 +678,33 @@ public class ItemsPageObjects extends PageFactoryInitializer
 		return this;
 	}
 
-	public ItemsPageObjects selectWorkbook() throws InterruptedException {
+	public ItemsPageObjects selectWorkbook(String workBookName) throws InterruptedException {
 		Thread.sleep(2000);
-		selectWorkbookLocator.click();
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//tbody[@id='searchFormId:workBookDataTable:tb']/descendant::a[contains(text(),'"+workBookName+"')]"), 20);
+		getDriver().findElement(By.xpath("//tbody[@id='searchFormId:workBookDataTable:tb']/descendant::a[contains(text(),'"+workBookName+"')]")).click();
 		return this;
 	}
 
 	public ItemsPageObjects clickOnWorkbookName() throws InterruptedException {
 		waiting.explicitWaitVisibilityOfElement(clickOnWorkbookLocator, 20);
 		clickOnWorkbookLocator.click();
+		Thread.sleep(2000);
 		return this;
 	}
 
-	public ItemsPageObjects verifyAddItemSucessMsg(String getadditemWorkbooksuccessmsg) throws InterruptedException {
+	public ItemsPageObjects verifyAddItemSucessMsg(String noOfItems,String workBookName ) throws InterruptedException {
+		Thread.sleep(2000);
 		waiting.explicitWaitVisibilityOfElement(itemAddedSuccessMsgLocator, 20);
-		Assert.assertEquals(itemAddedSuccessMsgLocator.getText().trim(), getadditemWorkbooksuccessmsg);
+		if(itemAddedSuccessMsgLocator.getText().equals("Importing...")){
+			Thread.sleep(5000);
+		}
+		Assert.assertEquals(itemAddedSuccessMsgLocator.getText().trim(), noOfItems+" "+"Items added to workbook "+workBookName);
 		return this;
 	}
 
 	public ItemsPageObjects verifyWorkbookItemCount(String getworkbookitemcount) throws InterruptedException {
 		waiting.explicitWaitVisibilityOfElement(itemcountinLocator, 20);
-		Assert.assertEquals(itemcountinLocator.getText().trim(), getworkbookitemcount);
+		Assert.assertTrue(itemcountinLocator.getText().trim().contains(getworkbookitemcount),"count is not matching: "+itemcountinLocator.getText().trim()+"");
 		return this;
 	}
 
@@ -1576,9 +1585,22 @@ public class ItemsPageObjects extends PageFactoryInitializer
 		return this;
 	}
 
-	public ItemsPageObjects verifyPartNumbers()
+	public ItemsPageObjects verifyPartNumbersBeforeRemove(String partNumber) throws InterruptedException
 	{
-		// needs to write the code
+		Thread.sleep(3000);
+				
+		Assert.assertFalse(assertVerifyItem(partNumber),"item(s) not available, Please create items to remove");
+				//getDriver().findElements(By.xpath("//td[contains(text(),'"+partNumber+"')]")).get(0).getText(),partNumber+1, "Items are not available");
+	
+		return this;
+	}
+	public ItemsPageObjects verifyPartNumbers(String partNumber) throws InterruptedException
+	{
+		Thread.sleep(3000);
+				
+		Assert.assertTrue(assertVerifyItem(partNumber),"item(s) already present, Please delete items to crete again");
+				//getDriver().findElements(By.xpath("//td[contains(text(),'"+partNumber+"')]")).get(0).getText(),partNumber+1, "Items are not available");
+	
 		return this;
 	}
 
@@ -1950,7 +1972,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	@Step("select items {0} from list to work book ")
 	public ItemsPageObjects clickOnSpecficCheckBoxes(String noOfItemsToBeSelect) throws InterruptedException {
 		int itemsToSelect=Integer.parseInt(noOfItemsToBeSelect);
-		waiting.explicitWaitVisibilityOfElements(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::input[contains(@id,'ITMSLCT')]"), 20);
+		waiting.explicitWaitVisibilityOfElements(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::input[contains(@id,'ITMSLCT')]/ancestor::label"), 20);
 		for(int i=0; i< itemsToSelect; i++){
 			
 			List<WebElement>ls=getDriver().findElements(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::input[contains(@id,'ITMSLCT')]/ancestor::label"));
@@ -1975,6 +1997,36 @@ public class ItemsPageObjects extends PageFactoryInitializer
 		waiting.explicitWaitVisibilityOfElement(partNumberInputFieldItemEditPage, 20);
 		String getPartNumber=partNumberInputFieldItemEditPage.getAttribute("value");
 		return getPartNumber;
+	}
+	@Step("verify work book {0}")
+	public ItemsPageObjects verifyWorkBookName(String workBookName) {
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//tbody[@id='searchFormId:workBookDataTable:tb']/descendant::a[contains(text(),'"+workBookName+"')]"), 20);
+		Assert.assertFalse(getDriver().findElement(By.xpath("//tbody[@id='searchFormId:workBookDataTable:tb']/descendant::a[contains(text(),'"+workBookName+"')]")).isDisplayed(),"please delete the workbook to create new");
+		return this;
+	}
+	@Step("verification of item(s) {0}")
+	public ItemsPageObjects verifyItemsPresent(String itemNameTemplate) {
+		
+		Assert.assertTrue(assertVerifyItem(itemNameTemplate),"items are already Present, Please delete items to create");
+		
+		return this;
+	}
+
+	private boolean assertVerifyItem(String itemNameTemplate) {
+		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		try {
+
+
+			if(getDriver().findElement(By.xpath("//table[@id='searchFormId:itemListTableId']/descendant::td[contains(text(),'"+itemNameTemplate+"')]")).isDisplayed())
+			{
+				return false;
+			}
+		}
+		catch(NoSuchElementException e) {
+			return true;
+
+		}
+		return false;
 	}
 
 	

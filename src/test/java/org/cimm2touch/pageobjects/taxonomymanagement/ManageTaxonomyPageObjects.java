@@ -1,7 +1,7 @@
 package org.cimm2touch.pageobjects.taxonomymanagement;
 
 import java.util.List;
-
+import java.util.concurrent.TimeUnit;
 
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.utils.SearchDataPropertyFile;
@@ -11,6 +11,7 @@ import org.framework.utils.Waiting;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 
 import org.openqa.selenium.interactions.Actions;
@@ -556,7 +557,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 
 		try
 		{
-			waiting.explicitWaitElementToBeClickable(By.xpath("//span[text()='"+categoryName+"']"), 15);
+			waiting.explicitWaitVisibilityOfElement(By.xpath("//span[text()='"+categoryName+"']"), 15);
 			getDriver().findElement(By.xpath("//span[text()='"+categoryName+"']")).click();
 		
 			
@@ -566,7 +567,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 			System.out.println(e);
 		}
 
-		waiting.explicitWaitVisibilityOfElement(addNewCategoryButton, 15);
+		waiting.explicitWaitElementToBeClickable(addNewCategoryButton, 30);
 		addNewCategoryButton.click();
 	
 		return this;
@@ -642,20 +643,24 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	public ManageTaxonomyPageObjects addNewChildCategory(String categoryCodeofChild1, 
 			String childCategoryName1, String displaySequence1) throws Exception 
 	{
+		for(int i=0;i<2; i++){
+			waiting.explicitWaitElementToBeClickable(categoryCode, 20);
+			categoryCode.click();
 		categoryCode.clear();
 		categoryCode.sendKeys(categoryCodeofChild1);
 		categoryName.clear();
 		categoryName.sendKeys(childCategoryName1);
 		displaySequence.clear();
 		displaySequence.sendKeys(displaySequence1);	
-		
+		saveNewCategory();
+		}
 		return this;
 	}
 
 	@Step("To Save Category")
 	public ManageTaxonomyPageObjects saveNewCategory() throws InterruptedException 
 	{
-
+		waiting.explicitWaitElementToBeClickable(saveCategory, 20);
 		
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",saveCategory);
 		return this;		
@@ -664,8 +669,8 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	@Step("To Click on {0} Category")
 	public ManageTaxonomyPageObjects clickOnRespectiveCategory(String categoryName) throws Exception 
 	{
-		Thread.sleep(5000);
-
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//span[contains(text(),'"+categoryName+"')]"), 30);
+		Assert.assertTrue(getDriver().findElement(By.xpath("//span[contains(text(),'"+categoryName+"')]")).isDisplayed(),"Category name is not available");
 		getDriver().findElement(By.xpath("//span[contains(text(),'"+categoryName+"')]")).click();
 		return this;
 	}
@@ -1364,22 +1369,26 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 		return this;
 	}
 
-	public ManageTaxonomyPageObjects removeCreatedCategory(String categoryName, String noOfCategories,
-			String expSuccessMsgForRemoveCategory) {
+	public ManageTaxonomyPageObjects removeCreatedCategory(String categoryName, String noOfCategories
+			,String errorChildCatMessage,String expSuccessMsgForRemoveCategory) {
 		int var=Integer.parseInt(noOfCategories);
 		
 		for(int i=1;i<= var; i++)
 		{
 		clickOnCategory(categoryName+i);
 		clickOnRemoveCategory(categoryName+i);
-		verifySuccessMessageForRemove(expSuccessMsgForRemoveCategory);
+		verifySuccessMessageForRemoveCategory(errorChildCatMessage,expSuccessMsgForRemoveCategory);
 		}
 		return this;
 		
 	}
 	@Step("verify success message for remove category{0}")
-	public ManageTaxonomyPageObjects verifySuccessMessageForRemove(String expSuccessMsgForRemoveCategory) {
+	public ManageTaxonomyPageObjects verifySuccessMessageForRemoveCategory(String errorChildCatMessage,String expSuccessMsgForRemoveCategory) {
 		waiting.explicitWaitVisibilityOfElement(categoryRemoveSuccesMessage, 15);
+		if(categoryRemoveSuccesMessage.getText().contains(errorChildCatMessage)){
+			removeChildCategories(expSuccessMsgForRemoveCategory);
+		}
+			
 		Assert.assertEquals(categoryRemoveSuccesMessage.getText(), expSuccessMsgForRemoveCategory);
 		
 		return this;
@@ -1387,11 +1396,72 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	}
 
 	
+	public  ManageTaxonomyPageObjects removeChildCategories(String successMessageForRemove) {
+		waiting.explicitWaitElementToBeClickable(deletincategory, 20);
+		deleteCategory.click();
+		tu.alertAccept();
+		waiting.explicitWaitVisibilityOfElement(successmesssage, 30);
+		Assert.assertEquals(successmesssage.getText(), successMessageForRemove);
+		
+		return this;
+		
+	}
+
 	public  ManageTaxonomyPageObjects clickOnRemoveCategory(String categoryName) {
 		waiting.explicitWaitElementToBeClickable(By.xpath("//input[@value='"+categoryName+"']/ancestor::tr/descendant::td/descendant::input[@id='editcategory:removeStoredItem']"), 15);
 		getDriver().findElement(By.xpath("//input[@value='"+categoryName+"']/ancestor::tr/descendant::td/descendant::input[@id='editcategory:removeStoredItem']")).click();
 		tu.alertAccept();
 		return this;
+	}
+	@Step("remove child category {0}, {1}")
+	public ManageTaxonomyPageObjects removeAndVerifyChildCategory(String childCategoryName,String successMessageForRemove, String noOfChildCategoriesTobeDelete) throws InterruptedException {
+		Thread.sleep(4000);
+	int noOfChildCat=Integer.parseInt(noOfChildCategoriesTobeDelete);
+			for(int i=1;i<noOfChildCat;i++){
+			waiting.explicitWaitVisibilityOfElement(By.xpath("//div[@id='searchFormId:taxonomyTreeId:childs']/descendant::span[contains(text(),'"+childCategoryName+i+"')]"),20);
+			getDriver().findElement(By.xpath("//div[@id='searchFormId:taxonomyTreeId:childs']/descendant::span[contains(text(),'"+childCategoryName+"')]")).click();
+			Thread.sleep(2500);
+			getDriver().findElement(By.xpath("//div[@id='searchFormId:taxonomyTreeId:childs']/descendant::span[contains(text(),'"+childCategoryName+"')]")).click();
+			removeChildCategories(successMessageForRemove);
+	}
+		
+		return this;
+	}
+
+	public ManageTaxonomyPageObjects clickOnRespectiveCategoryPlusIcon(String categoryName) {
+		waiting.explicitWaitElementToBeClickable(By.xpath("//tr[contains(@title,'"+categoryName+"')]/descendant::img[contains(@src,'plus.png')]"), 20);
+		getDriver().findElement(By.xpath("//tr[contains(@title,'"+categoryName+"')]/descendant::img[contains(@src,'plus.png')]")).click();
+		return this;
+	}
+
+	public ManageTaxonomyPageObjects verifyCategoryBeforeRemove(String categoryName) {
+		Assert.assertFalse(assertVerifyCategory(categoryName), "Category is not present, please create before remove");
+		return this;
+	}
+	
+	
+	public ManageTaxonomyPageObjects verifyCategoryPresent(String categoryName) {
+		Assert.assertTrue(assertVerifyCategory(categoryName), "Category is already present, lease delete category to create again");
+		return this;
+	}
+
+	private boolean assertVerifyCategory(String categoryName) {
+		
+		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		try {
+
+
+			if(getDriver().findElement(By.xpath("//div[@class='treeCategoryName']/descendant::span[contains(@id,'treeNodeDataId') and text()='"+categoryName+"']")).isDisplayed())
+			{
+				return false;
+			}
+		}
+		catch(NoSuchElementException e) {
+			return true;
+
+		}
+	
+		return false;
 	}
 
 }

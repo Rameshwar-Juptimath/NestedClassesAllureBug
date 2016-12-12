@@ -366,6 +366,7 @@ HashMap<String, String> loginData;
 		.itemsPage()
 		.verifyWorkbookDropdownLocator()
 		.clickOnWorkbookDropdown()
+		//.verifyWorkBookName(workBookName)
 		.enterWorkbookName(workBookName)
 		.clickOnSaveIcon()
 		.verifySuccessMsg(workBookName,workBookSuccesMsg)
@@ -374,12 +375,14 @@ HashMap<String, String> loginData;
 		.clickOnSaveIcon()
 		.verifyErrorMessageForReName(workBookName,reNameErroMsg)
 		.deleteWorkbook(workBookName,workBookRemoveMsg);
+	
 	}
+	
 	@Features(value = {"Items Module"})
 	@Description("This Test case verifies Adding items to workbook")
 	@TestCaseId("TC_ITEMS_47")
 	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
-	public void addItemsToWorkbook(String testCaseId, String workBookName, String workBookSuccesMsg, String noOfItemsToBeSelect, String additemWorkbooksuccessmsg, String workbookRemovemsg) throws Exception {
+	public void addItemsToWorkbook(String testCaseId, String workBookName, String workBookSuccesMsg, String noOfItemsToBeSelect, String workbookRemovemsg) throws Exception {
 	
 		landingPage()
 		.enterUsername(loginData.get("userName"))
@@ -390,24 +393,23 @@ HashMap<String, String> loginData;
 		.itemsPage()
 		.verifyWorkbookDropdownLocator()
 		.clickOnWorkbookDropdown()
+		//.verifyWorkBookName(workBookName)
 		.enterWorkbookName(workBookName)
 		.clickOnSaveIcon()
 		.verifySuccessMsg(workBookName,workBookSuccesMsg)
 		.clickOnSpecficCheckBoxes(noOfItemsToBeSelect)
 		.clickOnWorkbookDropdown()
-		.selectWorkbook()
+		.selectWorkbook(workBookName)
 		.clickOnWorkbookName()
-		.verifyAddItemSucessMsg(additemWorkbooksuccessmsg)
-		.homePage()
-		.clickOnItemsLink()
-		.itemsPage()
+		.verifyAddItemSucessMsg(noOfItemsToBeSelect,workBookName)
 		.clickOnWorkbookDropdown()
 		.verifyWorkbookItemCount(noOfItemsToBeSelect)
 		.homePage()
 		.clickOnItemsLink()
 		.itemsPage()
 		.deleteWorkbook(workBookName,workbookRemovemsg);
-	}
+		
+}
 	@Features(value = {"Items Module"})
 	@Description("This Test case verifies message in add items to workbook alert popup")
 	@TestCaseId("TC_ITEMS_49")
@@ -673,5 +675,24 @@ HashMap<String, String> loginData;
 		.verifyDescriptionFields(descriptionFields);
 		
          
+	}
+	@Features(value = {"Items Module"})
+	@Description("Verification of 'Tiny MCE' editor display")
+	@TestCaseId("TC_ITEMS_63")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void verifyTinyMceEditorDisplay(String testCaseId, String partNumber,String descriptionFields) throws Exception {
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin();
+		homePage()
+		.clickOnItemsLink()
+		.searchItem(partNumber)
+		.clickOnEditButton(partNumber)
+		.editItemsPage()
+		.clickOnDescriptionTabLink()
+		.verifyDescriptionFields(descriptionFields)
+		.verifyTinyMceEditor();
+		
 	}
 }

@@ -27,6 +27,7 @@ public class RemoveDataConfigTest extends PageFactoryInitializer{
 		itemsPage()
 		.typeinadvancedSearchTopSearchField(partNumber)
 		.clickOnbottomSeacrhButton()
+		.verifyPartNumbersBeforeRemove(partNumber)
 		.verifyAndRemoveCreatedItem(partNumber,noOfItemsToBeDelete);
 		
 		
@@ -44,6 +45,7 @@ public class RemoveDataConfigTest extends PageFactoryInitializer{
 		.clickonSubsetlink();
 		String subsetId=subsetPage()
 		.searchForAnSubset(subsetName)
+		.verifySubsetBeforeRemove(subsetName)
 		.verifyandDeleteSubset(subsetName);
 		subsetPage()
 		.verifySuccessMessageForDeletionOfSubset(subsetName,subsetId);
@@ -65,7 +67,10 @@ public class RemoveDataConfigTest extends PageFactoryInitializer{
 		.assrtManufacturerbrandtextLocator()
 		.typeonMBsearch(manufacturerName)
 		.clickonMBsearch()
-		.clickOnlisticon()
+		.manufacturerSearchBeforeRemove(manufacturerName)
+		.clickOnlisticon(manufacturerName);
+		manufacturersAndBrandsPage()
+		.verifyBrandBeforeRemove(brandName)
 		.verifyAndRemoveBrand(brandName);
 	
 	}
@@ -84,6 +89,7 @@ public class RemoveDataConfigTest extends PageFactoryInitializer{
 		.assrtManufacturerbrandtextLocator()
 		.typeonMBsearch(manufacturerName)
 		.clickonMBsearch()
+		.manufacturerSearchBeforeRemove(manufacturerName)
 		.removeAndVerifyManufacturer(manufacturerName)
 		.verifySuccessMessageAfterRemove(successMessage);
 	}
@@ -102,13 +108,14 @@ public class RemoveDataConfigTest extends PageFactoryInitializer{
 		.vendorsPage()
 		.checkVendorPage(title)
 		.typeVendorNameInSearch(vendorName)
+		.verifyVendorBeforeRemove(vendorName)
 		.verifyAndRemoveVendore(vendorName)
 		.verifySuccessMessageForRemove(vendorName);
 	}
 	@Features(value = {"RemoveDataConfig Module"})
 	@Description(" remove Categoryies {0}")
-	@Test(priority=5, groups={"regression"},dataProvider="RemoveDataConfigTest",dataProviderClass=SearchData.class)
-	public void removeCategories(String testCaseNo, String userName, String password, String welcomeMessage,String taxonomy, String categoryName, String expSuccessMsgForRemoveCategory, String noOfCategories) throws Exception
+	@Test(priority=6, groups={"regression"},dataProvider="RemoveDataConfigTest",dataProviderClass=SearchData.class)
+	public void removeCategories(String testCaseNo, String userName, String password, String welcomeMessage,String taxonomy, String categoryName, String errorChildCatMessage,String expSuccessMsgForRemoveCategory, String noOfCategories) throws Exception
 	{
 		landingPage()
 		.enterUsername(userName)
@@ -123,7 +130,31 @@ public class RemoveDataConfigTest extends PageFactoryInitializer{
 		.clickOnManageTaxonomy()
 		.manageTaxonomyPage()
 		.verifyLeftPanelTaxonomyName(taxonomy)
-		.removeCreatedCategory(categoryName,noOfCategories,expSuccessMsgForRemoveCategory);
+		.verifyCategoryBeforeRemove(categoryName)
+		.removeCreatedCategory(categoryName,noOfCategories,errorChildCatMessage,expSuccessMsgForRemoveCategory);
 }
+	@Features(value = {"RemoveDataConfig Module"})
+	@Description(" remove Categoryies {0}")
+	@Test(priority=5, groups={"regression"},dataProvider="RemoveDataConfigTest",dataProviderClass=SearchData.class)
+	public void removeChildCategories(String testCaseNo, String userName, String password, String welcomeMessage,String taxonomy, String categoryName, String ChildCategoryName,String successMessageForRemove, String noOfChildCategoriesTobeDelete) throws Exception
+	{
+		landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(welcomeMessage)
+		.clickOnTaxonomyLink()
+		.taxonomyPage()
+		.searchForTaxonomy(taxonomy)
+		.verifyTaxonomyPresent(taxonomy)
+		.clickOnManageTaxonomy()
+		.manageTaxonomyPage()
+		.verifyLeftPanelTaxonomyName(taxonomy)
+		.verifyCategoryBeforeRemove(categoryName)
+		.clickOnRespectiveCategoryPlusIcon(categoryName)
+		.removeAndVerifyChildCategory(ChildCategoryName, successMessageForRemove, noOfChildCategoriesTobeDelete);
+	}
+	
 
 }

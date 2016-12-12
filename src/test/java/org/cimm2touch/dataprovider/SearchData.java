@@ -28,7 +28,7 @@ public class SearchData
 
 		return data;
 	}
-	@DataProvider(name="CreateDataConfigTest",parallel = true)
+	@DataProvider(name="CreateDataConfigTest")
 	public static Object[][] createDataConfigTest(Method methodName) throws Exception
 	{
 		File file = new File("resources/ExcelSheetData/CreateDataConfigTest.xlsx");
@@ -37,7 +37,7 @@ public class SearchData
 
 		return data;
 	}
-	@DataProvider(name="RemoveDataConfigTest",parallel = true)
+	@DataProvider(name="RemoveDataConfigTest")
 	public static Object[][] removeDataConfigTest(Method methodName) throws Exception
 	{
 		File file = new File("resources/ExcelSheetData/RemoveDataConfigTest.xlsx");

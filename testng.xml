@@ -6,15 +6,21 @@
  <parameter name="browser" value="chrome"/>
   <parameter name="Remote Url" value="http://10.200.1.188:5555/wd/hub"/>
     <classes>
+        
+         <class name="org.cimm2touch.modules.RemoveDataConfigTest"/>
+         <class name="org.cimm2touch.modules.CreateDataConfigTest"/>
          <class name="org.cimm2touch.modules.AdvancedSearchModuleTest"/>
          <class name="org.cimm2touch.modules.ItemsModuleTest"/>
+         <class name="org.cimm2touch.modules.RemoveDataConfigTest"/>
+         
         
          
-    <!-- <methods>
-      <include name="verifyDescriptionTab"></include>
-      <include name="advSearch_008"></include>
-         <include name="advSearch_014"></include>!
-         </methods>  --> 
+ <!--  <methods>
+      <include name="deleteCreatedSubset"></include>
+   	  <include name="removeChildCategories"></include> 
+         </methods>  -->
+         
+         
        
     </classes>
 </test>

@@ -310,9 +310,10 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	private WebElement clickOnCloseSortOrderLocator;
 
 	@Step("click on brand list icon under manufacturer")
-	public ManufacturerPageObjects clickOnlisticon() throws InterruptedException {
-		brandList.click();
-		Thread.sleep(2000);
+	public ManufacturerPageObjects clickOnlisticon(String manufacturerName) throws InterruptedException {
+		WebElement wb= getDriver().findElement(By.xpath("//td[contains(text(),'"+manufacturerName+"')]/following-sibling::td/a[@title='List Brand']"));
+		waiting.explicitWaitElementToBeClickable(wb, 20);
+		wb.click();
 		return this;
 	}
 
@@ -335,6 +336,13 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 		return false;		    
 	}
 
+	@Step("check whether brand is created or not {}")
+	public ManufacturerPageObjects verifyBrandBeforeRemove(String brandname) throws Exception
+	{
+		Assert.assertFalse(isBrandpresentHelp(brandname),"Brand is Present Already. Please delete to create.");
+		return this;
+	}
+	
 	@Step("check whether brand is already created")
 	public ManufacturerPageObjects isBrandpresent(String brandname) throws Exception
 	{
@@ -677,7 +685,7 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		try {
-			if(getDriver().findElement(By.xpath("//form/table/tbody/tr[td[3]='"+manufacturername+"']/td[3]")).isDisplayed())
+			if(getDriver().findElement(By.xpath("//table[@id='listManufacturerForm:manufacturerTableId']/descendant::td[contains(text(),'"+manufacturername+"')]")).isDisplayed())
 			{
 				return false;
 			}
@@ -688,6 +696,15 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 		return false;		    
 	}
 
+	public ManufacturerPageObjects manufacturerSearchBeforeRemove(String manufacturername) throws Exception
+	{	
+		
+		Assert.assertFalse(manufacturerSearchResultHelp(manufacturername),"Manufacturer is not available. Please create before remove");
+		return this;
+
+	}
+	
+	
 	public ManufacturerPageObjects manufacturerSearchResult(String manufacturername) throws Exception
 	{	
 		Thread.sleep(3000);
@@ -1420,10 +1437,10 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 		return this;
 	}
 
-	public ManufacturerPageObjects verifyAndRemoveBrand(String brandName) {
-
+	public ManufacturerPageObjects verifyAndRemoveBrand(String brandName) throws InterruptedException {
+		Thread.sleep(4000);
 		WebElement wb= getDriver().findElement(By.xpath("//td[contains(text(),'"+brandName+"')]/ancestor::td//preceding-sibling::td/descendant::input[@title='Remove Brand']"));
-		waiting.explicitWaitVisibilityOfElement(wb, 10);
+		waiting.explicitWaitVisibilityOfElement(wb, 20);
 		wb.click();
 		tu.alertAccept();
 		return this;
@@ -1438,13 +1455,22 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 		tu.alertAccept();
 		return this;
 	}
-
+	@Step("verification of success message after remove manufacturer")
 	public ManufacturerPageObjects verifySuccessMessageAfterRemove(String successMessage) {
 
-
+		
 		waiting.explicitWaitVisibilityOfElement(successMessageRemoveMfgLocator, 20);
 		Assert.assertEquals(successMessageRemoveMfgLocator.getText(), successMessage);
 
+		return this;
+	}
+
+	public ManufacturerPageObjects clickOnListBrandItems(String brandName) {
+		waiting.explicitWaitElementToBeClickable(By.xpath("//td[contains(text(),'"+brandName+"')]/preceding-sibling::td/descendant::input[@title='List BrandItems']"), 20);
+		getDriver().findElement(By.xpath("//td[contains(text(),'"+brandName+"')]/preceding-sibling::td/descendant::input[@title='List BrandItems']")).click();
+		
+
+		
 		return this;
 	}
 
