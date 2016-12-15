@@ -603,7 +603,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	}
 	@Step("enter parent category code {0}")
 	public ManageTaxonomyPageObjects enterParentCategoryCode(String categoryCodeforParentCategory) throws InterruptedException{
-
+		Thread.sleep(2000);
 		waiting.explicitWaitVisibilityOfElement(categoryCode, 15);
 		categoryCode.click();
 		categoryCode.clear();
@@ -653,6 +653,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 		clickOnRespectiveCategory(categoryname);
 		clickOnAddNewChildCategory();
 		waiting.explicitWaitVisibilityOfElement(categoryCode, 20);
+		Thread.sleep(2000);
 		categoryCode.click();
 		categoryCode.clear();
 		categoryCode.sendKeys(categoryCodeofChild+i);

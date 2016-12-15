@@ -1,6 +1,8 @@
 package org.cimm2touch.pageobjects.items;
 import java.awt.AWTException;
 import java.awt.Robot;
+import java.awt.print.PrinterException;
+import java.io.PrintStream;
 import java.util.List;
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.utils.TestUtilityMethods;
@@ -2015,16 +2017,23 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		for(int i=0;i<=var;i++)
 		
 		{
+			Thread.sleep(2000);
 			waiting.explicitWaitVisibilityOfElement(nextItemIconLocator, 10);
 				nextItemIconLocator.click();
 			switch(categoryStatus)
 			{
-			case "Categorized": Assert.assertTrue(categoryUnderCategorizationTab.isDisplayed());
+			case "Categorized": 
+				
+				Assert.assertTrue(assertCategorized(),"Shown items are displaying under uncategorized.");
 				break;
-			case "UnCategorized": Assert.assertFalse(categoryUnderCategorizationTab.isDisplayed());
+			case "UnCategorized": 
+				
+				Assert.assertFalse(assertCategorized(), "Shown items are displaying under Categorized.");
 				break;
 
-			case "Ignore": Assert.assertTrue(utility.assertElementPresent(categoryUnderCategorizationTab) || utility.assertElementnotPresent(categoryUnderCategorizationTab));
+			case "Ignore": 
+				Thread.sleep(2500);
+				Assert.assertTrue(utility.assertElementPresent(categoryUnderCategorizationTab) || utility.assertElementnotPresent(categoryUnderCategorizationTab));
 				
 				break;
 			default : throw new Exception("invalid Category selection selection");			
@@ -2035,6 +2044,12 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		return this;
 	}	
 
+
+	private boolean assertCategorized() {
+		waiting.explicitWaitVisibilityOfElement(categoryUnderCategorizationTab, 15);
+		categoryUnderCategorizationTab.isDisplayed();
+		return false;
+	}
 
 	@Step("verification of categorized dropdown ")
 	public EditItemsPageObjects verifyadvse043() throws InterruptedException {
@@ -2090,16 +2105,48 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 			waiting.explicitWaitElementToBeClickable(categorizationTabLocator, 20);
 			categorizationTabLocator.click();
+			verifyCategoryAlreadyAssigned(categoryName+i);
 			searchForTaxonomy(taxonomyName);
 			selectCategory(categoryName+i);
-			saveCategory();
+			selectRadioButton(categoryName+i);
+			saveCategory();			
 			verifySuccessMessageForCategoryAssign(expSuccessMessage);
 			clickOnNextItem_EditPage.click();
+			Thread.sleep(3000);
 			
 		}
 		return this;
 		
 	}
+	@Step("verification Of category: {0} already assigned or not ")
+	public EditItemsPageObjects verifyCategoryAlreadyAssigned(String categoryName) throws InterruptedException {
+		Thread.sleep(2000);
+		try{
+			Thread.sleep(1500);
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//span[contains(text(),'"+categoryName+"')]/ancestor::tbody/descendant::input[contains(@onclick,'defaultCtgInTaxonomy')]"), 15);
+		getDriver().findElement(By.xpath("//span[contains(text(),'"+categoryName+"')]/ancestor::tbody/descendant::input[contains(@onclick,'defaultCtgInTaxonomy')]")).isDisplayed();
+		getDriver().findElement(By.xpath("//span[contains(text(),'"+categoryName+"')]/ancestor::tbody/descendant::input[@alt='Remove']")).click();
+		tu.alertAccept();
+		Thread.sleep(3000);
+		}
+		catch(Exception e)
+		{
+		
+		}
+		return this;
+		
+	}
+
+	@Step("select rspective category radio button {0}")
+	public EditItemsPageObjects selectRadioButton(String categoryName) throws InterruptedException {
+		
+		Thread.sleep(1000);
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//span[contains(text(),'"+categoryName+"')]/ancestor::tbody/descendant::input[contains(@onclick,'defaultCtgInTaxonomy')]"), 15);
+		getDriver().findElement(By.xpath("//span[contains(text(),'"+categoryName+"')]/ancestor::tbody/descendant::input[contains(@onclick,'defaultCtgInTaxonomy')]")).click();
+		return this;
+		
+	}
+
 	@Step(" verification of success message for categorization {0}")
 	public EditItemsPageObjects verifySuccessMessageForCategoryAssign(String expSuccessMessage) {
 
@@ -2117,15 +2164,16 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		WebElement target= getDriver().findElement(By.xpath("//form[@id='itemCategoryFormId']/descendant::thead"));
 		utility.DragandDrop(element, target);
 		//(new Actions(getDriver())).dragAndDrop(element, target).perform();
-		Thread.sleep(500);
+		Thread.sleep(3000);
 		return this;
 		
 	}
 	@Step("click on save link")
-	public EditItemsPageObjects saveCategory(){
+	public EditItemsPageObjects saveCategory() throws InterruptedException{
 
 		waiting.explicitWaitElementToBeClickable(categorySaveLocator, 10);
 		categorySaveLocator.click();
+		Thread.sleep(2500);
 		return this;
 	}
 	@Step(" search for items in edit items page")

@@ -239,7 +239,7 @@ public class CreateDataConfigTest extends PageFactoryInitializer{
 		
 
 }
-	String resourceLocation = System.getProperty("user.dir") + File.separator + "resources" + File.separator;
+/*	String resourceLocation = System.getProperty("user.dir") + File.separator + "resources" + File.separator;
 	@Features(value={"AdvancedSearch Module"})
 	@Description("adding the document to item(s)")
 	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
@@ -306,6 +306,6 @@ public class CreateDataConfigTest extends PageFactoryInitializer{
 		.enterImageCaption()
 		.clickSaveImageURL();
 	}
-
+*/
 	
 }

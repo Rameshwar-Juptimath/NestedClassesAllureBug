@@ -83,9 +83,11 @@ public  void DragandDrop(WebElement source,WebElement Target) throws Interrupted
 		elementHighlight(Target);
 		builder.moveToElement(Target, 40, 0).build().perform();
 		
-		Thread.sleep(4000);
+		Thread.sleep(5000);
 		
 		builder.moveToElement(Target, 50, 40).build().perform();
+		Thread.sleep(4000);
+		builder.moveToElement(Target, 50, 50).build().perform();
 		Thread.sleep(4000);
 		builder.release().build().perform();
 		Thread.sleep(4000);
