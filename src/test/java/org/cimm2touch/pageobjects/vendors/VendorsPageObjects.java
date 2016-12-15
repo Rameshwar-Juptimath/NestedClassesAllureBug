@@ -559,7 +559,7 @@ public class VendorsPageObjects extends PageFactoryInitializer
 	public VendorsPageObjects selectCustomerType(String customerType) {
 		
 
-		waiting.explicitWaitVisibilityOfElement(selectCustomerTypeLocator, 10);
+		waiting.explicitWaitVisibilityOfElement(selectCustomerTypeLocator, 20);
 		
 		new Select(selectCustomerTypeLocator).selectByVisibleText(customerType);
 		

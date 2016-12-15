@@ -695,4 +695,22 @@ HashMap<String, String> loginData;
 		.verifyTinyMceEditor();
 		
 	}
+	@Features(value = {"Items Module"})
+	@Description("Verification of updating descriptions")
+	@TestCaseId("TC_ITEMS_64")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void verificationOfUpdatingDescriptions(String testCaseId, String partNumber,String descriptionFields) throws Exception {
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin();
+		homePage()
+		.clickOnItemsLink()
+		.searchItem(partNumber)
+		.clickOnEditButton(partNumber)
+		.editItemsPage()
+		.clickOnDescriptionTabLink();
+		
+		
+	}
 }

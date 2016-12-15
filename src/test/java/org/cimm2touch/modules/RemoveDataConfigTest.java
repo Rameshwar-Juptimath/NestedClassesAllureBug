@@ -130,7 +130,7 @@ public class RemoveDataConfigTest extends PageFactoryInitializer{
 		.clickOnManageTaxonomy()
 		.manageTaxonomyPage()
 		.verifyLeftPanelTaxonomyName(taxonomy)
-		.verifyCategoryBeforeRemove(categoryName)
+		//.verifyCategoryBeforeRemove(categoryName)
 		.removeCreatedCategory(categoryName,noOfCategories,errorChildCatMessage,expSuccessMsgForRemoveCategory);
 }
 	@Features(value = {"RemoveDataConfig Module"})

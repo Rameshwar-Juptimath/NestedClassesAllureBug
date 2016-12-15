@@ -463,74 +463,8 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.clickOnbottomSeacrhButton()
 		.verifySubsetItemResults(expectedItems);
 		}
-	@Features(value={"AdvancedSearch Module"})
-	@Description("adding the description to item(s)")
-	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
-	public void addDescriptiontoItems(String testCaseId, String userName,String password,String expWelcomeMsg,String partNumberDesc, String longDesc1, String longDesc2) throws Exception
-	{
-		landingPage()
-		.enterUsername(userName)
-		.enterPassword(password)
-		.clickOnLogin()
-		.homePage()
-		.verifyWelcomeMessage(expWelcomeMsg)
-		.clickOnItemsLink()
-		.itemsPage()
-		.searchItem(partNumberDesc)
-		.clickOnSpecificItemEditButton(partNumberDesc)
-		.editItemsPage()
-		.clickOnDescriptionTabLink()
-		.editLongDescription(longDesc1)
-		.editLongDescription2(longDesc2)
-		.saveDescription();
-	}
-
-	@Features(value={"AdvancedSearch Module"})
-	@Description("adding the image url to item(s)")
-	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
-	public void addImageURLtoItems(String testCaseId, String userName,String password,String expWelcomeMsg,String partNumber, String imageURL) throws Exception
-	{
-		landingPage()
-		.enterUsername(userName)
-		.enterPassword(password)
-		.clickOnLogin()
-		.homePage()
-		.verifyWelcomeMessage(expWelcomeMsg)
-		.clickOnItemsLink()
-		.itemsPage()
-		.searchItem(partNumber)
-		.clickOnSpecificItemEditButton(partNumber)
-		.editItemsPage()
-		.clickOnImagesTab()
-		.clickOnAddNewImageButton()
-		.enterImageURL(imageURL)
-		.enterImageCaption()
-		.clickSaveImageURL();
-	}
-
-	String resourceLocation = System.getProperty("user.dir") + File.separator + "resources" + File.separator;
-	@Features(value={"AdvancedSearch Module"})
-	@Description("adding the document to item(s)")
-	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
-	public void addDocumenttoItems(String testCaseId, String userName,String password,String expWelcomeMsg,String partNumber, String documentLocation) throws Exception
-	{
-		landingPage()
-		.enterUsername(userName)
-		.enterPassword(password)
-		.clickOnLogin()
-		.homePage()
-		.verifyWelcomeMessage(expWelcomeMsg)
-		.clickOnItemsLink()
-		.itemsPage()
-		.searchItem(partNumber)
-		.clickOnSpecificItemEditButton(partNumber)
-		.editItemsPage()
-		.clickOnDocumentsTab()
-		.clickOnAddNewDocumentButton()
-		.enterDocumentCaption()
-		.UploadDocument(documentLocation)
-		.assignDocument();
-	}
+	
+	
 	@Features("AdvancedSearch Module")
 	@Description("Items - Advanced Search - veriifcation of Attribute items")
 	@TestCaseId("advSearch_30, advSearch_31, advSearch_32")
@@ -556,9 +490,9 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	}
 
 	@Features("AdvancedSearch Module")
-	@Description("Items - Advanced Search - Verification of appropriate  search result displays when 'Images' is selected under Image dropdown")
-	@TestCaseId("AdvSe033")
-	@Test(groups="regression", dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
+	@Description("Items - Advanced Search - Verification of appropriate  search result displays for 'Images' status is selected under Image dropdown")
+	@TestCaseId("{0}")
+	@Test(enabled=false,groups="regression", dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
 	public void advSearch_033_034_035(String testCaseId, String userName,String password,String expWelcomeMsg, String advSearchinput, String imageStatus ) throws Exception
 
 
@@ -573,10 +507,10 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		.clickOnItemsLink()
 		.itemsPage()
 		.verifyImagesStatus()
-		.typeinadvancedSearchTopSearchField(advSearchinput)
+		//.typeinadvancedSearchTopSearchField(advSearchinput)
 		.clickOnImagesSubFilter(imageStatus)
 		.clickOnbottomSeacrhButton()
-		.verifyPartNumbers(advSearchinput);
+		.verifyPartNumbersForImageStatus(advSearchinput);
 	}
 
 	@Features("AdvancedSearch Module")

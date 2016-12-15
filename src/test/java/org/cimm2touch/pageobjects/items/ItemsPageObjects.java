@@ -16,6 +16,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
+import net.sourceforge.htmlunit.corejs.javascript.ast.ThrowStatement;
 import ru.yandex.qatools.allure.annotations.Step;
 
 public class ItemsPageObjects extends PageFactoryInitializer
@@ -556,11 +557,12 @@ public class ItemsPageObjects extends PageFactoryInitializer
 		return this;
 	}
 	@Step("Click on delete icon for the item name {0}")
-	public String verifyAndRemoveCreatedItem(String CreatedpartNumber, String noOfItemsTobeDelete) throws Exception {
+	public ItemsPageObjects verifyAndRemoveCreatedItem(String CreatedpartNumber, String noOfItemsTobeDelete) throws Exception {
 		
 		int items= Integer.parseInt(noOfItemsTobeDelete);
 		String partNuber=null;
-		for(int i=1; i<=items; i++){
+		for(int i=1; i<=items; i++)
+		{
 		waiting.explicitWaitVisibilityOfElement(By.xpath("//td[contains(text(),'"+CreatedpartNumber+i+"')]"), 30);
 		WebElement wb=getDriver().findElement(By.xpath("//td[contains(text(),'"+CreatedpartNumber+i+"')]"));
 		Assert.assertTrue(wb.isDisplayed(),"Item is not available");
@@ -568,10 +570,12 @@ public class ItemsPageObjects extends PageFactoryInitializer
 		((JavascriptExecutor)getDriver()).executeScript("arguments[0].click();",getDriver().findElement(By.xpath("//td[contains(text(),'"+CreatedpartNumber+i+"')]/preceding-sibling::td/descendant::input[@title='Remove Item']")));
 
 		tu.alertAccept();
+		Thread.sleep(2000);
 		waiting.explicitWaitVisibilityOfElement(succesfulItemDeleteMessage, 30);
 		Assert.assertEquals(succesfulItemDeleteMessage.getText().trim(), "Item with Part No. : '"+CreatedpartNumber+i+"' removed Successfully");
+		Thread.sleep(3000);
 		}
-		return partNuber;
+		return this;
 		
 	}
 
@@ -978,7 +982,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	public ItemsPageObjects typeInitemManufacturerfield(String manufacturername) {
 		//itemManufacturerfield.clear();
 
-		waiting.explicitWaitVisibilityOfElement(itemManufacturerfield, 10);
+		waiting.explicitWaitVisibilityOfElement(itemManufacturerfield, 30);
 		itemManufacturerfield.sendKeys(manufacturername);
 		return this;
 	}
@@ -1298,7 +1302,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	@Step("clicking on subset filter search button")
 	public ItemsPageObjects clickOnas_Subsetfiltersearchbutton() throws InterruptedException {
 
-		waiting.explicitWaitVisibilityOfElement(as_Subsetfiltersearchbutton, 10);
+		waiting.explicitWaitVisibilityOfElement(as_Subsetfiltersearchbutton, 20);
 		as_Subsetfiltersearchbutton.click();
 		return this;
 	}
@@ -1308,16 +1312,15 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	public ItemsPageObjects verifyadvsearchForSubset(String itemnametemplate,String Noofitemstobecreated,String manufacturernametemplate,String subsetname) throws InterruptedException{
 		int var1 = Integer.parseInt(Noofitemstobecreated);
 		Thread.sleep(4000);
-
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+itemnametemplate+"')]"), 20);
 		Assert.assertTrue(getDriver().findElements(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+itemnametemplate+"')]")).get(0).getText().contains(itemnametemplate));
-		waiting.explicitWaitVisibilityOfElements(editItemLink, 10);
+		waiting.explicitWaitVisibilityOfElements(editItemLink, 20);
 		editItemLink.get(0).click();
 		for(int i=1;i<=var1;i++) 
 		{
-			
-
 			getDriver().findElement(By.xpath("//td[@id='CPTab_lbl']")).click();
 			Thread.sleep(2000);
+			waiting.explicitWaitVisibilityOfElement(By.xpath("//tbody[@id='customPricesForm:customPricesTable:tb']/tr/td/*[@title='Update Item Prices in Subset']/../../*[span='"+subsetname+"']"), 20);
 			Assert.assertTrue(getDriver().findElement(By.xpath("//tbody[@id='customPricesForm:customPricesTable:tb']/tr/td/*[@title='Update Item Prices in Subset']/../../*[span='"+subsetname+"']")).isDisplayed(),"subset is not available");
 		}
 		nextItemIconLocator.click();
@@ -1556,10 +1559,10 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	}
 
 	@Step("verification of grayed out fields in Images dropdown")
-	public ItemsPageObjects verifyImagesStatus()
+	public ItemsPageObjects verifyImagesStatus() throws InterruptedException
 	{
 	
-
+		Thread.sleep(2500);
 		Assert.assertEquals(getDriver().findElement(By.xpath("//td/select[@name='searchFormId:rbtImages']/option[@value='WithImages']")).getText().trim(), "Images");
 		Assert.assertEquals(getDriver().findElement(By.xpath("//td/select[@name='searchFormId:rbtImages']/option[@value='NoImages']")).getText().trim(), "No Images");
 		Assert.assertEquals(getDriver().findElement(By.xpath("//td/select[@name='searchFormId:rbtImages']/option[text()='Ignore']")).getText().trim(), "Ignore");
@@ -1594,6 +1597,19 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	
 		return this;
 	}
+	public ItemsPageObjects verifyPartNumbersForImageStatus(String partNumber) throws InterruptedException
+	{
+		Thread.sleep(3000);
+		for(int i=0;i<5;i++){
+				
+		
+		}
+	
+		return this;
+	}
+
+	
+
 	public ItemsPageObjects verifyPartNumbers(String partNumber) throws InterruptedException
 	{
 		Thread.sleep(3000);

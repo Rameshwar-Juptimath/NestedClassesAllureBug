@@ -1,5 +1,7 @@
 package org.cimm2touch.modules;
 
+import java.io.File;
+
 import org.cimm2touch.dataprovider.SearchData;
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.testng.annotations.Test;
@@ -58,7 +60,7 @@ public class CreateDataConfigTest extends PageFactoryInitializer{
 		.verifyVendorSearchResults(vendorName)
 		.typeInVendorName(vendorName)
 		.typeInVendorshortname(vendorShortName)
-		.selectCustomerType(customerType)
+		//.selectCustomerType(customerType)
 		.typeInVendorAddress(vendorAddress)
 		.typeInVendorEmailAddress(vendorEmailAddress)
 		.selectVendorSubset(subsetName)
@@ -68,8 +70,7 @@ public class CreateDataConfigTest extends PageFactoryInitializer{
 	@Features(value = {"CreateDataConfigTest"})
 	@Description("Create new Taxonomy {0}")
 	@Test(enabled=true,priority=2, groups={"regression"},dataProvider="CreateDataConfigTest",dataProviderClass=SearchData.class)
-	public void createTaxonomy(String testCaseId,String userName, String password,String welcomeMessage, String taxonomyName,String taxonomyDesc,String supplier,String topBanner, String rightBanner, 
-			String leftBanner, String bottomBanner, String saveAs) throws Exception
+	public void createTaxonomy(String testCaseId,String userName, String password,String welcomeMessage, String taxonomyName,String taxonomyDesc,String supplier, String saveAs) throws Exception
 	{
 		landingPage()
 		.enterUsername(userName)
@@ -83,10 +84,6 @@ public class CreateDataConfigTest extends PageFactoryInitializer{
 		.enterTaxonomyName(taxonomyName)
 		.enterTaxonomyDesciption(taxonomyDesc)
 		.selectSupplier(supplier)
-		.selectTopBanner(topBanner)
-		.selectRightBanner(rightBanner)
-		.selectLeftBanner(leftBanner)
-		.selectBottomBanner(bottomBanner)
 		.saveAs(saveAs)
 		.saveTaxanomy()
 		.searchForTaxonomy(taxonomyName)
@@ -137,10 +134,8 @@ public class CreateDataConfigTest extends PageFactoryInitializer{
 		.clickOnManageTaxonomy()
 		.manageTaxonomyPage()
 		.verifyLeftPanelTaxonomyName(taxonomyName)
-		.clickOnRespectiveCategory(categoryName)
-		.clickOnAddNewChildCategory()
-		.addNewChildCategory(childCategoryCode, childCategoryName, displaySequence)
-		.saveNewCategory();
+		.addNewChildCategory(categoryName,childCategoryCode, childCategoryName, displaySequence);
+		
 	}
 	@Description("creation of new manufacturer.")
 	@Features(value={"CreateDataConfigTest"})
@@ -244,5 +239,73 @@ public class CreateDataConfigTest extends PageFactoryInitializer{
 		
 
 }
+	String resourceLocation = System.getProperty("user.dir") + File.separator + "resources" + File.separator;
+	@Features(value={"AdvancedSearch Module"})
+	@Description("adding the document to item(s)")
+	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
+	public void addDocumenttoItems(String testCaseId, String userName,String password,String expWelcomeMsg,String partNumber, String documentLocation) throws Exception
+	{
+		landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(expWelcomeMsg)
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.clickOnDocumentsTab()
+		.clickOnAddNewDocumentButton()
+		.enterDocumentCaption()
+		.UploadDocument(documentLocation)
+		.assignDocument();
+	}
+	@Features(value={"AdvancedSearch Module"})
+	@Description("adding the description to item(s)")
+	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
+	public void addDescriptiontoItems(String testCaseId, String userName,String password,String expWelcomeMsg,String partNumberDesc, String longDesc1, String longDesc2) throws Exception
+	{
+		landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(expWelcomeMsg)
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumberDesc)
+		.clickOnSpecificItemEditButton(partNumberDesc)
+		.editItemsPage()
+		.clickOnDescriptionTabLink()
+		.editLongDescription(longDesc1)
+		.editLongDescription2(longDesc2)
+		.saveDescription();
+	}
+
+	@Features(value={"AdvancedSearch Module"})
+	@Description("adding the image url to item(s)")
+	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
+	public void addImageURLtoItems(String testCaseId, String userName,String password,String expWelcomeMsg,String partNumber, String imageURL) throws Exception
+	{
+		landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(expWelcomeMsg)
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.clickOnImagesTab()
+		.clickOnAddNewImageButton()
+		.enterImageURL(imageURL)
+		.enterImageCaption()
+		.clickSaveImageURL();
+	}
+
 	
 }

@@ -18,13 +18,22 @@ public class SearchData
 		};
 		
 	}
-
+	
 	@DataProvider(name="excelSheetDataRead",parallel = true)
 	public static Object[][] excelSheetDataRead(Method methodName) throws Exception
 	{
 		File file = new File("resources/ExcelSheetData/"+methodName.getName()+".xlsx");
 		ExcelLibrary excel = new ExcelLibrary("resources/ExcelSheetData/"+methodName.getName()+".xlsx");
 		Object data[][] =	excel.readFromExcelDataForTestNGDataProvider(file.getAbsolutePath());
+
+		return data;
+	}
+	@DataProvider(name="ProductsModuleTest")
+	public static Object[][] productsModuleTest(Method methodName) throws Exception
+	{
+		File file = new File("resources/ExcelSheetData/ProductsModuleTest.xlsx");
+		ExcelLibrary excel = new ExcelLibrary("resources/ExcelSheetData/ProductsModuleTest.xlsx",methodName.getName());
+		Object data[][] = excel.readFromExcelDataForTestNGDataProvider(file.getAbsolutePath(),methodName.getName());
 
 		return data;
 	}
@@ -80,11 +89,13 @@ public class SearchData
 	@DataProvider(name="ManufacturerBrandModuleTest",parallel = true)
 	public static Object[][] manufacturerBrandModuleTest(Method methodName) throws Exception
 	{
-		File file = new File("resources/ExcelSheetData/ManufacturerBrandModuleTest.xlsx",methodName.getName());
-		ExcelLibrary excel = new ExcelLibrary("resources/ExcelSheetData/ManufacturerBrandModuleTest.xlsx");
+		File file = new File("resources/ExcelSheetData/ManufacturerBrandModuleTest.xlsx");
+		ExcelLibrary excel = new ExcelLibrary("resources/ExcelSheetData/ManufacturerBrandModuleTest.xlsx",methodName.getName());
 		Object data[][] = excel.readFromExcelDataForTestNGDataProvider(file.getAbsolutePath(),methodName.getName());
+
 		return data;
 	}
+	
 
 	@DataProvider(name="SubsetModuleTest",parallel = true)
 	public static Object[][] SubsetModuleTest(Method methodName) throws Exception

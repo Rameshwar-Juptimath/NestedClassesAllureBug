@@ -396,7 +396,7 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 		.clickOnRespectiveCategory(categoryName)
 		.clickOnAddNewChildCategory()
 		.verifyChildCategoryFields()
-		.addNewChildCategory(childCategoryCode, childCategoryName, displaySequence)
+		.addNewChildCategory(categoryName,childCategoryCode, childCategoryName, displaySequence)
 		.saveNewCategory()
 		.verifyDifferentMessageDisplayedAfterSavinCategory(errorMessage);
 	}
@@ -451,7 +451,9 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 		.verifyCharacterLimitInMarketingDescField(moreThanAcceptance);
 	}
 	
-	@Features(value = {"Taxonomy Module"})
+	//test covered in CreateItemData 
+	
+	/*@Features(value = {"Taxonomy Module"})
 	@Description("This Test Case is to Save a Child Category and Verify the Success Message in Manage Taxonomy page.")
 	@TestCaseId("TC_T-Mgmt_40")
 	@Test(groups={"regression"},dataProvider="TaxonomyModuleTest",dataProviderClass=SearchData.class)
@@ -473,10 +475,10 @@ public class TaxonomyModuleTest extends PageFactoryInitializer
 		.clickOnRespectiveCategory(categoryName)
 		.clickOnAddNewChildCategory()
 		.verifyChildCategoryFields()
-		.addNewChildCategory(childCategoryCode, childCategoryName, displaySequence)
+		.addNewChildCategory(categoryName,childCategoryCode, childCategoryName, displaySequence)
 		.saveNewCategory()
 		.verifySuccessMessageAfterSavingCategory(expectedSuccesfulMessageForNewCategoryCreation);
-	}
+	}*/
 	
 	@Features(value = {"Taxonomy Module"})
 	@Description("This Test Case is to Delete a Child Category and Verify the Success Message in Manage Taxonomy page.")

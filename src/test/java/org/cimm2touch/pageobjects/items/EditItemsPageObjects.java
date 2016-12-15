@@ -2112,7 +2112,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@Step("seect category to assign {0}")
 	public  EditItemsPageObjects selectCategory(String categoryName) throws InterruptedException {
 
-		waiting.explicitWaitVisibilityOfElement(By.xpath("//div[@id='ttformid:taxonomyTreeId']/descendant::td/descendant::span[contains(@id,'ttformid:taxonomyTreeId') and text()='"+categoryName+"']"), 20);
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//div[@id='ttformid:taxonomyTreeId']/descendant::span[contains(@id,'ttformid:taxonomyTreeId') and text()='"+categoryName+"']"), 20);
 		WebElement element= getDriver().findElement(By.xpath("//div[@id='ttformid:taxonomyTreeId']/descendant::td/descendant::span[contains(@id,'ttformid:taxonomyTreeId') and text()='"+categoryName+"']"));
 		WebElement target= getDriver().findElement(By.xpath("//form[@id='itemCategoryFormId']/descendant::thead"));
 		utility.DragandDrop(element, target);
