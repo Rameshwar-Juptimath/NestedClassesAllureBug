@@ -70,7 +70,6 @@ public class RemoveDataConfigTest extends PageFactoryInitializer{
 		.manufacturerSearchBeforeRemove(manufacturerName)
 		.clickOnlisticon(manufacturerName);
 		manufacturersAndBrandsPage()
-		.verifyBrandBeforeRemove(brandName)
 		.verifyAndRemoveBrand(brandName);
 	
 	}
@@ -130,7 +129,6 @@ public class RemoveDataConfigTest extends PageFactoryInitializer{
 		.clickOnManageTaxonomy()
 		.manageTaxonomyPage()
 		.verifyLeftPanelTaxonomyName(taxonomy)
-		//.verifyCategoryBeforeRemove(categoryName)
 		.removeCreatedCategory(categoryName,noOfCategories,errorChildCatMessage,expSuccessMsgForRemoveCategory);
 }
 	@Features(value = {"RemoveDataConfig Module"})

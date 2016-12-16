@@ -3,17 +3,23 @@ import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.print.PrinterException;
 import java.io.PrintStream;
+import java.sql.Time;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.utils.TestUtilityMethods;
 import org.framework.utils.TestUtility;
 import org.framework.utils.Waiting;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.server.handler.ImplicitlyWait;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
 import ru.yandex.qatools.allure.annotations.Step;
@@ -317,6 +323,12 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//select[@id='solrForm:locidDoc']")
 	private WebElement DocumentLangLocator;
 
+	@FindBy(xpath="//select[@id='itemDescFormId:locidDesc']")
+	private WebElement languageOptionLocator;
+	
+	@FindBy(xpath="//select[@id='itemDescFormId:locidDesc']/option")
+	private WebElement languageOptionValueLocator;
+	
 	@FindBy(xpath="//div[@class='cimmDocInstruction']")
 	private WebElement DocumentindtructionLocator;
 
@@ -1057,12 +1069,14 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	}
 
 	public EditItemsPageObjects clickonSavedescriptionButton() {
+		waiting.explicitWaitElementToBeClickable(ItemSaveDescriptionLocator, 40);
 		ItemSaveDescriptionLocator.click();
 		return this;
 	}
 
 	public EditItemsPageObjects verifyDacriptionUpdateMsg(String itemUpdateMSG) throws InterruptedException {
 		Thread.sleep(3000);
+		waiting.explicitWaitVisibilityOfElement(ItemSaveDescriptionMSGLocator, 40);
 		Assert.assertEquals(ItemSaveDescriptionMSGLocator.getText().trim(), itemUpdateMSG);
 		return this;
 	}
@@ -1487,9 +1501,9 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	}
 
 	@Step("click on Attributes link")
-	public EditItemsPageObjects clickOnAttributesTab() {
-
-		waiting.explicitWaitVisibilityOfElement(attributesLink, 15);
+	public EditItemsPageObjects clickOnAttributesTab() throws InterruptedException {
+		Thread.sleep(4000);
+		waiting.explicitWaitVisibilityOfElement(attributesLink, 40);
 		attributesLink.click();
 		return this;
 	}
@@ -1878,13 +1892,20 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		switch(attributeValue){
 		
 
-	case "Attributes": utility.assertElementPresent(getDriver().findElement(By.xpath("//input[contains(@id,':colAVD') and @value]")));
+	case "Attributes":
+		
+		Thread.sleep(2000);
+		utility.assertElementPresent(getDriver().findElement(By.xpath("//input[contains(@id,':colAVD') and @value]")));
 	break;
 	
-	case "No Attributes":  Assert.assertTrue(utility.assertElementPresent(getDriver().findElement(By.xpath("//span[contains(text(),'"+expMsgForNoAttribute+"')]"))) || utility.assertElementPresent(getDriver().findElement(By.xpath("//input[contains(@id,':colAVD') and not (@value)])"))));
+	case "No Attributes": 
+		Thread.sleep(2000);
+		Assert.assertTrue(utility.assertElementPresent(getDriver().findElement(By.xpath("//span[contains(text(),'"+expMsgForNoAttribute+"')]"))) || utility.assertElementPresent(getDriver().findElement(By.xpath("//input[contains(@id,':colAVD') and not (@value)])"))));
 	break;
 	
-	case "Ignore": Assert.assertTrue( utility.assertElementPresent(getDriver().findElement(By.xpath("//input[contains(@id,':colAVD') and @value]"))) || utility.assertElementPresent(getDriver().findElement(By.xpath("//span[contains(text(),'"+expMsgForNoAttribute+"')]"))));
+	case "Ignore": 
+		Thread.sleep(2000);
+		Assert.assertTrue( utility.assertElementPresent(getDriver().findElement(By.xpath("//input[contains(@id,':colAVD') and @value]"))) || utility.assertElementPresent(getDriver().findElement(By.xpath("//span[contains(text(),'"+expMsgForNoAttribute+"')]"))));
 
 	break;
 	
@@ -2003,8 +2024,8 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 	@Step("click on categorization tab")
 	public EditItemsPageObjects clickOnCategorizationTab() throws InterruptedException{
-
-		waiting.explicitWaitElementToBeClickable(categorizationTabLocator, 10);
+		Thread.sleep(2000);
+		waiting.explicitWaitVisibilityOfElement(categorizationTabLocator, 50);
 		categorizationTabLocator.click();
 		Thread.sleep(5000);
 		return this;
@@ -2013,42 +2034,60 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@Step("verification of Categorized dropdown - Categorized ")
 	public EditItemsPageObjects verifyadvsearchResultsForCategory(String categoryStatus, String noOfItemToBeVerify) throws Exception 
 	{
+		Thread.sleep(2000);
 		int var = Integer.parseInt(noOfItemToBeVerify);
-		for(int i=0;i<=var;i++)
+		for(int i=0;i<var;i++)
 		
 		{
+			clickOnCategorizationTab();
 			Thread.sleep(2000);
-			waiting.explicitWaitVisibilityOfElement(nextItemIconLocator, 10);
-				nextItemIconLocator.click();
+			
 			switch(categoryStatus)
 			{
 			case "Categorized": 
 				
-				Assert.assertTrue(assertCategorized(),"Shown items are displaying under uncategorized.");
+				Assert.assertTrue(assertCategorized(),"Shown items are uncategorized.");
 				break;
 			case "UnCategorized": 
 				
-				Assert.assertFalse(assertCategorized(), "Shown items are displaying under Categorized.");
+				Assert.assertFalse(assertCategorized(), "Shown items are Categorized.");
 				break;
 
 			case "Ignore": 
 				Thread.sleep(2500);
+				waiting.explicitWaitVisibilityOfElement(categoryUnderCategorizationTab, 40);
 				Assert.assertTrue(utility.assertElementPresent(categoryUnderCategorizationTab) || utility.assertElementnotPresent(categoryUnderCategorizationTab));
 				
 				break;
 			default : throw new Exception("invalid Category selection selection");			
 			}
 			
-		clickOnCategorizationTab();
+		
+		waiting.explicitWaitVisibilityOfElement(nextItemIconLocator, 50);
+			nextItemIconLocator.click();
+			Thread.sleep(2000);
+		
 		}
 		return this;
 	}	
 
 
-	private boolean assertCategorized() {
-		waiting.explicitWaitVisibilityOfElement(categoryUnderCategorizationTab, 15);
-		categoryUnderCategorizationTab.isDisplayed();
+	private boolean assertCategorized() throws InterruptedException {
+		
+		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		try{
+		if(categoryUnderCategorizationTab.isDisplayed())
+		{
+			return true;
+		}
+		}
+		catch(NoSuchElementException e)
+		{
 		return false;
+		}
+		
+		return false;		    
+	
 	}
 
 	@Step("verification of categorized dropdown ")
@@ -2074,10 +2113,14 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		switch(operator){
 		
 
-	case "AND": Assert.assertTrue(utility.assertElementPresent(getDriver().findElement(By.xpath("//input[contains(@id,':colAVD') and @value]"))) && utility.assertElementPresent(getDriver().findElement(By.xpath("//div[@class='imageHolder']/descendant::img"))));
+	case "AND": 
+		Thread.sleep(3000);
+		Assert.assertTrue(utility.assertElementPresent(getDriver().findElement(By.xpath("//input[contains(@id,':colAVD') and @value]"))) && utility.assertElementPresent(getDriver().findElement(By.xpath("//div[@class='imageHolder']/descendant::img"))));
 	break;
 	
-	case "OR": Assert.assertTrue(utility.assertElementPresent(getDriver().findElement(By.xpath("//input[contains(@id,':colAVD') and @value]"))) || utility.assertElementPresent(getDriver().findElement(By.xpath("//div[@class='imageHolder']/descendant::img"))));
+	case "OR": 
+		Thread.sleep(3000);
+		Assert.assertTrue(utility.assertElementPresent(getDriver().findElement(By.xpath("//input[contains(@id,':colAVD') and @value]"))) || utility.assertElementPresent(getDriver().findElement(By.xpath("//div[@class='imageHolder']/descendant::img"))));
 							
 	break;
 		
@@ -2177,8 +2220,10 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		return this;
 	}
 	@Step(" search for items in edit items page")
-	public EditItemsPageObjects searchForItem(String partNumber) {
-		clckOnSearchButton();
+	public EditItemsPageObjects searchForItem(String partNumber) throws InterruptedException {
+		Thread.sleep(2500);
+		getDriver().findElement(By.xpath("//input[@title='Search']")).click();
+		Thread.sleep(3500);
 		waiting.explicitWaitElementToBeClickable(searchFieldInEditPage, 30);
 		searchFieldInEditPage.click();
 		searchFieldInEditPage.clear();
@@ -2187,8 +2232,9 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		
 	}
 	@Step("Click on SearchButton In edit items page")
-	public EditItemsPageObjects clckOnSearchButton() {
-		waiting.explicitWaitVisibilityOfElement(searchButtonInEditPage, 20);
+	public EditItemsPageObjects clckOnSearchButton() throws InterruptedException {
+		Thread.sleep(2500);
+		waiting.explicitWaitElementToBeClickable(searchButtonInEditPage, 30);
 		searchButtonInEditPage.click();
 		return this;
 	}
@@ -2279,10 +2325,17 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		String expected[]=descriptionFields.split(",");
 		List<WebElement> allAvailableFields =getDriver().findElements(By.xpath("//span[@id='descFormId:discEditPanel']//div[@class='tab_Label']"));
        
-         for (int i=0; i<expected.length; i++){
-        
-        Assert.assertEquals(allAvailableFields.get(i).getText(), expected[i], "Fields available in Description: "+allAvailableFields.get(i).getText()+"");
-         }
+		
+		for(int i=0;i<allAvailableFields.size();i++){
+			
+			for(int j=0;j<expected.length;j++){
+				
+				if(allAvailableFields.get(i).getText().equals(expected[j])){
+	        	 Assert.assertEquals(allAvailableFields.get(i).getText(), expected[j], "Fields available in Description: "+allAvailableFields.get(i).getText()+"");
+				}
+			}
+		}
+         
 	return this;
 	}
 	@Step("verification of description fields {0}")
@@ -2290,5 +2343,33 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		
 		
 		return this;
+	}
+	@Step("verify the available languages: {0} in descriprtion section")
+	public EditItemsPageObjects verifyLanguageOptions(String languageCode) throws InterruptedException {
+		Thread.sleep(2500);
+		waiting.explicitWaitVisibilityOfElement(languageOptionLocator, 40);
+		Select sel=new Select(languageOptionLocator);
+		sel.selectByVisibleText(languageCode);
+		Thread.sleep(2000);
+		Assert.assertTrue(verifyLanguageOptionSelected(languageCode),"language:"+languageCode+" is not selected");
+
+		return this;
+		
+	}
+
+	private boolean verifyLanguageOptionSelected(String languageCode) {
+		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		try{
+			if(languageOptionValueLocator.getText().contains(languageCode))
+			{
+				return false;
+				}
+		}catch(NoSuchElementException e)
+		{
+			return true;
+		}
+
+		return false;
+		
 	}
 }

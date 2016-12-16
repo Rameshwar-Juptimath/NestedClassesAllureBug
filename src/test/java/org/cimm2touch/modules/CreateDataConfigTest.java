@@ -239,7 +239,7 @@ public class CreateDataConfigTest extends PageFactoryInitializer{
 		
 
 }
-/*	String resourceLocation = System.getProperty("user.dir") + File.separator + "resources" + File.separator;
+	/*String resourceLocation = System.getProperty("user.dir") + File.separator + "resources" + File.separator;
 	@Features(value={"AdvancedSearch Module"})
 	@Description("adding the document to item(s)")
 	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
@@ -261,10 +261,10 @@ public class CreateDataConfigTest extends PageFactoryInitializer{
 		.enterDocumentCaption()
 		.UploadDocument(documentLocation)
 		.assignDocument();
-	}
+	}*/
 	@Features(value={"AdvancedSearch Module"})
 	@Description("adding the description to item(s)")
-	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
+	@Test(groups="regression",priority=9,dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
 	public void addDescriptiontoItems(String testCaseId, String userName,String password,String expWelcomeMsg,String partNumberDesc, String longDesc1, String longDesc2) throws Exception
 	{
 		landingPage()
@@ -286,7 +286,7 @@ public class CreateDataConfigTest extends PageFactoryInitializer{
 
 	@Features(value={"AdvancedSearch Module"})
 	@Description("adding the image url to item(s)")
-	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
+	@Test(groups="regression",priority=10,dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
 	public void addImageURLtoItems(String testCaseId, String userName,String password,String expWelcomeMsg,String partNumber, String imageURL) throws Exception
 	{
 		landingPage()
@@ -306,6 +306,6 @@ public class CreateDataConfigTest extends PageFactoryInitializer{
 		.enterImageCaption()
 		.clickSaveImageURL();
 	}
-*/
+
 	
 }

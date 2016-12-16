@@ -356,7 +356,7 @@ HashMap<String, String> loginData;
 	@TestCaseId("TC_ITEMS_45, TC_ITEMS_46")
 	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
 	public void addNewWorkbook(String testCaseId, String workBookName, String workBookSuccesMsg, String reNameErroMsg,String workBookRemoveMsg) throws Exception {
-		
+		try{
 		landingPage()
 		.enterUsername(loginData.get("userName"))
 		.enterPassword(loginData.get("password"))
@@ -366,7 +366,7 @@ HashMap<String, String> loginData;
 		.itemsPage()
 		.verifyWorkbookDropdownLocator()
 		.clickOnWorkbookDropdown()
-		//.verifyWorkBookName(workBookName)
+		.verifyWorkBookName(workBookName,workBookRemoveMsg)
 		.enterWorkbookName(workBookName)
 		.clickOnSaveIcon()
 		.verifySuccessMsg(workBookName,workBookSuccesMsg)
@@ -376,6 +376,10 @@ HashMap<String, String> loginData;
 		.verifyErrorMessageForReName(workBookName,reNameErroMsg)
 		.deleteWorkbook(workBookName,workBookRemoveMsg);
 	
+	}finally
+		{
+		itemsPage().verifyWorkBookName(workBookName,workBookRemoveMsg);
+		}
 	}
 	
 	@Features(value = {"Items Module"})
@@ -384,7 +388,8 @@ HashMap<String, String> loginData;
 	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
 	public void addItemsToWorkbook(String testCaseId, String workBookName, String workBookSuccesMsg, String noOfItemsToBeSelect, String workbookRemovemsg) throws Exception {
 	
-		landingPage()
+		try{ 
+			landingPage()
 		.enterUsername(loginData.get("userName"))
 		.enterPassword(loginData.get("password"))
 		.clickOnLogin()
@@ -393,7 +398,7 @@ HashMap<String, String> loginData;
 		.itemsPage()
 		.verifyWorkbookDropdownLocator()
 		.clickOnWorkbookDropdown()
-		//.verifyWorkBookName(workBookName)
+		.verifyWorkBookName(workBookName,workbookRemovemsg)
 		.enterWorkbookName(workBookName)
 		.clickOnSaveIcon()
 		.verifySuccessMsg(workBookName,workBookSuccesMsg)
@@ -409,7 +414,11 @@ HashMap<String, String> loginData;
 		.itemsPage()
 		.deleteWorkbook(workBookName,workbookRemovemsg);
 		
-}
+		}finally
+		{
+		itemsPage().verifyWorkBookName(workBookName,workbookRemovemsg);
+		}
+	}
 	@Features(value = {"Items Module"})
 	@Description("This Test case verifies message in add items to workbook alert popup")
 	@TestCaseId("TC_ITEMS_49")
@@ -699,7 +708,7 @@ HashMap<String, String> loginData;
 	@Description("Verification of updating descriptions")
 	@TestCaseId("TC_ITEMS_64")
 	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
-	public void verificationOfUpdatingDescriptions(String testCaseId, String partNumber,String descriptionFields) throws Exception {
+	public void verificationOfUpdatingDesc(String testCaseId, String partNumber,String descriptionFields, String descOptions, String testData, String itemUpdateMessage) throws Exception {
 		landingPage()
 		.enterUsername(loginData.get("userName"))
 		.enterPassword(loginData.get("password"))
@@ -709,8 +718,28 @@ HashMap<String, String> loginData;
 		.searchItem(partNumber)
 		.clickOnEditButton(partNumber)
 		.editItemsPage()
-		.clickOnDescriptionTabLink();
+		.clickOnDescriptionTabLink()
+		.verificationOfDescription(descOptions,testData)
+		.clickonSavedescriptionButton()
+		.verifyDacriptionUpdateMsg(itemUpdateMessage);
 		
 		
+	}
+	@Features(value = {"Items Module"})
+	@Description("Verification of description display in the selected language")
+	@TestCaseId("TC_ITEMS_65")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void verificationOfDescLang(String testCaseId, String partNumber, String languageCode) throws Exception {
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin();
+		homePage()
+		.clickOnItemsLink()
+		.searchItem(partNumber)
+		.clickOnEditButton(partNumber)
+		.editItemsPage()
+		.clickOnDescriptionTabLink()
+		.verifyLanguageOptions(languageCode);
 	}
 }

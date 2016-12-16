@@ -629,6 +629,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	
 	public ManageTaxonomyPageObjects clickOnAddNewChildCategory() throws Exception 
 	{
+		Thread.sleep(2000);
 		waiting.explicitWaitVisibilityOfElement(addNewChildCategoryButton, 20);
 		addNewChildCategoryButton.click();
 		Thread.sleep(4000);
@@ -653,7 +654,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 		clickOnRespectiveCategory(categoryname);
 		clickOnAddNewChildCategory();
 		waiting.explicitWaitVisibilityOfElement(categoryCode, 20);
-		Thread.sleep(2000);
+		Thread.sleep(3000);
 		categoryCode.click();
 		categoryCode.clear();
 		categoryCode.sendKeys(categoryCodeofChild+i);

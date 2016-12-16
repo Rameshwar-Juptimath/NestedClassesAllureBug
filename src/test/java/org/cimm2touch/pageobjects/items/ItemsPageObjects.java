@@ -58,8 +58,8 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//table[@id='subsetForm:subsetTableId']/tbody/tr[1]/td[4]/span")
 	private WebElement subsetVerifyLocator;
 
-	@FindBy(xpath="//table[@id='staticPagesListFormId:staticPagesTableId']/tbody/tr[1]/td[4]")
-	private WebElement staticPageVerifyLocator;
+	@FindAll(value={@FindBy(xpath="//tbody[@id='staticPagesListFormId:staticPagesTableId:tb']/tr")})
+	private List<WebElement> staticPageVerifyLocator;
 
 	@FindBy(xpath="//table[@id='listWarehouseForm:warehouseDataTable']/tbody/tr[1]/td[3]/span")
 	private WebElement warehouseVerifyLocator;
@@ -369,8 +369,8 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	}
 
 	@Step("click on search category")
-	public ItemsPageObjects clickOnSearchCategory() {
-
+	public ItemsPageObjects clickOnSearchCategory() throws InterruptedException {
+		Thread.sleep(2500);
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",searchIconLocator);
 		return this;
 	}
@@ -385,15 +385,17 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	@Step("click on filter")
 	public ItemsPageObjects clickOnFilter() {
 
-		waiting.explicitWaitVisibilityOfElement(filterTaxonomyLinkLocator, 5);
+		waiting.explicitWaitVisibilityOfElement(filterTaxonomyLinkLocator, 40);
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",filterTaxonomyLinkLocator);
 		return this;
 	}
 
 	@Step("click on any edit button")
-	public EditItemsPageObjects clickOnSpecificEditButton(int specificEditButton) {
+	public EditItemsPageObjects clickOnSpecificEditButton(int specificEditButton) throws InterruptedException {
 
+		Thread.sleep(2500);
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",editButtonsLocator.get(specificEditButton-1));
+		Thread.sleep(2500);
 		return new EditItemsPageObjects();
 	}
 
@@ -427,8 +429,8 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	@Step("select the checkbox for {0}")
 	public ItemsPageObjects clickOnSpecificCategory(String categoryToSearch) throws InterruptedException {
-		
-		waiting.explicitWaitElementToBeClickable(By.xpath("//span[text()='"+categoryToSearch+"']/ancestor::div[@class='treeCategoryName']/descendant::label[@class='custChkBx']"), 20);
+		Thread.sleep(3500);
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//span[text()='"+categoryToSearch+"']/ancestor::div[@class='treeCategoryName']/descendant::label[@class='custChkBx']"), 30);
 		WebElement specificCategory = getDriver().findElement(By.xpath("//span[text()='"+categoryToSearch+"']/ancestor::div[@class='treeCategoryName']/descendant::label[@class='custChkBx']"));
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",specificCategory);
 		return this;
@@ -527,7 +529,8 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	private void verifySearchedstaticPage(String searchabledata) throws InterruptedException {
 		Thread.sleep(3000);
-		Assert.assertEquals(staticPageVerifyLocator.getText().trim(), searchabledata);
+		waiting.explicitWaitVisibilityOfElements(staticPageVerifyLocator, 50);
+		Assert.assertTrue(staticPageVerifyLocator.get(0).isDisplayed(),"Static data is not avaiable");
 
 	}
 
@@ -587,6 +590,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 
 	public ItemsPageObjects verifyItemSearchResults(String partNumberField) throws InterruptedException {
+		Thread.sleep(3000);
 		waiting.explicitWaitVisibilityOfElement(By.xpath("//table[@id='searchFormId:itemListTableId']/descendant::td[contains(text(),'"+partNumberField+"')]"), 20);
 		WebElement wb= getDriver().findElement(By.xpath("//table[@id='searchFormId:itemListTableId']/descendant::td[contains(text(),'"+partNumberField+"')]"));
 		Assert.assertEquals(wb.getText().trim(), partNumberField);
@@ -601,8 +605,9 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	}
 
 
-	public ItemsPageObjects verifyWorkbookDropdownLocator() {
-		waiting.explicitWaitVisibilityOfElement(workbookDropDownLocator, 20);
+	public ItemsPageObjects verifyWorkbookDropdownLocator() throws InterruptedException {
+		Thread.sleep(2500);
+		waiting.explicitWaitVisibilityOfElement(workbookDropDownLocator, 40);
 		Assert.assertTrue(workbookDropDownLocator.isDisplayed(), "Select workbook drop down is not displayed");
 		return this;	
 	}
@@ -632,16 +637,18 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 
 	public ItemsPageObjects verifySuccessMsg(String workBookName,String workbookSuccessmsg) throws InterruptedException {
-		waiting.explicitWaitVisibilityOfElement(workbookSuccessmsgLocator, 20);
+		Thread.sleep(4000);
+		waiting.explicitWaitVisibilityOfElement(workbookSuccessmsgLocator, 40);
 		Assert.assertEquals(workbookSuccessmsgLocator.getText().trim(),"'"+workBookName+"' "+workbookSuccessmsg);
 		return this;
 	}
 
 
 	public ItemsPageObjects deleteWorkbook(String workBookName,String workbookRemovemsg) throws InterruptedException {
+		Thread.sleep(2500);
 		waiting.explicitWaitElementToBeClickable(WorkbookDropDownLocator, 20);
 		WorkbookDropDownLocator.click();
-		waiting.explicitWaitElementToBeClickable(workbookDeleteIcon, 20);
+		waiting.explicitWaitVisibilityOfElement(workbookDeleteIcon, 20);
 		workbookDeleteIcon.click();
 
 		tu.alertAccept();
@@ -738,17 +745,17 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	public ItemsPageObjects selectNumberOfRecordsToDisplayInThePage(String selectNumberOfRecordsToDisplay) throws Exception{	
 		Select select = new Select(selectRecordsDropdownLocator);
 		select.selectByVisibleText(selectNumberOfRecordsToDisplay);
-		Thread.sleep(3000);
+		Thread.sleep(4000);
 		return this;
 	}
 
 	@Step("verifying whether {0} is the number of records that is displayed.")
 	public ItemsPageObjects verifyTheNumberOfRecordsDisplayed(String getNumberOfRecordsToDisplay) throws Exception{
-		Thread.sleep(1500);
+		Thread.sleep(3500);
 		try
 		{
 
-			waiting.explicitWaitVisibilityOfElements(editButtonsLocator, 10);
+			waiting.explicitWaitVisibilityOfElements(editButtonsLocator, 60);
 			Assert.assertTrue(assertForNumberOfRowsDisplayed(editButtonsLocator.size(),Integer.parseInt(getNumberOfRecordsToDisplay)));
 		}
 		catch(StaleElementReferenceException e)
@@ -774,11 +781,11 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	@Step("verifying the table headings are {0} (After clicking on show fields).")
 	public ItemsPageObjects verifyShowFieldsTableHeadingsInItemsPage(String [] dynamicSettingsTableHeadings) {
 
-		waiting.explicitWaitVisibilityOfElement(dynamicTableSettingsHeadingLocator, 6);
+		waiting.explicitWaitVisibilityOfElement(dynamicTableSettingsHeadingLocator, 50);
 
 		for(int i=0;i<dynamicTableSettingsTableHeadersLocator.size();i++)
 		{
-			//System.out.print(dynamicTableSettingsTableHeadersLocator.get(i).getText().trim()+",");
+		
 			Assert.assertEquals(dynamicTableSettingsTableHeadersLocator.get(i).getText().trim(), dynamicSettingsTableHeadings[i]);
 		}
 		return this;
@@ -798,10 +805,11 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	}
 
 	@Step("verifying the table field names are {0} (After clicking on show fields).")
-	public ItemsPageObjects verifyFieldNames(String [] verifyFieldNames) {
+	public ItemsPageObjects verifyFieldNames(String [] verifyFieldNames) throws InterruptedException {
 
-		for(int i=0;i<=fieldNamesDynamicSettingsTableLocator.size();i++)
+		for(int i=0;i<fieldNamesDynamicSettingsTableLocator.size();i++)
 		{
+			Thread.sleep(3000);
 			//System.out.print(fieldNamesDynamicSettingsTableLocator.get(i).getText().trim()+", ");
 			Assert.assertEquals(fieldNamesDynamicSettingsTableLocator.get(i).getText().trim(), verifyFieldNames[i].trim());
 		}
@@ -926,7 +934,8 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	public ItemsPageObjects verifyWhetherSearchedTaxonomyStyleIsGreen(String searchTaxonomy) throws Exception {
 		
-		waiting.explicitWaitVisibilityOfElement(By.xpath("//span[text()='"+searchTaxonomy+"']"), 20);
+		Thread.sleep(3500);
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//span[text()='"+searchTaxonomy+"']"), 30);
 		Assert.assertTrue(getDriver().findElement(By.xpath("//span[text()='"+searchTaxonomy+"']")).getAttribute("style").trim().contains("green"));
 		return this;
 	}
@@ -1099,8 +1108,8 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	@Step("verify 'No Items Found' message is displayed when searched for Invalid part number or Keyword")
 	public ItemsPageObjects verifyadvSe004Searchresult(String expMessage) throws InterruptedException {
-		
-		waiting.explicitWaitVisibilityOfElement(advancedSearchErrorMessageLoc,15);
+		Thread.sleep(4000);
+		waiting.explicitWaitVisibilityOfElement(advancedSearchErrorMessageLoc,30);
 		Assert.assertEquals(advancedSearchErrorMessageLoc.getText().trim(), expMessage,"InValid text message is :"+advancedSearchErrorMessageLoc.getText()+"Dispayed");
 		return this;
 
@@ -1133,7 +1142,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	@Step("verify 'Part No search- Partial search' result {0} is displayed")
 	public ItemsPageObjects verifyadvSe008Searchresult(String advSe008searchinput) throws InterruptedException {
 		Thread.sleep(2500);
-
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/tr/td[contains(text(),'"+advSe008searchinput+"')]"), 40);
 		Assert.assertTrue(getDriver().findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/tr/td[contains(text(),'"+advSe008searchinput+"')]")).isDisplayed());
 		return this;
 	}
@@ -1142,7 +1151,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	public ItemsPageObjects verifyadvSe010Searchresult(String itemNameTemplate,String advSearchinput, String Noofitemstobecreated) throws InterruptedException {
 		Thread.sleep(3500);
 		int var1 = Integer.parseInt(Noofitemstobecreated);
-
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+itemNameTemplate+"')]"), 40);
 		Assert.assertTrue(getDriver().findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+itemNameTemplate+"')]")).getText().contains(itemNameTemplate));
 		getDriver().findElements(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+itemNameTemplate+"')]/preceding-sibling::td/descendant::input[@title='Edit Item']")).get(0).click();
 		for(int i=1;i<=var1;i++) 
@@ -1157,7 +1166,8 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	}
 
 	public String getCIMMItemID(String advSe014searchinput) throws InterruptedException {
-
+		Thread.sleep(30000);
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/tr[1][td='"+advSe014searchinput+"']/td[3]"), 50);
 		String cimmItemIDtext =getDriver().findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/tr[1][td='"+advSe014searchinput+"']/td[3]")).getText();
 		return cimmItemIDtext;
 	}
@@ -1285,8 +1295,8 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	}
 
 	@Step("clicking on subset name {0} without typing in text field")
-	public ItemsPageObjects subsetfilterWithoutSearch(String subsetname) {
-
+	public ItemsPageObjects subsetfilterWithoutSearch(String subsetname) throws InterruptedException {
+		Thread.sleep(2000);
 		waiting.explicitWaitVisibilityOfElement(By.xpath("//tbody[@id='searchFormId:subsetTableId:tb']/descendant::td[contains(.,'"+subsetname+"')]/preceding-sibling::td"), 15);
 		WebElement ele = getDriver().findElement(By.xpath("//tbody[@id='searchFormId:subsetTableId:tb']/descendant::td[contains(.,'"+subsetname+"')]/preceding-sibling::td"));
 		if(!(ele.isSelected()))
@@ -1304,6 +1314,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 		waiting.explicitWaitVisibilityOfElement(as_Subsetfiltersearchbutton, 20);
 		as_Subsetfiltersearchbutton.click();
+		Thread.sleep(2000);
 		return this;
 	}
 
@@ -1316,6 +1327,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 		Assert.assertTrue(getDriver().findElements(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+itemnametemplate+"')]")).get(0).getText().contains(itemnametemplate));
 		waiting.explicitWaitVisibilityOfElements(editItemLink, 20);
 		editItemLink.get(0).click();
+		Thread.sleep(25000);
 		for(int i=1;i<=var1;i++) 
 		{
 			getDriver().findElement(By.xpath("//td[@id='CPTab_lbl']")).click();
@@ -1382,12 +1394,14 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	public ItemsPageObjects verifyadvseVendorFilter(String itemnametemplate,String Noofitemstobecreated,String manufacturernametemplate,String vendorname) throws InterruptedException{
 		Thread.sleep(3500);
 		int var1 = Integer.parseInt(Noofitemstobecreated);
-
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+itemnametemplate+"')]"), 50);
 		Assert.assertTrue(getDriver().findElements(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+itemnametemplate+"')]")).get(0).getText().contains(itemnametemplate));
-		waiting.explicitWaitVisibilityOfElements(editItemLink, 10);
+		waiting.explicitWaitVisibilityOfElements(editItemLink, 50);
 		editItemLink.get(0).click();
+		Thread.sleep(3500);
 		for(int i=1;i<=var1;i++) 
-		{	waiting.explicitWaitVisibilityOfElement(By.xpath("//input[@id='generalInfoFormId:supplierListComboIdcomboboxField']"), 10);
+		{	
+			waiting.explicitWaitVisibilityOfElement(By.xpath("//input[@id='generalInfoFormId:supplierListComboIdcomboboxField']"), 30);
 			Assert.assertEquals(getDriver().findElement(By.xpath("//input[@id='generalInfoFormId:supplierListComboIdcomboboxField']")).getAttribute("value"),vendorname );
 			if(i!=var1) 
 			{
@@ -1443,21 +1457,26 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 		waiting.explicitWaitVisibilityOfElement(bottomSearchButton, 15);
 		bottomSearchButton.click();
+		Thread.sleep(2000);
 		return this;
 	}
 
 	@Step("Verify searched results which are active")
 	public ItemsPageObjects verifyresultsadvSe024(String status, String expStatus) throws Exception {
-
-		waiting.explicitWaitVisibilityOfElements(editItemLink, 10);
+		Thread.sleep(3000);
+		waiting.explicitWaitVisibilityOfElements(editItemLink, 50);
 		editItemLink.get(0).click();
 		Thread.sleep(2500);
 		switch(status)
 		{
 
-		case "Active" : Assert.assertEquals(getDriver().findElement(By.xpath("//select[contains(@id,'generalInfoFormId:activeId')]/option[contains(@value,'Y')]")).getAttribute("selected"), expStatus);
+		case "Active" : 
+			waiting.explicitWaitVisibilityOfElement(By.xpath("//select[contains(@id,'generalInfoFormId:activeId')]/option[contains(@value,'Y')]"), 50);
+			Assert.assertEquals(getDriver().findElement(By.xpath("//select[contains(@id,'generalInfoFormId:activeId')]/option[contains(@value,'Y')]")).getAttribute("selected"), expStatus);
 			break;
-		case "InActive" : Assert.assertEquals(getDriver().findElement(By.xpath("//select[contains(@id,'generalInfoFormId:activeId')]/option[contains(@value,'N')]")).getAttribute("selected"), expStatus);
+		case "InActive" : 
+			waiting.explicitWaitVisibilityOfElement(By.xpath("//select[contains(@id,'generalInfoFormId:activeId')]/option[contains(@value,'N')]"), 40);
+			Assert.assertEquals(getDriver().findElement(By.xpath("//select[contains(@id,'generalInfoFormId:activeId')]/option[contains(@value,'N')]")).getAttribute("selected"), expStatus);
 
 			break;
 			default : throw new Exception("in valid selection");
@@ -1706,7 +1725,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	public ItemsPageObjects clickOnWithAttributesSubFilter() throws Exception
 	{
 
-		waiting.explicitWaitVisibilityOfElement(withAttributes_SubFilter, 15);
+		waiting.explicitWaitVisibilityOfElement(withAttributes_SubFilter, 40);
 		withAttributes_SubFilter.click();
 		return this;
 	}
@@ -1714,7 +1733,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	public ItemsPageObjects clickOnCombinewithOR()  throws Exception
 	{
 
-		waiting.explicitWaitVisibilityOfElement(combineOptions_OR_SubFilter, 10);
+		waiting.explicitWaitVisibilityOfElement(combineOptions_OR_SubFilter, 40);
 		combineOptions_OR_SubFilter.click();
 		return this;
 	}
@@ -1775,11 +1794,20 @@ public class ItemsPageObjects extends PageFactoryInitializer
 		itemCategorizedDropdown.click();
 		switch(categoryStatus)
 			{
-			case "Categorized": getDriver().findElement(By.xpath("//select[@id='searchFormId:rbtCategorized']/option[@value='WithCategorized']")).click();
+			case "Categorized":
+				Thread.sleep(2000);
+				waiting.explicitWaitElementToBeClickable(By.xpath("//select[@id='searchFormId:rbtCategorized']/option[@value='WithCategorized']"), 40);
+				getDriver().findElement(By.xpath("//select[@id='searchFormId:rbtCategorized']/option[@value='WithCategorized']")).click();
 				break;
-			case "UnCategorized": getDriver().findElement(By.xpath("//select[@id='searchFormId:rbtCategorized']/option[@value='UnCategorized']")).click();
+			case "UnCategorized": 
+				Thread.sleep(2000);
+				waiting.explicitWaitElementToBeClickable(By.xpath("//select[@id='searchFormId:rbtCategorized']/option[@value='UnCategorized']"), 40);
+				getDriver().findElement(By.xpath("//select[@id='searchFormId:rbtCategorized']/option[@value='UnCategorized']")).click();
 				break;
-			case "Ignore": getDriver().findElement(By.xpath("//select[@id='searchFormId:rbtCategorized']/option[@value='']")).click();
+			case "Ignore": 
+				Thread.sleep(2000);
+				waiting.explicitWaitElementToBeClickable(By.xpath("//select[@id='searchFormId:rbtCategorized']/option[@value='']"), 50);
+				getDriver().findElement(By.xpath("//select[@id='searchFormId:rbtCategorized']/option[@value='']")).click();
 				break;
 			default : throw new Exception("invalid Category selection selection");			
 			}
@@ -1789,16 +1817,18 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	public ItemsPageObjects clickOnFirstEditButton()  throws Exception
 	{
-		waiting.explicitWaitVisibilityOfElements(By.xpath("//table[@id= 'searchFormId:itemListTableId']/descendant::input[@title= 'Edit Item']"), 20);
+		Thread.sleep(2500);
+		waiting.explicitWaitVisibilityOfElements(By.xpath("//table[@id= 'searchFormId:itemListTableId']/descendant::input[@title= 'Edit Item']"), 40);
 		List<WebElement>ele=getDriver().findElements(By.xpath("//table[@id= 'searchFormId:itemListTableId']/descendant::input[@title= 'Edit Item'][1]"));
 		ele.get(0).click();
+		Thread.sleep(2500);
 		return this;
 	}
 
 	public ItemsPageObjects clickOnSubsetFilterDropdown() {
 		
 
-		waiting.explicitWaitVisibilityOfElement(as_Subsetfilter, 15);
+		waiting.explicitWaitVisibilityOfElement(as_Subsetfilter, 60);
 		as_Subsetfilter.click();
 		return this;
 	}
@@ -2015,11 +2045,29 @@ public class ItemsPageObjects extends PageFactoryInitializer
 		return getPartNumber;
 	}
 	@Step("verify work book {0}")
-	public ItemsPageObjects verifyWorkBookName(String workBookName) {
-		waiting.explicitWaitVisibilityOfElement(By.xpath("//tbody[@id='searchFormId:workBookDataTable:tb']/descendant::a[contains(text(),'"+workBookName+"')]"), 20);
-		Assert.assertFalse(getDriver().findElement(By.xpath("//tbody[@id='searchFormId:workBookDataTable:tb']/descendant::a[contains(text(),'"+workBookName+"')]")).isDisplayed(),"please delete the workbook to create new");
+	public ItemsPageObjects verifyWorkBookName(String workBookName, String workbookRemovemsg) throws InterruptedException {
+		Thread.sleep(2500);
+		//waiting.explicitWaitVisibilityOfElement(By.xpath("//tbody[@id='searchFormId:workBookDataTable:tb']/descendant::a[contains(text(),'"+workBookName+"')]"), 20);
+		Assert.assertTrue(assertVerifyWorkBook(workBookName,workbookRemovemsg),"unable to delete created workBook :"+workBookName+"");
 		return this;
 	}
+	private boolean assertVerifyWorkBook(String workBookName, String workbookRemovemsg) throws InterruptedException {
+		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		try {
+
+
+			if(getDriver().findElement(By.xpath("//tbody[@id='searchFormId:workBookDataTable:tb']/descendant::a[contains(text(),'"+workBookName+"')]")).isDisplayed())
+			{
+				deleteWorkbook(workBookName, workbookRemovemsg);
+			}
+		}
+		catch(NoSuchElementException e) {
+			return true;
+
+		}
+		return false;
+	}
+	
 	@Step("verification of item(s) {0}")
 	public ItemsPageObjects verifyItemsPresent(String itemNameTemplate) {
 		

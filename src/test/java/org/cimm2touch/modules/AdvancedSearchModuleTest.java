@@ -543,7 +543,7 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 	@Description("Items - Advanced Search - Verification of appropriate  search result displays for Categorized/unCategorized/Ignore is selected under Categorized dropdown")
 	@TestCaseId("AdvSe042")
 	@Test(groups="regression",dataProvider ="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
-	public void advSearch_042_043_044(String testCaseId, String userName, String password, String welcomeMessage,String categoryStatus, String noOfItemsToBeVerify) throws Exception 
+	public void advSearch_042_043_044(String testCaseId, String userName, String password, String welcomeMessage,String partNumber,String categoryStatus, String noOfItemsToBeVerify) throws Exception 
 	{
 		landingPage()
 		.enterUsername(userName)
@@ -554,11 +554,11 @@ public class AdvancedSearchModuleTest extends PageFactoryInitializer {
 		homePage()
 		.clickOnItemsLink()
 		.itemsPage()
+		.typeinadvancedSearchTopSearchField(partNumber)
 		.selectCategorizedDropdown(categoryStatus)
 		.clickOnbottomSeacrhButton()
 		.clickOnFirstEditButton()
 		.editItemsPage()
-		.clickOnCategorizationTab()
 		.verifyadvsearchResultsForCategory(categoryStatus,noOfItemsToBeVerify);
 	}
 

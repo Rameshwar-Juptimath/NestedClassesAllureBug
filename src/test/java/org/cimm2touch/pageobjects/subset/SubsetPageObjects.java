@@ -1340,7 +1340,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 		try {
 
 
-			if(getDriver().findElement(By.xpath("//td[contains(text(),'"+subsetName+"')]")).isDisplayed())
+			if(getDriver().findElement(By.xpath("//tbody[@id='subsetForm:subsetTableId:tb']/descendant::span[contains(text(),'"+subsetName+"')]")).isDisplayed())
 			{
 				return false;
 			}
