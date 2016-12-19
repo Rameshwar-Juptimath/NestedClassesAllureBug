@@ -9,7 +9,6 @@ public class HistoryPageObjects extends PageFactoryInitializer
 	public boolean assertPageTitle(String expectedHistoryPageTitle) throws Exception 
 	{
 		
-		
 		boolean t = getDriver().getTitle().replace(" ", "").trim().equals(expectedHistoryPageTitle.replace(" ", "").trim());
 		Thread.sleep(2000);
 	

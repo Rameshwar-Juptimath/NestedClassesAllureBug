@@ -1713,7 +1713,8 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	public ItemsPageObjects clickOnEditButton(String partNumber)  throws Exception
 	{	
-
+		
+		Thread.sleep(2500);
 		waiting.explicitWaitElementToBeClickable(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']//td[contains(text(),'"+partNumber+"')]/..//input[@title='Edit Item']"), 30);
 		{
 		getDriver().findElements(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']//td[contains(text(),'"+partNumber+"')]/..//input[@title='Edit Item']")).get(0).click();

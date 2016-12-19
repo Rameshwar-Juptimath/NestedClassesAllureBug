@@ -118,7 +118,6 @@ public class HomePageObjects extends PageFactoryInitializer{
 
 	@Step("Click on Products link in Home page")
 	public ProductsListPageObjects clickOnProductsLink() {
-		waiting.explicitWaitVisibilityOfElement(productslinkLocator, 20);
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",productslinkLocator);
 		return new ProductsListPageObjects();
 	}

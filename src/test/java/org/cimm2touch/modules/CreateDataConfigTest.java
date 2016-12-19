@@ -239,11 +239,10 @@ public class CreateDataConfigTest extends PageFactoryInitializer{
 		
 
 }
-	/*String resourceLocation = System.getProperty("user.dir") + File.separator + "resources" + File.separator;
 	@Features(value={"AdvancedSearch Module"})
 	@Description("adding the document to item(s)")
-	@Test(groups="regression",dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
-	public void addDocumenttoItems(String testCaseId, String userName,String password,String expWelcomeMsg,String partNumber, String documentLocation) throws Exception
+	@Test(groups="regression",dataProvider="CreateDataConfigTest", dataProviderClass=SearchData.class)
+	public void createNewProduct(String testCaseId, String userName,String password,String expWelcomeMsg,String productName, String productNumber, String expectedSuccesfulMessageForNewProductCreation) throws Exception
 	{
 		landingPage()
 		.enterUsername(userName)
@@ -251,17 +250,23 @@ public class CreateDataConfigTest extends PageFactoryInitializer{
 		.clickOnLogin()
 		.homePage()
 		.verifyWelcomeMessage(expWelcomeMsg)
-		.clickOnItemsLink()
-		.itemsPage()
-		.searchItem(partNumber)
-		.clickOnSpecificItemEditButton(partNumber)
-		.editItemsPage()
-		.clickOnDocumentsTab()
-		.clickOnAddNewDocumentButton()
-		.enterDocumentCaption()
-		.UploadDocument(documentLocation)
-		.assignDocument();
-	}*/
+		.homePage()
+		.clickOnProductsLink()
+		.productsPage()
+		.enterTheProductNameInSearchField(productName)
+		.clickOnSearchButton()
+		.productsListPage()
+		.verifyProductPresent(productName);
+		productsListPage()
+		.clickOnPlusSymbolToCreateProduct()
+		.addNewProductPage()
+		.enterTheProductName(productName)
+		.enterTheProductNumber(productNumber)
+		.clickOnSaveButton()
+		.verifySuccesfulMessageAfterCreationOfNewProduct(expectedSuccesfulMessageForNewProductCreation);
+		
+	}
+	
 	@Features(value={"AdvancedSearch Module"})
 	@Description("adding the description to item(s)")
 	@Test(groups="regression",priority=9,dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
@@ -284,28 +289,7 @@ public class CreateDataConfigTest extends PageFactoryInitializer{
 		.saveDescription();
 	}
 
-	@Features(value={"AdvancedSearch Module"})
-	@Description("adding the image url to item(s)")
-	@Test(groups="regression",priority=10,dataProvider="AdvancedSearchModuleTest", dataProviderClass=SearchData.class)
-	public void addImageURLtoItems(String testCaseId, String userName,String password,String expWelcomeMsg,String partNumber, String imageURL) throws Exception
-	{
-		landingPage()
-		.enterUsername(userName)
-		.enterPassword(password)
-		.clickOnLogin()
-		.homePage()
-		.verifyWelcomeMessage(expWelcomeMsg)
-		.clickOnItemsLink()
-		.itemsPage()
-		.searchItem(partNumber)
-		.clickOnSpecificItemEditButton(partNumber)
-		.editItemsPage()
-		.clickOnImagesTab()
-		.clickOnAddNewImageButton()
-		.enterImageURL(imageURL)
-		.enterImageCaption()
-		.clickSaveImageURL();
-	}
+	
 
 	
 }
