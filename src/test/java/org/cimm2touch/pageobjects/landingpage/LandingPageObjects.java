@@ -47,21 +47,21 @@ HashMap<String, String> loginData;
 	@FindBy(css="div.header-right > ul.cimm_boxShadow > li > div.header-right-icons > ul > li > div.loggedInUser")
 	private WebElement welcomeMessageLocator;
 	
-	@Step("entering username {0}")
+	@Step("Enter username as \'{0}\'")
 	public LandingPageObjects enterUsername(String userName){
 		usernameLocator.clear();
 		usernameLocator.sendKeys(userName);
 		return this;
 	}
 	
-	@Step("entering password {0}")
+	@Step("Enter password \'{0}\'")
 	public LandingPageObjects enterPassword(String password){
 		passwordLocator.clear();
 		passwordLocator.sendKeys(password);
 		return this;
 	}
 	
-	@Step("clicking on login")
+	@Step("Click on login")
 	public HomePageObjects clickOnLogin(){
 		loginButtonLocator.click();
 		return new HomePageObjects();

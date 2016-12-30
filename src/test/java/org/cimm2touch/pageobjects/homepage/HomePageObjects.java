@@ -7,6 +7,7 @@ import org.cimm2touch.pageobjects.items.AddNewItemPageObjects;
 import org.cimm2touch.pageobjects.items.ItemsPageObjects;
 import org.cimm2touch.pageobjects.manufacturer.ManufacturerPageObjects;
 import org.cimm2touch.pageobjects.products.ProductsListPageObjects;
+import org.cimm2touch.pageobjects.products.ProductsPageObjects;
 import org.cimm2touch.pageobjects.subset.SubsetPageObjects;
 import org.cimm2touch.pageobjects.taxonomymanagement.AttributeGroupsPageObjects;
 import org.cimm2touch.pageobjects.taxonomymanagement.AttributesPageObjects;
@@ -24,7 +25,7 @@ public class HomePageObjects extends PageFactoryInitializer{
 	
 	 Waiting waiting = new Waiting(getDriver());
 	
-	@FindBy(xpath="(//a[contains(.,'PIM')])[1]/ancestor::li/ul/descendant::span[contains(.,'Product Master')]/following-sibling::ul/descendant::a[contains(.,'Products')]")
+	@FindBy(xpath="//div[@class='navigationBar']//a[contains(text(),'Products')]")
 	private WebElement productslinkLocator;
 	
 
@@ -117,9 +118,9 @@ public class HomePageObjects extends PageFactoryInitializer{
 	}
 
 	@Step("Click on Products link in Home page")
-	public ProductsListPageObjects clickOnProductsLink() {
+	public ProductsPageObjects clickOnProductsLink() {
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",productslinkLocator);
-		return new ProductsListPageObjects();
+		return productsPage();
 	}
 	
 	@Step("enter the created item part number {0} in  advanced search field & click on search ")

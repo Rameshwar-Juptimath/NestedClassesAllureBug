@@ -6,7 +6,6 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
 import java.util.List;
 
-
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.utils.SearchDataPropertyFile;
 import org.framework.utils.ApplicationSetUpPropertyFile;
@@ -22,377 +21,377 @@ import org.testng.Assert;
 
 import ru.yandex.qatools.allure.annotations.Step;
 
-public class EditProductsPageObjects  extends PageFactoryInitializer{
+public class EditProductsPageObjects extends PageFactoryInitializer {
 
-	TestUtility tu=new TestUtility(getDriver());
-	Waiting waiting=new Waiting(getDriver());
-	
-	
+	TestUtility tu = new TestUtility(getDriver());
+	Waiting waiting = new Waiting(getDriver());
+
 	SearchDataPropertyFile data = new SearchDataPropertyFile();
 	ApplicationSetUpPropertyFile setUp = new ApplicationSetUpPropertyFile();
-	
-	@FindAll(value={@FindBy(xpath="//td[@onmouseout='RichFaces.outTab(this);']")})
-	private List<WebElement> productPageTabsLocator;
-	
 
-	@FindBy(xpath="//td[contains(text(),'General Info')]")
+	@FindAll(value = { @FindBy(xpath = "//td[@onmouseout='RichFaces.outTab(this);']") })
+	private List<WebElement> productPageTabsLocator;
+
+	@FindBy(xpath = "//td[contains(text(),'General Info')]")
 	private WebElement generalInfoTabLocator;
-	
-	@FindBy(xpath="//td[contains(text(),'Product Images')]")
+
+	@FindBy(xpath = "//td[contains(text(),'Product Images')]")
 	private WebElement productImagesTabLocator;
-	
-	@FindAll(value={@FindBy(xpath="//div[@class='tabContainerLabel']")})
+
+	@FindAll(value = { @FindBy(xpath = "//div[@class='tabContainerLabel']") })
 	private List<WebElement> fieldNamesInGeneralInfoTabLocator;
-	
-	@FindAll(value={@FindBy(xpath="//th[@class='rich-table-subheadercell']")})
+
+	@FindAll(value = { @FindBy(xpath = "//th[@class='rich-table-subheadercell']") })
 	private List<WebElement> fieldNamesInProductImagesTabLocator;
-	
-	@FindAll(value={@FindBy(xpath="//div[@class='tabContainerLabel']")})
+
+	@FindAll(value = { @FindBy(xpath = "//div[@class='tabContainerLabel']") })
 	private List<WebElement> fieldNamesInAddNewProductImageLocator;
-	
-	@FindBy(xpath="//textarea[@name='editProductForm:eproductCustomKeywordsId']")
+
+	@FindBy(xpath = "//textarea[@name='editProductForm:eproductCustomKeywordsId']")
 	private WebElement productEditCustomKeywordsTextBoxLocator;
-	
-	@FindBy(xpath="//input[@title='Update Product']")
+
+	@FindBy(xpath = "//input[@title='Update Product']")
 	private WebElement productUpdateButtonLocator;
-	
-	@FindBy(xpath="//span[contains(text(),'Updated Successfully')]")
-	private WebElement  productUpdateSavedSuccessfulMessageLocator;
-	
-	@FindBy(xpath="//input[@title='Add New Product Image']")
+
+	@FindBy(xpath = "//span[contains(text(),'Updated Successfully')]")
+	private WebElement productUpdateSavedSuccessMessageLocator;
+
+	@FindBy(xpath = "//input[@title='Add New Product Image']")
 	private WebElement addNewProductImageLocator;
-	
-	@FindBy(xpath="(//input[@type='text'])[3]")
+
+	@FindBy(xpath = "(//input[@type='text'])[3]")
 	private WebElement imageDescTextBoxLocator;
-	
-	@FindBy(xpath="(//input[@type='text'])[4]")
+
+	@FindBy(xpath = "(//input[@type='text'])[4]")
 	private WebElement productImageURLTextBoxLocator;
-	
-	@FindBy(xpath="//input[@title='Save URL']")
+
+	@FindBy(xpath = "//input[@title='Save URL']")
 	private WebElement saveProductImageURLLocator;
-	
-	@FindBy(xpath="//span[contains(text(),'Product Image URL saved Successfully')]")
-	private WebElement  ImageURLSavedSuccessfulMessageLocator;
-	
-	@FindBy(xpath="//input[@id='editProductForm:eproductNameId']")
+
+	@FindBy(xpath = "//span[contains(text(),'Product Image URL saved Successfully')]")
+	private WebElement ImageURLSavedSuccessfulMessageLocator;
+
+	@FindBy(xpath = "//input[@id='editProductForm:eproductNameId']")
 	private WebElement updateProductNameTextBoxLocator;
-	
-	@FindBy(xpath="(//input[@type='checkbox'])[2]")
+
+	@FindBy(xpath = "//tr[@class='rich-table-subheader']//input[@type='checkbox']")
 	private WebElement productImageCheckboxLocator;
-	
-	@FindBy(xpath="//input[@title='Add New Product Image']")
+
+	@FindBy(xpath = "//input[@title='Add New Product Image']")
 	private WebElement productImageLocator;
-	
-	@FindBy(xpath="//input[@title='Add New Product Image']")
-	private WebElement saveUrlIconLocator;
-	
-	@FindBy(xpath="//input[@title='Add New Product Image']")
+
+	@FindBy(xpath = "//input[@title='Add New Product Image']")
+	private WebElement saveURLIconLocator;
+
+	@FindBy(xpath = "//input[@id='editProductImageTabForm:btnReset']")
 	private WebElement resetIconLocator;
-	
-	@FindBy(xpath="//input[@title='Add New Product Image']")
+
+	@FindBy(xpath = "//span[text()='(OR)']")
 	private WebElement orTextLocator;
-	
-	@FindBy(xpath="//input[@title='Add New Product Image']")
+
+	@FindBy(xpath = "//div[@class='cimmDocFormLabel']")
 	private WebElement overwriteImageTextLocator;
-	
-	@FindBy(xpath="//div[@id='editProductImageTabForm:productImageUploadId:upload2']")
+
+	@FindBy(xpath = "//div[@id='editProductImageTabForm:productImageUploadId:upload2']")
 	private WebElement uploadImageLinkLocator;
-	
-	@FindBy(xpath="//input[@id='lnkditmSrchIdf:searchKeywordId']")
+
+	@FindBy(xpath = "//input[@id='lnkditmSrchIdf:searchKeywordId']")
 	private WebElement searchForItemsListFieldLocator;
-	
-	@FindBy(xpath="//a[@id='lnkditmSrchIdf:goBtn']")
+
+	@FindBy(xpath = "//a[@id='lnkditmSrchIdf:goBtn']")
 	private WebElement searchIconLocator;
-	
-	@FindBy(xpath="//input[@id='lnkditmSrchIdf:manufacturerListComboIdcomboboxButton']")
+
+	@FindBy(xpath = "//input[@id='lnkditmSrchIdf:manufacturerListComboIdcomboboxButton']")
 	private WebElement manufacturerDropDownLocator;
-	
-	@FindBy(xpath="//input[@id='lnkditmSrchIdf:brandListComboIdcomboboxButton']")
+
+	@FindBy(xpath = "//input[@id='lnkditmSrchIdf:brandListComboIdcomboboxButton']")
 	private WebElement brandDropDownLocator;
-	
-	@FindBy(xpath="//input[@title='Save Items To Product ']")
+
+	@FindBy(xpath = "//input[@title='Save Items To Product ']")
 	private WebElement saveIconLocator;
-	
-	@FindBy(xpath="//td[contains(text(),'Item List')]")
+
+	@FindBy(xpath = "//td[contains(text(),'Item List')]")
 	private WebElement itemListTabLocator;
-	
-	@FindBy(xpath="//input[@title='???delPrdctImg???']")
+
+	@FindBy(xpath = "//input[@title='???delPrdctImg???']")
 	private WebElement removeProductImageLocator;
-	
-	@FindBy(id="editProductImageTabForm:productImageUploadId:flashContainer")
+
+	@FindBy(id = "editProductImageTabForm:productImageUploadId:flashContainer")
 	private WebElement productUploadImageLocator;
-	
-	 @Step("This method is used verify product page all tabs")
-	 public EditProductsPageObjects verifyProductsPageTabs(String productsTabNames) throws Exception{
-	
-		String productPageTabsNames[] =productsTabNames.split(",");
-		
-		for(int i=0;i<productPageTabsLocator.size();i++)
-		{
-			Assert.assertEquals(productPageTabsLocator.get(i).getText().trim(), productPageTabsNames[i].trim());
+
+	@Step("Verify Product Page tabs are displayed as follows: {0}")
+	public EditProductsPageObjects verifyProductsPageTabs(String[] productsTabNames) throws Exception {
+
+		for (int i = 0; i < productPageTabsLocator.size(); i++) {
+			Assert.assertEquals(productPageTabsLocator.get(i).getText().trim(), productsTabNames[i].trim(),
+					"Edit product Tabs displayed incorrectly.");
 		}
 		return this;
-     }
+	}
+
+	@Step("This method is used verify General Info tab")
+	public EditProductsPageObjects clickOnGeneralInfoTab() throws Exception {
+
+		waiting.explicitWaitVisibilityOfElement(generalInfoTabLocator, 6);
+		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", generalInfoTabLocator);
+		return this;
+	}
+
+	@Step("Verify Field Names In General Info Tab")
+	public EditProductsPageObjects verifyFieldNamesInGeneralInfoTab(String[] generalInFoFieldNames) throws Exception {
+
+		waiting.explicitWaitVisibilityOfElements(fieldNamesInGeneralInfoTabLocator, 6);
+		for (int i = 0; i < fieldNamesInGeneralInfoTabLocator.size(); i++) {
+			Assert.assertEquals(fieldNamesInGeneralInfoTabLocator.get(i).getText().trim(),
+					generalInFoFieldNames[i].trim());
+		}
+		return this;
+	}
+
+	@Step("Click on Product Images tab")
+	public EditProductsPageObjects clickOnProductImagesTab() throws Exception {
+
+		waiting.explicitWaitVisibilityOfElement(productImagesTabLocator, 6);
+
+		productImagesTabLocator.click();
+		return this;
+	}
+
+	@Step("Verify Field Names In Product Images Tab")
+	public EditProductsPageObjects verifyFieldNamesInProductImagesTab(String[] fieldNameProductImagesTab)
+			throws Exception {
+
+		for (int i = 0; i < fieldNamesInProductImagesTabLocator.size(); i++) {
+			Assert.assertEquals(fieldNamesInProductImagesTabLocator.get(i).getText().trim(),
+					fieldNameProductImagesTab[i].trim());
+		}
+
+		return this;
+	}
+
+	@Step("Verify if Product image checkbox is displayed in Product Images Tab")
+	public EditProductsPageObjects verifyProductImageCheckbox() {
+
+		waiting.explicitWaitVisibilityOfElement(productImageCheckboxLocator, 6);
+		Assert.assertTrue(productImageCheckboxLocator.isDisplayed(), "Product Image Checkbox link is not displayed.");
+		return this;
+	}
+
+	@Step("Verify if Add New Product Image button is displayed in Product Images Tab")
+	public EditProductsPageObjects verifyAddNewProductImage() {
+		Assert.assertTrue(productImageLocator.isDisplayed(), "Add New Product Image link is not displayed.");
+		return this;
+	}
+
+	@Step("Click on Add New Product Image")
+	public EditProductsPageObjects clickOnAddNewProductImage() throws Exception {
+
+		waiting.explicitWaitVisibilityOfElement(addNewProductImageLocator, 15);
+		addNewProductImageLocator.click();
+		return this;
+	}
+
+	@Step("Verify Field Names In Add New Product Image")
+	public EditProductsPageObjects verifyFieldNamesInAddNewProductImage(String[] fieldsNameInAddNewProductImage)
+			throws Exception {
+
+
+		for (int i = 0; i < fieldNamesInAddNewProductImageLocator.size(); i++) {
+			Assert.assertEquals(fieldNamesInAddNewProductImageLocator.get(i).getText().trim(),
+					fieldsNameInAddNewProductImage[i].trim());
+		}
+
+		return this;
+	}
+
+	@Step("Verify if save URL Icon is displayed in Add New Product Image")
+	public EditProductsPageObjects verifySaveURLconInAddNewProductImage() {
+
+		Assert.assertTrue(saveURLIconLocator.isDisplayed(), "saveURL Icon is not displayed.");
+		return this;
+	}
+
+	@Step("Verify if Reset Icon is displayed in Add New Product Image")
+	public EditProductsPageObjects verifyResetIconInAddNewProductImage() {
+		Assert.assertTrue(resetIconLocator.isDisplayed(), " Reset Icon is not displayed.");
+		return this;
+	}
+
+	@Step("Verify if '(OR)' Text is displayed in Add New Product Image")
+	public EditProductsPageObjects verifyORTextInAddNewProductImage() {
+		Assert.assertTrue(orTextLocator.isDisplayed(), "(OR) text is not displayed.");
+		return this;
+	}
+
+	@Step("Verify if Overwrite Image text is displayed in Add New Product Image")
+	public EditProductsPageObjects verifyOverwriteImageTextInAddNewProductImage() {
+		Assert.assertTrue(overwriteImageTextLocator.isDisplayed(), " Overwrite Image text is not displayed.");
+		return this;
+	}
+
+	@Step("This method is used verify Item List tab")
+	public EditProductsPageObjects clickOnItemListTab() throws Exception {
+
+		waiting.explicitWaitVisibilityOfElement(itemListTabLocator, 15);
+		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", itemListTabLocator);
+		return this;
+	}
+
+	@Step("Clear Product Name")
+	public EditProductsPageObjects clearUpdateProductName() {
+
+		waiting.explicitWaitVisibilityOfElement(updateProductNameTextBoxLocator, 15);
+		updateProductNameTextBoxLocator.clear();
+		return this;
+	}
 	
-	  @Step("This method is used verify General Info tab")
-	  public EditProductsPageObjects clickOnGeneralInfoTab() throws Exception {
+	@Step("Enter Product Name as \'{0}\'")
+	public EditProductsPageObjects enterUpdatedProductName(String updateProductName) {
 
-		   	waiting.explicitWaitVisibilityOfElement(generalInfoTabLocator, 6);
-			((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",generalInfoTabLocator);
-			return this;
-	  }
-	
-	  @Step("This method is used verify FieldNames InGeneralInfoTab")
-	  public EditProductsPageObjects verifyFieldNamesInGeneralInfoTab(String generalInFoFieldNames) throws Exception{
-			
-			String fieldNamesInGeneralInfoTab[] =generalInFoFieldNames.split(",");
-			
-			for(int i=0;i<fieldNamesInGeneralInfoTabLocator.size();i++)
-			{
-				Assert.assertEquals(fieldNamesInGeneralInfoTabLocator.get(i).getText().trim(), fieldNamesInGeneralInfoTab[i].trim());
-			}
-			return this;
-	     }
-	  
-	  @Step("This method is used verify Product Images tab")
-		public EditProductsPageObjects clickOnProductImagesTab() throws Exception {
+		waiting.explicitWaitVisibilityOfElement(updateProductNameTextBoxLocator, 15);
+		updateProductNameTextBoxLocator.sendKeys(updateProductName);
+		return this;
+	}
 
-		   	waiting.explicitWaitVisibilityOfElement(productImagesTabLocator, 6);
+	@Step("Click on Update Product Button")
+	public EditProductsPageObjects clickOnProductUpdateButtonLink() {
 
-		   	productImagesTabLocator.click();
-			return this;
-	  }
-	  
-	  @Step("This method is used verify FieldNames InProductImagesTab")
-	  public EditProductsPageObjects verifyFieldNamesInProductImagesTab(String fieldNameProductImagesTab) throws Exception{
-			
-			String fieldNamesInProductImagesTab[] =fieldNameProductImagesTab.split(",");
-			
-			for(int i=0;i<fieldNamesInProductImagesTabLocator.size();i++)
-			{
-				Assert.assertEquals(fieldNamesInProductImagesTabLocator.get(i).getText().trim(), fieldNamesInProductImagesTab[i].trim());
-			}
-			 
-			return this;
-	     }
-	  
-	  @Step("This method is used verify display of product image checkbox in ProductImagesTab")
-		public EditProductsPageObjects verifyProductImageCheckbox() {
+		waiting.explicitWaitVisibilityOfElement(productUpdateButtonLocator, 60);
+		productUpdateButtonLocator.click();
+		return this;
+	}
 
-		 	waiting.explicitWaitVisibilityOfElement(productImageCheckboxLocator, 6);
-		    Assert.assertTrue(productImageCheckboxLocator.isDisplayed(),"productImageCheckbox link is not displayed.");
-			return this;
-		}
-	  
-	  @Step("This method is used verify display of AddNewProductImage link in ProductImagesTab")
-		public EditProductsPageObjects verifyAddNewProductImage() {
-		   Assert.assertTrue(productImageLocator.isDisplayed(),"AddNewProductImage link is not displayed.");
-			return this;
-		}
-	  
-	  @Step("This method is used verify Add New Product Image")
-		public EditProductsPageObjects clickOnAddNewProductImage() throws Exception {
+	@Step("Verify Product Update Success Message is \'{0}\'")
+	public EditProductsPageObjects verifyProductUpdateSavedSuccessMessage(String productUpdateSuccessMessage) {
 
-		   	waiting.explicitWaitVisibilityOfElement(addNewProductImageLocator, 15);
-		   	
-			((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",addNewProductImageLocator);
-			return this;
-	    }
-	  
-	  @Step("This method is used verify FieldNames InAddNewProductImage")
-	  public EditProductsPageObjects verifyFieldNamesInAddNewProductImage(String fieldsNameInAddNewProductImage) throws Exception{
-			
-			String fieldNamesInAddNewProductImage[] =fieldsNameInAddNewProductImage.split(",");
-			
-			for(int i=0;i<fieldNamesInAddNewProductImageLocator.size();i++)
-			{
-				Assert.assertEquals(fieldNamesInAddNewProductImageLocator.get(i).getText().trim(), fieldNamesInAddNewProductImage[i].trim());
-			}
-			  
-			return this;
-	     }
-	  
-	  @Step("verify display of saveUR Icon in AddNewProductImage")
-		public EditProductsPageObjects verifySaveURIconInAddNewProductImage() {
-		 	
-		  Assert.assertTrue(saveUrlIconLocator.isDisplayed(),"saveUR Icon is not displayed.");
-			return this;
-		}
-	  
-	  @Step("verify display of Reset Icon in AddNewProductImage")
-		public EditProductsPageObjects verifyResetIconInAddNewProductImage() {
-		  Assert.assertTrue(resetIconLocator.isDisplayed()," Reset Icon is not displayed.");
-			return this;
-		}
-	  
-	  @Step("verify display of OR Text in AddNewProductImage")
-		public EditProductsPageObjects verifyORTextInAddNewProductImage() {	
-		  Assert.assertTrue(orTextLocator.isDisplayed(),"saveUR Icon is not displayed.");
-			return this;
-		}
-	  
-	  @Step("verify display of Overwrite Image text in AddNewProductImage")
-		public EditProductsPageObjects verifyOverwriteImageTextInAddNewProductImage() {
-		  Assert.assertTrue(overwriteImageTextLocator.isDisplayed()," Overwrite Image text is not displayed.");
-			return this;
-		}
-	  
-	  
-	  @Step("This method is used verify Item List tab")
-		public EditProductsPageObjects clickOnItemListTab() throws Exception {
+		waiting.explicitWaitVisibilityOfElement(productUpdateSavedSuccessMessageLocator, 6);
+		Assert.assertEquals(productUpdateSavedSuccessMessageLocator.getText().trim().toLowerCase(),
+				productUpdateSuccessMessage.toLowerCase(),
+				"Product updation message was displayed incorrectly.");
+		return this;
+	}
 
-		   	waiting.explicitWaitVisibilityOfElement(itemListTabLocator, 15);
-			((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",itemListTabLocator);
-			return this;
-	  }
-	  
-	  @Step("This method is used verify edit ProductName Field ")
-	  public EditProductsPageObjects editProductNameField(String updateProductName) {
+	@Step("This method is used verify Product ImageDesc Field ")
+	public EditProductsPageObjects enterImageDescField(String textToBeEnterInImageDesc) {
 
-			 waiting.explicitWaitVisibilityOfElement(updateProductNameTextBoxLocator, 15);
-			 updateProductNameTextBoxLocator.sendKeys(updateProductName);
-			 return this;
-		}
-	  
-	   @Step("This method is used verify Produc UpdateButton Link ")
-	   public EditProductsPageObjects clickOnProducUpdateButtonLink() {
+		waiting.explicitWaitVisibilityOfElement(imageDescTextBoxLocator, 15);
+		imageDescTextBoxLocator.sendKeys(textToBeEnterInImageDesc);
+		return this;
+	}
 
-			 waiting.explicitWaitVisibilityOfElement(productUpdateButtonLocator, 60);
-			 ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",productUpdateButtonLocator);
-		     return this;
-		    }
-	  
-	   @Step("This method is used verify Produc Update Saved SuccessfulMessage ")
-	   public EditProductsPageObjects verifyProductUpdateSavedSuccessfulMessage(String productUpdateSuccessfulMessage) { 
+	@Step("This method is used verify Product ImageURL Field")
+	public EditProductsPageObjects enterProductImageURLField(String textToBeEnterInProductImageURL) {
 
-		   	 waiting.explicitWaitVisibilityOfElement(productUpdateSavedSuccessfulMessageLocator, 6);
-		     Assert.assertTrue(productUpdateSavedSuccessfulMessageLocator.getText().trim().equalsIgnoreCase(productUpdateSuccessfulMessage),"Invalid  message. Getting "+productUpdateSavedSuccessfulMessageLocator.getText().trim()+".");
-		     return this;
-			}
-	  
-	   @Step("This method is used verify Produc ImageDesc Field ")
-	   public EditProductsPageObjects enterImageDescField(String textToBeEnterInImageDesc) {
+		waiting.explicitWaitVisibilityOfElement(productImageURLTextBoxLocator, 15);
+		productImageURLTextBoxLocator.sendKeys(textToBeEnterInProductImageURL);
+		return this;
+	}
 
-			 waiting.explicitWaitVisibilityOfElement(imageDescTextBoxLocator, 15);
-			 imageDescTextBoxLocator.sendKeys(textToBeEnterInImageDesc);
-			 return this;
-			}
-		  
-	   @Step("This method is used verify Produc ImageURL Field")
-	   public EditProductsPageObjects enterProductImageURLField(String textToBeEnterInProductImageURL) {
+	@Step("This method is used verify Product SaveImageURL Link ")
+	public EditProductsPageObjects clickOnSaveImageURLLink() {
 
-			waiting.explicitWaitVisibilityOfElement(productImageURLTextBoxLocator, 15);
-			productImageURLTextBoxLocator.sendKeys(textToBeEnterInProductImageURL);
-			return this;
-			}
-		  
-	   @Step("This method is used verify Produc SaveImageURL Link ")
-	   public EditProductsPageObjects clickOnSaveImageURLLink() {
+		waiting.explicitWaitVisibilityOfElement(saveProductImageURLLocator, 60);
+		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", saveProductImageURLLocator);
+		return this;
+	}
 
-			waiting.explicitWaitVisibilityOfElement(saveProductImageURLLocator, 60);
-			((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",saveProductImageURLLocator);
-			return this;
-			}
-	  
-	  @Step("This method is used verify Produc UploadImage Link ") 
-	  public EditProductsPageObjects clickOnUploadImageLink() throws Exception { 
+	@Step("This method is used verify Product UploadImage Link ")
+	public EditProductsPageObjects clickOnUploadImageLink() throws Exception {
 
-		   waiting.explicitWaitVisibilityOfElement(uploadImageLinkLocator, 15);
-		   ((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",uploadImageLinkLocator);
-			Thread.sleep(10000);
-			return this;
-			}
-	   
-	   
-	   @Step("This method is used verify Produc FileUpload")
-		  public EditProductsPageObjects verifyFileUpload(String fileLocation) throws Exception{
-		   Thread.sleep(2000);
+		waiting.explicitWaitVisibilityOfElement(uploadImageLinkLocator, 15);
+		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", uploadImageLinkLocator);
+		Thread.sleep(10000);
+		return this;
+	}
 
-		   WebElement imageButton = getDriver().findElement(By.xpath("//td/div[contains(@class,'fileupload')]/descendant::div[text()='Image']"));
-		   Actions action = new Actions(getDriver());
-		   action.click(imageButton).build().perform();
-		   Thread.sleep(2500);
-		   Robot robot = new Robot();
-		   StringSelection ss = new StringSelection(fileLocation);
-		   Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
-		   robot.keyPress(KeyEvent.VK_ENTER);
-	       robot.keyRelease(KeyEvent.VK_ENTER);
-           robot.keyPress(KeyEvent.VK_CONTROL);
-           robot.keyPress(KeyEvent.VK_V);
-           robot.keyRelease(KeyEvent.VK_CONTROL);
-           robot.keyRelease(KeyEvent.VK_V);
-           robot.keyPress(KeyEvent.VK_ENTER);
-           robot.keyRelease(KeyEvent.VK_ENTER);	
-           Thread.sleep(2500);
-		  return this;
-			   }
-	   
-	  @Step("This method is used verify Produc UpdateButton Link ")
-	  public EditProductsPageObjects verifyImageURLSavedSuccessfulMessage(String imageURLSuccessfulMessage) {
+	@Step("This method is used verify Product FileUpload")
+	public EditProductsPageObjects verifyFileUpload(String fileLocation) throws Exception {
+		Thread.sleep(2000);
 
-			 waiting.explicitWaitVisibilityOfElement(ImageURLSavedSuccessfulMessageLocator, 6);
-			 Assert.assertTrue(ImageURLSavedSuccessfulMessageLocator.getText().trim().equalsIgnoreCase(imageURLSuccessfulMessage),"Invalid  message. Getting "+ImageURLSavedSuccessfulMessageLocator.getText().trim()+".");
-			 return this;	
-		   }
+		WebElement imageButton = getDriver()
+				.findElement(By.xpath("//td/div[contains(@class,'fileupload')]/descendant::div[text()='Image']"));
+		Actions action = new Actions(getDriver());
+		action.click(imageButton).build().perform();
+		Thread.sleep(2500);
+		Robot robot = new Robot();
+		StringSelection ss = new StringSelection(fileLocation);
+		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
+		robot.keyPress(KeyEvent.VK_ENTER);
+		robot.keyRelease(KeyEvent.VK_ENTER);
+		robot.keyPress(KeyEvent.VK_CONTROL);
+		robot.keyPress(KeyEvent.VK_V);
+		robot.keyRelease(KeyEvent.VK_CONTROL);
+		robot.keyRelease(KeyEvent.VK_V);
+		robot.keyPress(KeyEvent.VK_ENTER);
+		robot.keyRelease(KeyEvent.VK_ENTER);
+		Thread.sleep(2500);
+		return this;
+	}
 
-	  
-	  @Step("This method is used verify the searchForItemsList Field")
-		    public EditProductsPageObjects verifySearchForItemsListField() {
+	@Step("This method is used verify Product UpdateButton Link ")
+	public EditProductsPageObjects verifyImageURLSavedSuccessfulMessage(String imageURLSuccessfulMessage) {
 
-		    waiting.explicitWaitVisibilityOfElement(searchForItemsListFieldLocator, 10);
-		    Assert.assertTrue(searchForItemsListFieldLocator.isDisplayed(),"searchForItemsList Field is not displayed.");
-		    return this;
-	      }
-	  
-	  @Step("This method is used verify the SearchIcon ")
-	       public EditProductsPageObjects verifySearchIconLocator() {
+		waiting.explicitWaitVisibilityOfElement(ImageURLSavedSuccessfulMessageLocator, 6);
+		Assert.assertTrue(
+				ImageURLSavedSuccessfulMessageLocator.getText().trim().equalsIgnoreCase(imageURLSuccessfulMessage),
+				"Invalid  message. Getting " + ImageURLSavedSuccessfulMessageLocator.getText().trim() + ".");
+		return this;
+	}
 
-		   waiting.explicitWaitVisibilityOfElement(searchIconLocator, 10);
-	       Assert.assertTrue(searchIconLocator.isDisplayed(),"searchForItemsList Field is not displayed.");
-	       return this;
-          }
-	  
-	  
-	  @Step("This method is used verify the manufacturerDropDown")
-	       public EditProductsPageObjects verifyManufacturerDropDown() {	
-	       Assert.assertTrue(manufacturerDropDownLocator.isDisplayed(),"manufacturerDropDown is not displayed.");
-	       return this;
-          }
+	@Step("This method is used verify the searchForItemsList Field")
+	public EditProductsPageObjects verifySearchForItemsListField() {
 
-	  @Step("This method is used verify the brandDropDown")
-          public EditProductsPageObjects verifyBrandDropDown() {	
-          Assert.assertTrue(brandDropDownLocator.isDisplayed(),"brandDropDown is not displayed.");
-          return this;
-          }
-	  
-	 @Step("This method is used verify the saveIcon")
-          public EditProductsPageObjects verifySaveIcon() {	
-          Assert.assertTrue(saveIconLocator.isDisplayed(),"saveIcon is not displayed.");
-          return this;
-        }
-	 
+		waiting.explicitWaitVisibilityOfElement(searchForItemsListFieldLocator, 10);
+		Assert.assertTrue(searchForItemsListFieldLocator.isDisplayed(), "searchForItemsList Field is not displayed.");
+		return this;
+	}
+
+	@Step("This method is used verify the SearchIcon ")
+	public EditProductsPageObjects verifySearchIconLocator() {
+
+		waiting.explicitWaitVisibilityOfElement(searchIconLocator, 10);
+		Assert.assertTrue(searchIconLocator.isDisplayed(), "searchForItemsList Field is not displayed.");
+		return this;
+	}
+
+	@Step("This method is used verify the manufacturerDropDown")
+	public EditProductsPageObjects verifyManufacturerDropDown() {
+		Assert.assertTrue(manufacturerDropDownLocator.isDisplayed(), "manufacturerDropDown is not displayed.");
+		return this;
+	}
+
+	@Step("This method is used verify the brandDropDown")
+	public EditProductsPageObjects verifyBrandDropDown() {
+		Assert.assertTrue(brandDropDownLocator.isDisplayed(), "brandDropDown is not displayed.");
+		return this;
+	}
+
+	@Step("This method is used verify the saveIcon")
+	public EditProductsPageObjects verifySaveIcon() {
+		Assert.assertTrue(saveIconLocator.isDisplayed(), "saveIcon is not displayed.");
+		return this;
+	}
+
 	@Step("This method is used verify the itemListTab")
-          public EditProductsPageObjects verifyitemListTab() {	
-          Assert.assertTrue(itemListTabLocator.isDisplayed(),"itemListTab is not displayed.");
-          return this;
-        }
-	
-	 @Step("This method is used to remove the product image")
-	     public EditProductsPageObjects clickOnRemoveProductImage() {
+	public EditProductsPageObjects verifyitemListTab() {
+		Assert.assertTrue(itemListTabLocator.isDisplayed(), "itemListTab is not displayed.");
+		return this;
+	}
 
-		 waiting.explicitWaitVisibilityOfElement(removeProductImageLocator, 10);
-		 removeProductImageLocator.click();
-	     return this;
-	   }
-	 
-	 @Step("This method is used accept the alert popup")
-	    public EditProductsPageObjects alertToAccept() {
+	@Step("This method is used to remove the product image")
+	public EditProductsPageObjects clickOnRemoveProductImage() {
 
-	    waiting.explicitWaitForAlert(15);
-	    tu.alertAccept();
-	    return this; 
-	   }
-		  
-		
+		waiting.explicitWaitVisibilityOfElement(removeProductImageLocator, 10);
+		removeProductImageLocator.click();
+		return this;
+	}
+
+	@Step("This method is used accept the alert popup")
+	public EditProductsPageObjects alertToAccept() {
+
+		waiting.explicitWaitForAlert(15);
+		tu.alertAccept();
+		return this;
+	}
+
 }
-

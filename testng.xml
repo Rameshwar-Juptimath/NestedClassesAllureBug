@@ -1,38 +1,42 @@
 
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="CIMM2Touch Test"   parallel="methods" data-provider-thread-count="10" thread-count="10"> 
- 
-<test name="regression">
- <parameter name="browser" value="chrome"/>
-  <parameter name="Remote Url" value="http://10.200.1.188:5555/wd/hub"/>
-    <classes>
-        
-         <class name="org.cimm2touch.modules.RemoveDataConfigTest"/>
-         <class name="org.cimm2touch.modules.CreateDataConfigTest"/>
-         <class name="org.cimm2touch.modules.AdvancedSearchModuleTest"/>
-         <class name="org.cimm2touch.modules.ItemsModuleTest"/>
-         <class name="org.cimm2touch.modules.RemoveDataConfigTest"/>
-         
-        
-         
- <!--  <methods>
-      <include name="deleteCreatedSubset"></include>
-   	  <include name="removeChildCategories"></include> 
-         </methods>  -->
-         
-         
-       
-    </classes>
-</test>
- 
- <!--  <test name="Test2">
- <parameter name="Browser" value="chrome"></parameter>
-  <parameter name="Node Url" value="http://hemanthip:4567/wd/hub"></parameter>
-    <classes>
-        <class name="org.google.modules.TC03" ></class>
-        <class name="org.google.modules.TC04" ></class>
-    </classes>
-</test> -->
+<suite name="CIMM2Touch Test" parallel="methods"
+	data-provider-thread-count="10" thread-count="10">
+
+	<test name="regression">
+		<parameter name="browser" value="chrome" />
+		<parameter name="Remote Url" value="http://192.168.2.63:5555/wd/hub" />
+		<classes>
+
+			<!-- <class name="org.cimm2touch.modules.RemoveDataConfigTest"/> <class 
+				name="org.cimm2touch.modules.CreateDataConfigTest"/> <class name="org.cimm2touch.modules.AdvancedSearchModuleTest"/> 
+				<class name="org.cimm2touch.modules.ItemsModuleTest"/> <class name="org.cimm2touch.modules.RemoveDataConfigTest"/> -->
+
+			<class name="org.cimm2touch.modules.ProductsModuleTest">
+				<methods>
+					<include name="TC_PRODUCTS_006" />
+				</methods>
+			</class>
+			
+			<!-- 	<class name="org.cimm2touch.modules.CreateDataConfigTest">
+				<methods>
+					<include name="createNewProduct" />
+				</methods>
+			</class> -->
+
+
+			<!-- <methods> <include name="deleteCreatedSubset"></include> <include 
+				name="removeChildCategories"></include> </methods> -->
+
+
+
+		</classes>
+	</test>
+
+	<!-- <test name="Test2"> <parameter name="Browser" value="chrome"></parameter> 
+		<parameter name="Node Url" value="http://hemanthip:4567/wd/hub"></parameter> 
+		<classes> <class name="org.google.modules.TC03" ></class> <class name="org.google.modules.TC04" 
+		></class> </classes> </test> -->
 
 </suite>
 

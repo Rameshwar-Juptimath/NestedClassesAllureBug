@@ -8,6 +8,7 @@ import org.testng.annotations.Test;
 
 import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Features;
+import ru.yandex.qatools.allure.annotations.TestCaseId;
 /**
  * 
  * @author thiruveedhi.Chinna
@@ -241,6 +242,7 @@ public class CreateDataConfigTest extends PageFactoryInitializer{
 }
 	@Features(value={"AdvancedSearch Module"})
 	@Description("adding the document to item(s)")
+	@TestCaseId("TC_PRODUCTS_003")
 	@Test(groups="regression",dataProvider="CreateDataConfigTest", dataProviderClass=SearchData.class)
 	public void createNewProduct(String testCaseId, String userName,String password,String expWelcomeMsg,String productName, String productNumber, String expectedSuccesfulMessageForNewProductCreation) throws Exception
 	{

@@ -123,7 +123,6 @@ public class ProductsListPageObjects extends PageFactoryInitializer{
 	@Step("verify the {0} product")
 	public ProductsListPageObjects verifyProductPresent(String productName) throws InterruptedException {
 
-		Thread.sleep(300);
 		Assert.assertTrue(assertVerifyProduct(productName),"Product already created, please remove to create again");
 		
 		return this;
