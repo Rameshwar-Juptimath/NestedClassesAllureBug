@@ -115,5 +115,14 @@ public class SearchData
 		Object data[][] = excel.readFromExcelDataForTestNGDataProvider(file.getAbsolutePath(),methodName.getName());
 		return data;
 	}
+	@DataProvider(name="UOMModuleTest")
+	public static Object[][] UOMModuleTest(Method methodName) throws Exception
+	{
+		File file = new File("resources/ExcelSheetData/UOMModuleTest.xlsx");
+		ExcelLibrary excel = new ExcelLibrary("resources/ExcelSheetData/UOMModuleTest.xlsx",methodName.getName());
+		Object data[][] = excel.readFromExcelDataForTestNGDataProvider(file.getAbsolutePath(),methodName.getName());
+
+		return data;
+	}
 
 }

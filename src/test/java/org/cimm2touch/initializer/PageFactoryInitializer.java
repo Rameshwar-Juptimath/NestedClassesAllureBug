@@ -26,6 +26,7 @@ import org.cimm2touch.pageobjects.taxonomymanagement.ImageUploadSectionPageObjec
 import org.cimm2touch.pageobjects.taxonomymanagement.ManageTaxonomyPageObjects;
 import org.cimm2touch.pageobjects.taxonomymanagement.TaxonomyMappingPageObjects;
 import org.cimm2touch.pageobjects.taxonomymanagement.TaxonomyPageObjects;
+import org.cimm2touch.pageobjects.uom.UOMPageObjects;
 import org.openqa.selenium.support.PageFactory;
 import org.cimm2touch.pageobjects.subset.SubsetPageObjects;
 import org.cimm2touch.pageobjects.homepage.HomePageObjects;
@@ -205,5 +206,9 @@ public class PageFactoryInitializer extends CallApplication
 		UserConfigurationPageObjects userConfigPage=PageFactory.initElements(getDriver(), UserConfigurationPageObjects.class);
 		return userConfigPage;
 	}
-
+	public UOMPageObjects uomPage()
+	{
+		UOMPageObjects uompage = PageFactory.initElements(getDriver(), UOMPageObjects.class);
+		return uompage;
+	}
 }
