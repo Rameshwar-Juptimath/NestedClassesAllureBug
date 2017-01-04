@@ -402,7 +402,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	@Step("click on specific edit button")
 	public EditItemsPageObjects clickOnSpecificItemEditButton(String itemPartnumber) {
 
-		waiting.explicitWaitVisibilityOfElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+itemPartnumber+"')]/preceding-sibling::td/descendant::input[@title='Edit Item']"), 15);
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+itemPartnumber+"')]/preceding-sibling::td/descendant::input[@title='Edit Item']"), 40);
 		getDriver().findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+itemPartnumber+"')]/preceding-sibling::td/descendant::input[@title='Edit Item']")).click();
 		
 		return new EditItemsPageObjects();
@@ -1036,9 +1036,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	}
 
 	public ItemsPageObjects clickOncustomPricesTabLocator() throws InterruptedException {
-		
-
-		waiting.explicitWaitVisibilityOfElement(customPricesTabLocator, 10);
+		waiting.explicitWaitVisibilityOfElement(customPricesTabLocator, 50);
 		customPricesTabLocator.click();
 		
 		return this;
@@ -1046,14 +1044,14 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	public ItemsPageObjects assignSubsettoItems(String subsetname) throws InterruptedException {
 		Thread.sleep(2000);
-
-		(getDriver().findElement(By.xpath("//tbody[@id='customPricesForm:customPricesTable:tb']/tr[td='"+subsetname+"']/descendant::input[@title='Add Item Into Subset']"))).click();
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//tbody[@id='customPricesForm:customPricesTable:tb']/tr/descendant::span[text()='"+subsetname+"']/../preceding-sibling::td/descendant::input[@title='Add Item Into Subset']"), 50);
+		(getDriver().findElement(By.xpath("//tbody[@id='customPricesForm:customPricesTable:tb']/tr/descendant::span[text()='"+subsetname+"']/../preceding-sibling::td/descendant::input[@title='Add Item Into Subset']"))).click();
 		return this;
 	}
 
 	public ItemsPageObjects verifySubsetAssignToItemmessageloc(String subsetname) {
 
-		waiting.explicitWaitVisibilityOfElement(subsetassigntoitemmessageloc, 10);
+		waiting.explicitWaitVisibilityOfElement(subsetassigntoitemmessageloc, 50);
 		Assert.assertEquals(subsetassigntoitemmessageloc.getText().trim(),"Item added to Subset \""+subsetname+"\" Successfully");
 		return this;
 	}
@@ -2092,6 +2090,14 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 		}
 		return false;
+	}
+	@Step("get the item id from the item list page{0}")
+	public String getTheItemId(String partNumber) {
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//td[contains(text(),'AutomationTestPN1')]/preceding-sibling::td/descendant::span[contains(@id,'ITMID')]"), 70);
+		String itemId=getDriver().findElement(By.xpath("//td[contains(text(),'AutomationTestPN1')]/preceding-sibling::td/descendant::span[contains(@id,'ITMID')]")).getText();
+
+		
+		return itemId;
 	}
 
 	

@@ -17,11 +17,12 @@ public class HistoryPageObjects extends PageFactoryInitializer
 	
 	public HistoryPageObjects verifyPageTitle(String expectedHistoryPageTitle) throws Exception
 	{
-		tu.switchToRecentWindow(1);
 		
-		Assert.assertTrue(assertPageTitle(expectedHistoryPageTitle),"Actual Title : "+getDriver().getTitle().trim()+" but expecting "+expectedHistoryPageTitle);
+		Thread.sleep(2000);
+		Assert.assertEquals(getDriver().getTitle().trim(),expectedHistoryPageTitle,"Actual Title : "+getDriver().getTitle().trim()+" but expecting "+expectedHistoryPageTitle);
 		getDriver().close();
 		tu.switchBackToFirstWindow();
+		
 	
 		return this;
 	}

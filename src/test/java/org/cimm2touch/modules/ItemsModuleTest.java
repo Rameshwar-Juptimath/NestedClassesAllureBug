@@ -165,8 +165,6 @@ HashMap<String, String> loginData;
 		.homePage()
 		.verifyWelcomeMessage(welcomeMessage)
 		.clickOnItemsLink()
-		.homePage()
-		.clickOnLeftNavigationbar()
 		.itemsPage()
 		.enterSearchCategory(category)
 		.clickOnSearchCategory()
@@ -934,6 +932,7 @@ HashMap<String, String> loginData;
 	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
 	public void addDocumenttoItems(String testCaseId, String partNumber, String documentCaption,String documentLocation) throws Exception
 	{
+		try{
 		landingPage()
 		.enterUsername(loginData.get("userName"))
 		.enterPassword(loginData.get("password"))
@@ -950,14 +949,18 @@ HashMap<String, String> loginData;
 		.enterDocumentCaption(documentCaption)
 		.UploadDocument(documentLocation)
 		.assignDocument();
+	}finally{
+		editItemsPage().removeAssignedDocument();
+	}
 	}
 
 	@Features(value={"Items Module"})
 	@Description("Verification of adding new document page")
-	@TestCaseId("TC_ITEMS_78")
+	@TestCaseId("TC_ITEMS_78_83")
 	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
 	public void verifyAddNewDocument(String testCaseId, String partNumber, String documentCategory) throws Exception
 	{
+		try{
 		landingPage()
 		.enterUsername(loginData.get("userName"))
 		.enterPassword(loginData.get("password"))
@@ -973,12 +976,17 @@ HashMap<String, String> loginData;
 		.clickOnAddNewDocumentButton()
 		.verifySelectingDocumentCategory(documentCategory);
 	}
-	@Features(value={"AdvancedSearch Module"})
+	finally{
+		editItemsPage().removeAssignedDocument();
+	}
+	}
+	@Features(value={"Items Module"})
 	@Description("adding the image url to item(s)")
-	@TestCaseId("TC_ITEMS_79_80")
+	@TestCaseId("TC_ITEMS_79_80_84")
 	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
 	public void addDocumentURLtoItems(String testCaseId,String partNumber, String documentCaption, String documentURL, String successMessageForUrlAdded) throws Exception
 	{
+		try{
 		landingPage()
 		.enterUsername(loginData.get("userName"))
 		.enterPassword(loginData.get("password"))
@@ -996,6 +1004,962 @@ HashMap<String, String> loginData;
 		.clickOnAddnewDocumentUrlButton()
 		.verifysuccessMessageForUrlAdded(successMessageForUrlAdded)
 		.removeAssignedDocumentByTheUrl(documentCaption,documentURL);
+	}
+	finally{
+		editItemsPage().verifyAssignedDocumentByTheUrl(documentCaption, documentURL);
+	}
+	
+
+}
+	
+	@Features(value={"Items Module"})
+	@Description("Verification of updating the document caption")
+	@TestCaseId("TC_ITEMS_81")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void updateDocCationToItems(String testCaseId,String partNumber, String documentCaption, String documentURL, String successMessageForUrlAdded, String successMessageForUpdate) throws Exception
+	{
+		try{
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"))
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.clickOnDocumentsTab()
+		.verifyAssignedDocumentByTheUrl(documentCaption, documentURL)
+		.clickOnAddNewDocumentButton()
+		.addNewDocumentURL(documentCaption, documentURL)
+		.clickOnAddnewDocumentUrlButton()
+		.verifysuccessMessageForUrlAdded(successMessageForUrlAdded)
+		.clickOnEditCaptionIcon(documentURL)
+		.addNewDocumentURL(documentCaption, documentURL)
+		.clickOnAddnewDocumentUrlButton()
+		.verifySuccessMSgDocumentUpdate(successMessageForUpdate)
+		.removeAssignedDocumentByTheUrl(documentCaption,documentURL);
+		}
+		finally{
+			editItemsPage().verifyAssignedDocumentByTheUrl(documentCaption, documentURL);
+		}
+		
+	
+	}
+	@Features(value={"Items Module"})
+	@Description("Verification of cancel(x) icon")
+	@TestCaseId("TC_ITEMS_82")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void verificationOfCancel(String testCaseId,String partNumber, String documentCaption, String documentURL, String successMessageForUrlAdded, String successMessageForUpdate) throws Exception
+	{
+		try{
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"))
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.clickOnDocumentsTab()
+		.verifyAssignedDocumentByTheUrl(documentCaption, documentURL)
+		.clickOnAddNewDocumentButton()
+		.addNewDocumentURL(documentCaption, documentURL)
+		.clickOnAddnewDocumentUrlButton()
+		.verifysuccessMessageForUrlAdded(successMessageForUrlAdded)
+		.clickOnEditCaptionIcon(documentURL)
+		.clickCancelButton()
+		.verifyCancelFunctionality();
+		}
+		finally{
+			editItemsPage().verifyAssignedDocumentByTheUrl(documentCaption, documentURL);
+		}
+	}
+	@Features(value={"Items Module"})
+	@Description("Verification of error messages")
+	@TestCaseId("TC_ITEMS_85")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void addDocumentURL_ES(String testCaseId,String partNumber, String documentCaption, String documentURL, String fieldName, String errorMessage) throws Exception
+	{
+	
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"))
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.clickOnDocumentsTab()
+		.clickOnAddNewDocumentButton()
+		.addNewDocumentURL(documentCaption, documentURL)
+		.clickOnAddnewDocumentUrlButton()
+		.verifyErrorMessages(fieldName, errorMessage);
+		
 		
 	}
+	@Features(value={"Items Module"})
+	@Description("To validate category description field")
+	@TestCaseId("TC_ITEMS_86_89")
+	@Test(enabled=false,groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void addNewItemDocDescription(String testCaseId,String partNumber, String documentCategoryName, String documentCategoryDescription, String documentSaveSuccessMessage) throws Exception
+	{
+	
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"))
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.clickOnDocumentsTab()
+		.clickOnAddNewDocumentButton()
+		.clickOnAddNewItemDocumentCategoryLink()
+		.addNewDocumentCategoryName(documentCategoryName)
+		.addNewDocumentCategoryDescription(documentCategoryDescription)
+		.clickOnDocumentCatSaveButton()
+		.verifySuccessMessageForDocumentCategorySave(documentSaveSuccessMessage);
+	}
+	@Features(value={"Items Module"})
+	@Description("To validate document caption field")
+	@TestCaseId("TC_ITEMS_87")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void validateDocCategoryName(String testCaseId,String partNumber, String maximumNumberOfCharactersAcceptedByTheTexbox) throws Exception
+	{
+	String documentCategoryName=random.random(110, PermittedCharacters.ALPHABETS);
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"))
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.clickOnDocumentsTab()
+		.clickOnAddNewDocumentButton()
+		.clickOnAddNewItemDocumentCategoryLink()
+		.addNewDocumentCategoryName(documentCategoryName)
+		.clickOnDocumentCatSaveButton()
+		.verifyDocCategoryName(documentCategoryName, Integer.parseInt(maximumNumberOfCharactersAcceptedByTheTexbox));
 }
+	
+	@Features(value={"Items Module"})
+	@Description("To validate category description field")
+	@TestCaseId("TC_ITEMS_88")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void validateDocCategoryDescription(String testCaseId,String partNumber, String maximumNumberOfCharactersAcceptedByTheTexbox) throws Exception
+	{
+		String documentCategoryDescription=random.random(510, PermittedCharacters.ALPHABETS);
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"))
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.clickOnDocumentsTab()
+		.clickOnAddNewDocumentButton()
+		.clickOnAddNewItemDocumentCategoryLink()
+		.addNewDocumentCategoryDescription(documentCategoryDescription)
+		.validateDocCategoryDescription(documentCategoryDescription, Integer.parseInt(maximumNumberOfCharactersAcceptedByTheTexbox));
+}
+	@Features(value={"Items Module"})
+	@Description("To validate category description field")
+	@TestCaseId("TC_ITEMS_90")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void verifyDocDescriptionHistory(String testCaseId,String partNumber, String alertTextWhenHistoryIsClicked, String documentHistoryPageTitle) throws Exception
+	{
+		
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"))
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.clickOnDocumentsTab()
+		.clickOnDocumentHistoryLink()
+		.verifyAlertMsg(alertTextWhenHistoryIsClicked);
+		Thread.sleep(3000);
+		utility.switchToRecentWindow();
+		historyPage()
+		.verifyPageTitle(documentHistoryPageTitle);
+}
+	@Features(value={"Items Module"})
+	@Description("Verification of 'Videos' page")
+	@TestCaseId("TC_ITEMS_98")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void verifyItemVideosTab(String testCaseId,String partNumber) throws Exception
+	{
+		
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"))
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.clickonVideosTabLink()
+		.verifyContentofVideosTab();
+	}
+	@Features(value={"Items Module"})
+	@Description("Verification of 'Add New Item Video window' page")
+	@TestCaseId("TC_ITEMS_99")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void verifyAddNewVideoWindow(String testCaseId,String partNumber) throws Exception
+	{
+		
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"))
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.clickonVideosTabLink()
+		.clickAddNewVideoButton()
+		.verifyAddnewVideoForm();
+	}
+	@Features(value={"Items Module"})
+	@Description("Verification of adding new video")
+	@TestCaseId("TC_ITEMS_100_102")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void verifyAddNewVideo(String testCaseId,String partNumber, String videoCaption, String videoURl, String videoSaveMessage, String videoRemoveSuccessMessage) throws Exception
+	{
+		try{
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"))
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.clickonVideosTabLink()
+		.clickAddNewVideoButton()
+		.addNewVideoURL(videoCaption,videoURl)
+		.clickOnSaveVideoButton()
+		.verifyAddVideoSaveMsg(videoSaveMessage);
+		
+	}
+	finally{
+		editItemsPage().removeAssignedVideoFromItem(videoCaption,videoRemoveSuccessMessage);
+	}
+	}
+	@Features(value={"Items Module"})
+	@Description("Verification of adding new video")
+	@TestCaseId("TC_ITEMS_101")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void verifyAddNewVideo_ES(String testCaseId,String partNumber, String videoCaption, String videoURl, String videoSaveMessage, String videoRemoveSuccessMessage, String alertMessageText) throws Exception
+	{
+		try{
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"))
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.clickonVideosTabLink()
+		.removeAssignedVideoFromItem(videoCaption,videoRemoveSuccessMessage)
+		.clickAddNewVideoButton()
+		.addNewVideoURL(videoCaption,videoURl)
+		.clickOnSaveVideoButton()
+		.verifyAddVideoSaveMsg(videoSaveMessage)
+		.verifyAlertCheckBoxNotChecked(videoCaption,alertMessageText);
+		}
+		finally{
+			editItemsPage().removeAssignedVideoFromItem(videoCaption,videoRemoveSuccessMessage);
+		}
+	}
+	@Features(value={"Items Module"})
+	@Description("Verification of 'Linked Items' page")
+	@TestCaseId("TC_ITEMS_103")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void verifyLinkedItems(String testCaseId,String partNumber) throws Exception
+	{
+		
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"))
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.clickOnLinkedItemsTab()
+		.verifyTabsUnderLinkedItemsTab();
+	}
+	@Features(value={"Items Module"})
+	@Description("Verification of 'Linked Items' page")
+	@TestCaseId("TC_ITEMS_104")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	public void verifyLinkedItemsFields(String testCaseId,String partNumber, String exepectedSearchInDropdownValues) throws Exception
+	{
+		
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"))
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.clickOnLinkedItemsTab()
+		.verifySetUpLinkedItemsTab(exepectedSearchInDropdownValues.split(","));
+	}
+	String getItemId;
+	@Issue("STAC-227")
+	@Features(value={"Items Module"})
+	@Description("Verification of assigning linked items")
+	@TestCaseId("TC_ITEMS_105 to TC_ITEMS_115")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	
+	public void verifyAssignedLinkedItems(String testCaseId,String partNumber, String partNumbersForSearch, String itemLinkTypeName, String linkedItemSaveMessage, String assignedSaveMessage) throws Exception
+	{
+		
+		try{
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		getItemId=	homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.getTheItemId(partNumber);
+		itemsPage()
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.clickOnLinkedItemsTab()
+		.clickOnListItemLinkTypes()
+		.verifyItemLinkType(itemLinkTypeName)
+		.clickonAddnewLinkTypeButton()
+		.enterItemLinkTypeName(itemLinkTypeName,linkedItemSaveMessage)
+		.clickOnSetupLinkedItemsTab()
+		.searchForItems(partNumbersForSearch)
+		.assignLinkedItems(partNumber)
+		.clickOnSaveAssignedLinkedListIcon()
+		.verifySuccessMessageForSaveAssignedList(assignedSaveMessage);
+		
+	}
+		
+	finally{
+		editItemsPage()
+		.clickOnSetupLinkedItemsTab()
+		.removeAssignedLinkedItems(partNumber,itemLinkTypeName,getItemId);
+	}
+	}
+	
+	@Features(value={"Items Module"})
+	@Description("Verification of content in Available Linked Items tab in lineked list items tab")
+	@TestCaseId("TC_ITEMS_107 ")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	
+	public void verifyAvailableLinkedItems(String testCaseId,String partNumber,  String availableLinkedItemsHeaders) throws Exception
+	{
+		
+		
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.getTheItemId(partNumber);
+		itemsPage()
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.clickOnLinkedItemsTab()
+		.clickOnAvailableLinkedItems()
+		.verifyContentunderAvailableLinkedItems(availableLinkedItemsHeaders);
+		
+		
+	}
+	@Features(value={"Items Module"})
+	@Description("Verification of  'List Item Link Types' tab ")
+	@TestCaseId("TC_ITEMS_108")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	
+	public void verifyListItemLinkType(String testCaseId,String partNumber,  String listItemLinkTypeHeaders) throws Exception
+	{
+		
+		
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.getTheItemId(partNumber);
+		itemsPage()
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.clickOnLinkedItemsTab()
+		.clickOnListItemLinkTypes()
+		.verifyListItemLinkTypeHeaders(listItemLinkTypeHeaders);
+	}
+	@Features(value={"Items Module"})
+	@Description("Verification of updating Item Link Type")
+	@TestCaseId("TC_ITEMS_114")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	
+	public void updateItemLinkType(String testCaseId,String partNumber,  String itemLinkTypeName,String itemLinkTypeNameUpdate, String linkedItemSaveMessage, String linkedItemUpdateMessage) throws Exception
+	{
+
+
+		try{
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		getItemId=	homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.getTheItemId(partNumber);
+		itemsPage()
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.clickOnLinkedItemsTab()
+		.clickOnListItemLinkTypes()
+		.verifyItemLinkType(itemLinkTypeName)
+		.clickonAddnewLinkTypeButton()
+		.enterItemLinkTypeName(itemLinkTypeNameUpdate,linkedItemSaveMessage)
+		.clickOnLinkedItemsTab()
+		.clickOnListItemLinkTypes()
+		.clickOnEditItemLinkType(itemLinkTypeName)
+		.enterItemLinkTypeName(itemLinkTypeName,linkedItemUpdateMessage);
+	}
+		
+	finally{
+		editItemsPage()
+		.verifyItemLinkType(itemLinkTypeNameUpdate);
+	}
+	}
+	@Features(value={"Items Module"})
+	@Description("Verification of attributes page")
+	@TestCaseId("TC_ITEMS_115")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
+	
+	public void verifyAttributesPage(String testCaseId,String partNumber,  String  attributeHeaders, String taxonomyName) throws Exception
+	{
+
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.getTheItemId(partNumber);
+		itemsPage()
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.clickOnAttributesTab()
+		.verifyAttributesTabFileds(attributeHeaders, taxonomyName);
+		
+		}
+	@Features(value={"Items Module"})
+	@Description("Verification of saving the attributes")
+	@TestCaseId("TC_ITEMS_116")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)	
+	public void verifySaveAttribute(String testCaseId,String partNumber,  String  attributeListName, String taxonomyName, String expSuccessMessageForAttributeSave) throws Exception
+	{
+
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.getTheItemId(partNumber);
+		itemsPage()
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.clickOnAttributesTab()
+		.searchForAttibuteList(attributeListName)
+		.verifyAndAssignAttribute(attributeListName)
+		.verifySuccessMessageForAttributeAssign(attributeListName,expSuccessMessageForAttributeSave);
+		
+		}
+	@Features(value={"Items Module"})
+	@Description("Verification of 'Back' button")
+	@TestCaseId("TC_ITEMS_117")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)	
+	public void verifyCancelAttribute(String testCaseId,String partNumber,  String  attributeListName, String taxonomyName) throws Exception
+	{
+
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.getTheItemId(partNumber);
+		itemsPage()
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.clickOnAttributesTab()
+		.searchForAttibuteList(attributeListName)
+		.verifyCancelFuctionality(attributeListName);
+	}
+	@Features(value={"Items Module"})
+	@Description("Verification of Custom Prices page")
+	@TestCaseId("TC_ITEMS_118")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)	
+	public void verifyCustomPricesTab(String testCaseId,String partNumber,  String  customePriceHeaders) throws Exception
+	{
+
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.getTheItemId(partNumber);
+		itemsPage()
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.clickOnCustomPricesTab()
+		.verifyCustomPriceTabHeaders(customePriceHeaders);
+	}
+	@Features(value={"Items Module"})
+	@Description("Verification of custome price tab Checkbox")
+	@TestCaseId("TC_ITEMS_119,TC_ITEMS_120,TC_ITEMS_121")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)	
+	public void verifyCustomPriceCheckBox(String testCaseId,String partNumber) throws Exception
+	{
+
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.getTheItemId(partNumber);
+		itemsPage()
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.clickOnCustomPricesTab()
+		.verifyCustomPriceTabCheckBoxes();
+	}
+	@Features(value={"Items Module"})
+	@Description("Verification of custome price tab input text fields")
+	@TestCaseId("TC_ITEMS_121 to TC_ITEMS_130")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)	
+	public void verifyCustomPriceTextFields(String testCaseId,String partNumber) throws Exception
+	{
+		String testData=random.random(10, PermittedCharacters.ALPHABETS);
+
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.getTheItemId(partNumber);
+		itemsPage()
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.clickOnCustomPricesTab()
+		.verifyCustomPriceTabInputTextFields(testData);
+	}
+	@Features(value={"Items Module"})
+	@Description("validation of custome price tab input text fields")
+	@TestCaseId("TC_ITEMS_121 to TC_ITEMS_132")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)	
+	public void validateCustomPriceTextFields(String testCaseId,String partNumber, String fields, String noOfChars, String testCharecters) throws Exception
+	{
+
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.getTheItemId(partNumber);
+		itemsPage()
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.clickOnCustomPricesTab()
+		.validateCustomPriceInputTextFields(fields,noOfChars, testCharecters);
+	}
+	@Features(value={"Items Module"})
+	@Description("To validate item status")
+	@TestCaseId("TC_ITEMS_131")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)	
+	public void verifySubsetStatus(String testCaseId,String partNumber, String itemStatus, String subsetName) throws Exception
+	{
+
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.getTheItemId(partNumber);
+		itemsPage()
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.clickOnCustomPricesTab()
+		.selectingItemStatus(itemStatus,subsetName);
+
+	}
+	@Features(value={"Items Module"})
+	@Description("update custom price")
+	@TestCaseId("TC_ITEMS_133")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)	
+	public void updateCustomPrice(String testCaseId,String partNumber, String price, String subset) throws Exception
+	{
+
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.clickOnCustomPricesTab()
+		.updateItemPriceInSubset(subset,price)
+		.verifyCustomePriceUpdateSuccessMessage(subset);
+	}
+	@Features(value={"Items Module"})
+	@Description("verification history link of Custom prices tab")
+	@TestCaseId("TC_ITEMS_135")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)	
+	public void verifyCPHistory(String testCaseId,String partNumber, String alertTextWhenHistoryIsClicked, String customPriceHistoryTitle) throws Exception
+	{
+
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.clickOnCustomPricesTab()
+		.clickOnCPhistoryLink()
+		.verifyAlertMsg(alertTextWhenHistoryIsClicked);
+		utility.switchToRecentWindow();
+		historyPage()
+		.verifyPageTitle(customPriceHistoryTitle);
+
+	}
+	@Features(value={"Items Module"})
+	@Description("Verification of history page of Categorization tab")
+	@TestCaseId("TC_ITEMS_141")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)	
+	public void verifyCategoryHistory(String testCaseId,String partNumber, String alertTextWhenHistoryIsClicked, String categorizationTabHistoryTitle) throws Exception
+	{
+
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.clickOnCategorizationTab()
+		.clickOnHistoryLink()
+		.verifyAlertMsg(alertTextWhenHistoryIsClicked);
+		utility.switchToRecentWindow();
+		historyPage()
+		.verifyPageTitle(categorizationTabHistoryTitle);
+	}
+	@Features(value={"Items Module"})
+	@Description("Verification of Custom Fields tab")
+	@TestCaseId("TC_ITEMS_142")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)	
+	public void verifyCustomFieldsTab(String testCaseId,String partNumber) throws Exception
+	{
+
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.clickOnCustomFieldsTab()
+		.verifyCustomFieldsSimpleTab()
+		.verifyCustomFieldsTableTab();
+	}
+	@Features(value={"Items Module"})
+	@Description("Verification of Custom Fields table data.")
+	@TestCaseId("TC_ITEMS_142")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)	
+	public void verifyCFTable(String testCaseId,String partNumber, String alertTextWhenHistoryIsClicked, String categorizationTabHistoryTitle) throws Exception
+	{
+
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.clickOnCustomFieldsTab()
+		.verifyCustomFieldsTableTab();
+		
+		
+	}
+	@Features(value={"Items Module"})
+	@Description("Verification of Custom Fields simple data")
+	@TestCaseId("TC_ITEMS_143")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)	
+	public void verifyCFSimpleData(String testCaseId,String partNumber, String expSimpleData) throws Exception
+	{
+
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.clickOnCustomFieldsTab()
+		.verifySimpleDataAvailable(expSimpleData);
+	}
+	@Features(value={"Items Module"})
+	@Description("Verification of 'Customer part number' page")
+	@TestCaseId("TC_ITEMS_150")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)	
+	public void verifyCPTab(String testCaseId,String partNumber) throws Exception
+	{
+
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.verifyCustomerPartNumberTab();
+		
+		
+	}
+	@Features(value={"Items Module","Integration scenario"})
+	@Description("Verification of 'Add Customer part number' page")
+	@TestCaseId("TC_ITEMS_151")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)	
+	public void verifyAddNewCPNPage(String testCaseId,String partNumber) throws Exception
+	{
+
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.verifyCustomerPartNumberTab()
+		.clickonCpnTab()
+		.verifyCreateNewCPFields();
+		
+		
+		
+	}
+	@Features(value={"Items Module"})
+	@Description("Verification of 'Customer' drop down")
+	@TestCaseId("TC_ITEMS_153")
+	@Test(enabled=false,groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)	
+	public void verifyCustomerDropDown(String testCaseId,String partNumber, String customerName) throws Exception
+	{
+
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.verifyCustomerPartNumberTab()
+		.clickonCpnTab()
+		.selectCustomerFromDropDown(customerName);
+	}
+	@Features(value={"Items Module"})
+	@Description("Verification of 'Reset' Icon")
+	@TestCaseId("TC_ITEMS_158")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)	
+	public void verifyCPNReset(String testCaseId,String partNumber, String customerName) throws Exception
+	{
+
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.verifyCustomerPartNumberTab()
+		.clickonCpnTab()
+		.clickOnAddNewCpn()
+		.enterDataToCustomerField(customerName)
+		.clickOnCPNResetButton()
+		.verifyCPNResetFunctionality();
+		
+		
+	}
+	@Features(value={"Items Module"})
+	@Description("Verification of 'Warehouse' page")
+	@TestCaseId("TC_ITEMS_159")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)	
+	public void verifyWarehouse(String testCaseId,String partNumber, String customerName) throws Exception
+	{
+
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.verifyWarehouseTabPresent()
+		.clickOnWarehouseTab()
+		.verifyWarehousePage();
+	}
+}
+

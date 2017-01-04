@@ -59,6 +59,10 @@ public class ProductsListPageObjects extends PageFactoryInitializer{
 	@FindAll(value={@FindBy(xpath="//input[@title='Edit Product']")})
 	private List<WebElement> editButtonsLocator; 
 	
+	@FindBy(xpath="//span[@id='listProductForm:noResults']")
+	private WebElement removeCreatedProductSuccessMessageLocator;
+	
+	
 	@Step("verify the breadcrumbs of the Products page is {0}")
 	public ProductsListPageObjects verifyTheProductsPageBreadCrumbs(String breadcrumpsList[]) {
 
@@ -120,6 +124,14 @@ public class ProductsListPageObjects extends PageFactoryInitializer{
 		return this;
 	}
 	
+	@Step("verify the {0} product")
+	public ProductsListPageObjects searchForCreatedProduct(String productName) throws InterruptedException {
+
+		Thread.sleep(3000);
+		Assert.assertFalse(assertVerifyProduct(productName),"Product : "+productName+"is not available, Please create it to perform delete");
+		
+		return this;
+	}
 	@Step("verify the {0} product")
 	public ProductsListPageObjects verifyProductPresent(String productName) throws InterruptedException {
 
@@ -208,4 +220,21 @@ private boolean assertForNumberOfRowsDisplayed(int editButtons, int numberOfReco
 	return false;
 	}	
 }
+	@Step("remove created product {0}")
+	public ProductsListPageObjects removeCreatedProduct(String productName) throws InterruptedException {
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//td[text()='"+productName+"']/preceding-sibling::td/descendant::input[@title='Remove Product']"), 50);
+		getDriver().findElement(By.xpath("//td[text()='"+productName+"']/preceding-sibling::td/descendant::input[@title='Remove Product']")).click();
+		waiting.explicitWaitForAlert(5);
+		tu.alertAccept();
+		Thread.sleep(2500);
+
+	
+	return this;
+	}
+	@Step("verify remove created product succeess message {0}")
+	public ProductsListPageObjects verifyRemoveSuccessMessage(String expRemoveSuccessMessage) {
+		waiting.explicitWaitVisibilityOfElement(removeCreatedProductSuccessMessageLocator, 50);
+		Assert.assertEquals(removeCreatedProductSuccessMessageLocator.getText().trim(), expRemoveSuccessMessage.trim());
+		return this;
+	}
 }
