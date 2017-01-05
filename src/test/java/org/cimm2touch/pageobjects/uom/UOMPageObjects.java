@@ -79,14 +79,20 @@ public class UOMPageObjects extends PageFactoryInitializer {
 	@FindBy(xpath = "//span[contains(text(),'Total Count :')]/following-sibling::span")
 	private WebElement numberOfUomCountLocator;
 
-	@FindAll(value = { @FindBy(xpath = "//input[@title='Edit Unit Of Measure']") })
-	private List<WebElement> editButtonsLocator;
+	/*@FindAll(value = { @FindBy(xpath = "//input[@title='Edit Unit Of Measure']") })
+	private List<WebElement> editButtonsLocator;*/
 
 	@FindBy(xpath = "//div[contains(text(),'Display ')]/select")
 	private WebElement selectRecordsDropdownLocator;
 
 	@FindBy(xpath = "//span[contains(text(),'Updated Successfully')]")
 	private WebElement updateWelcomeMessage;
+
+	@FindBy(xpath = "//input[@id='EditUnitOfMeasureForm:umName']")
+	private WebElement updatedUomNameTextBoxLocator;
+
+	@FindBy(xpath = "//span[contains(text(),'No results Found')]")
+	private WebElement noResultFoundLocator;
 
 	@Step("This method verify  bread crumbs of UOM page")
 	public UOMPageObjects verifyTheUOMPageBreadCrumbs(String breadCrumbsList) {
@@ -173,22 +179,29 @@ public class UOMPageObjects extends PageFactoryInitializer {
 	@Step("veify uom {0} present or not")
 	public UOMPageObjects verifyUomPresent(String uomName) {
 
-		Assert.assertTrue(assertVerifyUomPresent(uomName),
+		Assert.assertFalse(assertVerifyUomPresent(uomName),
 				"UOM :" + uomName + "  is already present, please remove to create it again.");
+		return this;
+	}
+
+	@Step("verify created uom name{0}")
+	public UOMPageObjects verifyCreatedUom(String uomName) throws InterruptedException {
+		Thread.sleep(2500);
+		Assert.assertTrue(assertVerifyUomPresent(uomName), "UOM :" + uomName + "  is not present.");
 		return this;
 	}
 
 	private boolean assertVerifyUomPresent(String uomName) {
 		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		try {
-			if (getDriver().findElement(By
-					.xpath("//tbody[@id='listUnitOfMeasureForm:unitOfMeasureTableId:tb']/descendant::td[contains(text(),'"
-							+ uomName + "')]"))
+			if (getDriver().findElement(
+					By.xpath("//tbody[@id='listUnitOfMeasureForm:unitOfMeasureTableId:tb']/descendant::td[text()='"
+							+ uomName + "']"))
 					.isDisplayed()) {
-				return false;
+				return true;
 			}
 		} catch (NoSuchElementException e) {
-			return true;
+			return false;
 		}
 		return false;
 	}
@@ -196,12 +209,14 @@ public class UOMPageObjects extends PageFactoryInitializer {
 	@Step("create new uom  name: {0} , Description {1}")
 	public UOMPageObjects createUom(String uomName, String uomDescription) throws Exception {
 		clickOnAddNewUOMLink();
+		System.out.println(uomName + "Inside create UOM");
 		enterTheUomName(uomName).enterTheUomDescription(uomDescription).clickOnSaveLink();
 		return this;
 	}
 
 	@Step("enter UOM Name:{0}")
 	public UOMPageObjects enterTheUomName(String uomName) {
+		System.out.println(uomName + "Inside enter UOM");
 		waiting.explicitWaitVisibilityOfElement(uOMNameTextBox, 30);
 		uOMNameTextBox.clear();
 		uOMNameTextBox.sendKeys(uomName);
@@ -222,19 +237,27 @@ public class UOMPageObjects extends PageFactoryInitializer {
 	}
 
 	@Step("verify welcome message:{0}")
-	public UOMPageObjects verifySuccessMessage(String welcomeMessage) {
+	public UOMPageObjects verifySuccessMessage(String welcomeMessage) throws InterruptedException {
+		Thread.sleep(2000);
 		Assert.assertEquals(welcomeMessagelocator.getText(), welcomeMessage);
-		return this;
-	}
-
-	@Step("verify created uom name{0}")
-	public UOMPageObjects verifyCreatedUom(String uomName) {
-		Assert.assertFalse(assertVerifyUomPresent(uomName), "UOM :" + uomName + "  is not present.");
 		return this;
 	}
 
 	@Step("click on edit link of UOM page")
 	public UOMPageObjects clickOnEditUom(String uomName) {
+		waiting.explicitWaitVisibilityOfElement(
+				By.xpath(
+						"//td[text()='" + uomName + "']/ancestor::tr/descendant::input[@title='Edit Unit Of Measure']"),
+				30);
+		getDriver()
+				.findElement(By.xpath(
+						"//td[text()='" + uomName + "']/ancestor::tr/descendant::input[@title='Edit Unit Of Measure']"))
+				.click();
+		return this;
+	}
+
+	@Step("click on edit link of UOM page that match part of String also")
+	public UOMPageObjects clickOnEditUomPartialMatch(String uomName) {
 		waiting.explicitWaitVisibilityOfElement(By.xpath("//td[contains(text(),'" + uomName
 				+ "')]/ancestor::tr/descendant::input[@title='Edit Unit Of Measure']"), 30);
 		getDriver().findElement(By.xpath("//td[contains(text(),'" + uomName
@@ -245,8 +268,8 @@ public class UOMPageObjects extends PageFactoryInitializer {
 	@Step("verify fields of edit in UOM page")
 	public UOMPageObjects verifyAllEditUOMFields(String editFieldOfUOM) throws InterruptedException {
 		String editFieldOfUOM1[] = editFieldOfUOM.split(",");
-		Thread.sleep(2500);
-		waiting.explicitWaitVisibilityOfElements(allEditUOMFieldsLocator, 45);
+		// Thread.sleep(3500);
+		waiting.explicitWaitVisibilityOfElements(allEditUOMFieldsLocator, 55);
 		for (int i = 0; i < allEditUOMFieldsLocator.size(); i++) {
 			Assert.assertEquals(allEditUOMFieldsLocator.get(i).getText().trim(), editFieldOfUOM1[i].trim());
 		}
@@ -276,15 +299,18 @@ public class UOMPageObjects extends PageFactoryInitializer {
 		Thread.sleep(4000);
 		return this;
 	}
+	
+	@FindAll(value={@FindBy(xpath="//tbody[@id='listUnitOfMeasureForm:unitOfMeasureTableId:tb']/tr")})
+	private List<WebElement> numberOfRowCountLocator;
 
 	@Step("verifying whether {0} is the number of records that is displayed.")
 	public UOMPageObjects verifyTheNumberOfRecordsDisplayed(String getNumberOfRecordsToDisplay) throws Exception {
 		Thread.sleep(3500);
 		try {
 
-			waiting.explicitWaitVisibilityOfElements(editButtonsLocator, 60);
+			waiting.explicitWaitVisibilityOfElements(numberOfRowCountLocator, 60);
 			Assert.assertTrue(
-					assertForNumberOfRowsDisplayed(editButtonsLocator.size(),
+					assertForNumberOfRowsDisplayed(numberOfRowCountLocator.size(),
 							Integer.parseInt(getNumberOfRecordsToDisplay)),
 					"DISPLAYED RECORDS WERE MORE THAN EXPECTED");
 		} catch (StaleElementReferenceException e) {
@@ -295,8 +321,8 @@ public class UOMPageObjects extends PageFactoryInitializer {
 		return this;
 	}
 
-	private boolean assertForNumberOfRowsDisplayed(int editButtons, int numberOfRecordsToDisplay) {
-		if (editButtons <= numberOfRecordsToDisplay) {
+	private boolean assertForNumberOfRowsDisplayed(int rowCount, int numberOfRecordsToDisplay) {
+		if (rowCount <= numberOfRecordsToDisplay) {
 			return true;
 		} else {
 			return false;
@@ -314,7 +340,7 @@ public class UOMPageObjects extends PageFactoryInitializer {
 
 	}
 
-	public UOMPageObjects verifyErrorMessage(String countOfUomName) throws InterruptedException {
+	public UOMPageObjects verifyErrorTotalCount(String countOfUomName) throws InterruptedException {
 		Thread.sleep(2500);
 		waiting.explicitWaitVisibilityOfElement(numberOfUomCountLocator, 45);
 
@@ -332,7 +358,8 @@ public class UOMPageObjects extends PageFactoryInitializer {
 		return this;
 
 	}
-   @Step("click on history link")
+
+	@Step("click on history link")
 	public UOMPageObjects clickOnUomHistoryLink() throws InterruptedException {
 		waiting.explicitWaitVisibilityOfElement(historyLinkLocator, 30);
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", historyLinkLocator);
@@ -340,17 +367,44 @@ public class UOMPageObjects extends PageFactoryInitializer {
 		return this;
 	}
 
-	public boolean assertAlertMsg(String alertText) {
+	public boolean assertAlertMsg(String alertText) throws InterruptedException {
 		waiting.explicitWaitForAlert(5);
 		boolean t = tu.getAlertText().trim().equals(alertText.trim());
 		tu.alertAccept();
+		Thread.sleep(2000);
 		return t;
 
 	}
-   @Step("verify alert mseeage")
-	public UOMPageObjects verifyAlertMsg(String alertText) {
+
+	@Step("verify alert mseeage")
+	public UOMPageObjects verifyAlertMsg(String alertText) throws InterruptedException {
 		Assert.assertTrue(assertAlertMsg(alertText));
-		utility.switchToRecentWindow(1);
+		utility.switchToRecentWindow();
+		return this;
+
+	}
+
+	@Step("verify no result found error message")
+	public UOMPageObjects verifyErrorMessage(String errorMessage) {
+		waiting.explicitWaitVisibilityOfElement(noResultFoundLocator, 35);
+		Assert.assertEquals(noResultFoundLocator.getText(), errorMessage);
+		return this;
+	}
+
+	@Step("enter updated UOM Name:{0}")
+	public UOMPageObjects enterTheUpdatedUomName(String updatedUomName) {
+		System.out.println(updatedUomName + "Inside enter UOM");
+
+		waiting.explicitWaitVisibilityOfElement(updatedUomNameTextBoxLocator, 30);
+		updatedUomNameTextBoxLocator.clear();
+		updatedUomNameTextBoxLocator.sendKeys(updatedUomName);
+		return this;
+	}
+
+	@Step("create updated uom name:{0}")
+	public UOMPageObjects createUpdatedUom(String updatedUomName) throws InterruptedException {
+
+		enterTheUpdatedUomName(updatedUomName);
 		return this;
 
 	}

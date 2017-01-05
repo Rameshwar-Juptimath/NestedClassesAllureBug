@@ -307,6 +307,7 @@ public class CreateDataConfigTest extends PageFactoryInitializer{
 		 .createUom(uomName,uomDescription)
 		 .verifySuccessMessage(uomSaveMessage)
 		 .searchForUOM(uomName)
+		 .clickOnUomSearchCategory()
 		  .verifyCreatedUom(uomName);
 	}
 	
