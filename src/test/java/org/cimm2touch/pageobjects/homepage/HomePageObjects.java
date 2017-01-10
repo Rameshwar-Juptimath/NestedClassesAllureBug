@@ -137,8 +137,10 @@ public class HomePageObjects extends PageFactoryInitializer{
 
 	
 	
-	@FindBy(xpath="(//a[contains(text(),'Subset/Catalog')])[2]")
-	private WebElement subsetlink;
+	/*@FindBy(xpath="(//a[contains(text(),'Subset/Catalog')])[2]")
+	private WebElement subsetlink;*/
+	@FindBy(xpath="//div[@id='clientLogoId']/following-sibling::div/descendant::a[contains(text(),'PIM')]/following-sibling::ul/descendant::a[contains(text(),'Subset/Catalog')]")
+	private WebElement subsetLinkLocator;
 		
 	@FindBy(xpath="//form[@id='menuFmId:headerForm']/descendant::div[contains(@class,'loggedInUser')]") //css="div.header-right > ul.cimm_boxShadow > li > div.header-right-icons > ul > li > div.loggedInUser"
 	private WebElement welcomeMessageLocator;
@@ -198,11 +200,11 @@ public class HomePageObjects extends PageFactoryInitializer{
 	}
 
 	@Step("clicking on subset link")
-	public HomePageObjects clickOnSubset(){
+	public SubsetPageObjects clickOnSubset(){
 
 
-		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",subsetlink);
-		return this;
+		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",subsetLinkLocator);
+		return subsetPage();
 	}
 
 	@Step("clicking on vendors link")

@@ -32,9 +32,10 @@ public class CreateDataConfigTest extends PageFactoryInitializer{
 		.clickOnSubset()
 		.subsetPage()
 		.checkSubsetPage()
-		.typeInSubsetSearch(subsetName)
-		.clickOnSubsetSearchButton()
-		.subsetSearchResult(subsetName)//checks whether subset already exists
+		//.typeInSubsetSearch(subsetName)
+		.searchForAnSubset(subsetName)
+		.clickOnSubsetSearchGoButton()
+		.verifySubsetPresent(subsetName)//checks whether subset already exists
 		.clickOnSubsetButton()
 		.typeInSubsetNameField(subsetName)
 		.clickOnSubsetSave()

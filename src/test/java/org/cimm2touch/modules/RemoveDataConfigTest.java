@@ -6,6 +6,7 @@ import org.testng.annotations.Test;
 
 import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Features;
+import ru.yandex.qatools.allure.annotations.TestCaseId;
 /**
  * 
  * @author thiruveedhi Chinna
@@ -32,6 +33,7 @@ public class RemoveDataConfigTest extends PageFactoryInitializer{
 		
 		
 	}
+	
 	@Features("RemoveDataConfig Module")
 	@Description("delete the created subset")
 	@Test(priority=1,groups="regression",dataProvider ="RemoveDataConfigTest", dataProviderClass=SearchData.class)

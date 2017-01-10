@@ -93,6 +93,9 @@ public class UOMPageObjects extends PageFactoryInitializer {
 
 	@FindBy(xpath = "//span[contains(text(),'No results Found')]")
 	private WebElement noResultFoundLocator;
+	
+	@FindAll(value={@FindBy(xpath="//tbody[@id='listUnitOfMeasureForm:unitOfMeasureTableId:tb']/tr")})
+	private List<WebElement> numberOfRowCountLocator;
 
 	@Step("This method verify  bread crumbs of UOM page")
 	public UOMPageObjects verifyTheUOMPageBreadCrumbs(String breadCrumbsList) {
@@ -209,7 +212,6 @@ public class UOMPageObjects extends PageFactoryInitializer {
 	@Step("create new uom  name: {0} , Description {1}")
 	public UOMPageObjects createUom(String uomName, String uomDescription) throws Exception {
 		clickOnAddNewUOMLink();
-		System.out.println(uomName + "Inside create UOM");
 		enterTheUomName(uomName).enterTheUomDescription(uomDescription).clickOnSaveLink();
 		return this;
 	}
@@ -300,8 +302,7 @@ public class UOMPageObjects extends PageFactoryInitializer {
 		return this;
 	}
 	
-	@FindAll(value={@FindBy(xpath="//tbody[@id='listUnitOfMeasureForm:unitOfMeasureTableId:tb']/tr")})
-	private List<WebElement> numberOfRowCountLocator;
+	
 
 	@Step("verifying whether {0} is the number of records that is displayed.")
 	public UOMPageObjects verifyTheNumberOfRecordsDisplayed(String getNumberOfRecordsToDisplay) throws Exception {
