@@ -32,9 +32,10 @@ public class CreateDataConfigTest extends PageFactoryInitializer{
 		.clickOnSubset()
 		.subsetPage()
 		.checkSubsetPage()
-		.typeInSubsetSearch(subsetName)
-		.clickOnSubsetSearchButton()
-		.subsetSearchResult(subsetName)//checks whether subset already exists
+		//.typeInSubsetSearch(subsetName)
+		.searchForAnSubset(subsetName)
+		.clickOnSubsetSearchGoButton()
+		.verifySubsetPresent(subsetName)//checks whether subset already exists
 		.clickOnSubsetButton()
 		.typeInSubsetNameField(subsetName)
 		.clickOnSubsetSave()
@@ -288,7 +289,28 @@ public class CreateDataConfigTest extends PageFactoryInitializer{
 		.editLongDescription2(longDesc2)
 		.saveDescription();
 	}
-
+	@Description("Creation of new brand.")
+	@Features(value={"CreateDataConfigTest"})
+	@Test(enabled=true,priority=10,groups={"regression"},dataProvider="CreateDataConfigTest",dataProviderClass=SearchData.class)
+	public void createNewUOM(String testCaseId, String userName, String password,String welComeMessage,String uomName, String uomDescription, String uomSaveMessage) throws Exception
+	{
+		 landingPage()
+		 .enterUsername(userName)
+		 .enterPassword(password)
+		 .clickOnLogin();
+			homePage()
+		 .verifyWelcomeMessage(welComeMessage)
+		 .clickOnUomLink()
+		 .uomPage()
+		 .searchForUOM(uomName)
+		 .clickOnUomSearchCategory()
+		 .verifyUomPresent(uomName)
+		 .createUom(uomName,uomDescription)
+		 .verifySuccessMessage(uomSaveMessage)
+		 .searchForUOM(uomName)
+		 .clickOnUomSearchCategory()
+		  .verifyCreatedUom(uomName);
+	}
 	
 
 	

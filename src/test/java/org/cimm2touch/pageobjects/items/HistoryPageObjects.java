@@ -1,7 +1,13 @@
 package org.cimm2touch.pageobjects.items;
+import java.util.concurrent.TimeUnit;
+
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.utils.TestUtilityMethods;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
 import org.testng.Assert;
+
+import ru.yandex.qatools.allure.annotations.Step;
 
 public class HistoryPageObjects extends PageFactoryInitializer
 {
@@ -37,6 +43,24 @@ public class HistoryPageObjects extends PageFactoryInitializer
 
 		Assert.assertTrue(assertPageTitle(expectedAttributeGroupHistoryPageTitle),"Actual Title : "+getDriver().getTitle().trim()+" but expecting "+expectedAttributeGroupHistoryPageTitle);
 		return this;
+	}
+	@Step("verify created  updated uom name{0}")
+	public HistoryPageObjects verifyUpdatedUomNamePresentInHistoryPage(String updatedUomName) throws InterruptedException {
+		Thread.sleep(2500);
+		Assert.assertTrue(assertVerifyUomPresentInHistoryPage(updatedUomName), "UOM :" + updatedUomName + "  is not present.");
+		return this;
+	}
+	
+	private boolean assertVerifyUomPresentInHistoryPage(String updatedUomName) {
+		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		try {
+			if (getDriver().findElement(By.xpath("//td[text()='"+updatedUomName+"']")).isDisplayed()) {
+				return true;
+			}
+		} catch (NoSuchElementException e) {
+			return false;
+		}
+		return false;
 	}
 	
 }
