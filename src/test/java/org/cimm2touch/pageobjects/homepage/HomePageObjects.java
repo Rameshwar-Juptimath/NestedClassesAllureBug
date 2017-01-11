@@ -64,7 +64,7 @@ public class HomePageObjects extends PageFactoryInitializer{
 	@FindBy(xpath="//div[@id='clientLogoId']/following-sibling::div/descendant::a[contains(text(),'PIM')]/following-sibling::ul/descendant::a[contains(text(),'Custom Fields')]")
 	private WebElement customFieldHeaderLocator;
 
-	@FindBy(xpath="(//a[contains(text(),'Subset/Catalog')])[2]")
+	@FindBy(xpath="//div[@id='clientLogoId']/following-sibling::div/descendant::a[contains(text(),'PIM')]/following-sibling::ul/descendant::a[contains(text(),'Subset/Catalog')]")
 	private WebElement subsetlink;
 		
 	@FindBy(xpath="//form[@id='menuFmId:headerForm']/descendant::div[contains(@class,'loggedInUser')]") //css="div.header-right > ul.cimm_boxShadow > li > div.header-right-icons > ul > li > div.loggedInUser"

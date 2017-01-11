@@ -1,4 +1,5 @@
 package org.cimm2touch.modules;
+import java.awt.ItemSelectable;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
@@ -175,7 +176,7 @@ HashMap<String, String> loginData;
 	@Description("This is a test case which verifies the refresh functionality in the taxonomy tree.")
 	@TestCaseId("TC_ITEMS_008")
 	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
-	public void verifyRefreshInTaxonomyTree(String testCaseId, String userName, String password,String welcomeMessage,String category ) throws Exception {
+	public void verifyRefreshInTaxonomyTree(String testCaseId, String userName, String password,String welcomeMessage,String category, String taxonomy ) throws Exception {
 		
 		landingPage()
 		.enterUsername(userName)
@@ -185,11 +186,13 @@ HashMap<String, String> loginData;
 		.verifyWelcomeMessage(welcomeMessage)
 		.clickOnItemsLink()
 		.itemsPage()
+		.searchForTaxonomy(taxonomy)
+		.clickOnFilter()
 		.enterSearchCategory(category)
 		.clickOnSearchCategory()
 		.verifyWhetherSearchedTaxonomyStyleIsGreen(category)
-		.verifyWhetherValueContainsTextInsideTheTextbox(category)
-		.clickOnRefresh()
+	//	.verifyWhetherValueContainsTextInsideTheTextbox(category)
+	//	.clickOnRefresh()
 		.verifyWhetherSearchedTaxonomyStyleIsNotGreen(category)
 		.verifyClearingOfSearchTextbox(category);
 	}
@@ -352,7 +355,7 @@ HashMap<String, String> loginData;
 	}
 	@Features(value = {"Items Module"})
 	@Description("This Test case verifies Adding and rename of new workbook")
-	@TestCaseId("TC_ITEMS_45, TC_ITEMS_46")
+	@TestCaseId(" TC_ITEMS_45,TC_ITEMS_45")
 	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)
 	public void addNewWorkbook(String testCaseId, String workBookName, String workBookSuccesMsg, String reNameErroMsg,String workBookRemoveMsg) throws Exception {
 		try{
@@ -365,7 +368,8 @@ HashMap<String, String> loginData;
 		.itemsPage()
 		.verifyWorkbookDropdownLocator()
 		.clickOnWorkbookDropdown()
-		.verifyWorkBookName(workBookName,workBookRemoveMsg)
+		.verifyWorkBookExist(workBookName, workBookRemoveMsg)
+		//.verifyWorkBookName(workBookName,workBookRemoveMsg)
 		.enterWorkbookName(workBookName)
 		.clickOnSaveIcon()
 		.verifySuccessMsg(workBookName,workBookSuccesMsg)
@@ -380,6 +384,7 @@ HashMap<String, String> loginData;
 		itemsPage().verifyWorkBookName(workBookName,workBookRemoveMsg);
 		}
 	}
+	
 	
 	@Features(value = {"Items Module"})
 	@Description("This Test case verifies Adding items to workbook")
@@ -415,7 +420,8 @@ HashMap<String, String> loginData;
 		
 		}finally
 		{
-		itemsPage().verifyWorkBookName(workBookName,workbookRemovemsg);
+		itemsPage()
+		.verifyWorkBookName(workBookName,workbookRemovemsg);
 		}
 	}
 	@Features(value = {"Items Module"})
@@ -1796,7 +1802,7 @@ HashMap<String, String> loginData;
 	@Description("Verification of Custom Fields table data.")
 	@TestCaseId("TC_ITEMS_142")
 	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)	
-	public void verifyCFTable(String testCaseId,String partNumber, String alertTextWhenHistoryIsClicked, String categorizationTabHistoryTitle) throws Exception
+	public void verifyCFTable(String testCaseId,String partNumber) throws Exception
 	{
 
 		landingPage()
@@ -1942,7 +1948,7 @@ HashMap<String, String> loginData;
 	@Description("Verification of 'Warehouse' page")
 	@TestCaseId("TC_ITEMS_159")
 	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)	
-	public void verifyWarehouse(String testCaseId,String partNumber, String customerName) throws Exception
+	public void verifyWarehouse(String testCaseId,String partNumber) throws Exception
 	{
 
 		landingPage()
@@ -1961,5 +1967,370 @@ HashMap<String, String> loginData;
 		.clickOnWarehouseTab()
 		.verifyWarehousePage();
 	}
-}
+	@Features(value={"Items Module"})
+	@Description("Verification of search text box")
+	@TestCaseId("TC_ITEMS_160")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)	
+	public void verifyWarehouseSearch(String testCaseId,String partNumber, String warehouseName) throws Exception
+	{
 
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.verifyWarehouseTabPresent()
+		.clickOnWarehouseTab()
+		.searchForwareHouse(warehouseName)
+		.verifySearchResults(warehouseName);
+		
+	}
+	@Features(value={"Items Module"})
+	@Description("Verification of search text box for invalid name")
+	@TestCaseId("TC_ITEMS_161")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)	
+	public void verifyWarehouseSearch_ES(String testCaseId,String partNumber, String warehouseNameInvalid) throws Exception
+	{
+
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.verifyWarehouseTabPresent()
+		.clickOnWarehouseTab()
+		.searchForwareHouse(warehouseNameInvalid)
+		.verifySearchResultsInvalid(warehouseNameInvalid);
+		
+	}
+	@Features(value={"Items Module"})
+	@Description("Verification of saving a selected item to warehouse")
+	@TestCaseId("TC_ITEMS_162")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)	
+	public void verifySaveWarehouse(String testCaseId,String partNumber, String warehouseName, String expSuccessMessage) throws Exception
+	{
+
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.verifyWarehouseTabPresent()
+		.clickOnWarehouseTab()
+		.searchForwareHouse(warehouseName)
+		.selectWarehouseToSave(warehouseName)
+		.saveWarehouseToItem()
+		.verifyWarehouseSaveSuccessMessage(expSuccessMessage);
+	}
+	@Features(value={"Items Module"})
+	@Description("Verification of saving an item to multiple warehouses")
+	@TestCaseId("TC_ITEMS_163")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)	
+	public void verifySaveMultiWarehouses(String testCaseId,String partNumber, String noOfWareHosesToBeSelect, String expSuccessMessage) throws Exception
+	{
+
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.verifyWarehouseTabPresent()
+		.clickOnWarehouseTab()
+		.selectMultipleWarehouses(noOfWareHosesToBeSelect)
+		.saveWarehouseToItem()
+		.verifyWarehouseSaveSuccessMessage(expSuccessMessage);
+	}
+	@Features(value={"Items Module"})
+	@Description("Verification of saving an item to All warehouses")
+	@TestCaseId("TC_ITEMS_164")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)	
+	public void verifySaveAllWarehouses(String testCaseId,String partNumber,  String expSuccessMessage) throws Exception
+	{
+
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.verifyWarehouseTabPresent()
+		.clickOnWarehouseTab()
+		.selectSelectAllWarehouses()
+		.saveWarehouseToItem()
+		.verifyWarehouseSaveSuccessMessage(expSuccessMessage);
+	}
+	@Features(value={"Items Module"})
+	@Description("Verification of Removing an item from warehouse")
+	@TestCaseId("TC_ITEMS_165")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)	
+	public void verifyRemoveWarehouse(String testCaseId,String partNumber, String warehouseName, String expRemoveSuccessMessage) throws Exception
+	{
+		
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.verifyWarehouseTabPresent()
+		.clickOnWarehouseTab()
+		.searchForwareHouse(warehouseName)
+		.selectWarehouseToSave(warehouseName)
+		.removeWarehouseToItem()
+		.verifyWarehouseSaveSuccessMessage(expRemoveSuccessMessage);
+	}
+	@Features(value={"Items Module"})
+	@Description("Verification of Removing an item from multiple warehouses")
+	@TestCaseId("TC_ITEMS_166")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)	
+	public void verifyRemoveMultiWarehouses(String testCaseId,String partNumber, String noOfWareHosesToBeSelect, String expRemoveSuccessMessage) throws Exception
+	{
+		
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.verifyWarehouseTabPresent()
+		.clickOnWarehouseTab()
+		.selectMultipleWarehouses(noOfWareHosesToBeSelect)
+		.removeWarehouseToItem()
+		.verifyWarehouseSaveSuccessMessage(expRemoveSuccessMessage);
+	}
+	@Features(value={"Items Module"})
+	@Description("Verification of Removing an item from all the warehouses")
+	@TestCaseId("TC_ITEMS_167")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)	
+	public void verifyRemoveAllWarehouses(String testCaseId,String partNumber, String expRemoveSuccessMessage) throws Exception
+	{
+		
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.verifyWarehouseTabPresent()
+		.clickOnWarehouseTab()
+		.selectSelectAllWarehouses()
+		.removeWarehouseToItem()
+		.verifyWarehouseSaveSuccessMessage(expRemoveSuccessMessage);
+	}
+	@Features(value={"Items Module"})
+	@Description("Verification of History of the items & the warehouses")
+	@TestCaseId("TC_ITEMS_168")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)	
+	public void verifyHistoryWarehouses(String testCaseId,String partNumber, String warehouseName,String expSuccessMessage, String alertText, String expTitle) throws Exception
+	{
+		
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemEditButton(partNumber)
+		.editItemsPage()
+		.verifyWarehouseTabPresent()
+		.clickOnWarehouseTab()
+		.verifyWarehousePage()
+		.searchForwareHouse(warehouseName)
+		.selectWarehouseToSave(warehouseName)
+		.saveWarehouseToItem()
+		.verifyWarehouseSaveSuccessMessage(expSuccessMessage)
+		.clickOnWareHouseHistoryLink()
+		.verifyAlertMsg(alertText);
+		utility.switchToRecentWindow();
+		historyPage()
+		.verifyPageTitle(expTitle)
+		.verifyrecentWareHouseActivity(warehouseName);
+		
+		
+	}
+	@Features(value={"Items Module"})
+	@Description("Verification of Copy of Item page")
+	@TestCaseId("TC_ITEMS_169")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)	
+	public void verifyCopyOfItem(String testCaseId,String partNumber, String inputFieldNames,String itemInfoTabs) throws Exception
+	{
+		
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemCopyButton(partNumber)
+		.copyItemPage()
+		.verifyCopyItemInputFields(inputFieldNames)
+		.verifyItemInFormationTabs(itemInfoTabs);
+		
+		
+	}
+	@Features(value={"Items Module"})
+	@Description(" validating 'New Part Number'/'no of copies' field(s)")
+	@TestCaseId("TC_ITEMS_170,TC_ITEMS_171")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)	
+	public void validateInputFields(String testCaseId,String partNumber, String inputFieldNames,String itemInfoTabs,String fieldName, String testData) throws Exception
+	{
+		
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemCopyButton(partNumber)
+		.copyItemPage()
+		.verifyCopyItemInputFields(inputFieldNames)
+		.verifyItemInFormationTabs(itemInfoTabs)
+		.enterSearchDataForRespectiveField(fieldName,testData)
+		.validateInputFields(fieldName,testData);
+		
+		
+		
+	}
+	@Features(value={"Items Module"})
+	@Description("Verification of error message  'New Part Number'/'no of copies' field(s)")
+	@TestCaseId("TC_ITEMS_172,TC_ITEMS_173")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)	
+	public void verificationOfInputFields(String testCaseId,String partNumber, String inputFieldNames,String itemInfoTabs,String fieldName, String testData, String expErrorMessage) throws Exception
+	{
+		
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemCopyButton(partNumber)
+		.copyItemPage()
+		.verifyCopyItemInputFields(inputFieldNames)
+		.verifyItemInFormationTabs(itemInfoTabs)
+		.enterSearchDataForRespectiveField(fieldName,testData)
+		.clickOnSaveCopyItem()	
+		.verifyErrorMessage(expErrorMessage);
+		
+		
+		
+	}
+	@Features(value={"Items Module"})
+	@Description("Verification of reset functionality")
+	@TestCaseId("TC_ITEMS_174")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)	
+	public void verifyResetCopyItem(String testCaseId,String partNumber, String fieldName, String testData) throws Exception
+	{
+		
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemCopyButton(partNumber)
+		.copyItemPage()
+		.enterSearchDataForRespectiveField(fieldName,testData)
+		.clickOnResetCopyItemsLink()
+		.verifyResetFunctionality(fieldName,testData);
+}
+	@Features(value={"Items Module"})
+	@Description("Verification of copying the item")
+	@TestCaseId("TC_ITEMS_175")
+	@Test(groups="regression",dataProvider="ItemsModuleTest", dataProviderClass=SearchData.class)	
+	public void verifySaveCopyItem(String testCaseId,String partNumber, String fieldName, String testData, String saveSuccessMessage) throws Exception
+	{
+		
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnItemsLink()
+		.itemsPage()
+		.searchItem(partNumber)
+		.clickOnSpecificItemCopyButton(partNumber)
+		.copyItemPage()
+		.enterSearchDataForRespectiveField(fieldName,testData)
+		.clickOnSaveCopyItem()
+		.verifySaveSuccessMessage(saveSuccessMessage);
+		editItemsPage()
+		.removeCopiedItem(testData);
+		itemsPage()
+		.verifyRemoveItemSuccessMessage(testData);
+	}
+}

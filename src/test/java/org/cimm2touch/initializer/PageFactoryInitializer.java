@@ -10,11 +10,13 @@ import org.cimm2touch.pageobjects.products.ProductEditPageObjects;
 import org.cimm2touch.pageobjects.products.ProductItemsPageObjects;
 import org.cimm2touch.pageobjects.products.ProductsListPageObjects;
 import org.cimm2touch.pageobjects.products.ProductsPageObjects;
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.cimm2touch.pageobjects.adminstration.SystemSettingsPageObjects;
 import org.cimm2touch.pageobjects.customers.CustomersPageObjects;
 import org.cimm2touch.pageobjects.customfields.CustomFieldsSimpleDataPageObjects;
 import org.cimm2touch.pageobjects.customfields.CustomFieldsTableDataPageObjects;
 import org.cimm2touch.pageobjects.items.AddNewItemPageObjects;
+import org.cimm2touch.pageobjects.items.CopyOfItemPageObjects;
 import org.cimm2touch.pageobjects.items.EditItemsPageObjects;
 import org.cimm2touch.pageobjects.items.HistoryPageObjects;
 import org.cimm2touch.pageobjects.items.ItemsPageObjects;
@@ -238,5 +240,13 @@ public class PageFactoryInitializer extends CallApplication
 		WareHousePageObjects warehouse=PageFactory.initElements(getDriver(), WareHousePageObjects.class);
 		
 		return warehouse;
+		
+	}
+	public CopyOfItemPageObjects copyItemPage()
+	{
+		
+		CopyOfItemPageObjects copyItem=PageFactory.initElements(getDriver(), CopyOfItemPageObjects.class);
+		
+		return copyItem;
 	}
 }

@@ -1314,7 +1314,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 		WebElement wb=getDriver().findElement(By.xpath("//span[contains(text(),'"+subsetName+"')]/ancestor::td//preceding-sibling::td/descendant::input[@value='Remove']"));
 		//waiting.explicitWaitVisibilityOfElement(wb, 20);
 		Assert.assertEquals(getDriver().findElement(By.xpath("//span[contains(text(),'"+subsetName+"')]")).getText(), subsetName,""+subsetName+" is not available");
-		String subsetId=getDriver().findElement(By.xpath("//span[contains(text(),'"+subsetName+"')]/ancestor::td//preceding-sibling::td[1]")).getText();
+		String subsetId=getDriver().findElement(By.xpath("//span[contains(text(),'"+subsetName+"')]/ancestor::td//preceding-sibling::td[contains(@id,'subsetID')]")).getText();
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",wb);
 		tu.alertAccept();
 		return subsetId;
