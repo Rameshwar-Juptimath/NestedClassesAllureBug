@@ -11,6 +11,7 @@ import org.cimm2touch.pageobjects.subset.SubsetPageObjects;
 import org.cimm2touch.pageobjects.taxonomymanagement.AttributeGroupsPageObjects;
 import org.cimm2touch.pageobjects.taxonomymanagement.AttributesPageObjects;
 import org.cimm2touch.pageobjects.taxonomymanagement.TaxonomyPageObjects;
+import org.cimm2touch.pageobjects.uom.UOMPageObjects;
 import org.framework.utils.Waiting;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
@@ -93,11 +94,9 @@ public class HomePageObjects extends PageFactoryInitializer{
 	@FindBy(xpath="//div[@id='clientLogoId']/following-sibling::div/descendant::a[contains(text(),'MANAGE SITE')]/following-sibling::ul/descendant::a[contains(text(),'Customers')]")
 	private WebElement customerHeaderLink;
 	
-	@FindBy(linkText="PIM")
-	private WebElement pimlinkLocator;
+
 	
-	@FindBy(xpath="(//li/span[contains(text(),'Product Master')])[1]")
-	private WebElement productmasterlinkLocator;
+
 	
 	@FindBy(xpath="//div[@id='clientLogoId']/following-sibling::div/descendant::a[contains(text(),'PIM')]/following-sibling::ul/descendant::a[contains(text(),'Warehouse')]")
 	private WebElement warehouseHeaderLink;
@@ -173,6 +172,21 @@ public class HomePageObjects extends PageFactoryInitializer{
 		
 		return this;
 	}
+	@FindBy(xpath="//div[@id='clientLogoId']/following-sibling::div/descendant::a[contains(text(),'PIM')]/following-sibling::ul/descendant::a[contains(text(),'Subset/Catalog')]")
+	private WebElement subsetLinkLocator;
+		
+
+	
+	@FindBy(linkText="PIM")
+	private WebElement pimlinkLocator;
+	
+	@FindBy(xpath="(//li/span[contains(text(),'Product Master')])[1]")
+	private WebElement productmasterlinkLocator;
+
+	@FindBy(xpath="//div[@id='clientLogoId']/following-sibling::div/descendant::a[contains(text(),'PIM')]/following-sibling::ul/descendant::a[contains(text(),'UOM')]")
+	private WebElement uomLinkLocator;
+	
+
 	
 	@Step("clicking on Manufacturers & Brands link")
 	public HomePageObjects clickonManufactureBrandsLink() throws InterruptedException {
@@ -198,11 +212,11 @@ public class HomePageObjects extends PageFactoryInitializer{
 	}
 
 	@Step("clicking on subset link")
-	public HomePageObjects clickOnSubset(){
+	public SubsetPageObjects clickOnSubset(){
 
 
-		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",subsetlink);
-		return this;
+		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",subsetLinkLocator);
+		return subsetPage();
 	}
 
 	@Step("clicking on vendors link")
@@ -265,6 +279,7 @@ public class HomePageObjects extends PageFactoryInitializer{
 		userConfigurationLink.click();
 		return this;
 	}
+
 	@Step("click on custom filds tab")
 	public HomePageObjects clickOnCustomFieldsLink() throws InterruptedException {
 		((JavascriptExecutor)getDriver()).executeScript("arguments[0].click();",customFieldHeaderLocator);
@@ -294,6 +309,15 @@ public class HomePageObjects extends PageFactoryInitializer{
 		return this;
 	}
 	
+
+
+	@Step("clicking on uom link")
+	public UOMPageObjects clickOnUomLink() {
+
+		((JavascriptExecutor)getDriver()).executeScript("arguments[0].click();",uomLinkLocator);
+		return uomPage();
+	}
+
 	
 }
 

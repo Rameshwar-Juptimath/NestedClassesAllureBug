@@ -46,6 +46,7 @@ public class RemoveDataConfigTest extends PageFactoryInitializer{
 		
 		
 	}
+	
 	@Features("RemoveDataConfig Module")
 	@Description("delete the created subset")
 	@Test(priority=1,groups="regression",dataProvider ="RemoveDataConfigTest", dataProviderClass=SearchData.class)

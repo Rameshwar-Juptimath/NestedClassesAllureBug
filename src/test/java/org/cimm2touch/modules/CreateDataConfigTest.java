@@ -45,9 +45,10 @@ HashMap<String, String> loginData;
 		.clickOnSubset()
 		.subsetPage()
 		.checkSubsetPage()
-		.typeInSubsetSearch(subsetName)
-		.clickOnSubsetSearchButton()
-		.subsetSearchResult(subsetName)//checks whether subset already exists
+		//.typeInSubsetSearch(subsetName)
+		.searchForAnSubset(subsetName)
+		.clickOnSubsetSearchGoButton()
+		.verifySubsetPresent(subsetName)//checks whether subset already exists
 		.clickOnSubsetButton()
 		.typeInSubsetNameField(subsetName)
 		.clickOnSubsetSave()
@@ -302,6 +303,7 @@ HashMap<String, String> loginData;
 		.saveDescription();
 	}
 
+
 	@Features(value={"CreateDataConfigTest"})
 	@Description("add new custom fields (simple data type)")
 	@Test(groups="regression",priority=10,dataProvider="CreateDataConfigTest", dataProviderClass=SearchData.class)
@@ -322,6 +324,30 @@ HashMap<String, String> loginData;
 		.clickOnAddNewManageList()
 		.createNewValueList(manageListName,valueListDataType,valueListDescription)
 		.verifySuccessMessageForNewlyCreatedList(successMessage);
+	}
+
+	@Description("Creation of new brand.")
+	@Features(value={"CreateDataConfigTest"})
+	@Test(enabled=true,priority=10,groups={"regression"},dataProvider="CreateDataConfigTest",dataProviderClass=SearchData.class)
+	public void createNewUOM(String testCaseId, String userName, String password,String welComeMessage,String uomName, String uomDescription, String uomSaveMessage) throws Exception
+	{
+		 landingPage()
+		 .enterUsername(userName)
+		 .enterPassword(password)
+		 .clickOnLogin();
+			homePage()
+		 .verifyWelcomeMessage(welComeMessage)
+		 .clickOnUomLink()
+		 .uomPage()
+		 .searchForUOM(uomName)
+		 .clickOnUomSearchCategory()
+		 .verifyUomPresent(uomName)
+		 .createUom(uomName,uomDescription)
+		 .verifySuccessMessage(uomSaveMessage)
+		 .searchForUOM(uomName)
+		 .clickOnUomSearchCategory()
+		  .verifyCreatedUom(uomName);
+
 	}
 	
 	
