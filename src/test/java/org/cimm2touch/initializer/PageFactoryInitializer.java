@@ -28,6 +28,7 @@ import org.cimm2touch.pageobjects.taxonomymanagement.TaxonomyMappingPageObjects;
 import org.cimm2touch.pageobjects.taxonomymanagement.TaxonomyPageObjects;
 import org.cimm2touch.pageobjects.uom.UOMPageObjects;
 import org.openqa.selenium.support.PageFactory;
+import org.cimm2touch.pageobjects.subset.CatalogBuilderPageObjects;
 import org.cimm2touch.pageobjects.subset.SubsetPageObjects;
 import org.cimm2touch.pageobjects.homepage.HomePageObjects;
 
@@ -49,6 +50,11 @@ public class PageFactoryInitializer extends CallApplication
 	{
 		SubsetPageObjects subsetPage = PageFactory.initElements(getDriver(), SubsetPageObjects.class);
 		return subsetPage;
+	}
+	public CatalogBuilderPageObjects catalogBuilderPage()
+	{
+		CatalogBuilderPageObjects catalogBuilderPage = PageFactory.initElements(getDriver(), CatalogBuilderPageObjects.class);
+		return catalogBuilderPage;
 	}
 
 	public ItemsPageObjects itemsPage()

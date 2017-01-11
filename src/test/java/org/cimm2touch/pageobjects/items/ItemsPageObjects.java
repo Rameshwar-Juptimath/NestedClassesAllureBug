@@ -756,7 +756,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 		{
 
 			waiting.explicitWaitVisibilityOfElements(editButtonsLocator, 60);
-			Assert.assertTrue(assertForNumberOfRowsDisplayed(editButtonsLocator.size(),Integer.parseInt(getNumberOfRecordsToDisplay)));
+			Assert.assertTrue(assertForNumberOfRowsDisplayed(editButtonsLocator.size(),Integer.parseInt(getNumberOfRecordsToDisplay)), "DISPLAYED RECORDS WERE MORE THAN EXPECTED");
 		}
 		catch(StaleElementReferenceException e)
 		{

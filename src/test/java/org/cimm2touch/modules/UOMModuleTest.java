@@ -33,19 +33,19 @@ public class UOMModuleTest extends PageFactoryInitializer {
 	@TestCaseId("TC_UOM_001")
 	@Test(groups={"regression"}, dataProvider="UOMModuleTest",dataProviderClass=SearchData.class)
 	public void tc_UOM_001(String testCaseId, String breadCrumbsList,String headerList, String placeHolderText) throws Exception{
-		                   landingPage()
-		                 .enterUsername(loginData.get("userName"))
-		                .enterPassword(loginData.get("password"))
-		                .clickOnLogin();
-		                homePage()                      
-		               .clickOnUomLink()
-		               .uomPage()
-		              .verifyTheUOMPageBreadCrumbs(breadCrumbsList)
-		              .verifySearchFieldInUOMPage(placeHolderText)
-		              .verifyTotalCountInUOMPage()
-		              .verifyTheUOMPageHeaderPortion(headerList)
-		              .verifyAddNewProductLinkInUOMPage()
-		              .verifyDisplayRecordsInUOMPage();
+		                    landingPage()
+		                   .enterUsername(loginData.get("userName"))
+		                   .enterPassword(loginData.get("password"))
+		                   .clickOnLogin();
+		                    homePage()                      
+		                   .clickOnUomLink()
+		                   .uomPage()
+		                   .verifyTheUOMPageBreadCrumbs(breadCrumbsList)
+		                   .verifySearchFieldInUOMPage(placeHolderText)
+		                   .verifyTotalCountInUOMPage()
+		                   .verifyTheUOMPageHeaderPortion(headerList)
+		                   .verifyAddNewProductLinkInUOMPage()
+		                   .verifyDisplayRecordsInUOMPage();
 	
 
 }
@@ -56,15 +56,15 @@ public class UOMModuleTest extends PageFactoryInitializer {
 	@Test(groups={"regression"}, dataProvider="UOMModuleTest",dataProviderClass=SearchData.class)
 	public void tc_UOM_002(String testCaseId,String addNewUOMField  ) throws Exception
 	{
-		  landingPage()
-		 .enterUsername(loginData.get("userName"))
-		 .enterPassword(loginData.get("password"))                
-		 .clickOnLogin();
-		  homePage()
-		 .clickOnUomLink()
-		 .uomPage()
-		 .clickOnAddNewUOMLink()
-		 .verifyAllAddNewUOMFields(addNewUOMField);
+		                landingPage()
+		                .enterUsername(loginData.get("userName"))
+		                .enterPassword(loginData.get("password"))                
+		                .clickOnLogin();
+		                 homePage()
+		                .clickOnUomLink()
+		                .uomPage()
+		                .clickOnAddNewUOMLink()
+		                .verifyAllAddNewUOMFields(addNewUOMField);
 	}
 	@Features(value = {"UOM Module"})
 	@Description("Creation of new UOM and Verification of 'Search field' for valid UOM")
@@ -72,22 +72,22 @@ public class UOMModuleTest extends PageFactoryInitializer {
 	@Test(groups={"regression"},dataProvider="UOMModuleTest",dataProviderClass=SearchData.class)
 	public void tc_UOM_003_007(String testCaseId, String userName, String password,String welComeMessage,String uomName, String uomDescription, String uomSaveMessage) throws Exception
 	{
-		 landingPage()
-		 .enterUsername(userName)
-		 .enterPassword(password)
-		 .clickOnLogin();
-			homePage()
-		 .verifyWelcomeMessage(welComeMessage)
-		 .clickOnUomLink()
-		 .uomPage()
-		 .searchForUOM(uomName)
-		 .clickOnUomSearchCategory()
-		 .verifyUomPresent(uomName)
-		 .createUom(uomName,uomDescription)
-		 .verifySuccessMessage(uomSaveMessage)
-		 .searchForUOM(uomName)
-		 .clickOnUomSearchCategory()
-		  .verifyCreatedUom(uomName);
+		                  landingPage()
+		                 .enterUsername(userName)
+		                 .enterPassword(password)
+		                 .clickOnLogin();
+			              homePage()
+		                .verifyWelcomeMessage(welComeMessage)
+		                .clickOnUomLink()
+		                .uomPage()
+		                .searchForUOM(uomName)
+		                .clickOnUomSearchCategory()
+		                .verifyUomPresent(uomName)
+		                .createUom(uomName,uomDescription)
+		                .verifySuccessMessage(uomSaveMessage)
+		                .searchForUOM(uomName)
+		                .clickOnUomSearchCategory()
+		                .verifyCreatedUom(uomName);
 	}
 	
 	
@@ -97,15 +97,15 @@ public class UOMModuleTest extends PageFactoryInitializer {
 	@Test(groups={"regression"}, dataProvider="UOMModuleTest",dataProviderClass=SearchData.class)
 	public void tc_UOM_004(String testCaseId,String uomName,String editFieldOfUOM) throws InterruptedException
 	{
-		  landingPage()
-		 .enterUsername(loginData.get("userName"))
-		 .enterPassword(loginData.get("password"))
-		 .clickOnLogin();
-		  homePage()
-		 .clickOnUomLink()
-		 .uomPage()
-		 .clickOnEditUomPartialMatch(uomName)
-		 .verifyAllEditUOMFields(editFieldOfUOM);
+		              landingPage()
+		             .enterUsername(loginData.get("userName"))
+		             .enterPassword(loginData.get("password"))
+		             .clickOnLogin();
+		              homePage()
+		             .clickOnUomLink()
+		             .uomPage()
+		             .clickOnEditUomPartialMatch(uomName)
+		             .verifyAllEditUOMFields(editFieldOfUOM);
 		
 	}
 	@Features(value = {"UOM Module"})
@@ -114,34 +114,34 @@ public class UOMModuleTest extends PageFactoryInitializer {
 	@Test(groups={"regression"}, dataProvider="UOMModuleTest",dataProviderClass=SearchData.class)
 	public void tc_UOM_005_010(String testCaseId,String uomName,String uomDescription,String uomSaveMessage,String updatedUomName,String welcomeMessage,String alertTextWhenHistoryIsClicked,String expectedHistoryPageTitle  ) throws Exception
 	{
-		landingPage()
-		 .enterUsername(loginData.get("userName"))
-		 .enterPassword(loginData.get("password"))
-		 .clickOnLogin();
-		  homePage()
-		 .clickOnUomLink()
-		 .uomPage()
-		 .searchForUOM(uomName)
-		 .clickOnUomSearchCategory()
-		 .verifyUomPresent(uomName)
-		 .createUom(uomName,uomDescription)
-		 .verifySuccessMessage(uomSaveMessage)
-		 .searchForUOM(uomName)
-		 .clickOnUomSearchCategory()
-		 .verifyCreatedUom(uomName)
-		 .clickOnEditUom(uomName)
-		 .createUpdatedUom(updatedUomName)
-		 .clickOnUpdateUomLink()
-		 .verifyUpdateWelcomeMessage(welcomeMessage)
-		 .searchForUOM(updatedUomName)
-		 .clickOnUomSearchCategory() 
-		 .verifyCreatedUom(updatedUomName)
-		 .clickOnEditUom(updatedUomName)
-		 .clickOnUomHistoryLink()
-		 .verifyAlertMsg(alertTextWhenHistoryIsClicked)
-		 .historyPage()
-		 .verifyPageTitle(expectedHistoryPageTitle)
-		 .verifyUpdatedUomNamePresentInHistoryPage(updatedUomName);
+		            landingPage()
+		           .enterUsername(loginData.get("userName"))
+		           .enterPassword(loginData.get("password"))
+		           .clickOnLogin();
+		            homePage()
+		           .clickOnUomLink()
+		           .uomPage()
+		           .searchForUOM(uomName)
+		           .clickOnUomSearchCategory()
+		           .verifyUomPresent(uomName)
+		           .createUom(uomName,uomDescription)
+		           .verifySuccessMessage(uomSaveMessage)
+		           .searchForUOM(uomName)
+		          .clickOnUomSearchCategory()
+		           .verifyCreatedUom(uomName)
+		          .clickOnEditUom(uomName)
+		          .createUpdatedUom(updatedUomName)
+		          .clickOnUpdateUomLink()
+		          .verifyUpdateWelcomeMessage(welcomeMessage)
+		         .searchForUOM(updatedUomName)
+		         .clickOnUomSearchCategory() 
+		         .verifyCreatedUom(updatedUomName)
+		         .clickOnEditUom(updatedUomName)
+		         .clickOnUomHistoryLink()    
+		         .verifyAlertMsg(alertTextWhenHistoryIsClicked)
+		         .historyPage()
+		        .verifyPageTitle(expectedHistoryPageTitle)
+		        .verifyUpdatedUomNamePresentInHistoryPage(updatedUomName);
 	}
 	
 	
@@ -152,28 +152,28 @@ public class UOMModuleTest extends PageFactoryInitializer {
 	public void tc_UOM_006(String testCaseId ) throws Exception
 	{
 		
-		data.setNumberOfRecordsToDisplay("10");
-		landingPage()
-		. enterUsername(loginData.get("userName"))
-		.enterPassword(loginData.get("password"))
-		.clickOnLogin()
-		.homePage()
-		.clickOnUomLink()
-		.uomPage()
-		.selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
-		.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
-		data.setNumberOfRecordsToDisplay("25");
-		uomPage().selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
-		.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
-		data.setNumberOfRecordsToDisplay("50");
-		uomPage().selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())     
-		.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
-		data.setNumberOfRecordsToDisplay("75");
-		uomPage().selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
-		.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
-		data.setNumberOfRecordsToDisplay("100");
-		uomPage().selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
-		.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
+		           data.setNumberOfRecordsToDisplay("10");
+		           landingPage()
+		          .enterUsername(loginData.get("userName"))
+		          .enterPassword(loginData.get("password"))
+		          .clickOnLogin()
+		          .homePage()
+		          .clickOnUomLink()
+		          .uomPage()
+		          .selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
+		          .verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
+		           data.setNumberOfRecordsToDisplay("25");
+		           uomPage().selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
+		          .verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
+		           data.setNumberOfRecordsToDisplay("50");
+		           uomPage().selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())     
+		           .verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
+		           data.setNumberOfRecordsToDisplay("75");
+		           uomPage().selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
+		          .verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
+		           data.setNumberOfRecordsToDisplay("100");
+		           uomPage().selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
+		           .verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
 	}
 	
 	@Features(value = {"UOM Module"})
@@ -182,18 +182,18 @@ public class UOMModuleTest extends PageFactoryInitializer {
 	@Test(groups={"regression"}, dataProvider="UOMModuleTest",dataProviderClass=SearchData.class)
 	public void tc_UOM_008(String testCaseId,String uomName,String countOfUomName,String errorMessage) throws InterruptedException
 	{
-		  landingPage()
-		 .enterUsername(loginData.get("userName"))
-		 .enterPassword(loginData.get("password"))
-		 .clickOnLogin();
-		  homePage()
-		 .clickOnUomLink()
-		 .uomPage()
-		 .searchForUOM(uomName)
-		 .clickOnUomSearchCategory()
-		 .verifyUomPresent(uomName)
-		 .verifyErrorTotalCount(countOfUomName).
-		 verifyErrorMessage(errorMessage);
+		         landingPage()
+		        .enterUsername(loginData.get("userName"))
+		        .enterPassword(loginData.get("password"))
+		        .clickOnLogin();
+		         homePage()
+		       .clickOnUomLink()
+		       .uomPage()
+		       .searchForUOM(uomName)
+		       .clickOnUomSearchCategory()
+		       .verifyUomPresent(uomName)
+		       .verifyErrorTotalCount(countOfUomName)
+		       .verifyErrorMessage(errorMessage);
 }
 	@Features(value = {"UOM Module"})
 	@Description("Verification of revision history icon ")
@@ -201,15 +201,16 @@ public class UOMModuleTest extends PageFactoryInitializer {
 	@Test(groups={"regression"}, dataProvider="UOMModuleTest",dataProviderClass=SearchData.class)
 	public void tc_UOM_009(String testCaseId,String uomName,String editFieldOfUOM) throws Exception
 	{
-		  landingPage()
-			 .enterUsername(loginData.get("userName"))
-			 .enterPassword(loginData.get("password"))
-			 .clickOnLogin();
-			  homePage()
-			 .clickOnUomLink()
-			 .uomPage() .clickOnEditUomPartialMatch(uomName)   
-			 .verifyAllEditUOMFields(editFieldOfUOM)
-			 .verifyWhetherHistoryIconPresent();
+		          landingPage()
+			     .enterUsername(loginData.get("userName"))
+			     .enterPassword(loginData.get("password"))
+			     .clickOnLogin();
+			      homePage()
+			     .clickOnUomLink()
+			     .uomPage() 
+			     .clickOnEditUomPartialMatch(uomName)   
+			     .verifyAllEditUOMFields(editFieldOfUOM)
+			     .verifyWhetherHistoryIconPresent();
 			
 	}
 	
