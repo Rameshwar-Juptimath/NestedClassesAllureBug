@@ -6,7 +6,6 @@ import org.cimm2touch.pageobjects.adminstration.SystemSettingsPageObjects;
 import org.cimm2touch.pageobjects.items.AddNewItemPageObjects;
 import org.cimm2touch.pageobjects.items.ItemsPageObjects;
 import org.cimm2touch.pageobjects.manufacturer.ManufacturerPageObjects;
-import org.cimm2touch.pageobjects.products.ProductsListPageObjects;
 import org.cimm2touch.pageobjects.products.ProductsPageObjects;
 import org.cimm2touch.pageobjects.subset.SubsetPageObjects;
 import org.cimm2touch.pageobjects.taxonomymanagement.AttributeGroupsPageObjects;
@@ -123,18 +122,24 @@ public class HomePageObjects extends PageFactoryInitializer{
 		return productsPage();
 	}
 	
-	@Step("enter the created item part number {0} in  advanced search field & click on search ")
-	public HomePageObjects searchForCreatedItem(String partNumber){
+	@Step("Enter the text \"{0}\" in Search field")
+	public HomePageObjects enterTextInSearchField(String searchText){
 
 		waiting.explicitWaitVisibilityOfElement(seachInputTextField, 10);
 		seachInputTextField.clear();
-		seachInputTextField.sendKeys(partNumber);
-		searchButton.click();
-		
-		
+		seachInputTextField.sendKeys(searchText);
 		return this;
 	}
 
+	@Step("Click On Search Icon")
+	public HomePageObjects clickOnSearchIcon(){
+
+		waiting.explicitWaitVisibilityOfElement(searchButton, 10);
+		searchButton.click();
+		return this;
+	}
+	
+	
 	
 	
 	@FindBy(xpath="(//a[contains(text(),'Subset/Catalog')])[2]")

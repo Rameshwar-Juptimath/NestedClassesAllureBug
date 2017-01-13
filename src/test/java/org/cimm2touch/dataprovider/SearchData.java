@@ -115,5 +115,14 @@ public class SearchData
 		Object data[][] = excel.readFromExcelDataForTestNGDataProvider(file.getAbsolutePath(),methodName.getName());
 		return data;
 	}
+	
+	@DataProvider(name="ProductCreationTest",parallel = true)
+	public static Object[][] ProductCreationTest(Method methodName) throws Exception
+	{
+		File file = new File("resources/ExcelSheetData/ProductsModuleTest.xlsx");
+		ExcelLibrary excel = new ExcelLibrary("resources/ExcelSheetData/ProductsModuleTest.xlsx","creationData");
+		Object data[][] = excel.readFromExcelDataForTestNGDataProvider(file.getAbsolutePath(),"creationData");
+		return data;
+	}
 
 }

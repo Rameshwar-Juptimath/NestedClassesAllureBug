@@ -1,44 +1,58 @@
 package org.cimm2touch.modules;
 
 import java.io.File;
-import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.NoSuchElementException;
 
 import org.cimm2touch.dataprovider.SearchData;
 import org.cimm2touch.initializer.PageFactoryInitializer;
-import org.cimm2touch.pageobjects.products.ProductsPageObjects;
 import org.cimm2touch.utils.SearchDataPropertyFile;
-import org.framework.utils.ApplicationSetUpPropertyFile;
+import org.framework.utils.PermittedCharacters;
+import org.framework.utils.RandomGenerator;
+import org.openqa.selenium.TimeoutException;
+import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Features;
+import ru.yandex.qatools.allure.annotations.Issue;
 import ru.yandex.qatools.allure.annotations.TestCaseId;
 
 
  
 public class ProductsModuleTest extends PageFactoryInitializer{
 	SearchDataPropertyFile data = new SearchDataPropertyFile();
-	HashMap<String, String> loginData;
-	Boolean deletionStatus=false;
+	Hashtable<String, String> loginData;
+	Hashtable<String, String> creationData;
 	
-	@Factory(dataProvider="loginTestData", dataProviderClass=SearchData.class)
-	public ProductsModuleTest(String userName, String password, String welcomMessage){
-		loginData=new HashMap<String, String>();
+	final String productCreationDependent="ProductCreationDependent";
+	final String productCreation="ProductCreation";
+	
+	@Factory(dataProvider="ProductCreationTest", dataProviderClass=SearchData.class)
+	public ProductsModuleTest(String userName, String password, String welcomMessage, String productName, String productNumber, String successMessageProductCreation,
+			String prodcutSearchErrorMessage){
+		loginData=new Hashtable<String, String>();
 		loginData.put("userName", userName);
 		loginData.put("password", password);
 		loginData.put("welcomeMessage", welcomMessage);
+		
+		creationData=new Hashtable<String, String>();
+		creationData.put("productName", productName);
+		creationData.put("productNumber", productNumber+new RandomGenerator().random(6, PermittedCharacters.NUMERIC));
+		creationData.put("successMessageProductCreation", successMessageProductCreation);
+		creationData.put("prodcutSearchErrorMessage", prodcutSearchErrorMessage);
 	}
-
-
 		
 	@Features(value = {"Products Module"})
 	@Description("Verification of 'Products' page")
 	@TestCaseId("TC_PRODUCTS_001")
 	@Test(groups={"regression"}, dataProvider="ProductsModuleTest",dataProviderClass=SearchData.class)
 	public void TC_PRODUCTS_001(String breadCrumbsList) throws Exception{
-	
-
 		
 		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin();
 		homePage()
@@ -75,6 +89,23 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 	}
 	
 	@Features(value = {"Products Module"})
+	@Description("Verification of adding new product")
+	@TestCaseId("TC_PRODUCTS_003")
+	@Test(groups={"regression", "ProductCreation" })
+	public void TC_PRODUCTS_003() throws Exception{
+
+		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin().
+		
+		homePage()
+		.clickOnProductsLink()
+		.clickOnAddNewProductLink()
+		.enterProductName(creationData.get("productName"))
+		.enterProductNumber(creationData.get("productNumber"))
+		.clickOnProducSaveButtonLink()
+		.verifyProductSavedSuccessMessage(creationData.get("successMessageProductCreation"));
+	}
+	
+	@Features(value = {"Products Module"})
 	@Description("Verification of 'Edit Product' page")
 	@TestCaseId("TC_PRODUCTS_004")
 	@Test(groups={"regression"}, dataProvider="ProductsModuleTest",dataProviderClass=SearchData.class)
@@ -87,7 +118,6 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		.productsPage()
 		.clickOnAddNewProductLink()
 		.clickOnFirstEditProduct()
-		.editProductsPage()
 		.verifyProductsPageTabs(productsTabNames.split(","));
 	}
 
@@ -115,6 +145,10 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 			String successMessageProductCreation,String editProductName, String productUpdateSuccessMessage,
 			String successMessageProductRemove) throws Exception{
 
+			productName+=new RandomGenerator().random(3, PermittedCharacters.NUMERIC);
+			productNumber+=new RandomGenerator().random(6, PermittedCharacters.NUMERIC);
+			editProductName+=new RandomGenerator().randomAlphabetic(3);
+			
 			landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin().
 
 			homePage()
@@ -138,8 +172,8 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 			.enterProductNameInSearchField(editProductName)
 			.clickOnSearchButton()
 			.verifyProductNameAfterSearchingIt(editProductName)
-			.clickOnRemoveProduct()
-			.alertToAccept();
+			.clickOnRemoveProduct(productNumber)
+			.acceptAlert();
 	}
 	
 	@Features(value = {"Products Module"})
@@ -181,483 +215,290 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		.verifyOverwriteImageTextInAddNewProductImage();
 	}
 	
-	@Features(value = {"Products Module"})
-	@Description("Verification of adding product image using image URL")
-	@TestCaseId("TC_PRODUCTS_009")
-	@Test(groups={"regression"}, dataProvider="ProductsModuleTest",dataProviderClass=SearchData.class)
-	public void TC_PRODUCTS_009(String productName, String productNumber,
-			String successMessageProductCreation,String imageDescription, String productImageURL,String imageURLSuccessfulMessage,
-			String successMessageProductRemove) throws Exception{
+	@Test(groups = { "ProductCreationDependent" },dependsOnGroups= {"ProductCreation"})
+	public class ProductCreationDependent {
 
-		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin().
 
-		homePage()
-		.clickOnProductsLink()
-		.productsPage()
-		.clickOnAddNewProductLink()
-		.enterProductName(productName)
-		.enterProductNumber(productNumber)
-		.clickOnProducSaveButtonLink()
-		.verifyProductSavedSuccessMessage(successMessageProductCreation)
-		.enterTheProductNameInSearchField(productName)
-		.clickOnSearchButton()
-		.verifyProductNameAfterSearchingIt(productName)
-		.clickOnFirstEditProduct()
-		.editProductsPage()
-		.clickOnProductImagesTab()
-		.clickOnAddNewProductImage()
-		.enterImageDescField(imageDescription)
-		.enterProductImageURLField(productImageURL)
-		.clickOnSaveImageURLLink()
-		.verifyImageURLSavedSuccessfulMessage(imageURLSuccessfulMessage)
-		.homePage()
-		.clickOnProductsLink()
-		.productsPage()
-		.enterTheProductNameInSearchField(productName)
-		.clickOnSearchButton()
-		.verifyProductNameAfterSearchingIt(productName)
-		.clickOnRemoveProduct()
-		.alertToAccept()
-		.verifySuccessMessageAfterDeletionProduct(successMessageProductRemove);	
-	}
-	
+		@Features(value = {"Products Module"})
+		@Description("Verification of adding product image using image URL")
+		@TestCaseId("TC_PRODUCTS_009")
+		@Test(groups={"regression", "ProductItemCreation"}, dataProvider="ProductsModuleTest",dataProviderClass=SearchData.class )
+		public void TC_PRODUCTS_009(String imageDescription, String productImageURL,String imageURLSuccessfulMessage) throws Exception{
 
-	@Features(value = {"Products Module"})
-	@Description("This is a test case which verifies adding product image using 'Upload Product Image")
-	@TestCaseId("TC_PRODUCTS_010")
-	@Test(groups={"regression"})
-	public void verifyAddProductImageUsingUploadImage(String testCaseId, String productName,String productNumber, String successMessageProductCreation, String imageFilePath,
-			String successMessageProductRemove) throws Exception{
-		File file = new File(imageFilePath);
-		//System.out.println(file.getAbsolutePath());
+			landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin().
+			
+			homePage()
+			.clickOnProductsLink()
+			.enterTheProductNameInSearchField(creationData.get("productName"))
+			.clickOnSearchButton()
+			.verifyProductNameAfterSearchingIt(creationData.get("productName"))
+			.clickOnFirstEditProduct()
+			.clickOnProductImagesTab()
+			.clickOnAddNewProductImage()
+			.enterImageDescField(imageDescription)
+			.enterProductImageURLField(productImageURL)
+			.clickOnSaveImageURLLink()
+			.verifyImageMessage(imageURLSuccessfulMessage);
+		}
 
-		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin().
+		@Features(value = {"Products Module"})
+		@Description("Verification of adding product image using 'Upload Product Image'")
+		@TestCaseId("TC_PRODUCTS_010")
+		@Issue("Need to implement Auto IT scripts")
+		@Test(groups={"regression"}, dataProvider="ProductsModuleTest",dataProviderClass=SearchData.class,enabled=false)
+		public void TC_PRODUCTS_010(String imageFilePath,String imageUploadSuccessfulMessage) throws Exception{
+			
+			File file = new File(imageFilePath);
 
+			System.out.println(file.getAbsolutePath());
+			landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin().
+
+			homePage()
+			.clickOnProductsLink()
+			.clickOnAddNewProductLink()
+			.enterTheProductNameInSearchField(creationData.get("productName"))
+			.clickOnSearchButton()
+			.verifyProductNameAfterSearchingIt(creationData.get("productName"))
+			.clickOnFirstEditProduct()
+			.clickOnProductImagesTab()
+			.clickOnAddNewProductImage()
+			.clickOnProductImageFileUpload()
+			.enterFileLocationInUploadDialogbox(file.getAbsolutePath())
+			.clickOnUploadImageLink()
+			.verifyImageMessage(imageUploadSuccessfulMessage);
+		}
+
+		@Features(value = {"Products Module"})
+		@Description("Verification of removing the added product image")
+		@TestCaseId("TC_PRODUCTS_011")
+		@Issue("Added product Image doesn't show up")
+		@Test(groups={"regression"},dataProvider="ProductsModuleTest",dataProviderClass=SearchData.class, dependsOnGroups={"ProductItemCreation"})
+		public void TC_PRODUCTS_011(String imageRemoveSuccessMessage) throws Exception{
+
+			landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin().
+
+			homePage()
+			.clickOnProductsLink()
+			.productsPage()
+			.enterTheProductNameInSearchField(creationData.get("productName"))
+			.clickOnSearchButton()
+			.verifyProductNameAfterSearchingIt(creationData.get("productName"))
+			.clickOnFirstEditProduct()
+			.clickOnProductImagesTab()
+			.clickOnRemoveProductImage()
+			.acceptAlert()
+			.verifyImageMessage(imageRemoveSuccessMessage);
+		}
 		
+		@Features(value = {"Products Module"})
+		@Description("Verification of assigning items to product")
+		@TestCaseId("TC_PRODUCTS_013")
+		@Test(groups={"regression"}, dataProvider="ProductsModuleTest",dataProviderClass=SearchData.class)
+		public void TC_PRODUCTS_013(String expectedItemAssignSuccessMessage) throws Exception{
+			landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin();
+			
+			String itemAdded=homePage()
+			.clickOnProductsLink()
+			.enterTheProductNameInSearchField(creationData.get("productName"))
+			.clickOnSearchButton()
+			.verifyProductNameAfterSearchingIt(creationData.get("productName"))
+			.clickOnFirstEditProduct()
+			.clickOnItemsListTab()
+			.dragAndDropTheItemsToProduct()
+			.clickOnSaveButton()
+			.verifyItemsAssignSuccessMessage(expectedItemAssignSuccessMessage.trim(),creationData.get("productName"))
+			.fetchTheAddedItem();	
+			creationData.put("associatedItem", itemAdded);
+		}
 
-		homePage()
-		.clickOnProductsLink()
-		.productsPage()
-		.clickOnAddNewProductLink()
-		.enterProductName(productName)
-		.enterProductNumber(productNumber)
-		.clickOnProducSaveButtonLink()
-		.verifyProductSavedSuccessMessage(successMessageProductCreation)
-		.enterTheProductNameInSearchField(productName)
-		.clickOnSearchButton()
-		.verifyProductNameAfterSearchingIt(productName)
-		.clickOnFirstEditProduct()
-		.editProductsPage()
-		.clickOnProductImagesTab()
-		.clickOnAddNewProductImage()
-		.verifyFileUpload(file.getAbsolutePath())
-		.clickOnUploadImageLink()
-		.homePage()
-		.clickOnProductsLink()
-		.productsPage()
-		.enterTheProductNameInSearchField(productName)
-		.clickOnSearchButton()
-		.verifyProductNameAfterSearchingIt(productName)
-		.clickOnRemoveProduct()
-		.alertToAccept()
-		.verifySuccessMessageAfterDeletionProduct(successMessageProductRemove);		
-	}
-	
-	@Features(value = {"Products Module"})
-	@Description("This is a test case which verifies removing the added product image")
-	@TestCaseId("TC_PRODUCTS_011")
-	@Test(groups={"regression"})
-	public void verifyRemoveAddedProductImage(String testCaseId, String productName,String productNumber, String successMessageProductCreation, String imageDescription,
-			String productImageURLField,String imageURLSuccessfulMessage,String successMessageProductRemove) throws Exception{
+		@Features(value = {"Products Module"})
+		@Description("Verification of 'Cancel' button in alert message")
+		@TestCaseId("TC_PRODUCTS_016")
+		@Test(groups={"regression"})
+		public void TC_PRODUCTS_016() throws Exception{
+			landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin()
+			
+			.homePage()
+			.clickOnProductsLink()
+			.enterTheProductNameInSearchField(creationData.get("productName"))
+			.clickOnSearchButton()
+			.verifyProductNameAfterSearchingIt(creationData.get("productName"))
+			.clickOnRemoveProduct(creationData.get("productName"))
+			.cancelAlert()
+			.verifyProductNameAfterSearchingIt(creationData.get("productName"));		
+		}
 
-		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin().
-
+		@Features(value = {"Products Module"})
+		@Description("Verification of preview product's item page")
+		@TestCaseId("TC_PRODUCTS_017")
+		@Test(groups={"regression"}, dependsOnMethods= {"TC_PRODUCTS_013"})
+		public void TC_PRODUCTS_017() throws Exception{
 		
+			landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin()
+			.homePage()
+			.clickOnProductsLink()
+			.enterTheProductNameInSearchField(creationData.get("productName"))
+			.clickOnSearchButton()
+			.verifyProductNameAfterSearchingIt(creationData.get("productName"))
+			.clickOnPreviewItemLink()
+			.verifyItemName(creationData.get("associatedItem"));
+			
+		}
+		
+		@Features(value = {"Products Module"})
+		@Description("Verification of 'Edit Item' icon in product's item page")
+		@TestCaseId("TC_PRODUCTS_018")
+		@Test(groups={"regression"},dataProvider="ProductsModuleTest",dataProviderClass=SearchData.class, dependsOnMethods= {"TC_PRODUCTS_013"})
+		public void TC_PRODUCTS_018(String expectedItemsTableHeaderTitles) throws Exception{
+			
+			landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin()
+			
+			.homePage()
+			.clickOnProductsLink()
+			.enterTheProductNameInSearchField(creationData.get("productName"))
+			.clickOnSearchButton()
+			.verifyProductNameAfterSearchingIt(creationData.get("productName"))
+			.clickOnPreviewItemLink()
+			.clickOnFirstItemEditIcon()
+			.verifyItemsTableHeaders(expectedItemsTableHeaderTitles.split(","));
+		}
+		
+		@Features(value = {"Products Module"})
+		@Description("Verification of 'Copy of Item' icon in product's item page")
+		@TestCaseId("TC_PRODUCTS_020")
+		@Test(groups={"regression"}, dataProvider="ProductsModuleTest",dataProviderClass=SearchData.class, dependsOnMethods= {"TC_PRODUCTS_013"})
+		public void TC_PRODUCTS_020(String itemPartNumber, String numberOfCopiesForItem) throws Exception{
+			landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin()
+			
+			.homePage()
+			.clickOnProductsLink()
+			.enterTheProductNameInSearchField(creationData.get("productName"))
+			.clickOnSearchButton()
+			.verifyProductNameAfterSearchingIt(creationData.get("productName"))
+			.clickOnPreviewItemLink()
+			.clickOnCopyIcon()
+			.enterPartNumber(itemPartNumber)
+			.enterNumerOfCopies(numberOfCopiesForItem)
+			.clickOnSaveIconOfCopiedItem()
+			.acceptAlert();
+			
+			int numberOfItems=Integer.parseInt(numberOfCopiesForItem);
+			
+			homePage()
+			.enterTextInSearchField(itemPartNumber)
+			.clickOnSearchIcon();
+			
+			for(int i=1;i<=numberOfItems;i++){
+				itemsPage()
+				.verifyItemSearchResults(itemPartNumber + " - Copy" + i)
+				.clickOnRemoveItem(itemPartNumber + " - Copy" + i)
+				.acceptAlert();
+			}
+		}
 
-		homePage()
-		.clickOnProductsLink()
-		.productsPage()
-		.clickOnAddNewProductLink()
-		.enterProductName(productName)
-		.enterProductNumber(productNumber)
-		.clickOnProducSaveButtonLink()
-		.verifyProductSavedSuccessMessage(successMessageProductCreation)
-		.enterTheProductNameInSearchField(productName)
-		.clickOnSearchButton()
-		.verifyProductNameAfterSearchingIt(productName)
-		.clickOnFirstEditProduct()
-		.editProductsPage()
-		.clickOnProductImagesTab()
-		.clickOnAddNewProductImage()
-		.enterImageDescField(imageDescription)
-		.enterProductImageURLField(productImageURLField)
-		.clickOnSaveImageURLLink()
-		.verifyImageURLSavedSuccessfulMessage(imageURLSuccessfulMessage)
-		.clickOnRemoveProductImage()
-		.alertToAccept()
-		.homePage()
-		.clickOnProductsLink()
-		.productsPage()
-		.enterTheProductNameInSearchField(productName)
-		.clickOnSearchButton()
-		.verifyProductNameAfterSearchingIt(productName)
-		.clickOnRemoveProduct()
-		.alertToAccept()
-		.verifySuccessMessageAfterDeletionProduct(successMessageProductRemove);		
+		@Features(value = {"Products Module"})
+		@Description("Verification of 'Delink Item' from the assigned product")
+		@TestCaseId("TC_PRODUCTS_021")
+		@Test(groups={"regression"}, dependsOnMethods= {"TC_PRODUCTS_013"})
+		public void TC_PRODUCTS_021() throws Exception{
+			landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin()
+			
+			.homePage()
+			.clickOnProductsLink()
+			.enterTheProductNameInSearchField(creationData.get("productName"))
+			.clickOnSearchButton()
+			.verifyProductNameAfterSearchingIt(creationData.get("productName"))
+			.clickOnPreviewItemLink()
+			.clickOnDelinkItemIcon()
+			.acceptAlert();
+		}
+		
 	}
 	
 	@Features(value = {"Products Module"})
-	@Description("This is a test case which verifies Item List")
+	@Description("Verification of 'Item List' tab")
 	@TestCaseId("TC_PRODUCTS_012")
 	@Test(groups={"regression"})
-	public void verifyItemListTab() throws Exception{
+	public void TC_PRODUCTS_012() throws Exception{
 
 		landingPage()
 		.enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin();
 		homePage()
 		.clickOnProductsLink()
-		.productsPage()
 		.clickOnFirstEditProduct()
-		.editProductsPage()
 		.clickOnItemListTab()
 		.verifySearchIconLocator()
 		.verifySearchForItemsListField()
+		.verifySearchInDropDown()
 		.verifyManufacturerDropDown()
 		.verifyBrandDropDown()
 		.verifySaveIcon()
-		.verifyitemListTab();
+		.verifyItemList();
 	}
-	
+		
 	@Features(value = {"Products Module"})
-	@Description("This is a test case which verifies assigned items to product")
-	@TestCaseId("TC_PRODUCTS_013")
-	@Test(groups={"regression"})
-	public void verificationOfAssigningItemsToProduct(String testCaseId, String productName, String productNumber,
-			String newProductCreationSuccesfulMessage, String expectedSuccessfulMessageAfterDeletionOfProduct) throws Exception{
-		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin()
-		.homePage()
-		.clickOnProductsLink()
-		.productsListPage()
-		.clickOnPlusSymbolToCreateProduct()
-		.addNewProductPage()
-		.enterTheProductName(productName)
-		.enterTheProductNumber(productNumber)
-		.clickOnSaveButton()
-		.verifySuccesfulMessageAfterCreationOfNewProduct(newProductCreationSuccesfulMessage)
-		.productsListPage()
-		.enterTheProductNameInSearchField(productName)
-		.clickOnSearchButton()
-		.verifyProductPresent(productName)
-		.editProductPage()
-		.clickOnEditIcon()
-		.clickOnItemsListTab()
-		.dragAndDropTheItemsToProduct()
-		.clickOnSaveButton()
-		.verifySuccesfulMessageAfterItemAssign(productName)
-		.homePage()
-		.clickOnProductsLink()
-		.productsListPage()
-		.enterTheProductNameInSearchField(productName)
-		.clickOnSearchButton()
-		.verifyProductPresent(productName)
-		.clickOnRemoveProduct(productName)
-		.cancelAlert()
-		.homePage()
-		.clickOnProductsLink()
-		.productsListPage()
-		.enterTheProductNameInSearchField(productName)
-		.clickOnSearchButton()
-		.verifyProductPresent(productName)
-		.clickOnRemoveProduct(productName)
-		.acceptAlert()
-		.verifySuccessfulMessageAfterDeletion(expectedSuccessfulMessageAfterDeletionOfProduct);
-	
-	}
-
-	@Features(value = {"Products Module"})
-	@Description("This is a test case which gives Verification of alert message when remove icon is clicked in the product list page")
+	@Description("Verification of alert message when remove icon is clicked in the product list page")
 	@TestCaseId("TC_PRODUCTS_014")
-	@Test(groups={"regression"})
-	public void VerificationOfAlertMessage(String testCaseId, String productName, String productNumber,
-			String newProductCreationSuccesfulMessage, String expectedSuccessfulMessageAfterDeletionOfProduct) throws InterruptedException, Exception{
+	@Test(groups={"regression", productCreationDependent},dependsOnGroups=productCreation)
+	public void TC_PRODUCTS_014() throws InterruptedException, Exception{
 		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin()
 		.homePage()
 		.clickOnProductsLink()
-		.productsListPage()
-		.clickOnPlusSymbolToCreateProduct()
-		.addNewProductPage()
-		.enterTheProductName(productName)
-		.enterTheProductNumber(productNumber)
-		.clickOnSaveButton()
-		.verifySuccesfulMessageAfterCreationOfNewProduct(newProductCreationSuccesfulMessage)
-		.productsListPage()
-		.enterTheProductNameInSearchField(productName)
+		.enterTheProductNameInSearchField(creationData.get("productName"))
 		.clickOnSearchButton()
-		.verifyProductPresent(productName)
-		.clickOnRemoveProduct(productName)
-		.veryfyAlert()
-		.acceptAlert()
-		.verifySuccessfulMessageAfterDeletion(expectedSuccessfulMessageAfterDeletionOfProduct);
+		.clickOnRemoveProduct(creationData.get("productName"))
+		.verifyAlert(creationData.get("productName"));
 			
 	}
 
 	@Features(value = {"Products Module"})
-	@Description("This is a test case which gives Verification of creation and removing the product from the list")
+	@Description("Verification of removing the product from the list")
 	@TestCaseId("TC_PRODUCTS_015")
-	@Test(groups={"regression"})
-	public void verificationOfRemovingTheProductFromTheList(String testCaseId, String productName, String productNumber,
-			String successMessageProductCreation,String editProductName, String successMessageProductRemove) throws Exception{
+	@Test(groups={"regression"},dataProvider="ProductsModuleTest",dataProviderClass=SearchData.class,dependsOnGroups = {"ProductCreationDependent.*"},alwaysRun=true)
+	public void TC_PRODUCTS_015(String successMessageProductRemove) throws Exception{
 		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin()
 		.homePage()
 		.clickOnProductsLink()
 		.productsListPage()
-		.clickOnPlusSymbolToCreateProduct()
-		.addNewProductPage()
-		.enterTheProductName(productName)
-		.enterTheProductNumber(productNumber)
-		.clickOnSaveButton()
-		.verifySuccesfulMessageAfterCreationOfNewProduct(successMessageProductCreation)
-		.productsListPage()
-		.enterTheProductNameInSearchField(productName)
+		.enterTheProductNameInSearchField(creationData.get("productName"))
 		.clickOnSearchButton()
-		.verifyProductPresent(productName)
-		.editProductPage()
-		.clickOnEditIcon()
-		.clickOnItemsListTab()
-		.dragAndDropTheItemsToProduct()
-		.clickOnSaveButton()
-		.verifySuccesfulMessageAfterItemAssign(productName)
-		.homePage()
-		.clickOnProductsLink()
-		.productsListPage()
-		.enterTheProductNameInSearchField(productName)
-		.clickOnSearchButton()
-		.verifyProductPresent(productName)
-		.clickOnRemoveProduct(productName)
+		.verifyProductPresent(creationData.get("productName"))
+		.clickOnRemoveProduct(creationData.get("productName"))
 		.acceptAlert()
 		.verifySuccessfulMessageAfterDeletion(successMessageProductRemove);
 	}
+		
 	@Features(value = {"Products Module"})
-	@Description("This is a test case which gives Verification of cancel the alert")
-	@TestCaseId("TC_PRODUCTS_016")
-	@Test(groups={"regression"})
-	public void verificationOfCancelTheAlert(String testCaseId, String productName, String productNumber,
-			String successMessageProductCreation,String editProductName, String successMessageProductRemove) throws Exception{
-		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin()
-		
-		.homePage()
-		.clickOnProductsLink()
-		.productsListPage()
-		.clickOnPlusSymbolToCreateProduct()
-		.addNewProductPage()
-		.enterTheProductName(productName)
-		.enterTheProductNumber(productNumber)
-		.clickOnSaveButton()
-		.verifySuccesfulMessageAfterCreationOfNewProduct(successMessageProductCreation)
-		.productsListPage()
-		.enterTheProductNameInSearchField(productName)
-		.clickOnSearchButton()
-		.verifyProductPresent(productName)
-		.editProductPage()
-		.clickOnEditIcon()
-		.clickOnItemsListTab()
-		.dragAndDropTheItemsToProduct()
-		.clickOnSaveButton()
-		.verifySuccesfulMessageAfterItemAssign(productName)
-		.homePage()
-		.clickOnProductsLink()
-		.productsListPage()
-		.enterTheProductNameInSearchField(productName)
-		.clickOnSearchButton()
-		.verifyProductPresent(productName)
-		.clickOnRemoveProduct(productName)
-		.cancelAlert()
-		.homePage()
-		.clickOnProductsLink()
-		.productsListPage()
-		.enterTheProductNameInSearchField(productName)
-		.clickOnSearchButton()
-		.verifyProductPresent(productName)
-		.clickOnRemoveProduct(productName)
-		.acceptAlert()
-		.verifySuccessfulMessageAfterDeletion(successMessageProductRemove);
-		
-	}
-	@Features(value = {"Products Module"})
-	@Description("This is a test case which gives Verification of preview product's item page")
-	@TestCaseId("TC_PRODUCTS_017")
-	@Test(groups={"regression"})
-	public void verificationOfPreviewProductsItems(String testCaseId, String productName, String expectedItemsPageTitle) throws Exception{
-		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin()
-		.homePage()
-		.clickOnProductsLink()
-		.productsListPage()
-		.enterTheProductNameInSearchField(productName)
-		.clickOnSearchButton()
-		.verifyProductPresent(productName)
-		.editProductPage()
-		.clickOnEditIcon()
-		.clickOnItemsListTab()
-		.dragAndDropTheItemsToProduct()
-		.clickOnSaveButton()
-		.verifySuccesfulMessageAfterItemAssign(productName)
-		.homePage()
-		.clickOnProductsLink()
-		.productsListPage()
-		.enterTheProductNameInSearchField(productName)
-		.clickOnSearchButton()
-		.verifyProductPresent(productName)
-		.clickPreviewItemLink()
-		.productItemPage()
-		.clickOnEditItemIcon()
-		.verifyItemsPage(expectedItemsPageTitle);
-		
-		
-		
-	}
-	@Features(value = {"Products Module"})
-	@Description("This is a test case which gives Verification of 'Edit Item' icon in product's item page")
-	@TestCaseId("TC_PRODUCTS_018_019")
-	@Test(groups={"regression"})
-	public void verificationOfEditItemIconInProductItemsPage(String testCaseId, String productName, String expectedItemsTableHeaderTitles) throws Exception{
-		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin()
-		.homePage()
-		.clickOnProductsLink()
-		.productsListPage()
-		.enterTheProductNameInSearchField(productName)
-		.clickOnSearchButton()
-		.verifyProductPresent(productName)
-		.editProductPage()
-		.clickOnEditIcon()
-		.clickOnItemsListTab()
-		.dragAndDropTheItemsToProduct()
-		.clickOnSaveButton()
-		.verifySuccesfulMessageAfterItemAssign(productName)
-		.homePage()
-		.clickOnProductsLink()
-		.productsListPage()
-		.enterTheProductNameInSearchField(productName)
-		.clickOnSearchButton()
-		.verifyProductPresent(productName)
-		.clickPreviewItemLink()
-		.productItemPage()
-		.verifyItemsTableHeaders(expectedItemsTableHeaderTitles.split(","));
-		
-		
-		
-		
-		
-		
-	}
-	
-	@Features(value = {"Products Module"})
-	@Description("This is a test case which gives Verification Copy of Item' icon in product's item page")
-	@TestCaseId("TC_PRODUCTS_020")
-	@Test(priority=1,groups={"regression"})
-	public void verificationOfCopyOfItemIconInProductItemPage(String testCaseId, String productName, String itemPartNumber, String numberOfCopiesForItem) throws Exception{
-		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin()
-		.homePage()
-		.clickOnProductsLink()
-		.productsListPage()
-		.enterTheProductNameInSearchField(productName)
-		.clickOnSearchButton()
-		.verifyProductPresent(productName)
-		.editProductPage()
-		.clickOnEditIcon()
-		.clickOnItemsListTab()
-		.dragAndDropTheItemsToProduct()
-		.clickOnSaveButton()
-		.verifySuccesfulMessageAfterItemAssign(productName)
-		.homePage()
-		.clickOnProductsLink()
-		.productsListPage()
-		.enterTheProductNameInSearchField(productName)
-		.clickOnSearchButton()
-		.verifyProductPresent(productName)
-		.clickPreviewItemLink()
-		.productItemPage()
-		.clickOnCopyIcon()
-		.enterPartNumber(itemPartNumber)
-		.enterNumerOfCopies(numberOfCopiesForItem)
-		.clickOnsaveIconFoCopiedItem()
-		.productsListPage().acceptAlert()
-		.homePage().searchForCreatedItem(itemPartNumber)
-		.itemsPage().verifyAndRemoveItem(itemPartNumber);
-		
-		
-	}
-	@Features(value = {"Products Module"})
-	@Description("This is a test case which gives Verification Delink of Item from products")
-	@TestCaseId("TC_PRODUCTS_021")
-	@Test(groups={"regression"})
-	public void verificationOfEditIconInProductItemsPage(String testCaseId, String productName,String productNumber, String newProductCreationSuccesfulMessage, String expectedSuccessfulMessageAfterDeletionOfProduct) throws Exception{
-		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin()
-		.homePage()
-		.clickOnProductsLink()
-		.productsListPage()
-		.clickOnPlusSymbolToCreateProduct()
-		.addNewProductPage()
-		.enterTheProductName(productName)
-		.enterTheProductNumber(productNumber)
-		.clickOnSaveButton()
-		.verifySuccesfulMessageAfterCreationOfNewProduct(newProductCreationSuccesfulMessage)
-		.productsListPage()
-		.enterTheProductNameInSearchField(productName)
-		.clickOnSearchButton()
-		.verifyProductPresent(productName)
-		.editProductPage()
-		.clickOnEditIcon()
-		.clickOnItemsListTab()
-		.dragAndDropTheItemsToProduct()
-		.clickOnSaveButton()
-		.verifySuccesfulMessageAfterItemAssign(productName)
-		.homePage()
-		.clickOnProductsLink()
-		.productsListPage()
-		.enterTheProductNameInSearchField(productName)
-		.clickOnSearchButton()
-		.verifyProductPresent(productName)
-		.clickPreviewItemLink()
-		.clickOnDelinkItemIcon()
-		.acceptAlert()
-		.homePage()
-		.clickOnProductsLink()
-		.productsListPage()
-		.enterTheProductNameInSearchField(productName)
-		.clickOnSearchButton()
-		.verifyProductPresent(productName)
-		.clickOnRemoveProduct(productName)
-		.acceptAlert()
-		.verifySuccessfulMessageAfterDeletion(expectedSuccessfulMessageAfterDeletionOfProduct);
-		
-		
-	}
-	
-	
-	@Features(value = {"Products Module"})
-	@Description("This is a test case which gives Verification of 'Display Records' in Products page")
+	@Description("Verification of 'Display Records' in Products page")
 	@TestCaseId("TC_PRODUCTS_022")
 	@Test(groups={"regression"})
-	public void verifyDisplayOfNumberRecordsChosenInProductsPage() throws Exception
+	public void TC_PRODUCTS_022() throws Exception
 	{	
 			data.setNumberOfRecordsToDisplay("10");
 			landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin()
 			.homePage()
 			.clickOnProductsLink()
-			.productsListPage()
 			.selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
 			.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
+			
 			data.setNumberOfRecordsToDisplay("25");
-			productsListPage().selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
+			productsPage()
+			.selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
 			.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
+			
 			data.setNumberOfRecordsToDisplay("50");
-			productsListPage().selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
+			productsPage()
+			.selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
 			.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
+			
 			data.setNumberOfRecordsToDisplay("75");
-			productsListPage().selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
+			productsPage()
+			.selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
 			.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
+			
 			data.setNumberOfRecordsToDisplay("100");
-			productsListPage().selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
+			productsPage()
+			.selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
 			.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
 	}
 

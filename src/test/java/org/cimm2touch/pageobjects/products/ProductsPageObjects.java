@@ -3,6 +3,8 @@ package org.cimm2touch.pageobjects.products;
 import java.util.List;
 
 import org.cimm2touch.initializer.PageFactoryInitializer;
+import org.cimm2touch.pageobjects.items.EditItemsPageObjects;
+import org.cimm2touch.pageobjects.items.ItemsPageObjects;
 import org.cimm2touch.utils.SearchDataPropertyFile;
 import org.framework.utils.PermittedCharacters;
 import org.framework.utils.RandomGenerator;
@@ -10,12 +12,11 @@ import org.framework.utils.TestUtility;
 import org.framework.utils.Waiting;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
-
-import org.cimm2touch.pageobjects.items.EditItemsPageObjects;
-
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
 import ru.yandex.qatools.allure.annotations.Step;
@@ -62,9 +63,6 @@ public class ProductsPageObjects extends PageFactoryInitializer {
 
 	@FindBy(xpath = "(//div[@class='search list-search']/ul/li)[2]")
 	private WebElement searchButton;
-
-	@FindBy(xpath = "//input[@title='Remove Product']")
-	private WebElement removeProductLink;
 
 	@FindBy(xpath = "//span[contains(text(),'Product deleted successfully')]")
 	private WebElement deletedSuccessfulMessageOfProductLocator;
@@ -114,6 +112,28 @@ public class ProductsPageObjects extends PageFactoryInitializer {
 	@FindBy(xpath = "//div[contains(text(),'Display ')]/select")
 	private WebElement displayRecordsLocator;
 
+	@FindBy(xpath = "//a[contains(@title,'Preview')]")
+	private WebElement itemPreviewLink;
+
+	@FindBy(xpath = "//input[@title='delink Item']")
+	private WebElement delinkItemLink;
+
+	@FindBy(xpath = "//input[@title='Edit Item']")
+	private WebElement productItemsEditItemLink;
+
+	@FindBy(xpath = "//input[@title='Copy Of Item']")
+	private WebElement productItemsCopyItemLink;
+
+	@FindBy(xpath = "//a[@title='Add New Product']")
+	private WebElement creatingProductLink;
+
+	@FindBy(xpath = "//div[contains(@class,'centerPanelRightIcons')]/select")
+	private WebElement selectRecordsDropdownInProductsLocator;
+
+	@FindAll(value = {
+			@FindBy(xpath = "//tbody[@id='listProductForm:productTableID:tb']//tr[contains(@class,'rich-table-row')]") })
+	private List<WebElement> productsListLocator;
+
 	@Step("Click on add new product")
 	public ProductsPageObjects clickOnAddNewProductLink() throws Exception {
 
@@ -132,15 +152,13 @@ public class ProductsPageObjects extends PageFactoryInitializer {
 
 	@Step("Click on search button")
 	public ProductsPageObjects clickOnSearchButton() throws InterruptedException {
-
 		waiting.explicitWaitVisibilityOfElement(searchButton, 15);
 		searchButton.click();
 		return this;
 	}
 
 	@Step("Accept alert popup")
-	public ProductsPageObjects alertToAccept() {
-
+	public ProductsPageObjects acceptAlert() {
 		waiting.explicitWaitForAlert(15);
 		tu.alertAccept();
 		return this;
@@ -149,45 +167,49 @@ public class ProductsPageObjects extends PageFactoryInitializer {
 	@Step("Verify the Product removal message is \'{0}\'")
 	public ProductsPageObjects verifySuccessMessageAfterDeletionProduct(String productRemovedSuccessfulMessage) {
 
-		waiting.explicitWaitVisibilityOfElement(deletedSuccessfulMessageOfProductLocator, 15);
+		waiting.explicitWaitVisibilityOfElement(deletedSuccessfulMessageOfProductLocator, 20);
 		Assert.assertEquals(deletedSuccessfulMessageOfProductLocator.getText().trim().toLowerCase(),
-				productRemovedSuccessfulMessage.trim().toLowerCase(), "Message was displayed incorrectly for Product removal.");
+				productRemovedSuccessfulMessage.trim().toLowerCase(),
+				"Message was displayed incorrectly for Product removal.");
 		return this;
 	}
 
-/*	@Step("Verify the Product name is \'{0}\'")
-	public ProductsPageObjects verifyProduct(String productName) {
-
-		waiting.explicitWaitVisibilityOfElement(By.xpath("//td[contains(text(),'" + productName + "')]"), 15);
-		Assert.assertEquals(
-				getDriver().findElement(By.xpath("//td[contains(text(),'" + productName + "')]")).getText(),
-				productName,"Searching for product has failed.");
-		return this;
-	}*/
+	/*
+	 * @Step("Verify the Product name is \'{0}\'") public ProductsPageObjects
+	 * verifyProduct(String productName) {
+	 * 
+	 * waiting.explicitWaitVisibilityOfElement(By.xpath("//td[contains(text(),'"
+	 * + productName + "')]"), 15); Assert.assertEquals(
+	 * getDriver().findElement(By.xpath("//td[contains(text(),'" + productName +
+	 * "')]")).getText(), productName,"Searching for product has failed.");
+	 * return this; }
+	 */
 
 	@Step("Enter the Product Name in search field as \'{0}\'")
 	public ProductsPageObjects enterProductNameInSearchField(String productName) {
 
-		waiting.explicitWaitVisibilityOfElement(productSearchPlaceHolder, 15);
+		waiting.explicitWaitVisibilityOfElement(productSearchPlaceHolder, 20);
 		productSearchPlaceHolder.sendKeys(productName);
 		return this;
 	}
-	
-	@Step("Verify the product name is \'{0}\'")
-	public ProductsPageObjects verifyProductNameAfterSearchingIt(String updateProductName) {
 
-		waiting.explicitWaitVisibilityOfElement(By.xpath("//td[contains(text(),'" + updateProductName + "')]"), 15);
-		Assert.assertEquals(
-				getDriver().findElement(By.xpath("//td[contains(text(),'" + updateProductName + "')]")).getText(),
-				updateProductName,"Searching for product has failed.");
+	@Step("Verify the product name is \'{0}\'")
+	public ProductsPageObjects verifyProductNameAfterSearchingIt(String productName) {
+
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//td[contains(text(),'" + productName + "')]"), 25);
+		Assert.assertEquals(getDriver().findElement(By.xpath("//td[contains(text(),'" + productName + "')]")).getText(),
+				productName, "Searching for product has failed.");
 		return this;
 	}
 
-	@Step("Click on Remove Product")
-	public ProductsPageObjects clickOnRemoveProduct() {
+	@Step("Click on Remove Product of product: {0}")
+	public ProductsPageObjects clickOnRemoveProduct(String productName) throws InterruptedException {
 
-		waiting.explicitWaitVisibilityOfElement(removeProductLink, 15);
-		removeProductLink.click();
+		Thread.sleep(3000);
+		waiting.explicitWaitVisibilityOfElement(getDriver()
+				.findElement(By.xpath("//td[text()='" + productName + "']/..//input[@title='Remove Product']")), 20);
+		getDriver().findElement(By.xpath("//td[text()='" + productName + "']/..//input[@title='Remove Product']"))
+				.click();
 		return this;
 	}
 
@@ -215,10 +237,8 @@ public class ProductsPageObjects extends PageFactoryInitializer {
 	public ProductsPageObjects enterProductNumber(String textToBeEnterInTheProductNumberTextbox) {
 
 		waiting.explicitWaitVisibilityOfElement(productNumberTextBoxLocator, 15);
-		RandomGenerator generateRand = new RandomGenerator();
 		productNumberTextBoxLocator
-				.sendKeys(textToBeEnterInTheProductNumberTextbox + generateRand.random(8, PermittedCharacters.NUMERIC));
-
+				.sendKeys(textToBeEnterInTheProductNumberTextbox);
 		return this;
 	}
 
@@ -266,17 +286,17 @@ public class ProductsPageObjects extends PageFactoryInitializer {
 	public ProductsPageObjects verifyProductSavedSuccessMessage(String poductSavedSuccessfulMessage) {
 
 		waiting.explicitWaitVisibilityOfElement(productSavedSuccessfulMessageLocator, 6);
-		Assert.assertEquals(productSavedSuccessfulMessageLocator.getText().trim().toLowerCase(), poductSavedSuccessfulMessage.trim().toLowerCase(),
-				"Product Save message was displayed incorrectly");
+		Assert.assertEquals(productSavedSuccessfulMessageLocator.getText().trim().toLowerCase(),
+				poductSavedSuccessfulMessage.trim().toLowerCase(), "Product Save message was displayed incorrectly");
 		return this;
 	}
 
 	@Step("Click on First Product's Edit link")
-	public EditProductsPageObjects clickOnFirstEditProduct() {
+	public ProductEditPageObjects clickOnFirstEditProduct() {
 
 		waiting.explicitWaitVisibilityOfElement(editProductLocator, 30);
 		editProductLocator.click();
-		return editProductsPage();
+		return editProductPage();
 	}
 
 	@Step("Click on Upload Image link")
@@ -372,6 +392,87 @@ public class ProductsPageObjects extends PageFactoryInitializer {
 	@Step("Verify the DisplayRecords is displayed in Products Page")
 	public ProductsPageObjects verifyDisplayRecordsInProductsPage() {
 		Assert.assertTrue(displayRecordsLocator.isDisplayed(), "DisplayRecords is not displayed.");
+		return this;
+	}
+
+	@Step("Verify Unavailable Product's Search message")
+	public String fetchProductNameAfterSearchingIt(String productName) {
+		waiting.explicitWaitVisibilityOfElement(
+				getDriver().findElement(
+						By.xpath("//table[@id='listProductForm:productTableID']//td[text()='" + productName + "']")),
+				8);
+		return getDriver()
+				.findElement(
+						By.xpath("//table[@id='listProductForm:productTableID']//td[text()='" + productName + "']"))
+				.getText();
+	}
+
+	@Step("Verify remove produt alert text for product {0}")
+	public ProductsPageObjects verifyAlert(String productName) {
+		Assert.assertEquals(getDriver().switchTo().alert().getText().toLowerCase(),
+				("Are you sure you want to remove the " + productName + "?").toLowerCase(),
+				"Alert message for remove product was displayed incorrectly");
+		return this;
+	}
+
+	@Step("Cancel the alert")
+	public ProductsPageObjects cancelAlert() {
+		getDriver().switchTo().alert().dismiss();
+		return this;
+	}
+
+	@Step("click on the preview items.")
+	public ProductsPageObjects clickOnPreviewItemLink() {
+		waiting.explicitWaitVisibilityOfElement(itemPreviewLink, 15);
+		itemPreviewLink.click();
+		return this;
+	}
+
+	@Step("click on the delink item from product.")
+	public ProductsPageObjects clickOnDelinkItemIcon() {
+		waiting.explicitWaitVisibilityOfElement(delinkItemLink, 15);
+		delinkItemLink.click();
+		return this;
+	}
+
+	@Step("click on edit Item icon link.")
+	public EditItemsPageObjects clickOnFirstItemEditIcon() {
+		waiting.explicitWaitVisibilityOfElement(productItemsEditItemLink, 15);
+		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", productItemsEditItemLink);
+		return editItemsPage();
+	}
+
+	@Step("Verification of Item \"{0}\" is displayed")
+	public ProductsPageObjects verifyItemName(String itemName) throws InterruptedException {
+		Thread.sleep(10000);
+		waiting.explicitWaitVisibilityOfElement(getDriver().findElement(By.xpath("//td[text()='" + itemName + "']")),
+				15);
+		Assert.assertEquals(getDriver().findElement(By.xpath("//td[text()='" + itemName + "']")).getText(), itemName,
+				"Assciated item is displayed incorrectly");
+		return this;
+	}
+
+	@Step("click on copy Item icon link.")
+	public ItemsPageObjects clickOnCopyIcon() {
+		waiting.explicitWaitVisibilityOfElement(productItemsCopyItemLink, 15);
+		productItemsCopyItemLink.click();
+		return itemsPage();
+	}
+
+	@Step("selecting \"{0}\"  as number of records to be displayed.")
+	public ProductsPageObjects selectNumberOfRecordsToDisplayInThePage(String selectNumberOfRecordsToDisplay)
+			throws Exception {
+		Select select = new Select(selectRecordsDropdownInProductsLocator);
+		select.selectByVisibleText(selectNumberOfRecordsToDisplay);
+		Thread.sleep(3000);
+		return this;
+	}
+
+	@Step("verifying whether {0} is the number of records that is displayed.")
+	public ProductsPageObjects verifyTheNumberOfRecordsDisplayed(String getNumberOfRecordsToDisplay) throws Exception {
+		Thread.sleep(2800);
+		waiting.explicitWaitVisibilityOfElements(productsListLocator, 15);
+		Assert.assertTrue(productsListLocator.size() <= Integer.parseInt(getNumberOfRecordsToDisplay));
 		return this;
 	}
 }

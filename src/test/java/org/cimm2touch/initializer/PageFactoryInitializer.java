@@ -1,24 +1,19 @@
 package org.cimm2touch.initializer;
+import org.cimm2touch.pageobjects.adminstration.SystemSettingsPageObjects;
+import org.cimm2touch.pageobjects.homepage.HomePageObjects;
+import org.cimm2touch.pageobjects.items.AddNewItemPageObjects;
+import org.cimm2touch.pageobjects.items.EditItemsPageObjects;
+import org.cimm2touch.pageobjects.items.HistoryPageObjects;
+import org.cimm2touch.pageobjects.items.ItemsPageObjects;
 import org.cimm2touch.pageobjects.landingpage.LandingPageObjects;
 import org.cimm2touch.pageobjects.manufacturer.EditBrandsPageObjects;
 import org.cimm2touch.pageobjects.manufacturer.EditManufacturerPageObjects;
 import org.cimm2touch.pageobjects.manufacturer.ManufacturerPageObjects;
 import org.cimm2touch.pageobjects.products.AddNewProductPageObjects;
-import org.cimm2touch.pageobjects.products.EditProductsPageObjects;
 import org.cimm2touch.pageobjects.products.ProductEditPageObjects;
-import org.cimm2touch.pageobjects.products.ProductItemsPageObjects;
 import org.cimm2touch.pageobjects.products.ProductsListPageObjects;
 import org.cimm2touch.pageobjects.products.ProductsPageObjects;
-import org.cimm2touch.pageobjects.adminstration.SystemSettingsPageObjects;
-import org.cimm2touch.pageobjects.items.AddNewItemPageObjects;
-import org.cimm2touch.pageobjects.items.EditItemsPageObjects;
-import org.cimm2touch.pageobjects.items.HistoryPageObjects;
-import org.cimm2touch.pageobjects.items.ItemsPageObjects;
-import org.cimm2touch.pageobjects.userconfiguration.UserConfigurationPageObjects;
-import org.cimm2touch.pageobjects.vendors.EditVendorsPageObjects;
-import org.cimm2touch.pageobjects.vendors.VendorsPageObjects;
-import org.framework.maincontroller.CallApplication;
-import org.framework.maincontroller.MainController;
+import org.cimm2touch.pageobjects.subset.SubsetPageObjects;
 import org.cimm2touch.pageobjects.taxonomymanagement.AttributeGroupsPageObjects;
 import org.cimm2touch.pageobjects.taxonomymanagement.AttributesPageObjects;
 import org.cimm2touch.pageobjects.taxonomymanagement.CategoryAndAttributesPageObjects;
@@ -26,9 +21,11 @@ import org.cimm2touch.pageobjects.taxonomymanagement.ImageUploadSectionPageObjec
 import org.cimm2touch.pageobjects.taxonomymanagement.ManageTaxonomyPageObjects;
 import org.cimm2touch.pageobjects.taxonomymanagement.TaxonomyMappingPageObjects;
 import org.cimm2touch.pageobjects.taxonomymanagement.TaxonomyPageObjects;
+import org.cimm2touch.pageobjects.userconfiguration.UserConfigurationPageObjects;
+import org.cimm2touch.pageobjects.vendors.EditVendorsPageObjects;
+import org.cimm2touch.pageobjects.vendors.VendorsPageObjects;
+import org.framework.maincontroller.CallApplication;
 import org.openqa.selenium.support.PageFactory;
-import org.cimm2touch.pageobjects.subset.SubsetPageObjects;
-import org.cimm2touch.pageobjects.homepage.HomePageObjects;
 
 public class PageFactoryInitializer extends CallApplication
 {
@@ -92,12 +89,6 @@ public class PageFactoryInitializer extends CallApplication
 		return productsPage;
 	}
 
-	public EditProductsPageObjects editProductsPage()
-	{
-		EditProductsPageObjects editProductsPage = PageFactory.initElements(getDriver(),EditProductsPageObjects.class);
-		return editProductsPage;
-	}
-
 	public ManufacturerPageObjects manufacturersAndBrandsPage()
 	{
 		ManufacturerPageObjects manufacturerPage = PageFactory.initElements(getDriver(),ManufacturerPageObjects.class);
@@ -129,12 +120,6 @@ public class PageFactoryInitializer extends CallApplication
 		return editProductPage;
 	}
 	
-	public ProductItemsPageObjects productItemPage()
-	{
-		ProductItemsPageObjects productItemPage=PageFactory.initElements(getDriver(),ProductItemsPageObjects.class);
-		return productItemPage;
-	}
-
 	public TaxonomyPageObjects taxonomyPageObjects()
 	{
 		TaxonomyPageObjects taxonomyPageObjects = PageFactory.initElements(getDriver(),TaxonomyPageObjects.class);

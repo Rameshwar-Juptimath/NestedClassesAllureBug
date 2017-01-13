@@ -23,7 +23,9 @@ public class TestUtilityMethods extends MainController {
 	}
 	
 	
-
+	public void enterFileLocationInFileUploadDialogBox(String fileLocation){
+		
+	}
 
 		public  void switchToRecentWindow()
 	{

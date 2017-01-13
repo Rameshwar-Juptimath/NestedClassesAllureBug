@@ -17,6 +17,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 import org.testng.Assert;
 
 import ru.yandex.qatools.allure.annotations.Step;
@@ -59,10 +60,10 @@ public class EditProductsPageObjects extends PageFactoryInitializer {
 	@FindBy(xpath = "//input[@title='Add New Product Image']")
 	private WebElement addNewProductImageLocator;
 
-	@FindBy(xpath = "(//input[@type='text'])[3]")
+	@FindBy(xpath = "//div[text()='Image Desc']/following-sibling::div/input")
 	private WebElement imageDescTextBoxLocator;
 
-	@FindBy(xpath = "(//input[@type='text'])[4]")
+	@FindBy(xpath = "//div[text()='Product Image URL']/following-sibling::div/input")
 	private WebElement productImageURLTextBoxLocator;
 
 	@FindBy(xpath = "//input[@title='Save URL']")
@@ -100,6 +101,9 @@ public class EditProductsPageObjects extends PageFactoryInitializer {
 
 	@FindBy(xpath = "//a[@id='lnkditmSrchIdf:goBtn']")
 	private WebElement searchIconLocator;
+	
+	@FindBy(how=How.XPATH, xpath="//select[@id='lnkditmSrchIdf:searchInId']")
+	private WebElement searchInIconLocator;
 
 	@FindBy(xpath = "//input[@id='lnkditmSrchIdf:manufacturerListComboIdcomboboxButton']")
 	private WebElement manufacturerDropDownLocator;
@@ -113,11 +117,14 @@ public class EditProductsPageObjects extends PageFactoryInitializer {
 	@FindBy(xpath = "//td[contains(text(),'Item List')]")
 	private WebElement itemListTabLocator;
 
-	@FindBy(xpath = "//input[@title='???delPrdctImg???']")
+	@FindBy(xpath = "//input[@title='Delete Product Image']")
 	private WebElement removeProductImageLocator;
 
 	@FindBy(id = "editProductImageTabForm:productImageUploadId:flashContainer")
 	private WebElement productUploadImageLocator;
+
+	@FindBy(xpath = "//td/div[contains(@class,'fileupload')]/descendant::div[text()='Image']/following-sibling::object")
+	private WebElement productImageFileUpload;
 
 	@Step("Verify Product Page tabs are displayed as follows: {0}")
 	public EditProductsPageObjects verifyProductsPageTabs(String[] productsTabNames) throws Exception {
@@ -195,7 +202,6 @@ public class EditProductsPageObjects extends PageFactoryInitializer {
 	public EditProductsPageObjects verifyFieldNamesInAddNewProductImage(String[] fieldsNameInAddNewProductImage)
 			throws Exception {
 
-
 		for (int i = 0; i < fieldNamesInAddNewProductImageLocator.size(); i++) {
 			Assert.assertEquals(fieldNamesInAddNewProductImageLocator.get(i).getText().trim(),
 					fieldsNameInAddNewProductImage[i].trim());
@@ -229,11 +235,11 @@ public class EditProductsPageObjects extends PageFactoryInitializer {
 		return this;
 	}
 
-	@Step("This method is used verify Item List tab")
+	@Step("Click on Item List tab")
 	public EditProductsPageObjects clickOnItemListTab() throws Exception {
 
 		waiting.explicitWaitVisibilityOfElement(itemListTabLocator, 15);
-		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", itemListTabLocator);
+		itemListTabLocator.click();
 		return this;
 	}
 
@@ -244,7 +250,7 @@ public class EditProductsPageObjects extends PageFactoryInitializer {
 		updateProductNameTextBoxLocator.clear();
 		return this;
 	}
-	
+
 	@Step("Enter Product Name as \'{0}\'")
 	public EditProductsPageObjects enterUpdatedProductName(String updateProductName) {
 
@@ -266,79 +272,73 @@ public class EditProductsPageObjects extends PageFactoryInitializer {
 
 		waiting.explicitWaitVisibilityOfElement(productUpdateSavedSuccessMessageLocator, 6);
 		Assert.assertEquals(productUpdateSavedSuccessMessageLocator.getText().trim().toLowerCase(),
-				productUpdateSuccessMessage.toLowerCase(),
-				"Product updation message was displayed incorrectly.");
+				productUpdateSuccessMessage.toLowerCase(), "Product updation message was displayed incorrectly.");
 		return this;
 	}
 
-	@Step("This method is used verify Product ImageDesc Field ")
+	@Step("Enter Product Image Description as \'{0}\'")
 	public EditProductsPageObjects enterImageDescField(String textToBeEnterInImageDesc) {
 
 		waiting.explicitWaitVisibilityOfElement(imageDescTextBoxLocator, 15);
+		imageDescTextBoxLocator.clear();
 		imageDescTextBoxLocator.sendKeys(textToBeEnterInImageDesc);
 		return this;
 	}
 
-	@Step("This method is used verify Product ImageURL Field")
+	@Step("Enter Product ImageURL as \'{0}\'")
 	public EditProductsPageObjects enterProductImageURLField(String textToBeEnterInProductImageURL) {
 
 		waiting.explicitWaitVisibilityOfElement(productImageURLTextBoxLocator, 15);
+		productImageURLTextBoxLocator.clear();
 		productImageURLTextBoxLocator.sendKeys(textToBeEnterInProductImageURL);
 		return this;
 	}
 
-	@Step("This method is used verify Product SaveImageURL Link ")
+	@Step("Click on Product SaveImageURL Link")
 	public EditProductsPageObjects clickOnSaveImageURLLink() {
 
 		waiting.explicitWaitVisibilityOfElement(saveProductImageURLLocator, 60);
-		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", saveProductImageURLLocator);
+		saveProductImageURLLocator.click();
+		;
 		return this;
 	}
 
-	@Step("This method is used verify Product UploadImage Link ")
+	@Step("Click on \"Upload Image\" button of produt Image file Upload")
 	public EditProductsPageObjects clickOnUploadImageLink() throws Exception {
 
-		waiting.explicitWaitVisibilityOfElement(uploadImageLinkLocator, 15);
+		waiting.explicitWaitElementToBeClickable(uploadImageLinkLocator, 15);
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", uploadImageLinkLocator);
 		Thread.sleep(10000);
 		return this;
 	}
 
-	@Step("This method is used verify Product FileUpload")
-	public EditProductsPageObjects verifyFileUpload(String fileLocation) throws Exception {
+	@Step("Enter File path as \"{0}\" in File Upload dialog box")
+	public EditProductsPageObjects enterFileLocationInUploadDialogbox(String fileLocation) throws Exception {
 		Thread.sleep(2000);
 
-		WebElement imageButton = getDriver()
-				.findElement(By.xpath("//td/div[contains(@class,'fileupload')]/descendant::div[text()='Image']"));
-		Actions action = new Actions(getDriver());
-		action.click(imageButton).build().perform();
-		Thread.sleep(2500);
-		Robot robot = new Robot();
-		StringSelection ss = new StringSelection(fileLocation);
-		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
-		robot.keyPress(KeyEvent.VK_ENTER);
-		robot.keyRelease(KeyEvent.VK_ENTER);
-		robot.keyPress(KeyEvent.VK_CONTROL);
-		robot.keyPress(KeyEvent.VK_V);
-		robot.keyRelease(KeyEvent.VK_CONTROL);
-		robot.keyRelease(KeyEvent.VK_V);
-		robot.keyPress(KeyEvent.VK_ENTER);
-		robot.keyRelease(KeyEvent.VK_ENTER);
+		tu.fileUpload(fileLocation);
+
 		Thread.sleep(2500);
 		return this;
 	}
 
-	@Step("This method is used verify Product UpdateButton Link ")
-	public EditProductsPageObjects verifyImageURLSavedSuccessfulMessage(String imageURLSuccessfulMessage) {
+	@Step("Verify Product Image URL Success Message is \'{0}\'")
+	public EditProductsPageObjects verifyImageSavedSuccessMessage(String imageSavedSuccessMessage)
+			throws InterruptedException {
 
-		waiting.explicitWaitVisibilityOfElement(ImageURLSavedSuccessfulMessageLocator, 6);
-		Assert.assertTrue(
-				ImageURLSavedSuccessfulMessageLocator.getText().trim().equalsIgnoreCase(imageURLSuccessfulMessage),
-				"Invalid  message. Getting " + ImageURLSavedSuccessfulMessageLocator.getText().trim() + ".");
+		Thread.sleep(3000);
+
+		waiting.explicitWaitVisibilityOfElement(
+				getDriver().findElement(By.xpath("//span[contains(text(),'" + imageSavedSuccessMessage + "')]")), 15);
+		Assert.assertEquals(
+				getDriver().findElement(By.xpath("//span[contains(text(),'" + imageSavedSuccessMessage + "')]"))
+						.getText().trim().toLowerCase(),
+				imageSavedSuccessMessage.toLowerCase(),
+				"Success message for saving Product Image using URL displayed incorrectly");
 		return this;
 	}
 
-	@Step("This method is used verify the searchForItemsList Field")
+	@Step("Verify Search For Items List Field is displayed")
 	public EditProductsPageObjects verifySearchForItemsListField() {
 
 		waiting.explicitWaitVisibilityOfElement(searchForItemsListFieldLocator, 10);
@@ -346,7 +346,7 @@ public class EditProductsPageObjects extends PageFactoryInitializer {
 		return this;
 	}
 
-	@Step("This method is used verify the SearchIcon ")
+	@Step("Verify if Search Icon is displayed")
 	public EditProductsPageObjects verifySearchIconLocator() {
 
 		waiting.explicitWaitVisibilityOfElement(searchIconLocator, 10);
@@ -354,26 +354,30 @@ public class EditProductsPageObjects extends PageFactoryInitializer {
 		return this;
 	}
 
-	@Step("This method is used verify the manufacturerDropDown")
+	@Step("Verify if Manufacturer Drop Down is displayed")
 	public EditProductsPageObjects verifyManufacturerDropDown() {
+		waiting.explicitWaitVisibilityOfElement(manufacturerDropDownLocator, 10);
 		Assert.assertTrue(manufacturerDropDownLocator.isDisplayed(), "manufacturerDropDown is not displayed.");
 		return this;
 	}
 
-	@Step("This method is used verify the brandDropDown")
+	@Step("Verify If Brand Drop Down is displayed")
 	public EditProductsPageObjects verifyBrandDropDown() {
+		waiting.explicitWaitVisibilityOfElement(brandDropDownLocator, 10);
 		Assert.assertTrue(brandDropDownLocator.isDisplayed(), "brandDropDown is not displayed.");
 		return this;
 	}
 
-	@Step("This method is used verify the saveIcon")
+	@Step("Verify if Save Icon is displayed")
 	public EditProductsPageObjects verifySaveIcon() {
+		waiting.explicitWaitVisibilityOfElement(saveIconLocator, 10);
 		Assert.assertTrue(saveIconLocator.isDisplayed(), "saveIcon is not displayed.");
 		return this;
 	}
 
-	@Step("This method is used verify the itemListTab")
-	public EditProductsPageObjects verifyitemListTab() {
+	@Step("Verify if item List Tab is displayed")
+	public EditProductsPageObjects verifyItemList() {
+		waiting.explicitWaitVisibilityOfElement(itemListTabLocator, 10);
 		Assert.assertTrue(itemListTabLocator.isDisplayed(), "itemListTab is not displayed.");
 		return this;
 	}
@@ -391,6 +395,20 @@ public class EditProductsPageObjects extends PageFactoryInitializer {
 
 		waiting.explicitWaitForAlert(15);
 		tu.alertAccept();
+		return this;
+	}
+
+	@Step("Click on \"Image\" button of produt Image file Upload")
+	public EditProductsPageObjects clickOnProductImageFileUpload() {
+		waiting.explicitWaitVisibilityOfElement(productImageFileUpload, 4);
+		productImageFileUpload.click();
+		return this;
+	}
+
+	@Step("Verify If Search In Drop Down is displayed")
+	public EditProductsPageObjects verifySearchInDropDown() {
+		waiting.explicitWaitVisibilityOfElement(searchInIconLocator, 10);
+		Assert.assertTrue(searchInIconLocator.isDisplayed(), "Seach In icon is not displayed.");
 		return this;
 	}
 

@@ -1,7 +1,6 @@
 package org.cimm2touch.pageobjects.products;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.framework.utils.TestUtility;
@@ -29,9 +28,6 @@ public class ProductsListPageObjects extends PageFactoryInitializer{
 	@FindAll(value={@FindBy(xpath="//div[@class='breadCrumbs']/span")})
 	private List<WebElement> breadCrumbsLink;
 	
-	@FindBy(xpath="//a[@title='Add New Product']")
-	private WebElement creatingProductLink;
-	
 	@FindBy(xpath="//div[@class='topContent']/descendant::input[contains(@name,'searchKeywordId')]")
 	private WebElement productSearchPlaceHolder;
 	
@@ -47,18 +43,6 @@ public class ProductsListPageObjects extends PageFactoryInitializer{
 	@FindBy(xpath="//span[contains(text(),'Product deleted successfully')]")
 	private WebElement actualSuccessfulMessageAfterDeletionOfProduct;
 	
-	@FindBy(xpath="(//a[contains(@title,'Preview')])[1]")
-	private WebElement itemPreviewLink;
-	
-	@FindBy(xpath="//input[@title='delink Item']")
-	private WebElement delinkItemLink;
-	
-	@FindBy(xpath="//div[contains(@class,'centerPanelRightIcons')]/select")
-	private WebElement selectRecordsDropdownInProductsLocator;
-	
-	@FindAll(value={@FindBy(xpath="//input[@title='Edit Product']")})
-	private List<WebElement> editButtonsLocator; 
-	
 	@Step("verify the breadcrumbs of the Products page is {0}")
 	public ProductsListPageObjects verifyTheProductsPageBreadCrumbs(String breadcrumpsList[]) {
 
@@ -67,14 +51,6 @@ public class ProductsListPageObjects extends PageFactoryInitializer{
 			 Assert.assertEquals(breadCrumbsLink.get(i).getText().trim(),breadcrumpsList[i].trim());
 			 return this;
 	}
-	@Step("creation of Product")
-	public AddNewProductPageObjects clickOnPlusSymbolToCreateProduct() {
-
-		waiting.explicitWaitVisibilityOfElement(creatingProductLink, 35);
-		creatingProductLink.click();
-		return new AddNewProductPageObjects();
-	}
-	
 	
 	@Step("enter the product number in search field {0}")
 	public ProductsListPageObjects enterTheProductNameInSearchField(String productName) {
@@ -123,23 +99,23 @@ public class ProductsListPageObjects extends PageFactoryInitializer{
 	@Step("verify the {0} product")
 	public ProductsListPageObjects verifyProductPresent(String productName) throws InterruptedException {
 
-		Assert.assertTrue(assertVerifyProduct(productName),"Product already created, please remove to create again");
+		Assert.assertTrue(assertVerifyProduct(productName),"Product product not present");
 		
 		return this;
 	}
 	private boolean assertVerifyProduct(String productName)
 	{
-		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		try{
+			waiting.explicitWaitVisibilityOfElement(By.xpath("//tbody[@id='listProductForm:productTableID:tb']/descendant::td[contains(text(),'"+productName+"')]"), 30);
 			if(getDriver().findElement(By.xpath("//tbody[@id='listProductForm:productTableID:tb']/descendant::td[contains(text(),'"+productName+"')]")).isDisplayed()){
-			return false;
+			return true;
 		}
 		}
 		catch(NoSuchElementException e) {
-		return true;
+		return false;
 
 	}
-	return false;
+		return false;
 	}
 	@Step("verify the alert text {0} to remove.")
 	public  ProductsListPageObjects veryfyAlert() {
@@ -158,53 +134,5 @@ public class ProductsListPageObjects extends PageFactoryInitializer{
 		alert.dismiss();
 		return this;
 	}
-	@Step("click on the preview items.")
-	public ProductsListPageObjects clickPreviewItemLink() {
 
-		waiting.explicitWaitVisibilityOfElement(itemPreviewLink, 15);
-		itemPreviewLink.click();
-		return this;
-	}
-	@Step("click on the delink item from product.")
-	public ProductsListPageObjects clickOnDelinkItemIcon() {
-
-	waiting.explicitWaitVisibilityOfElement(delinkItemLink, 15);	
-	delinkItemLink.click();
-		return this;
-	}
-	@Step("selecting {0} number of records to display.")
-	public ProductsListPageObjects selectNumberOfRecordsToDisplayInThePage(String selectNumberOfRecordsToDisplay) throws Exception{
-	
-	Select select = new Select(selectRecordsDropdownInProductsLocator);
-	select.selectByVisibleText(selectNumberOfRecordsToDisplay);
-	Thread.sleep(3000);
-	return this;
-	
-}
-@Step("verifying whether {0} is the number of records that is displayed.")
-public ProductsListPageObjects verifyTheNumberOfRecordsDisplayed(String getNumberOfRecordsToDisplay) throws Exception{
-	try
-	{
-		Thread.sleep(2800);
-		Assert.assertTrue(assertForNumberOfRowsDisplayed(editButtonsLocator.size(),Integer.parseInt(getNumberOfRecordsToDisplay)));
-	}
-	catch(StaleElementReferenceException e)
-	{
-
-		getDriver().navigate().refresh();
-		verifyTheNumberOfRecordsDisplayed(getNumberOfRecordsToDisplay);
-	}
-	return this;
-}
-
-private boolean assertForNumberOfRowsDisplayed(int editButtons, int numberOfRecordsToDisplay) {
-	if(editButtons<=numberOfRecordsToDisplay)
-	{
-		return true;
-	}
-	else
-	{
-	return false;
-	}	
-}
 }

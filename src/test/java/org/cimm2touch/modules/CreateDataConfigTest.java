@@ -257,10 +257,8 @@ public class CreateDataConfigTest extends PageFactoryInitializer{
 		.productsPage()
 		.enterTheProductNameInSearchField(productName)
 		.clickOnSearchButton()
-		.productsListPage()
-		.verifyProductPresent(productName);
-		productsListPage()
-		.clickOnPlusSymbolToCreateProduct()
+		.verifyProductNameAfterSearchingIt(productName)
+		.clickOnAddNewProductLink()
 		.addNewProductPage()
 		.enterTheProductName(productName)
 		.enterTheProductNumber(productNumber)
