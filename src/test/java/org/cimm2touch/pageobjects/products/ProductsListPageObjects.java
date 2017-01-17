@@ -43,6 +43,21 @@ public class ProductsListPageObjects extends PageFactoryInitializer{
 	@FindBy(xpath="//span[contains(text(),'Product deleted successfully')]")
 	private WebElement actualSuccessfulMessageAfterDeletionOfProduct;
 	
+	@FindBy(xpath="(//a[contains(@title,'Preview')])[1]")
+	private WebElement itemPreviewLink;
+	
+	@FindBy(xpath="//input[@title='delink Item']")
+	private WebElement delinkItemLink;
+	
+	@FindBy(xpath="//div[contains(@class,'centerPanelRightIcons')]/select")
+	private WebElement selectRecordsDropdownInProductsLocator;
+	
+	@FindAll(value={@FindBy(xpath="//input[@title='Edit Product']")})
+	private List<WebElement> editButtonsLocator; 
+	
+	@FindBy(xpath="//span[@id='listProductForm:noResults']")
+	private WebElement removeCreatedProductSuccessMessageLocator;
+	
 	@Step("verify the breadcrumbs of the Products page is {0}")
 	public ProductsListPageObjects verifyTheProductsPageBreadCrumbs(String breadcrumpsList[]) {
 
@@ -97,6 +112,14 @@ public class ProductsListPageObjects extends PageFactoryInitializer{
 	}
 	
 	@Step("verify the {0} product")
+	public ProductsListPageObjects searchForCreatedProduct(String productName) throws InterruptedException {
+
+		Thread.sleep(3000);
+		Assert.assertFalse(assertVerifyProduct(productName),"Product : "+productName+"is not available, Please create it to perform delete");
+		
+		return this;
+	}
+	@Step("verify the {0} product")
 	public ProductsListPageObjects verifyProductPresent(String productName) throws InterruptedException {
 
 		Assert.assertTrue(assertVerifyProduct(productName),"Product product not present");
@@ -135,4 +158,56 @@ public class ProductsListPageObjects extends PageFactoryInitializer{
 		return this;
 	}
 
+	@Step("selecting {0} number of records to display.")
+	public ProductsListPageObjects selectNumberOfRecordsToDisplayInThePage(String selectNumberOfRecordsToDisplay) throws Exception{
+	
+	Select select = new Select(selectRecordsDropdownInProductsLocator);
+	select.selectByVisibleText(selectNumberOfRecordsToDisplay);
+	Thread.sleep(3000);
+	return this;
+	
+}
+@Step("verifying whether {0} is the number of records that is displayed.")
+public ProductsListPageObjects verifyTheNumberOfRecordsDisplayed(String getNumberOfRecordsToDisplay) throws Exception{
+	try
+	{
+		Thread.sleep(2800);
+		Assert.assertTrue(assertForNumberOfRowsDisplayed(editButtonsLocator.size(),Integer.parseInt(getNumberOfRecordsToDisplay)));
+	}
+	catch(StaleElementReferenceException e)
+	{
+
+		getDriver().navigate().refresh();
+		verifyTheNumberOfRecordsDisplayed(getNumberOfRecordsToDisplay);
+	}
+	return this;
+}
+
+private boolean assertForNumberOfRowsDisplayed(int editButtons, int numberOfRecordsToDisplay) {
+	if(editButtons<=numberOfRecordsToDisplay)
+	{
+		return true;
+	}
+	else
+	{
+	return false;
+	}	
+}
+	@Step("remove created product {0}")
+	public ProductsListPageObjects removeCreatedProduct(String productName) throws InterruptedException {
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//td[text()='"+productName+"']/preceding-sibling::td/descendant::input[@title='Remove Product']"), 50);
+		getDriver().findElement(By.xpath("//td[text()='"+productName+"']/preceding-sibling::td/descendant::input[@title='Remove Product']")).click();
+		waiting.explicitWaitForAlert(5);
+		tu.alertAccept();
+		Thread.sleep(2500);
+
+	
+	return this;
+	}
+	@Step("verify remove created product succeess message {0}")
+	public ProductsListPageObjects verifyRemoveSuccessMessage(String expRemoveSuccessMessage) {
+		waiting.explicitWaitVisibilityOfElement(removeCreatedProductSuccessMessageLocator, 50);
+		Assert.assertEquals(removeCreatedProductSuccessMessageLocator.getText().trim(), expRemoveSuccessMessage.trim());
+		return this;
+	}
 }

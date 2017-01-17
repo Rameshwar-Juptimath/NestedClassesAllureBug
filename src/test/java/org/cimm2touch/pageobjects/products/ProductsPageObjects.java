@@ -472,4 +472,13 @@ public class ProductsPageObjects extends PageFactoryInitializer {
 		Assert.assertTrue(productsListLocator.size() <= Integer.parseInt(getNumberOfRecordsToDisplay));
 		return this;
 	}
+	
+	@Step("Verify if product \'{0}\' already exists")
+	public ProductsPageObjects verifyProductAlreadyExists(String productName) throws Exception {
+		Thread.sleep(2800);
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//td[contains(text(),'" + productName + "')]"), 25);
+		Assert.assertNotEquals(getDriver().findElement(By.xpath("//td[contains(text(),'" + productName + "')]")).getText(),
+				productName, "Product \'"+productName+"\' already exists. Kindly delete it before proceeding ahead.");
+		return this;
+	}
 }

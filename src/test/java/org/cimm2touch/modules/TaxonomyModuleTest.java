@@ -21,7 +21,6 @@ import ru.yandex.qatools.allure.annotations.TestCaseId;
 public class TaxonomyModuleTest extends PageFactoryInitializer 
 {
 
-
 	RandomGenerator generateRandom = new RandomGenerator();
 	HashMap<String, String> loginData;
 	

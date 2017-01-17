@@ -19,6 +19,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -31,6 +32,7 @@ import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.Select;
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.pageobjects.homepage.HomePageObjects;
+
 import org.testng.Assert;
 
 import ru.yandex.qatools.allure.annotations.Step;
@@ -112,8 +114,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//div[@class='total-count']/span[@id='subsetForm:tnpId']")
 	private WebElement subsetPagination_TotalPagesCount;
 
-	@FindBy(xpath="//div[@class='topNav_rightIcons']//a[@title='Add New Subset']")
-	private WebElement subset_AddNewSubsetButton;
+	
 
 	@FindBy(xpath="//form[@id='addNewSubsetForm']//input[@id='addNewSubsetForm:sName']")
 	private WebElement addSubset_SubsetName;
@@ -283,8 +284,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 	@FindAll(value = {@FindBy(xpath="//table[@id='subsetForm:subsetTableId']/tbody/tr")})
 	private List<WebElement> subsetTableRowCountLocator;
 
-	@FindBy(xpath="//a[@class='cimm_addNewIcon' and @title='Add New Subset']")
-	private WebElement addNewSubsetLocator;
+	
 
 	@FindBy(xpath="//input[@id='searchFormId:searchKeywordId']")
 	private WebElement searchLocator;
@@ -421,8 +421,8 @@ public class SubsetPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//input[@id='searchFormId:searchKeywordId']")
 	private WebElement searchkeywordLocator;
 
-	@FindBy(xpath="//input[@id='searchFormId:subgoBtn11']")
-	private WebElement searchButtonLocator;
+	/*@FindBy(xpath="//input[@id='searchFormId:subgoBtn11']")
+	private WebElement searchButtonLocator;*/
 
 	@FindBy(xpath="//div[@class='tableLayout']")
 	private WebElement additionalItemsTableLocator;
@@ -922,7 +922,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 
 	}
 
-	@FindBy(xpath="(//a[contains(text(),'Subset')])[3]")
+	@FindBy(xpath="//div[@class='breadCrumbs']/descendant::a[text()='Subset']")
 	private static WebElement subsetbreadcrumb;
 
 	@Step("check whether page is subset page")
@@ -933,17 +933,17 @@ public class SubsetPageObjects extends PageFactoryInitializer
 		return this;
 	}
 
-	@FindBy(id="searchFormId:searchKeywordId")
-	private static WebElement subsetsearchbox;
+	/*@FindBy(id="searchFormId:searchKeywordId")
+	private static WebElement subsetsearchbox;*/
 
-	@Step("type in subset search box")
+	/*@Step("type in subset search box")
 	public  SubsetPageObjects typeInSubsetSearch(String subsetname){
-		subsetsearchbox.clear();
-		subsetsearchbox.sendKeys(subsetname);
+		searchFieldLocator.clear();
+		searchFieldLocator.sendKeys(subsetname);
 		return this;
-	}
+	}*/
 
-	@FindBy(xpath="//a[@id='searchFormId:goBtn']/i")
+	/*@FindBy(xpath="//a[@id='searchFormId:goBtn']/i")
 	private static WebElement subsetsearchbutton;
 
 	@Step("click on subsetsearch button")
@@ -951,31 +951,54 @@ public class SubsetPageObjects extends PageFactoryInitializer
 		subsetsearchbutton.click();
 		Thread.sleep(3000);
 		return this;
-	}
+	}*/
 
-	public boolean subsetSearchResultHelp(String subsetname) throws Exception
+	//======================================================================================
+	@Step("veify subset {0} present or not")
+	public SubsetPageObjects verifySubsetPresent(String subsetname) throws Exception
+	{
+		Assert.assertFalse(assertVerifySubsetPresent(subsetname),"subset:---"+ subsetname+"is already present, please remove to create it again.");
+		return this;
+
+	}
+	private boolean assertVerifySubsetPresent(String subsetname) throws Exception
 	{
 
 		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		try {
-			if(getDriver().findElement(By.xpath("//tr[td[4]='"+subsetname+"']")).isDisplayed())
+			if(getDriver().findElement(By.xpath(" //tbody[@id='subsetForm:subsetTableId:tb']/descendant::span[text()='"+subsetname+"']")).isDisplayed())
 			{
-				return false;
+				return true;
 			}
 		}
 		catch(NoSuchElementException e) {
-			return true;
+			return false;
 
 		}
 		return false;		    
 	}
-
-	public SubsetPageObjects subsetSearchResult(String subsetname) throws Exception
-	{
-		Assert.assertTrue(subsetSearchResultHelp(subsetname),"Subset is Present. Please delete for creating again.");
+	
+	
+	@Step("verify created subset name{0}")
+	public SubsetPageObjects verifyCreatedSubset(String subsetname) throws Exception {
+		Thread.sleep(2500);
+		Assert.assertTrue(assertVerifySubsetPresent(subsetname), "UOM :" + subsetname + "  is not present.");
 		return this;
-
 	}
+	
+	//===========================================================================================
+	
+	public SubsetPageObjects verifySubsetBeforeRemove(String subsetName) throws Exception {
+		Assert.assertFalse(assertVerifySubsetPresent(subsetName),"subset is not available, Please create before remove");
+		return this;
+	}
+	
+	
+	/*@Step("veify subset {0} present or not")
+	public SubsetPageObjects verifyIsSubsetPresent(String subsetName) throws Exception {
+		Assert.assertFalse(assertVerifySubsetPresent(subsetName),"SUBSET NAME :" + subsetName + "  is already present, please remove to create it again.");
+		return this;
+	}*/
 
 	@FindBy(xpath="//*[@title='Add New Subset']")
 	private static WebElement addnewsubsetbutton;
@@ -1008,12 +1031,13 @@ public class SubsetPageObjects extends PageFactoryInitializer
 		return this;
 	}
 
-	@FindBy(id="addNewSubsetForm:subsetSaveMsg")
-	private static WebElement subsetsavemsg ;
+	@FindBy(xpath="//span[contains(text(),'New Subset saved Successfully')]")
+	private  WebElement subsetSaveMessageLocator ;
 
 	@Step("check whether subset got saved successfully")
-	public  SubsetPageObjects verifySubsetCreationMessage(String subsetsavemsgexpected){
-		Assert.assertEquals(subsetsavemsg.getText(),subsetsavemsgexpected);
+	public  SubsetPageObjects verifySubsetCreationMessage(String subsetSaveMessage) throws InterruptedException{
+		Thread.sleep(2000);
+		Assert.assertEquals(subsetSaveMessageLocator.getText(),subsetSaveMessage);
 
 		return this;
 	}
@@ -1029,7 +1053,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 		Assert.assertTrue(leftSlider_FeaturedProducts.isDisplayed(),"'Featured Products' Option in the Left Slider is not Displayed");
 		Assert.assertTrue(subset_SearchBox.isDisplayed(),"Subset 'Search Box' is not Displayed");
 		Assert.assertTrue(subset_SearchIcon.isDisplayed(),"Subset 'Search Icon' is not Displayed");
-		Assert.assertTrue(subset_AddNewSubsetButton.isDisplayed(),"'Add New Subset Button' is not Displayed");
+		Assert.assertTrue(addNewSubsetLocator.isDisplayed(),"'Add New Subset Button' is not Displayed");
 		Assert.assertTrue(subsetPagination_CurrentPageCount.isDisplayed());
 		Assert.assertTrue(subsetPagination_TotalPagesCount.isDisplayed());
 		Assert.assertTrue(subsetPagination_NextButton.isDisplayed());
@@ -1047,9 +1071,11 @@ public class SubsetPageObjects extends PageFactoryInitializer
 	}
 
 	@Step("To Click On Add new Subset")
-	public SubsetPageObjects clickOnAddNewSubset() 
+	public SubsetPageObjects clickOnAddNewSubset() throws InterruptedException 
 	{
-		subset_AddNewSubsetButton.click();
+		waiting.explicitWaitVisibilityOfElement(addNewSubsetLocator, 65);
+		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", addNewSubsetLocator);
+		Thread.sleep(1500);
 		return this;
 	}
 
@@ -1104,10 +1130,10 @@ public class SubsetPageObjects extends PageFactoryInitializer
 	public SubsetPageObjects searchForAnSubset(String subsetName) 
 	{
 
-		waiting.explicitWaitVisibilityOfElement(subset_SearchBox, 20);
-		subset_SearchBox.clear();
-		subset_SearchBox.sendKeys(subsetName);
-		subset_SearchIcon.click();
+		waiting.explicitWaitVisibilityOfElement(searchFieldLocator, 40);
+		searchFieldLocator.clear();
+		searchFieldLocator.sendKeys(subsetName);
+		//subset_SearchIcon.click();
 		return this;
 	}
 
@@ -1166,9 +1192,10 @@ public class SubsetPageObjects extends PageFactoryInitializer
 	@Step("To Click On 'Edit Subset' {0}.")
 	public SubsetPageObjects clickOnEditSubset(String subsetName) throws Exception 
 	{
-		Thread.sleep(5000);
+		//Thread.sleep(5000);
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//span[text()='"+subsetName+"']/ancestor::tr/descendant::input[@title='Edit Subset']"), 45);
 
-		getDriver().findElement(By.xpath("//table[@id='subsetForm:subsetTableId']//span[contains(.,'"+subsetName+"')]//preceding::input[@title='Edit Subset']")).click();
+		getDriver().findElement(By.xpath("//span[text()='"+subsetName+"']/ancestor::tr/descendant::input[@title='Edit Subset']")).click();
 		return this;
 	}
 
@@ -1222,7 +1249,8 @@ public class SubsetPageObjects extends PageFactoryInitializer
 			System.out.println(e);
 		}
 		
-		catalogBuilderView.click();
+		//catalogBuilderView.click();
+		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",catalogBuilderView);
 		Thread.sleep(5000);
 		return this;
 	}
@@ -1234,12 +1262,19 @@ public class SubsetPageObjects extends PageFactoryInitializer
 		//FluentWaitForVisibilityOfElement(30, 1000, CBV_Available);
 		Assert.assertTrue(CBV_Available.isDisplayed(), "Left Side Bar -> Available Tab is Absent");
 		Assert.assertTrue(CBV_Selected.isDisplayed(), "Left Side Bar -> Selected Tab is Absent");
+		
 		Assert.assertTrue(CBV_Available_AddManufacurer.isDisplayed(), "Left Side Bar -> Add New Manufacturer is Absent under 'Available' Tab");
+		
 		Assert.assertTrue(CBV_Available_AddBrand.isDisplayed(), "Left Side Bar -> Add New Brand is Absent under 'Available' Tab");
+		
 		Assert.assertTrue(CBV_SearchItem.isDisplayed(), "'Search Item' Search Box is Absent");
+		
 		Assert.assertTrue(CBV_AddManufacturer.isDisplayed(), "Add New Manufacturer is Absent");
+		
 		Assert.assertTrue(CBV_AddBrand.isDisplayed(), "Add New Brand is Absent");
+		
 		Assert.assertTrue(CBV_RefreshCatalogButton.isDisplayed(), "'Refresh Catalog' Button is Absent");
+		
 		Assert.assertTrue(CBV_SaveRulesButton.isDisplayed(), "'Save Catalog' Button is Absent");
 		return this;
 	}
@@ -1310,11 +1345,17 @@ public class SubsetPageObjects extends PageFactoryInitializer
 		return this;
 	}
 	public String verifyandDeleteSubset(String subsetName) throws Exception {
+		
 		Thread.sleep(3000);
+		
 		WebElement wb=getDriver().findElement(By.xpath("//span[contains(text(),'"+subsetName+"')]/ancestor::td//preceding-sibling::td/descendant::input[@value='Remove']"));
+		
 		//waiting.explicitWaitVisibilityOfElement(wb, 20);
+		
 		Assert.assertEquals(getDriver().findElement(By.xpath("//span[contains(text(),'"+subsetName+"')]")).getText(), subsetName,""+subsetName+" is not available");
-		String subsetId=getDriver().findElement(By.xpath("//span[contains(text(),'"+subsetName+"')]/ancestor::td//preceding-sibling::td[1]")).getText();
+
+		String subsetId=getDriver().findElement(By.xpath("//span[contains(text(),'"+subsetName+"')]/ancestor::td//preceding-sibling::td[contains(@id,'subsetID')]")).getText();
+
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",wb);
 		tu.alertAccept();
 		return subsetId;
@@ -1327,34 +1368,243 @@ public class SubsetPageObjects extends PageFactoryInitializer
 		
 		return this;
 	}
-	public SubsetPageObjects verifySubsetBeforeRemove(String subsetName) {
-		Assert.assertFalse(assertVerifySubset(subsetName),"subset is not available, Please create before remove");
+	
+	
+	
+	@FindAll(value={@FindBy(xpath="//thead[@class='rich-table-thead']/descendant::th")})
+	private List<WebElement> headerPartLinkLocator;
+	
+	public SubsetPageObjects verifyHeaderPartOfSubsetPage(String headerList) {
+		         String[] headerList1 = headerList.split(",");
+		         waiting.explicitWaitVisibilityOfElements(headerPartLinkLocator, 35);
+		         for(int i=0; i<headerPartLinkLocator.size();i++)
+		         {
+		        	 Assert.assertEquals(headerPartLinkLocator.get(i).getText().trim(), headerList1[i].trim());
+		         }
+		return this;
+		
+	}
+	@FindBy(xpath="//input[@id='searchFormId:searchKeywordId']")
+	private WebElement searchFieldLocator;
+	public SubsetPageObjects verifySearchFieldOfSubsetPage(String placeHolderText) {
+		waiting.explicitWaitVisibilityOfElement(searchFieldLocator, 40);
+		Assert.assertTrue(searchFieldLocator.isDisplayed(), "Search field in Subset page is not displayed");
+		Assert.assertEquals(searchFieldLocator.getAttribute("placeholder"), placeHolderText);
+		return this;
+		
+	}
+	
+	@FindBy(xpath="//a[@title='Add New Subset']")
+	private WebElement addNewSubsetLocator;
+	
+	public SubsetPageObjects verifyAddNewSubsetButtonInSubsetpage() {
+		waiting.explicitWaitVisibilityOfElement(addNewSubsetLocator, 40);
+		Assert.assertTrue(addNewSubsetLocator.isDisplayed(), "Add New Subset is not displayed");
 		return this;
 	}
-	public SubsetPageObjects verifyIsSubsetPresent(String subsetName) {
-		Assert.assertTrue(assertVerifySubset(subsetName),"subset not available, Please create before remove");
+	@FindBy(xpath="//a[@id='searchFormId:goBtn']/i[@class='list-search-icn fa fa-search']")
+	private WebElement searchButtonLocator;
+	
+	@Step("click on subsetsearch button")
+	public SubsetPageObjects clickOnSubsetSearchGoButton() throws InterruptedException {
+		Thread.sleep(2500);
+		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", searchButtonLocator);
+		Thread.sleep(2500);
 		return this;
 	}
-	private boolean assertVerifySubset(String subsetName) {
-		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+	@FindBy(xpath = "//span[contains(text(),'No results Found')]")
+	private WebElement noResultFoundLocator;
+	
+	@Step("verify no result found error message")
+	public SubsetPageObjects verifyErrorMessage(String errorMessage) {
+		waiting.explicitWaitVisibilityOfElement(noResultFoundLocator, 35);
+		Assert.assertEquals(noResultFoundLocator.getText(), errorMessage);
+		return this;
+	}
+	
+	@FindAll(value={@FindBy(xpath="//form[@id='addNewSubsetForm']/descendant::div[@class='cimm_formLabel']")})
+	private List<WebElement> allAddNewSubsetFieldsLocator;
+	
+	@Step("verify fields when click on add link of Subset page")
+	public SubsetPageObjects verifyAllAddNewSubsetFields(String addNewSubsetField) {
+		String[] addNewSubsetField1 = addNewSubsetField.split(",");
+		waiting.explicitWaitVisibilityOfElements(allAddNewSubsetFieldsLocator, 45);
+		for(int i =0; i<allAddNewSubsetFieldsLocator.size();i++)
+		{
+			System.out.println(allAddNewSubsetFieldsLocator.get(i).getText().trim());
+			Assert.assertEquals(allAddNewSubsetFieldsLocator.get(i).getText().trim(), addNewSubsetField1[i].trim());
+			
+		}
+		return this;
+	}
+	
+	@FindBy(xpath = "//form[@id='addNewSubsetForm']/descendant::input[@title='Save New Subset']")
+	private WebElement subsetSaveLink;
+	
+	@Step("verify save link of add new subset page")
+	public SubsetPageObjects verifySaveLinkInAddNewSubsetPage() {
+		waiting.explicitWaitVisibilityOfElement(subsetSaveLink, 40);
+		Assert.assertTrue(subsetSaveLink.isDisplayed(), "save link of add new subset page doesn't display");
+		return this;
+	}
+	
+	
+	@Step("click on save link of subset")
+	public SubsetPageObjects clickOnSaveLink() throws InterruptedException {
+		subsetSaveLink.click();
+		Thread.sleep(2500);
+		return this;
+	}
+	public SubsetPageObjects createSubset(String subsetName, String subsetDescription) throws InterruptedException {
+		
+		clickOnAddNewSubset();
+		enterTheSubsetName(subsetName)
+		.enterTheSubsetDescription(subsetDescription)
+		.clickOnSaveLink();
+		return this;
+		
+	}
+	@Step("enter UOM Name:{0}")
+	public SubsetPageObjects enterTheSubsetName(String subsetName) throws InterruptedException {
+		System.out.println(subsetName);
+		Thread.sleep(2500);
+		waiting.explicitWaitVisibilityOfElement(subsetNameTextBox, 30);
+		
+		subsetNameTextBox.clear();
+		
+		subsetNameTextBox.sendKeys(subsetName);
+		return this;
+	}
+	@Step("enter UOM Des:{0}")
+	public SubsetPageObjects enterTheSubsetDescription(String subsetDescription) {
+		
+		waiting.explicitWaitVisibilityOfElement(subsetDescriptionTextBox, 40);
+		subsetDescriptionTextBox.clear();
+		
+		subsetDescriptionTextBox.sendKeys(subsetDescription);
+		
+		return this;
+	}
+	@FindBy(xpath = "//input[@id='addNewSubsetForm:sName']")
+	private WebElement subsetNameTextBox;
+	
+	
+	
+	@FindBy(xpath = "//textarea[@id='addNewSubsetForm:subDes']")
+	private WebElement subsetDescriptionTextBox;
+	
+	@Step("create updated subset name:{0}")
+	public SubsetPageObjects createUpdatedUom(String updatedSubsetName) {
+		
+		enterTheUpdatedSubsetName(updatedSubsetName);
+		return this;
+	}
+	
+	@Step("enter updated Subset Name:{0}")
+	public SubsetPageObjects enterTheUpdatedSubsetName(String updatedSubsetName) {
+		System.out.println(updatedSubsetName);
+
+		waiting.explicitWaitVisibilityOfElement(updatedSubsetNameTextBoxLocator, 30);
+		updatedSubsetNameTextBoxLocator.clear();
+		updatedSubsetNameTextBoxLocator.sendKeys(updatedSubsetName);
+		return this;
+	}
+	
+	@FindBy(xpath = "//input[@id='EditSubsetForm:sName']")
+	private WebElement updatedSubsetNameTextBoxLocator;
+	
+	@Step("click on update link")
+	public SubsetPageObjects clickOnUpdateSubsetLink() {
+		waiting.explicitWaitVisibilityOfElement(updateSubsetLocator, 30);
+		updateSubsetLocator.click();
+             return this;		
+	}
+	
+	@FindBy(xpath = "//input[@title='Update Subset']")
+	private WebElement updateSubsetLocator;
+	
+	@Step("verifying update  welcome message {0}")
+	public SubsetPageObjects verifyUpdateWelcomeMessage(String updateMessage) {
+		waiting.explicitWaitVisibilityOfElement(updateMessageLocator, 15);
+		
+		Assert.assertEquals(updateMessageLocator.getText(), updateMessage,
+				"Invalid update welcome message.Getting" + updateMessageLocator.getText() + ".");
+		return this;
+		
+	}
+	@FindBy(xpath = "//span[contains(text(),'Updated Successfully')]")
+	private WebElement updateMessageLocator;
+	
+	@Step("verify fields of edit in Subset page")
+	public SubsetPageObjects verifyAllEditSubsetFields(String editFieldOfSubset) {
+		String editFieldOfSubset1[] = editFieldOfSubset.split(",");
+		waiting.explicitWaitVisibilityOfElements(allEditSubsetFieldsLocator, 55);
+		for (int i = 0; i < allEditSubsetFieldsLocator.size(); i++) {
+			
+		System.out.println(allEditSubsetFieldsLocator.get(i).getText().trim());
+			Assert.assertEquals(allEditSubsetFieldsLocator.get(i).getText().trim(), editFieldOfSubset1[i].trim());
+		}
+		return this;
+	}
+	
+	@FindAll(value = {
+			@FindBy(xpath = "//form[@id='EditSubsetForm']/descendant::div[@class='cimm_formLabel']") })
+	private List<WebElement> allEditSubsetFieldsLocator;
+	
+	@Step("selecting {0} number of records to display.")
+	public SubsetPageObjects selectNumberOfRecordsToDisplayInThePage(String selectNumberOfRecordsToDisplay) throws InterruptedException {
+		Select select = new Select(selectRecordsDropdownLocator);
+		select.selectByVisibleText(selectNumberOfRecordsToDisplay);
+		Thread.sleep(4000);
+		return this;
+		
+	}
+	@FindBy(xpath = "//div[contains(text(),'Display ')]/select")
+	private WebElement selectRecordsDropdownLocator;
+	
+	@Step("verifying whether {0} is the number of records that is displayed.")
+	public SubsetPageObjects verifyTheNumberOfRecordsDisplayed(String getNumberOfRecordsToDisplay) throws Exception {
+		Thread.sleep(3500);
 		try {
 
+			waiting.explicitWaitVisibilityOfElements(numberOfRowCountLocator, 60);
+			Assert.assertTrue(
+					assertForNumberOfRowsDisplayed(numberOfRowCountLocator.size(),
+							Integer.parseInt(getNumberOfRecordsToDisplay)),
+					"DISPLAYED RECORDS WERE MORE THAN EXPECTED");
+		} catch (StaleElementReferenceException e) {
 
-			if(getDriver().findElement(By.xpath("//tbody[@id='subsetForm:subsetTableId:tb']/descendant::span[contains(text(),'"+subsetName+"')]")).isDisplayed())
-			{
-				return false;
-			}
+			getDriver().navigate().refresh();
+			verifyTheNumberOfRecordsDisplayed(getNumberOfRecordsToDisplay);
 		}
-		catch(NoSuchElementException e) {
-			return true;
-
-		}
-		return false;
+		return this;
 	}
 
 
+
+private boolean assertForNumberOfRowsDisplayed(int rowCount, int numberOfRecordsToDisplay) {
+		if (rowCount <= numberOfRecordsToDisplay) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+@FindAll(value={@FindBy(xpath="//tbody[@id='subsetForm:subsetTableId:tb']/tr")})
+private List<WebElement> numberOfRowCountLocator;
+
+public SubsetPageObjects createSubsetWithoutMandatoryField(String subsetDescription) throws InterruptedException {
+	enterTheSubsetDescription(subsetDescription)
+	.clickOnSaveLink();
+  return this;	
+}
+public SubsetPageObjects verifySubsetNameIsRequired(String requiredMessage) throws InterruptedException {
+	Thread.sleep(2000);
+	Assert.assertEquals(requiredMessageLocator.getText(), requiredMessage);
+	return this;
 	
-	
-	
+}
+@FindBy(xpath="//span[contains(text(),'Subset Name required')]")
+private WebElement requiredMessageLocator;
 	
 }	

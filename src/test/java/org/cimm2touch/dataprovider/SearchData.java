@@ -106,6 +106,15 @@ public class SearchData
 
 		return data;
 	}
+	//=============================================================================
+	/*@DataProvider(name = "SubsetCreationTestData", parallel = true)
+	public static Object[][] subsetCreationDataProvider() throws Exception {
+		File file = new File("resources/ExcelSheetData/SubsetModuleTest.xlsx");
+		ExcelLibrary excel = new ExcelLibrary("resources/ExcelSheetData/SubsetModuleTest.xlsx", "creationData");
+		Object data[][] = excel.readFromExcelDataForTestNGDataProvider(file.getAbsolutePath(), "creationData");
+		return data;
+	}*/
+	//============================================================================
 
 	@DataProvider(name="VendorsModuleTest",parallel = true)
 	public static Object[][] VendorsModuleTest(Method methodName) throws Exception
@@ -122,6 +131,14 @@ public class SearchData
 		File file = new File("resources/ExcelSheetData/ProductsModuleTest.xlsx");
 		ExcelLibrary excel = new ExcelLibrary("resources/ExcelSheetData/ProductsModuleTest.xlsx","creationData");
 		Object data[][] = excel.readFromExcelDataForTestNGDataProvider(file.getAbsolutePath(),"creationData");
+		return data;
+	}
+	@DataProvider(name="UOMModuleTest")
+	public static Object[][] UOMModuleTest(Method methodName) throws Exception
+	{
+		File file = new File("resources/ExcelSheetData/UOMModuleTest.xlsx");
+		ExcelLibrary excel = new ExcelLibrary("resources/ExcelSheetData/UOMModuleTest.xlsx",methodName.getName());
+		Object data[][] = excel.readFromExcelDataForTestNGDataProvider(file.getAbsolutePath(),methodName.getName());
 		return data;
 	}
 

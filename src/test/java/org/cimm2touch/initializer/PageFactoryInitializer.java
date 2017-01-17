@@ -1,11 +1,16 @@
 package org.cimm2touch.initializer;
 import org.cimm2touch.pageobjects.adminstration.SystemSettingsPageObjects;
+import org.cimm2touch.pageobjects.customers.CustomersPageObjects;
+import org.cimm2touch.pageobjects.customfields.CustomFieldsSimpleDataPageObjects;
+import org.cimm2touch.pageobjects.customfields.CustomFieldsTableDataPageObjects;
 import org.cimm2touch.pageobjects.homepage.HomePageObjects;
 import org.cimm2touch.pageobjects.items.AddNewItemPageObjects;
+import org.cimm2touch.pageobjects.items.CopyOfItemPageObjects;
 import org.cimm2touch.pageobjects.items.EditItemsPageObjects;
 import org.cimm2touch.pageobjects.items.HistoryPageObjects;
 import org.cimm2touch.pageobjects.items.ItemsPageObjects;
 import org.cimm2touch.pageobjects.landingpage.LandingPageObjects;
+import org.cimm2touch.pageobjects.managelists.ManageListsPageObjets;
 import org.cimm2touch.pageobjects.manufacturer.EditBrandsPageObjects;
 import org.cimm2touch.pageobjects.manufacturer.EditManufacturerPageObjects;
 import org.cimm2touch.pageobjects.manufacturer.ManufacturerPageObjects;
@@ -13,6 +18,7 @@ import org.cimm2touch.pageobjects.products.AddNewProductPageObjects;
 import org.cimm2touch.pageobjects.products.ProductEditPageObjects;
 import org.cimm2touch.pageobjects.products.ProductsListPageObjects;
 import org.cimm2touch.pageobjects.products.ProductsPageObjects;
+import org.cimm2touch.pageobjects.subset.CatalogBuilderPageObjects;
 import org.cimm2touch.pageobjects.subset.SubsetPageObjects;
 import org.cimm2touch.pageobjects.taxonomymanagement.AttributeGroupsPageObjects;
 import org.cimm2touch.pageobjects.taxonomymanagement.AttributesPageObjects;
@@ -21,9 +27,11 @@ import org.cimm2touch.pageobjects.taxonomymanagement.ImageUploadSectionPageObjec
 import org.cimm2touch.pageobjects.taxonomymanagement.ManageTaxonomyPageObjects;
 import org.cimm2touch.pageobjects.taxonomymanagement.TaxonomyMappingPageObjects;
 import org.cimm2touch.pageobjects.taxonomymanagement.TaxonomyPageObjects;
+import org.cimm2touch.pageobjects.uom.UOMPageObjects;
 import org.cimm2touch.pageobjects.userconfiguration.UserConfigurationPageObjects;
 import org.cimm2touch.pageobjects.vendors.EditVendorsPageObjects;
 import org.cimm2touch.pageobjects.vendors.VendorsPageObjects;
+import org.cimm2touch.pageobjects.warehouse.WareHousePageObjects;
 import org.framework.maincontroller.CallApplication;
 import org.openqa.selenium.support.PageFactory;
 
@@ -45,6 +53,11 @@ public class PageFactoryInitializer extends CallApplication
 	{
 		SubsetPageObjects subsetPage = PageFactory.initElements(getDriver(), SubsetPageObjects.class);
 		return subsetPage;
+	}
+	public CatalogBuilderPageObjects catalogBuilderPage()
+	{
+		CatalogBuilderPageObjects catalogBuilderPage = PageFactory.initElements(getDriver(), CatalogBuilderPageObjects.class);
+		return catalogBuilderPage;
 	}
 
 	public ItemsPageObjects itemsPage()
@@ -190,5 +203,47 @@ public class PageFactoryInitializer extends CallApplication
 		UserConfigurationPageObjects userConfigPage=PageFactory.initElements(getDriver(), UserConfigurationPageObjects.class);
 		return userConfigPage;
 	}
+	public CustomFieldsSimpleDataPageObjects customSimpleDataPage(){
+		
+		CustomFieldsSimpleDataPageObjects simpleData=PageFactory.initElements(getDriver(), CustomFieldsSimpleDataPageObjects.class);
+		return simpleData;
+	}
+	public CustomFieldsTableDataPageObjects customTableDataPage(){
+		CustomFieldsTableDataPageObjects tableData=PageFactory.initElements(getDriver(), CustomFieldsTableDataPageObjects.class);
+		return tableData;
+	}
+	
+	public ManageListsPageObjets manageListPage(){
+		
+		ManageListsPageObjets manageList=PageFactory.initElements(getDriver(), ManageListsPageObjets.class);
+		return manageList;
+	}
+	
+	public CustomersPageObjects customersPage(){
+		
+		CustomersPageObjects customers=PageFactory.initElements(getDriver(), CustomersPageObjects.class);
+		
+		return customers;
+	}
+	
+	public WareHousePageObjects warehousePage(){
+		
+		WareHousePageObjects warehouse=PageFactory.initElements(getDriver(), WareHousePageObjects.class);
+		
+		return warehouse;
+		
+	}
+	public CopyOfItemPageObjects copyItemPage()
+	{
+		
+		CopyOfItemPageObjects copyItem=PageFactory.initElements(getDriver(), CopyOfItemPageObjects.class);
+		
+		return copyItem;
+	}
+	public UOMPageObjects uomPage()
+	{
+		UOMPageObjects uompage = PageFactory.initElements(getDriver(), UOMPageObjects.class);
+		return uompage;
 
+	}
 }
