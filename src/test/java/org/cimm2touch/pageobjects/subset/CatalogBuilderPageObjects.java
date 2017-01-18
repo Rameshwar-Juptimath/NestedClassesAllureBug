@@ -11,6 +11,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotVisibleException;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
@@ -81,8 +82,7 @@ public class CatalogBuilderPageObjects extends PageFactoryInitializer{
 		return this;
 	}
 	
-	@FindBy(xpath="//td[Contains(text(),'All Items')]")
-	private WebElement allItemtabLocator;
+	
 
 	public CatalogBuilderPageObjects verifyAllItemTab(String allItemTab) throws InterruptedException {
 		Thread.sleep(3000);
@@ -92,7 +92,7 @@ public class CatalogBuilderPageObjects extends PageFactoryInitializer{
 		Assert.assertEquals(allItemtabLocator.getText().trim(), allItemTab.trim());
 		return this;
 	}
-	@FindBy(xpath="//td[Contains(text(),'Excluded Items')]")
+	@FindBy(xpath="//td[contains(text(),'Excluded Items')]")
 	private WebElement excludedItemtabLocator;
 
 	public CatalogBuilderPageObjects verifyExcludedItemTab(String excludedItemTab) {
@@ -102,7 +102,7 @@ public class CatalogBuilderPageObjects extends PageFactoryInitializer{
 		return this;
 	}
 	
-	@FindBy(xpath="//td[Contains(text(),'Additional Items')]")
+	@FindBy(xpath="//td[contains(text(),'Additional Items')]")
 	private WebElement additionalItemtabLocator;
 
 	public CatalogBuilderPageObjects verifyAdditionalItemTab(String additionalItemTab) {
@@ -146,6 +146,7 @@ public class CatalogBuilderPageObjects extends PageFactoryInitializer{
 	@FindBy(xpath="//td[contains(text(),'Selected')]")
 	private WebElement selectedLocator;
 	
+	@Step("To click on 'Selected' Tab in the left SideBar.")
 	public CatalogBuilderPageObjects clickOnSelectedTab() throws InterruptedException {
 		waiting.explicitWaitVisibilityOfElement(selectedLocator, 55);
 		Thread.sleep(4000);
@@ -194,6 +195,218 @@ public class CatalogBuilderPageObjects extends PageFactoryInitializer{
 		//Assert.assertTrue(count.isDisplayed());
 		
 		return this;
+	}
+	@FindBy(xpath="//td[contains(text(),'BRAND')]/preceding-sibling::td[@class='rich-table-cell']/descendant::input")
+	private WebElement deleteBrandUnderSelectedTab;
+	@FindBy(xpath="//span[@id='saveMessage']")
+	private WebElement deleteBrandMessageLocator;
+	
+	public CatalogBuilderPageObjects verifySuccessMessageForDeletionOfBrand(String brandName) throws InterruptedException {
+		waiting.explicitWaitVisibilityOfElement(deleteBrandUnderSelectedTab, 20);
+		//deleteBrandUnderSelectedTab.click();
+		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",deleteBrandUnderSelectedTab);
+		tu.alertAccept();
+		Thread.sleep(2000);
+		//getDriver().findElement(By.xpath(""))
+		waiting.explicitWaitVisibilityOfElement(deleteBrandMessageLocator, 20);
+		Assert.assertEquals(deleteBrandMessageLocator.getText(), "Entity With Name - : '"+brandName+"' removed Successfully.");
+		return this;
+	}
+	/*@FindBy(xpath="//td[contains(text(),'MANUFACTURER')]/preceding-sibling::td[@class='rich-table-cell']/descendant::input")
+	private WebElement deleteManufacturerUnderSelectedTab;*/
+	@FindBy(xpath="//td[contains(text(),'MANUFACTURER')]/preceding-sibling::td/descendant::input")
+	private WebElement deleteManufacturerUnderSelectedTab;
+	
+	@FindBy(xpath="//span[@id='saveMessage']")
+	private WebElement deleteManufacturerMessageLocator;
+	
+	public CatalogBuilderPageObjects verifySuccessMessageForDeletionOfManufacturer(String manufacturerName) throws InterruptedException {
+		waiting.explicitWaitVisibilityOfElement(deleteManufacturerUnderSelectedTab, 10);
+		//deleteManufacturerUnderSelectedTab.click();
+		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",deleteManufacturerUnderSelectedTab);
+		   tu.alertAccept();
+		Thread.sleep(2000);
+		waiting.explicitWaitVisibilityOfElement(deleteManufacturerMessageLocator, 20);
+		Assert.assertEquals(deleteManufacturerMessageLocator.getText(), "Entity With Name - : '"+manufacturerName+"' removed Successfully.");
+		return this;
+	}
+	@FindBy(xpath="//input[@title='Refresh Catalog']")
+	private WebElement refreshCatalogLocator;
+	
+	public CatalogBuilderPageObjects clickOnRefreshCatalog() throws InterruptedException {
+		//Thread.sleep(2000);
+		//refreshCatalogLocator.click();
+		waiting.explicitWaitVisibilityOfElement(refreshCatalogLocator, 30);
+		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",refreshCatalogLocator);
+		Thread.sleep(5000);
+		return this;
+	}
+	@FindBy(xpath="//span[@id='saveMessage']")
+	private WebElement refreshCatalogMessageLocator;
+	
+	public CatalogBuilderPageObjects verifyWetherCatalogRefreshed() throws InterruptedException {
+		Thread.sleep(4000);
+		
+		waiting.explicitWaitVisibilityOfElement(refreshCatalogMessageLocator, 68);
+		
+		Assert.assertEquals(refreshCatalogMessageLocator.getText(), "Catalog Refresh Completed Successfully");
+		return this;
+		
+	}
+	@FindBy(xpath="//div[@class='tabContentTopStrip']/descendant::p")
+	private WebElement totalNumberOfItemLocator;
+	
+	public CatalogBuilderPageObjects verifyWhetherItemDisplayed(String noOfItem) {
+		waiting.explicitWaitVisibilityOfElement(totalNumberOfItemLocator, 30);
+		System.out.println(totalNumberOfItemLocator.getText());
+		
+		Assert.assertEquals(totalNumberOfItemLocator.getText(), "Total Items :"+noOfItem);
+		return this;
+		
+	}
+	
+	@FindBy(xpath="//input[@id='searchFormId:searchKeywordId']")
+	private WebElement searchkeywordLocator;
+
+	
+	public CatalogBuilderPageObjects enterSearchkeyword(String partNumber) throws InterruptedException {
+		Thread.sleep(2000);
+		searchkeywordLocator.sendKeys(partNumber);
+		return this;
+		
+	}
+	
+	@FindBy(xpath="//div[@class='attribute-search-panel']/descendant::div[@align='center']/descendant::input[@title='Item Search']")
+	private WebElement searchButtonLocator;
+	
+	public CatalogBuilderPageObjects clickOnSearchItemButton() throws InterruptedException {
+		waiting.explicitWaitVisibilityOfElement(searchButtonLocator, 30);
+		searchButtonLocator.click();
+		Thread.sleep(4000);
+		return this;
+		
+	}
+	
+	@FindBy(xpath="//table[@id='searchFormId:searchedItemTableId']/tbody/tr/td[3]/descendant::td")
+	private WebElement searchedItemPartNumberlocator;  
+	
+	public CatalogBuilderPageObjects verifySearchedItemResults(String partNumber) throws InterruptedException {
+		waiting.explicitWaitVisibilityOfElement(searchedItemPartNumberlocator, 30);
+		Thread.sleep(3000);
+		Assert.assertEquals(searchedItemPartNumberlocator.getText().trim(), partNumber);
+		System.out.println("verify Searched Item   Results:==================== " + searchedItemPartNumberlocator.getText().trim());
+		
+		return this;
+		
+	}
+	
+	@FindBy(xpath="//td[contains(text(),'Additional Items')]")
+	private WebElement additionalItemsLocator;
+	
+	public CatalogBuilderPageObjects clickOnAdditionalItemsLink() throws InterruptedException {
+		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",additionalItemsLocator);
+		Thread.sleep(2000);
+		return this;		
+	}
+	/*@FindBy(xpath="//td[text()='1652458']")
+	private WebElement sourceItemLocator;*/
+	
+	@FindBy(xpath="//span[text()='Action']")
+	private WebElement additionalItemsTableLocator;
+	
+	public CatalogBuilderPageObjects dragDropAnItem(String partNumber) throws InterruptedException {
+		Thread.sleep(3000);
+
+		//System.out.println("drag and drop done");
+		  WebElement sourceItemLocator = getDriver().findElement(By.xpath("//td[text()='"+partNumber+"']"));
+		 elementHighlight(sourceItemLocator);
+		Actions builder = new Actions(getDriver());
+		builder.clickAndHold(sourceItemLocator).build().perform();
+		Thread.sleep(2000);
+		builder.moveToElement(additionalItemsTableLocator, 0, 0).build().perform();
+		builder.moveToElement(additionalItemsTableLocator, 0, 5).build().perform();
+		builder.moveToElement(additionalItemsTableLocator, 0, 10).build().perform();
+		builder.moveToElement(additionalItemsTableLocator, 0, 15).build().perform();
+		builder.release().build().perform();
+		Thread.sleep(4000);
+		System.out.println("drag and drop done");
+		return this;
+	}
+	@FindBy(xpath="//span[@id='saveMessage']")
+	private WebElement saveRulesSuccessMsgAfterAdditionOfItem;
+	
+	public CatalogBuilderPageObjects verifySuccessMsgAfterAdditionOfTem(String msgAfterAdditionOfItem) throws InterruptedException {
+		Thread.sleep(3000);
+		//waiting.explicitWaitVisibilityOfElement(saveRulesSuccessMsgAfterAdditionOfItem, 30);
+		System.out.println(saveRulesSuccessMsgAfterAdditionOfItem.getText());
+		Assert.assertEquals(saveRulesSuccessMsgAfterAdditionOfItem.getText().trim(),msgAfterAdditionOfItem);
+		
+		return this;
+		
+	}
+	@Step("declaration for drag and drop operation.")
+	public void elementHighlight(WebElement element) {
+		  for (int i = 0; i < 2; i++) {
+
+		   JavascriptExecutor js = (JavascriptExecutor) getDriver();
+		   js.executeScript(
+		     "arguments[0].setAttribute('style', arguments[1]);",
+		     element, "color: red; border: 3px solid red;");
+		   js.executeScript(
+		     "arguments[0].setAttribute('style', arguments[1]);",
+		     element, "");
+		  }
+		 }
+	@FindBy(xpath="//td[contains(text(),'All Items')]")
+	private WebElement allItemtabLocator;
+	
+	public CatalogBuilderPageObjects clickOnAllItemTab() throws InterruptedException {
+		
+		//waiting.explicitWaitVisibilityOfElement(allItemtabLocator, 30);
+		  Thread.sleep(3000);
+		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",allItemtabLocator);
+		Thread.sleep(4000);
+		System.out.println("reached inside clickOnAllItemTab");
+		return this;
+		
+	}
+
+	@FindBy(xpath="//div[@class='tabContentTopStrip']/descendant::p")
+	private WebElement itemPresentMessageUnderAllItemLocator;
+
+	public CatalogBuilderPageObjects verifyItemUnderAllItemTab(String partNumber,String msgUnderAllTabAfterAdditionOfItem) {
+		
+		waiting.explicitWaitVisibilityOfElement(itemPresentMessageUnderAllItemLocator, 20);
+		
+		Assert.assertEquals(itemPresentMessageUnderAllItemLocator.getText(),msgUnderAllTabAfterAdditionOfItem );
+		System.out.println(itemPresentMessageUnderAllItemLocator.getText());
+		  WebElement itempartNumber =  getDriver().findElement(By.xpath("//td[text()='"+partNumber+"']"));
+		waiting.explicitWaitVisibilityOfElement(itempartNumber, 30);
+		System.out.println(itempartNumber.getText());
+		Assert.assertEquals(itempartNumber.getText(), partNumber);
+		
+		return this;
+		
+	}
+
+
+	@FindBy(xpath="//td[contains(text(),'Excluded Items')]")
+	private WebElement excludedItemsLocator;
+	
+	public CatalogBuilderPageObjects clickOnExcludedItemsLink() throws InterruptedException {
+		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",excludedItemsLocator);
+		Thread.sleep(2000);
+		return this;		
+	}
+
+
+
+	public CatalogBuilderPageObjects verifyItemUnderAllItemTab(String msgUnderAllTabAfterDeletionOfItem) {
+           waiting.explicitWaitVisibilityOfElement(itemPresentMessageUnderAllItemLocator, 20);
+		
+		Assert.assertEquals(itemPresentMessageUnderAllItemLocator.getText(),msgUnderAllTabAfterDeletionOfItem );
+		System.out.println(itemPresentMessageUnderAllItemLocator.getText());
+		return this;		
 	}
 
 }

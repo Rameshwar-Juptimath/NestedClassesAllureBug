@@ -25,7 +25,9 @@ public class SubsetModuleTest extends PageFactoryInitializer {
 	SearchDataPropertyFile data = new SearchDataPropertyFile();
 	TestUtility utility= new TestUtility(getDriver());
 	HashMap<String, String> loginData;
+	
 	RandomGenerator random = new RandomGenerator(); 
+	
 	
 	
 	@Factory(dataProvider="loginTestData", dataProviderClass=SearchData.class)
@@ -36,149 +38,92 @@ public class SubsetModuleTest extends PageFactoryInitializer {
 		loginData.put("welcomeMessage", welcomMessage);
 	}
 
-	/*RandomGenerator random = new RandomGenerator();
-	SearchDataPropertyFile data = new SearchDataPropertyFile();
-
-	Hashtable<String, String> loginData;
-	Hashtable<String, String> creationData;
-	
-	@Factory(dataProvider="loginTestData", dataProviderClass=SearchData.class)
-	public SubsetModuleTest(String userName, String password, String welcomMessage){
-		loginData=new Hashtable<String, String>();
-		
-		loginData.put("userName", userName);
-		loginData.put("password", password);
-		loginData.put("welcomeMessage", welcomMessage);
-	}
-	
-
-	@Factory(dataProvider = "SubsetCreationTestData", dataProviderClass = SearchData.class)
-	public SubsetModuleTest(String userName, String password, String welcomMessage, String subsetName,
-			String subsetDescription, String subsetSaveMessage) {
-		System.out.println("Constructor");
-		loginData = new Hashtable<String, String>();
-		loginData.put("userName", userName);
-		loginData.put("password", password);
-		loginData.put("welcomeMessage", welcomMessage);
-		
-		creationData = new Hashtable<String, String>();
-		
-		creationData.put("subsetName", subsetName);
-		creationData.put("subsetDescription", subsetDescription);
-		creationData.put("subsetSaveMessage", subsetSaveMessage);
-	}
-
-
-	@BeforeClass()
-	public void createSubset() throws InterruptedException, Exception {
-		System.out.println("Create Subset");
-		         landingPage()
-		        .enterUsername(loginData.get("userName"))
-		        .enterPassword(loginData.get("password"))
-		        .clickOnLogin()
-				.homePage()
-				.clickOnSubset()
-				.subsetPage()
-				.searchForAnSubset(creationData.get("subsetName"))
-				.clickOnSubsetSearchGoButton()
-				.verifySubsetPresent(creationData.get("subsetName"))
-				.createSubset(creationData.get("subsetName"), creationData.get("subsetDescription"))
-				.verifySubsetCreationMessage(creationData.get("subsetSaveMessage"))
-				.searchForAnSubset(creationData.get("subsetName"))
-				.clickOnSubsetSearchGoButton()
-				.verifyCreatedSubset(creationData.get("subsetName"));
-	}
-	@AfterClass()
-	public void deleteSubset() throws InterruptedException, Exception
-	{
-		     landingPage()
-	        .enterUsername(loginData.get("userName"))
-	        .enterPassword(loginData.get("password"))
-	        .clickOnLogin()
-			.homePage()
-			.clickOnSubset();
-		     String subsetId = subsetPage()
-				        .searchForAnSubset(creationData.get("subsetName"))
-				       .clickOnSubsetSearchGoButton()
-				       .verifyCreatedSubset(creationData.get("subsetName"))
-				        .verifyandDeleteSubset(creationData.get("subsetName"));
-		                 subsetPage()
-		                .verifySuccessMessageForDeletionOfSubset(creationData.get("subsetName"), subsetId);
-	}
-	*/
-	//======================================================
-
 	@Features(value = { "Subset/Catlog Module" })
-	@Description("This is a Method that Creates Subset.")
+	@Description("This is a Method that verify subset page and Verification of search functionality for invalid keyword in Subset page and Verification of Add New Subset page")
 	@TestCaseId("TC_Subset_001,TC_Subset_004, TC_Subset_005")
 	@Test(groups = { "regression" }, dataProvider = "SubsetModuleTest", dataProviderClass = SearchData.class)
-	// completed by me
-	public void tc_Subset_001_004_005(String testCaseID, String headerList, String placeHolderText, String subsetName,
-			String errorMessage, String addNewSubsetField) throws Exception {
-		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin()
-				.homePage().clickOnSubset().subsetPage().verifyHeaderPartOfSubsetPage(headerList)
-				.verifySearchFieldOfSubsetPage(placeHolderText).searchForAnSubset(subsetName)
-				.clickOnSubsetSearchGoButton().verifySubsetPresent(subsetName).verifyErrorMessage(errorMessage)
-				.verifyAddNewSubsetButtonInSubsetpage().clickOnAddNewSubset()
-				.verifyAllAddNewSubsetFields(addNewSubsetField).verifySaveLinkInAddNewSubsetPage();
+	public void tc_Subset_001_004_005(String testCaseID, String headerList, String placeHolderText, String subsetName,String errorMessage, String addNewSubsetField) throws Exception
+   {
+		
+		              landingPage()
+		             .enterUsername(loginData.get("userName"))
+		             .enterPassword(loginData.get("password"))
+		             .clickOnLogin()
+				     .homePage()
+				     .clickOnSubset()
+				     .subsetPage()
+				     .verifyHeaderPartOfSubsetPage(headerList)
+				     .verifySearchFieldOfSubsetPage(placeHolderText)
+				     .searchForAnSubset(subsetName)
+				     .clickOnSubsetSearchGoButton()
+				     .verifySubsetPresent(subsetName)
+				     .verifyErrorMessage(errorMessage)
+				     .verifyAddNewSubsetButtonInSubsetpage()
+				     .clickOnAddNewSubset()
+				     .verifyAllAddNewSubsetFields(addNewSubsetField)
+				     .verifySaveLinkInAddNewSubsetPage();
 
-		/*
-		 * .subsetPage() .verifySubsetPageItems() .clickOnAddNewSubset()
-		 * .verifyAddNewSubsetFormItems() .addNewSubset(subsetName, subsetDesc,
-		 * bannerText) .clickOnSaveNewSubset()
-		 * .verifyMessageAfterSavingSubset(saveMessage)
-		 * .searchForAnSubset(subsetName)
-		 * .verifyAfterSearchingForSubset(subsetName);
-		 */
 	}
 
 	@Features(value = { "Subset/Catlog Module" })
-	@Description("This is a Method that Creates Subset.")
-	@TestCaseId("")
+	@Description("This is a Method that Click On Display sequence drop down and and select number of rows needed.")
+	@TestCaseId("TC_Subset_002")
 	@Test(groups = { "regression" }, dataProvider = "SubsetModuleTest", dataProviderClass = SearchData.class)
-	// completed by me
 	public void tc_Subset_002(String testCaseID) throws Exception {
-		data.setNumberOfRecordsToDisplay("10");
-		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin()
-				.homePage().clickOnSubset().subsetPage()
-				.selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
-				.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
-		data.setNumberOfRecordsToDisplay("25");
-		subsetPage().selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
-				.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
-		data.setNumberOfRecordsToDisplay("50");
-		subsetPage().selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
-				.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
-		data.setNumberOfRecordsToDisplay("75");
-		subsetPage().selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
-				.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
-		data.setNumberOfRecordsToDisplay("100");
-		subsetPage().selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
-				.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
+		
+		           data.setNumberOfRecordsToDisplay("10");
+		                          landingPage()
+		                         .enterUsername(loginData.get("userName"))
+		                         .enterPassword(loginData.get("password"))
+		                         .clickOnLogin()
+				                 .homePage()
+				                 .clickOnSubset()
+				                 .subsetPage()
+				                 .selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
+				                 .verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
+		          data.setNumberOfRecordsToDisplay("25");
+		                        subsetPage()
+		                       .selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
+				               .verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
+		          data.setNumberOfRecordsToDisplay("50");
+		                       subsetPage()
+		                       .selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
+				               .verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
+		         data.setNumberOfRecordsToDisplay("75");
+		                        subsetPage()
+		                      .selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
+				              .verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
+		         data.setNumberOfRecordsToDisplay("100");
+		                      subsetPage()
+		                     .selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
+				             .verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
 
 	}
 
 	@Features(value = { "Subset/Catlog Module" })
-	@Description("This is a Method that Creates Subset.")
-	@TestCaseId("")
-	// completed by me
+	@Description("This is a Method that Validate of Subset Name field.")
+	@TestCaseId("TC_Subset_007")
 	@Test(groups = { "regression" }, dataProvider = "SubsetModuleTest", dataProviderClass = SearchData.class)
-	public void tc_Subset_007(String testCaseID, String subsetDescription, String requiredMessage)
-			throws InterruptedException {
-		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin()
-				.homePage().clickOnSubset().subsetPage().clickOnAddNewSubset()
-				.createSubsetWithoutMandatoryField(subsetDescription).verifySubsetNameIsRequired(requiredMessage);
+	public void tc_Subset_007(String testCaseID, String subsetDescription, String requiredMessage)throws InterruptedException
+	{
+		                        landingPage()
+		                        .enterUsername(loginData.get("userName"))
+		                        .enterPassword(loginData.get("password"))
+		                        .clickOnLogin()
+				                .homePage()
+				                .clickOnSubset()
+				                .subsetPage()
+				                .clickOnAddNewSubset()
+				                .createSubsetWithoutMandatoryField(subsetDescription)
+				                .verifySubsetNameIsRequired(requiredMessage);
 	}
 
 	@Features(value = { "Subset/Catlog Module" })
-	@Description("This is a Method that Creates Subset.")
+	@Description("This is a Method that Creates Subset, Verify of search functionality in Subset page,Verify edit subset page and verify  Subset details should be edited and should be saved in DB Successfully")
 	@TestCaseId("")
 	@Test(groups = { "regression" }, dataProvider = "SubsetModuleTest", dataProviderClass = SearchData.class)
-	// created by me
-	public void tc_Subset_006_003_008_009(String testCaseID, String subsetName, String subsetDescription,
-			String subsetSaveMessage, String editFieldOfSubset, String updatedSubsetName, String updateMessage)
-			throws Exception {
-
+	public void tc_Subset_006_003_008_009(String testCaseID, String subsetName, String subsetDescription,String subsetSaveMessage, String editFieldOfSubset, String updatedSubsetName, String updateMessage)throws Exception
+		{
 		        landingPage()
 		       .enterUsername(loginData.get("userName"))
 		        .enterPassword(loginData.get("password"))
@@ -210,12 +155,10 @@ public class SubsetModuleTest extends PageFactoryInitializer {
 	}
 
 	@Features(value = { "Subset/Catlog Module" })
-	@Description("This is a Method that Creates Subset.")
-	@TestCaseId("")
-	//done by me(doubt)
+	@Description("This is a Method that Verify Catalog Builder View page.")
+	@TestCaseId("TC_Subset_10")
 	@Test(groups = { "regression" }, dataProvider = "SubsetModuleTest", dataProviderClass = SearchData.class)
 	public void tc_Subset_010(String testCaseID,String subsetName, String subsetDescription,String subsetSaveMessage,String allItemTab,String excludedItemTab,String additionalItemTab) throws InterruptedException, Exception {
-		
 		               landingPage()
 		              .enterUsername(loginData.get("userName"))
 		              .enterPassword(loginData.get("password"))
@@ -234,10 +177,12 @@ public class SubsetModuleTest extends PageFactoryInitializer {
 					  .verifyCreatedSubset(subsetName)
 					  .clickOnCatalogBuilderView(subsetName)
 					  .catalogBuilderPage()
-					  .verifyCatalogBuilderPageItems();
-					 /* .verifyAllItemTab(allItemTab)
+					  .verifyCatalogBuilderPageItems()
+		               
+					  .verifyAllItemTab(allItemTab)
 					  .verifyExcludedItemTab(excludedItemTab)
-					  .verifyAdditionalItemTab(additionalItemTab);*/
+					  .verifyAdditionalItemTab(additionalItemTab);
+		               
 		               String subsetId = homePage().clickOnSubset()
 						        .searchForAnSubset(subsetName)
 						       .clickOnSubsetSearchGoButton()
@@ -247,54 +192,14 @@ public class SubsetModuleTest extends PageFactoryInitializer {
 				                .verifySuccessMessageForDeletionOfSubset(subsetName, subsetId);
 	}
 	
-		
 	
-	@Features(value = { "Subset/Catlog Module" })
-	@Description("This Test Case is to Verify the 'Edit Subset' Form Items")
-	@TestCaseId("TC_Subset_08")
-	@Test(priority = 4, groups = {
-			"regression" }, dataProvider = "SubsetModuleTest", dataProviderClass = SearchData.class)
-	public void TC_Subset_08(String testCaseID, String userName, String password, String subsetName) throws Exception {
-		landingPage().enterUsername(userName).enterPassword(password).clickOnLogin().homePage().clickOnSubset()
-				.subsetPage().verifySubsetPageItems().searchForAnSubset(subsetName)
-				.verifyAfterSearchingForSubset(subsetName).clickOnEditSubset(subsetName)
-				.verifyEditSubsetFormItems(subsetName);
-	}
 
 	@Features(value = { "Subset/Catlog Module" })
-	@Description("This Test Case is to Verify the  working of 'Edit Subset' Form Items")
-	@TestCaseId("TC_Subset_09")
-	@Test(priority = 5, groups = {
-			"regression" }, dataProvider = "SubsetModuleTest", dataProviderClass = SearchData.class)
-	public void TC_Subset_09(String testCaseID, String userName, String password, String subsetName,
-			String editedSubsetName, String subsetDesc, String updateMessage) throws Exception {
-		landingPage().enterUsername(userName).enterPassword(password).clickOnLogin().homePage().clickOnSubset()
-				.subsetPage().verifySubsetPageItems().searchForAnSubset(subsetName)
-				.verifyAfterSearchingForSubset(subsetName).clickOnEditSubset(subsetName)
-				.verifyEditSubsetFormItems(subsetName).editSubset(editedSubsetName, subsetDesc)
-				.verifyMessageAfterUpdatingSubset(updateMessage);
-	}
-
-	@Features(value = { "Subset/Catlog Module" })
-	@Description("This Test Case is to Verify 'Catalog Builder View' Form Items")
-	@TestCaseId("TC_Subset_10")
-	@Test(priority = 6, groups = {
-			"regression" }, dataProvider = "SubsetModuleTest", dataProviderClass = SearchData.class)
-	public void TC_Subset_10(String testCaseID, String userName, String password, String subsetName) throws Exception {
-		landingPage().enterUsername(userName).enterPassword(password).clickOnLogin().homePage().clickOnSubset()
-				.subsetPage().verifySubsetPageItems().searchForAnSubset(subsetName)
-				.verifyAfterSearchingForSubset(subsetName).clickOnCatalogBuilderView(subsetName)
-				.verifyCatalogBuilderPageItems();
-	}
-
-	@Features(value = { "Subset/Catlog Module" })
-	@Description("This Test Case is to add Manufacturer and Brands under 'Catalog Builder View'")
-	@TestCaseId("TC_Subset_11,TC_Subset_12")
-	//completed by priya
+	@Description("This Test Case is to add Manufacturer and Brands under 'Catalog Builder View',Selected Manufacturer list should display along with fields,Manufacturer and Brand should be removed")
+	@TestCaseId("TC_Subset_11,TC_Subset_12,TC_Subset_13")
 	@Test(groups = { "regression" }, dataProvider = "SubsetModuleTest", dataProviderClass = SearchData.class)
-	public void tc_Subset_011_012(String testCaseID, String subsetName,String subsetDescription,String subsetSaveMessage, String manufacturerName, String brandName,String selectedTabField,String brandCount,String manufacturerCount,String messageOfCount)throws Exception 
+	public void tc_Subset_011_012_013(String testCaseID, String subsetName,String subsetDescription,String subsetSaveMessage, String manufacturerName, String brandName,String selectedTabField,String brandCount,String manufacturerCount,String messageOfCount)throws Exception 
 	{
-		      
 		   landingPage()
 	       .enterUsername(loginData.get("userName"))
 	        .enterPassword(loginData.get("password"))
@@ -311,585 +216,248 @@ public class SubsetModuleTest extends PageFactoryInitializer {
 			.searchForAnSubset(subsetName)
 			.clickOnSubsetSearchGoButton()
 			.verifyCreatedSubset(subsetName)
-			.clickOnCatalogBuilderView(subsetName)
+			 .clickOnCatalogBuilderView(subsetName)
 			  .catalogBuilderPage()
 			  .verifyCatalogBuilderPageItems()
 			  .addManufacturerAndBrand(manufacturerName, brandName)
-			  .clickOnSaveRules()
-			  .verifyManufacturerCountAndBrandCount(brandCount,manufacturerCount,messageOfCount)
-			  .clickOnSelectedTab()
-			   .verifyBrandNameUnderSelectedTab(brandName)
-			   .verifyManufacturerNameUnderSelectedTab(manufacturerName)
+			   .clickOnSaveRules()
+			   .verifyManufacturerCountAndBrandCount(brandCount,manufacturerCount,messageOfCount)
+			   .clickOnSelectedTab()
+			   .verifySelectedTabField(selectedTabField)
+			    .verifyBrandNameUnderSelectedTab(brandName)
+			    .verifyManufacturerNameUnderSelectedTab(manufacturerName)
+			    .verifySuccessMessageForDeletionOfBrand(brandName)
+			    .verifySuccessMessageForDeletionOfManufacturer(manufacturerName);
 			   
-			  .verifySelectedTabField(selectedTabField);
 		   
-		   /*String subsetId = homePage().clickOnSubset()
+		   String subsetId = homePage().clickOnSubset()
 			        .searchForAnSubset(subsetName)
 			       .clickOnSubsetSearchGoButton()
 			       .verifyCreatedSubset(subsetName)
 			        .verifyandDeleteSubset(subsetName);
 	                 subsetPage()
-	                .verifySuccessMessageForDeletionOfSubset(subsetName, subsetId);*/
+	                .verifySuccessMessageForDeletionOfSubset(subsetName, subsetId);
 	}
 
-	@Features(value = { "Subset/Catlog Module" })
-	@Description("This Test Case is to verify previously added Manufacturer and Brands under 'Catalog Builder View'")
-	@TestCaseId("TC_Subset_12, TC_Subset_13")
-	@Test(priority = 8, groups = {
-			"regression" }, dataProvider = "SubsetModuleTest", dataProviderClass = SearchData.class)
-	public void TC_Subset_12(String testCaseID, String userName, String password, String subsetName,
-			String manufacturerName, String brandName, String saveMessage) throws Exception {
-		landingPage().enterUsername(userName).enterPassword(password).clickOnLogin().homePage().clickOnSubset()
-				.subsetPage().verifySubsetPageItems().searchForAnSubset(subsetName)
-				.verifyAfterSearchingForSubset(subsetName).clickOnCatalogBuilderView(subsetName)
-				.verifyCatalogBuilderPageItems().clickOnSelectedTab()
-				.verifySelectedManufacturerInCatalogBuilder(manufacturerName)
-				.clickOnDeleteSelectedManufacturerInCatalogBuilder(manufacturerName)
-				.verifyMessageAfterDeletingManufacturerInCatalogBuilder(saveMessage);
-	}
+	
 
+	
 	@Features(value = { "Subset/Catlog Module" })
-	@Description("This test case Verifies the Character Limit for ' Subset Name' Field.")
-	@TestCaseId("TC_Subset_24")
+	@Description("This Test Case verify that Item should displayed in the table Under the All Item Tab")
+	@TestCaseId("TC_Subset_14")
 	@Test(groups = { "regression" }, dataProvider = "SubsetModuleTest", dataProviderClass = SearchData.class)
-	public void TC_Subset_24(String testCaseID, String userName, String password) throws Exception {
-		String moreThanAccept = random.random(51, PermittedCharacters.ALPHABETS);
-		landingPage().enterUsername(userName).enterPassword(password).clickOnLogin().homePage().clickOnSubset()
-				.subsetPage().verifySubsetPageItems().clickOnAddNewSubset().verifyAddNewSubsetFormItems()
-				.verifyCharacterLimitForSubsetName(moreThanAccept);
+	public void tc_Subset_014(String testCaseID,String subsetName,String subsetDescription,String subsetSaveMessage,String manufacturerName,String brandName,String brandCount,String manufacturerCount,String messageOfCount,String noOfItem) throws InterruptedException, Exception
+	{
+		         landingPage()
+	           .enterUsername(loginData.get("userName"))
+	           .enterPassword(loginData.get("password"))
+	           .clickOnLogin()
+			   .homePage()
+			   .clickOnSubset()
+			   .subsetPage()
+			   .checkSubsetPage()
+			   .searchForAnSubset(subsetName)
+			   .clickOnSubsetSearchGoButton()
+			   .verifySubsetPresent(subsetName)
+			   .createSubset(subsetName, subsetDescription)
+			  .verifySubsetCreationMessage(subsetSaveMessage)
+			  .searchForAnSubset(subsetName)
+			  .clickOnSubsetSearchGoButton()
+			  .verifyCreatedSubset(subsetName)
+			  .clickOnCatalogBuilderView(subsetName)
+			  .catalogBuilderPage()
+			  .addManufacturerAndBrand(manufacturerName, brandName)
+			   .clickOnSaveRules() 
+			   .verifyManufacturerCountAndBrandCount(brandCount,manufacturerCount,messageOfCount)
+			   .clickOnRefreshCatalog()
+			   .verifyWetherCatalogRefreshed()
+			   .verifyWhetherItemDisplayed(noOfItem);
+	}
+	
+	
+	@Features(value = { "Subset/Catlog Module" })
+	@Description("Click on Additional Item tab and Verify the drag and dropped item should be saved and the item should display under 'All Items' tab ")
+	@TestCaseId("TC_Subset_15,TC_Subset_16")
+	@Test(groups = { "regression" }, dataProvider = "SubsetModuleTest", dataProviderClass = SearchData.class)
+	public void tc_Subset_015_016(String testCaseID,String subsetName,String subsetDescription,String subsetSaveMessage,String partNumber
+			                        ,String msgAfterAdditionOfItem,String msgUnderAllTabAfterAdditionOfItem) throws InterruptedException, Exception
+	{
+		  landingPage()
+          .enterUsername(loginData.get("userName"))
+          .enterPassword(loginData.get("password"))
+          .clickOnLogin()
+		   .homePage()
+		   .clickOnSubset()
+		   .subsetPage()
+		   .checkSubsetPage()
+		   .searchForAnSubset(subsetName)
+		   .clickOnSubsetSearchGoButton()
+		   .verifySubsetPresent(subsetName)
+		   .createSubset(subsetName, subsetDescription)
+		  .verifySubsetCreationMessage(subsetSaveMessage)
+		  .searchForAnSubset(subsetName)
+		  .clickOnSubsetSearchGoButton()
+		  .verifyCreatedSubset(subsetName)
+		  .clickOnCatalogBuilderView(subsetName)
+		  .catalogBuilderPage()
+		  .enterSearchkeyword(partNumber)
+		  .clickOnSearchItemButton()
+		  .verifySearchedItemResults(partNumber)
+		  .clickOnAdditionalItemsLink()
+		  .dragDropAnItem(partNumber)
+		  .verifySuccessMsgAfterAdditionOfTem(msgAfterAdditionOfItem)
+		  .clickOnRefreshCatalog()
+		  .verifyWetherCatalogRefreshed()
+		  .clickOnAllItemTab()
+		  .verifyItemUnderAllItemTab(partNumber,msgUnderAllTabAfterAdditionOfItem);
+		
+	}
+	
+	
+	
+	
+	@Features(value = { "Subset/Catlog Module" })
+	@Description("Click on Excluded Item tab and Verify the drag and dropped item should be saved and the item should not display under 'All Items' tab")
+	@TestCaseId("TC_Subset_17")
+	@Test(groups = { "regression" }, dataProvider = "SubsetModuleTest", dataProviderClass = SearchData.class)
+	public void tc_Subset_017(String testCaseID,String subsetName,String subsetDescription,String subsetSaveMessage,String partNumber,String msgAfterAdditionOfItem,String msgUnderAllTabAfterDeletionOfItem) throws InterruptedException, Exception
+			                        
+	{
+		 landingPage()
+         .enterUsername(loginData.get("userName"))
+         .enterPassword(loginData.get("password"))
+         .clickOnLogin()
+		   .homePage()
+		   .clickOnSubset()
+		   .subsetPage()
+		   .checkSubsetPage()
+		   .searchForAnSubset(subsetName)
+		   .clickOnSubsetSearchGoButton()
+		   .verifySubsetPresent(subsetName)
+		   .createSubset(subsetName, subsetDescription)
+		  .verifySubsetCreationMessage(subsetSaveMessage)
+		  .searchForAnSubset(subsetName)
+		  .clickOnSubsetSearchGoButton()
+		  .verifyCreatedSubset(subsetName)
+		  .clickOnCatalogBuilderView(subsetName)
+		  .catalogBuilderPage()
+		  .enterSearchkeyword(partNumber)
+		  .clickOnSearchItemButton()
+		  .verifySearchedItemResults(partNumber)
+		  .clickOnExcludedItemsLink()
+		  . dragDropAnItem(partNumber) 
+		  .verifySuccessMsgAfterAdditionOfTem(msgAfterAdditionOfItem)
+		  .clickOnRefreshCatalog()
+		  .verifyWetherCatalogRefreshed().clickOnAllItemTab().verifyItemUnderAllItemTab(msgUnderAllTabAfterDeletionOfItem);
+		 
+		  String subsetId = homePage().clickOnSubset()
+			        .searchForAnSubset(subsetName)
+			       .clickOnSubsetSearchGoButton()
+			       .verifyCreatedSubset(subsetName)
+			        .verifyandDeleteSubset(subsetName);
+	                 subsetPage()
+	                .verifySuccessMessageForDeletionOfSubset(subsetName, subsetId);
+		
+	}
+	
+	@Features(value = { "Subset/Catlog Module" })
+	@Description("List Subset page should be display,verify Items assigned to subset should displayed,items search result should display based on field")
+	@TestCaseId("TC_Subset_18,TC_Subset_19,TC_Subset_21")
+	@Test(groups = { "regression" }, dataProvider = "SubsetModuleTest", dataProviderClass = SearchData.class)
+	public void tc_Subset_018_019_021(String testCaseID,String subsetName,String totalNoOfItem,String particularFieldName,String itemNumber,String noOfItemAfterSearch) throws InterruptedException, Exception
+			                        
+	{
+		       landingPage()
+              .enterUsername(loginData.get("userName"))
+              .enterPassword(loginData.get("password"))
+              .clickOnLogin()
+		      .homePage()
+		    .clickOnSubset()
+		    .subsetPage()
+		    .checkSubsetPage()
+		    .clickOnSubsetItemsLink()
+		    .subsetItem()
+		    .checkSubsetPageItem()
+		    .selectSubset(subsetName)
+		    .verifyNumberOfItem(totalNoOfItem)
+		    .selectParticularItemBasedOnTheDropDownField(particularFieldName)
+		    .enterParticularNumberOfItem(itemNumber)
+		    .clickOnSearchButtonOfSubsetItem()
+		    .verifyNumberOfItem(noOfItemAfterSearch)
+		    .verifyNumberOfItemAfterSearched(itemNumber);
+	
+	}
+	
+	@Features(value = { "Subset/Catlog Module" })
+	@Description("Select the fields to search from the drop down")
+	@TestCaseId("TC_Subset_20")
+	@Test(groups = { "regression" }, dataProvider = "SubsetModuleTest", dataProviderClass = SearchData.class)
+	public void tc_Subset_020(String testCaseID,String dropDownFields) throws InterruptedException, Exception
+	{
+		 landingPage()
+        .enterUsername(loginData.get("userName"))
+        .enterPassword(loginData.get("password"))
+        .clickOnLogin()
+	      .homePage()
+	    .clickOnSubset()
+	    .subsetPage()
+	    .checkSubsetPage()
+	    .clickOnSubsetItemsLink()
+	    .subsetItem()
+	    .checkSubsetPageItem()
+	    .verifyFieldsFromDropDown(dropDownFields);
+	}
+	
+	@Features(value = { "Subset/Catlog Module" })
+	@Description("This Test Case is to verify Featured Products Disp Pricing page should display")
+	@TestCaseId("TC_Subset_22")
+	@Test(groups = { "regression" }, dataProvider = "SubsetModuleTest", dataProviderClass = SearchData.class)
+	public void tc_Subset_022(String testCaseID,String subsetDisplayePricing) throws InterruptedException, Exception
+	{
+		      landingPage()
+	        .enterUsername(loginData.get("userName"))
+	        .enterPassword(loginData.get("password"))
+	        .clickOnLogin()
+		      .homePage()
+		    .clickOnSubset()
+		    .subsetPage()
+		    .checkSubsetPage()
+		    .clickOnFeaturedProductsDispPricingLink()
+		    .featuredPricing()
+		    .checkFeaturedProductsDispPricingPage(subsetDisplayePricing);
+		   
+	}
+	@Features(value = { "Subset/Catlog Module" })
+	@Description("Click on user subset name check box and verify success message")
+	@TestCaseId("TC_Subset_23")
+	@Test(groups = { "regression" }, dataProvider = "SubsetModuleTest", dataProviderClass = SearchData.class)
+	public void tc_Subset_023(String testCaseID,String subsetDisplayePricing,String subsetName,String diasplyPriceSucessMsg) throws InterruptedException, Exception
+	{
+		        landingPage()
+	        .enterUsername(loginData.get("userName"))
+	        .enterPassword(loginData.get("password"))
+	        .clickOnLogin()
+		      .homePage()
+		    .clickOnSubset()
+		    .subsetPage()
+		    .checkSubsetPage()
+		    .clickOnFeaturedProductsDispPricingLink()
+		    .featuredPricing()
+		    .checkFeaturedProductsDispPricingPage(subsetDisplayePricing)
+		    .clickSubsetCheckbox(subsetName)
+		    .clickOnSaveIcon()
+		    .verifyDisplayPriceSuccessMsg(diasplyPriceSucessMsg);
 	}
 
-	/*
-	 * SearchDataPropertyFile data = new SearchDataPropertyFile();
-	 * 
-	 * @Features("Subset Module")
-	 * 
-	 * @Description("This test case Verifies fields in subset page")
-	 * 
-	 * @TestCaseId("TC_Subset_01")
-	 * 
-	 * @Test(groups="regression") public void verifySubsetTableContent() {
-	 * 
-	 * @author:yogish.mt
-	 * 
-	 * landingPage() <<<<<<< HEAD .enterUsername(userName)
-	 * .enterPassword(password) ======= .enterUsername(data.getUserName())
-	 * .enterPassword(data.getPassword()) >>>>>>>
-	 * 5156c7bcecaa5c6359b3f6773425cda6ccfadb74 .clickOnLogin() .homePage()
-	 * .verifyWelcomeMessage(data.getwelcomeMessage()) .clickonSubsetlink()
-	 * .subsetPage() .verifyAction(data.getactionlabel())
-	 * .verifySlno(data.getslnolabel()) .verifySubsetid(data.getsubsetIdlabel())
-	 * .verifySubsetName(data.getsubsetNamelabel())
-	 * .verifySubsetDescription(data.getsubsetdescriptionlabel())
-	 * .verifypurpose(data.getPurposelabel())
-	 * .verifystatus(data.getStatuslabel()); }
-	 * 
-	 * @Features("Subset Module")
-	 * 
-	 * @Description("This test case Verifies the pagination in subset page")
-	 * 
-	 * @TestCaseId("TC_Subset_02")
-	 * 
-	 * @Test(groups="regression") public void verifyPaginationSubset() throws
-	 * Exception{
-	 * 
-	 * @author:yogish.mt
-	 * 
-	 * data.setTheNumberofRecordsToDisplay("10"); landingPage() <<<<<<< HEAD
-	 * .enterUsername(userName) .enterPassword(password) =======
-	 * .enterUsername(data.getUserName()) .enterPassword(data.getPassword())
-	 * >>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74 .clickOnLogin()
-	 * .homePage() .verifyWelcomeMessage(data.getwelcomeMessage())
-	 * .clickonSubsetlink() .subsetPage()
-	 * .selectNumberOfRecordsToDisplay(data.getNumberOfRecordsToDisplay())
-	 * .verifyPagination(data.getNumberOfRecordsToDisplay());
-	 * data.setTheNumberofRecordsToDisplay("25"); subsetPage()
-	 * .selectNumberOfRecordsToDisplay(data.getNumberOfRecordsToDisplay())
-	 * .verifyPagination(data.getNumberOfRecordsToDisplay());
-	 * data.setTheNumberofRecordsToDisplay("50"); subsetPage()
-	 * .selectNumberOfRecordsToDisplay(data.getNumberOfRecordsToDisplay())
-	 * .verifyPagination(data.getNumberOfRecordsToDisplay());
-	 * data.setTheNumberofRecordsToDisplay("100"); subsetPage()
-	 * .selectNumberOfRecordsToDisplay(data.getNumberOfRecordsToDisplay())
-	 * .verifyPagination(data.getNumberOfRecordsToDisplay()); }
-	 * 
-	 * @Features("Subset Module")
-	 * 
-	 * @Description("This test case Verifies search functionality for valid inputs in subset page"
-	 * )
-	 * 
-	 * @TestCaseId("TC_Subset_03")
-	 * 
-	 * @Test(groups="regression") public void verificationOfValidSearch() throws
-	 * Exception{ landingPage() <<<<<<< HEAD .enterUsername(userName)
-	 * .enterPassword(password) ======= .enterUsername(data.getUserName())
-	 * .enterPassword(data.getPassword()) >>>>>>>
-	 * 5156c7bcecaa5c6359b3f6773425cda6ccfadb74 .clickOnLogin() .homePage()
-	 * .verifyWelcomeMessage(data.getwelcomeMessage()) .clickonSubsetlink()
-	 * .subsetPage()
-	 * .addNewSubset(data.getSubsetFormLabel(),data.getsubsetNamedata(),data.
-	 * getSubsetDescription(),data.getpurpose(),data.getsubsetstatus(),data.
-	 * getSubsetsuccessmessage())
-	 * .specificSubsetDelete(data.getsubsetNamedata()); }
-	 * 
-	 * @Features("Subset Module")
-	 * 
-	 * @Description("This test case Verifies search functionality for invalid inputsin subset page"
-	 * )
-	 * 
-	 * @TestCaseId("TC_Subset_04")
-	 * 
-	 * @Test(groups="regression") public void verificationOfInvalidSearch()
-	 * throws InterruptedException{ landingPage() <<<<<<< HEAD
-	 * .enterUsername(userName) .enterPassword(password) =======
-	 * .enterUsername(data.getUserName()) .enterPassword(data.getPassword())
-	 * >>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74 .clickOnLogin()
-	 * .homePage() .verifyWelcomeMessage(data.getwelcomeMessage())
-	 * .clickonSubsetlink() .subsetPage()
-	 * .searchSubsetInvlaidData(data.getsubsetNameinvalid(),data.
-	 * getSubsetsearchErrorMsg()); }
-	 * 
-	 * @Features("Subset Module")
-	 * 
-	 * @Description("This test case Verifies fields of add new subset form")
-	 * 
-	 * @TestCaseId("TC_Subset_05")
-	 * 
-	 * @Test(groups="regression") public void VerificationOfAddNewSubsetForm()
-	 * throws InterruptedException{ landingPage() <<<<<<< HEAD
-	 * .enterUsername(userName) .enterPassword(password) =======
-	 * .enterUsername(data.getUserName()) .enterPassword(data.getPassword())
-	 * >>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74 .clickOnLogin()
-	 * .homePage() .verifyWelcomeMessage(data.getwelcomeMessage())
-	 * .clickonSubsetlink() .subsetPage() .clickOnnewSubsetLink()
-	 * .verifySubsetForm(data.getSubsetFormLabel())
-	 * .verifySubsetformfields(data.getsubsetNamelabel(),
-	 * data.getsubsetdescriptionlabel(),data.getPurposelabel(),data.
-	 * getStatuslabel(),data.getubsetformfildbannerText()); }
-	 * 
-	 * @Features("Subset Module")
-	 * 
-	 * @Description("This test case verified add new subset in subset page")
-	 * 
-	 * @TestCaseId("TC_Subset_06")
-	 * 
-	 * @Test(groups="regression") public void verificationOfAddNewSubset()
-	 * throws Exception{ landingPage() <<<<<<< HEAD .enterUsername(userName)
-	 * .enterPassword(password) ======= .enterUsername(data.getUserName())
-	 * .enterPassword(data.getPassword()) >>>>>>>
-	 * 5156c7bcecaa5c6359b3f6773425cda6ccfadb74 .clickOnLogin() .homePage()
-	 * .verifyWelcomeMessage(data.getwelcomeMessage()) .clickonSubsetlink()
-	 * .subsetPage()
-	 * .addNewSubset(data.getSubsetFormLabel(),data.getsubsetNamedata(),data.
-	 * getSubsetDescription(),data.getpurpose(),data.getsubsetstatus(),data.
-	 * getSubsetsuccessmessage())
-	 * .specificSubsetDelete(data.getsubsetNamedata()); }
-	 * 
-	 * @Features("Subset Module")
-	 * 
-	 * @Description("This test case verified validation of subset name field")
-	 * 
-	 * @TestCaseId("TC_Subset_07")
-	 * 
-	 * @Test(groups="regression") public void verificationofSubsetName() throws
-	 * InterruptedException{ landingPage() <<<<<<< HEAD .enterUsername(userName)
-	 * .enterPassword(password) ======= .enterUsername(data.getUserName())
-	 * .enterPassword(data.getPassword()) >>>>>>>
-	 * 5156c7bcecaa5c6359b3f6773425cda6ccfadb74 .clickOnLogin() .homePage()
-	 * .verifyWelcomeMessage(data.getwelcomeMessage()) .clickonSubsetlink()
-	 * .subsetPage() .clickOnnewSubsetLink()
-	 * .verifySubsetForm(data.getSubsetFormLabel()) .clickSave()
-	 * .verifyErrorMsg(data.getsubsetRequiredMsg()); }
-	 * 
-	 * @Features("Subset Module")
-	 * 
-	 * @Description("This test case verified  subset form fields when open for editing the subset"
-	 * )
-	 * 
-	 * @TestCaseId("TC_Subset_08")
-	 * 
-	 * @Test(groups="regression") public void verificationofEditSubsetFields()
-	 * throws Exception{ landingPage() <<<<<<< HEAD .enterUsername(userName)
-	 * .enterPassword(password) ======= .enterUsername(data.getUserName())
-	 * .enterPassword(data.getPassword()) >>>>>>>
-	 * 5156c7bcecaa5c6359b3f6773425cda6ccfadb74 .clickOnLogin() .homePage()
-	 * .verifyWelcomeMessage(data.getwelcomeMessage()) .clickonSubsetlink()
-	 * .subsetPage()
-	 * .addNewSubset(data.getSubsetFormLabel(),data.getsubsetNamedata(),data.
-	 * getSubsetDescription(),data.getpurpose(),data.getsubsetstatus(),data.
-	 * getSubsetsuccessmessage())
-	 * .clickOnEditButtonsubset(data.getsubsetNamelabel(),
-	 * data.getsubsetdescriptionlabel(),data.getPurposelabel(),data.
-	 * getStatuslabel(),data.getubsetformfildbannerText())
-	 * .specificSubsetDelete(data.getsubsetNamedata()); }
-	 * 
-	 * @Features("Subset Module")
-	 * 
-	 * @Description("This test case verified  subset form fields when open for editing the subset"
-	 * )
-	 * 
-	 * @TestCaseId("TC_Subset_09")
-	 * 
-	 * @Test(groups="regression") public void verificationofupdateSubset()
-	 * throws Exception{ landingPage() <<<<<<< HEAD .enterUsername(userName)
-	 * .enterPassword(password) ======= .enterUsername(data.getUserName())
-	 * .enterPassword(data.getPassword()) >>>>>>>
-	 * 5156c7bcecaa5c6359b3f6773425cda6ccfadb74 .clickOnLogin() .homePage()
-	 * .verifyWelcomeMessage(data.getwelcomeMessage()) .clickonSubsetlink()
-	 * .subsetPage()
-	 * .addNewSubset(data.getSubsetFormLabel(),data.getsubsetNamedata(),data.
-	 * getSubsetDescription(),data.getpurpose(),data.getsubsetstatus(),data.
-	 * getSubsetsuccessmessage()) .serchSubset(data.getsubsetNamedata())
-	 * .clickOnSpecificEditButton(1)
-	 * .updateSubset(data.getUpdateSubsetDescription(),data.getSubsetUpdatemsg()
-	 * ) .specificSubsetDelete(data.getsubsetNamedata()); }
-	 * 
-	 * @Features("Subset Module")
-	 * 
-	 * @Description("This test case verified all the fileds of catelog builder view page"
-	 * )
-	 * 
-	 * @TestCaseId("TC_Subset_10")
-	 * 
-	 * @Test(groups="regression") public void
-	 * VerificationOfCatalogBuilderViewPage() throws Exception{ landingPage()
-	 * <<<<<<< HEAD .enterUsername(userName) .enterPassword(password) =======
-	 * .enterUsername(data.getUserName()) .enterPassword(data.getPassword())
-	 * >>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74 .clickOnLogin()
-	 * .homePage() .verifyWelcomeMessage(data.getwelcomeMessage())
-	 * .clickonSubsetlink() .subsetPage()
-	 * .addNewSubset(data.getSubsetFormLabel(),data.getsubsetNamedata(),data.
-	 * getSubsetDescription(),data.getpurpose(),data.getsubsetstatus(),data.
-	 * getSubsetsuccessmessage()) .serchSubset(data.getsubsetNamedata())
-	 * .clickOnSpecificCatelogBuilderButton(1) .verifyCatelogBuilderPage()
-	 * .homePage() .clickonSubsetlink() .subsetPage()
-	 * .specificSubsetDelete(data.getsubsetNamedata()); }
-	 * 
-	 * @Features("Subset Module")
-	 * 
-	 * @Description("This test case verifies building catalog")
-	 * 
-	 * @TestCaseId("TC_Subset_11")
-	 * 
-	 * @Test(groups="regression") public void verifyingcatlogmaking() throws
-	 * Exception{
-	 * 
-	 * @author:yogish.mt
-	 * 
-	 * landingPage() <<<<<<< HEAD .enterUsername(userName)
-	 * .enterPassword(password) ======= .enterUsername(data.getUserName())
-	 * .enterPassword(data.getPassword()) >>>>>>>
-	 * 5156c7bcecaa5c6359b3f6773425cda6ccfadb74 .clickOnLogin() .homePage()
-	 * .verifyWelcomeMessage(data.getwelcomeMessage()) .clickonSubsetlink()
-	 * .subsetPage()
-	 * .addNewSubset(data.getSubsetFormLabel(),data.getsubsetNamedata(),data.
-	 * getSubsetDescription(),data.getpurpose(),data.getsubsetstatus(),data.
-	 * getSubsetsuccessmessage()) .serchSubset(data.getsubsetNamedata())
-	 * .clickOnSpecificCatelogBuilderButton(1) .verifyCatelogBuilderPage()
-	 * .clickOnManufacturer() .selectAnManufacturer(data.getmanufacturername())
-	 * .clickOnSpecificManufacturer(data.getmanufacturername())
-	 * .clickOnsaveRules()
-	 * .VerifySuccessMessagecatalog(data.getSubsetSuccessmsg())
-	 * .clickOnSelectedLink()
-	 * .verifySelectedManufacturer(data.getmanufacturername())
-	 * .clickonRemoveMB(data.getmanufacturername()) .homePage()
-	 * .clickonSubsetlink() .subsetPage()
-	 * .specificSubsetDelete(data.getsubsetNamedata()); }
-	 * 
-	 * @Features("Subset Module")
-	 * 
-	 * @Description("This test case verifies selected tab contents")
-	 * 
-	 * @TestCaseId("TC_Subset_12")
-	 * 
-	 * @Test(groups="regression") public void VerifyingSelectedTabContent()
-	 * throws Exception{
-	 * 
-	 * @author:yogish.mt
-	 * 
-	 * landingPage() <<<<<<< HEAD .enterUsername(userName)
-	 * .enterPassword(password) ======= .enterUsername(data.getUserName())
-	 * .enterPassword(data.getPassword()) >>>>>>>
-	 * 5156c7bcecaa5c6359b3f6773425cda6ccfadb74 .clickOnLogin() .homePage()
-	 * .verifyWelcomeMessage(data.getwelcomeMessage()) .clickonSubsetlink()
-	 * .subsetPage()
-	 * .addNewSubset(data.getSubsetFormLabel(),data.getsubsetNamedata(),data.
-	 * getSubsetDescription(),data.getpurpose(),data.getsubsetstatus(),data.
-	 * getSubsetsuccessmessage()) .serchSubset(data.getsubsetNamedata())
-	 * .clickOnSpecificCatelogBuilderButton(1) .clickOnManufacturer()
-	 * .selectAnManufacturer(data.getmanufacturername())
-	 * .clickOnSpecificManufacturer(data.getmanufacturername())
-	 * .clickOnsaveRules()
-	 * .VerifySuccessMessagecatalog(data.getSubsetSuccessmsg())
-	 * .clickOnSelectedLink()
-	 * .verifySelectedManufacturer(data.getmanufacturername())
-	 * .verifyingcontentSelectedTabs(data.getSelectAction(),data.
-	 * getSelectEntityName(),data.getSelectEntityType())
-	 * .clickonRemoveMB(data.getmanufacturername()) .homePage()
-	 * .clickonSubsetlink() .subsetPage()
-	 * .specificSubsetDelete(data.getsubsetNamedata()); }
-	 * 
-	 * @Features("Subset Module")
-	 * 
-	 * @Description("This test case verifies removing manufacturer from selected tab"
-	 * )
-	 * 
-	 * @TestCaseId("TC_Subset_13")
-	 * 
-	 * @Test(groups="regression") public void verifyingtheRemoveSelectedMB()
-	 * throws Exception{
-	 * 
-	 * @author:yogish.mt
-	 * 
-	 * landingPage() <<<<<<< HEAD .enterUsername(userName)
-	 * .enterPassword(password) ======= .enterUsername(data.getUserName())
-	 * .enterPassword(data.getPassword()) >>>>>>>
-	 * 5156c7bcecaa5c6359b3f6773425cda6ccfadb74 .clickOnLogin() .homePage()
-	 * .verifyWelcomeMessage(data.getwelcomeMessage()) .clickonSubsetlink()
-	 * .subsetPage()
-	 * .addNewSubset(data.getSubsetFormLabel(),data.getsubsetNamedata(),data.
-	 * getSubsetDescription(),data.getpurpose(),data.getsubsetstatus(),data.
-	 * getSubsetsuccessmessage()) .serchSubset(data.getsubsetNamedata())
-	 * .clickOnSpecificCatelogBuilderButton(1) .clickOnManufacturer()
-	 * .selectAnManufacturer(data.getmanufacturername())
-	 * .clickOnSpecificManufacturer(data.getmanufacturername())
-	 * .clickOnsaveRules()
-	 * .VerifySuccessMessagecatalog(data.getSubsetSuccessmsg())
-	 * .clickOnSelectedLink()
-	 * .verifySelectedManufacturer(data.getmanufacturername())
-	 * .clickonRemoveMB(data.getmanufacturername()) .homePage()
-	 * .clickonSubsetlink() .subsetPage()
-	 * .specificSubsetDelete(data.getsubsetNamedata()); }
-	 * 
-	 * @Features("Subset Module")
-	 * 
-	 * @Description("This test case verifies item should be displayed under allitems tab"
-	 * )
-	 * 
-	 * @TestCaseId("TC_Subset_14")
-	 * 
-	 * @Test(groups="regression") public void verifyingtheItemInAllItems()
-	 * throws Exception{
-	 * 
-	 * @author:yogish.mt
-	 * 
-	 * landingPage() <<<<<<< HEAD .enterUsername(userName)
-	 * .enterPassword(password) ======= .enterUsername(data.getUserName())
-	 * .enterPassword(data.getPassword()) >>>>>>>
-	 * 5156c7bcecaa5c6359b3f6773425cda6ccfadb74 .clickOnLogin() .homePage()
-	 * .verifyWelcomeMessage(data.getwelcomeMessage()) .clickonSubsetlink()
-	 * .subsetPage()
-	 * .addNewSubset(data.getSubsetFormLabel(),data.getsubsetNamedata(),data.
-	 * getSubsetDescription(),data.getpurpose(),data.getsubsetstatus(),data.
-	 * getSubsetsuccessmessage()) .serchSubset(data.getsubsetNamedata())
-	 * .clickOnSpecificCatelogBuilderButton(1) .clickOnManufacturer()
-	 * .selectAnManufacturer(data.getmanufacturername())
-	 * .clickOnSpecificManufacturer(data.getmanufacturername())
-	 * .clickOnsaveRules()
-	 * .VerifySuccessMessagecatalog(data.getSubsetSuccessmsg())
-	 * .clickOnRefreshCatalog() .verifySuccessMsg(data.getSubsetRuleSaveMsg())
-	 * .verifyItemInAllItems(data.getPartNumberField()) .clickOnSelectedLink()
-	 * .verifySelectedManufacturer(data.getmanufacturername())
-	 * .clickonRemoveMB(data.getmanufacturername()) .clickOnRefreshCatalog()
-	 * .homePage() .clickonSubsetlink() .subsetPage()
-	 * .specificSubsetDelete(data.getsubsetNamedata()); }
-	 * 
-	 * @Features("Subset Module")
-	 * 
-	 * @Description("This test case verifies searching results in catalogbuilder page"
-	 * )
-	 * 
-	 * @TestCaseId("TC_Subset_15")
-	 * 
-	 * @Test(groups="regression") public void
-	 * verifySearchItemsInCatalogBuilder() throws Exception{
-	 * 
-	 * @author:yogish.mt
-	 * 
-	 * landingPage() <<<<<<< HEAD .enterUsername(userName)
-	 * .enterPassword(password) ======= .enterUsername(data.getUserName())
-	 * .enterPassword(data.getPassword()) >>>>>>>
-	 * 5156c7bcecaa5c6359b3f6773425cda6ccfadb74 .clickOnLogin() .homePage()
-	 * .verifyWelcomeMessage(data.getwelcomeMessage()) .clickonSubsetlink()
-	 * .subsetPage()
-	 * .addNewSubset(data.getSubsetFormLabel(),data.getsubsetNamedata(),data.
-	 * getSubsetDescription(),data.getpurpose(),data.getsubsetstatus(),data.
-	 * getSubsetsuccessmessage()) .serchSubset(data.getsubsetNamedata())
-	 * .clickOnSpecificCatelogBuilderButton(1)
-	 * .enterSearchkeyword(data.getPartNumberField()) .clickOnSearchButton()
-	 * .verifySearchedResults(data.getPartNumberField()) .homePage()
-	 * .clickonSubsetlink() .subsetPage()
-	 * .specificSubsetDelete(data.getsubsetNamedata()); }
-	 * 
-	 * @Features("Subset Module")
-	 * 
-	 * @Description("This test case verifies searching results in catalogbuilder page"
-	 * )
-	 * 
-	 * @TestCaseId("TC_Subset_16")
-	 * 
-	 * @Test(groups="test") public void addingItemsToAdditionalItemsTab() throws
-	 * Exception{
-	 * 
-	 * @author:yogish.mt
-	 * 
-	 * landingPage() <<<<<<< HEAD .enterUsername(userName)
-	 * .enterPassword(password) ======= .enterUsername(data.getUserName())
-	 * .enterPassword(data.getPassword()) >>>>>>>
-	 * 5156c7bcecaa5c6359b3f6773425cda6ccfadb74 .clickOnLogin() .homePage()
-	 * .verifyWelcomeMessage(data.getwelcomeMessage()) .clickonSubsetlink()
-	 * .subsetPage()
-	 * .addNewSubset(data.getSubsetFormLabel(),data.getsubsetNamedata(),data.
-	 * getSubsetDescription(),data.getpurpose(),data.getsubsetstatus(),data.
-	 * getSubsetsuccessmessage()) .serchSubset(data.getsubsetNamedata())
-	 * .clickOnSpecificCatelogBuilderButton(1)
-	 * .enterSearchkeyword(data.getPartNumberField()) .clickOnSearchButton()
-	 * .verifySearchedResults(data.getPartNumberField())
-	 * .clickOnAdditionalItemsLink() .dragDropAnItem() .clickOnRefreshCatalog()
-	 * .verifySuccessMsg(data.getSubsetRuleSaveMsg()) .clickOnRemoveItem()
-	 * .VerifyItemRemoveSuccessMsg(data.getPartNumberField()) .homePage()
-	 * .clickonSubsetlink() .subsetPage()
-	 * .specificSubsetDelete(data.getsubsetNamedata()); }
-	 * 
-	 * @Features("Subset Module")
-	 * 
-	 * @Description("This test case verifies subset items page")
-	 * 
-	 * @TestCaseId("TC_Subset_18")
-	 * 
-	 * @Test(groups="regression") public void veririfySubsetItemsPage() throws
-	 * Exception{
-	 * 
-	 * @author:yogish.mt
-	 * 
-	 * landingPage() <<<<<<< HEAD .enterUsername(userName)
-	 * .enterPassword(password) ======= .enterUsername(data.getUserName())
-	 * .enterPassword(data.getPassword()) >>>>>>>
-	 * 5156c7bcecaa5c6359b3f6773425cda6ccfadb74 .clickOnLogin() .homePage()
-	 * .verifyWelcomeMessage(data.getwelcomeMessage()) .clickonSubsetlink()
-	 * .subsetPage() .clickOnSubsetItemsLink(); }
-	 * 
-	 * @Features("Subset Module")
-	 * 
-	 * @Description("This test case verifies item present in subset in Subset items page"
-	 * )
-	 * 
-	 * @TestCaseId("TC_Subset_19")
-	 * 
-	 * @Test(groups="regression") public void verifyItemsInListOfSubset() throws
-	 * Exception{
-	 * 
-	 * @author:yogish.mt
-	 * 
-	 * landingPage() <<<<<<< HEAD .enterUsername(userName)
-	 * .enterPassword(password) ======= .enterUsername(data.getUserName())
-	 * .enterPassword(data.getPassword()) >>>>>>>
-	 * 5156c7bcecaa5c6359b3f6773425cda6ccfadb74 .clickOnLogin() .homePage()
-	 * .verifyWelcomeMessage(data.getwelcomeMessage()) .clickonSubsetlink()
-	 * .subsetPage()
-	 * .addNewSubset(data.getSubsetFormLabel(),data.getsubsetNamedata(),data.
-	 * getSubsetDescription(),data.getpurpose(),data.getsubsetstatus(),data.
-	 * getSubsetsuccessmessage()) .serchSubset(data.getsubsetNamedata())
-	 * .clickOnSpecificCatelogBuilderButton(1) .clickOnManufacturer()
-	 * .selectAnManufacturer(data.getmanufacturername())
-	 * .clickOnSpecificManufacturer(data.getmanufacturername())
-	 * .clickOnsaveRules()
-	 * .VerifySuccessMessagecatalog(data.getSubsetSuccessmsg())
-	 * .clickOnRefreshCatalog() .verifySuccessMsg(data.getSubsetRuleSaveMsg())
-	 * .verifyItemInAllItems(data.getPartNumberField()) .homePage()
-	 * .clickonSubsetlink() .subsetPage() .clickOnSubsetItemsLink()
-	 * .selectSubset(data.getsubsetNamedata())
-	 * .verifySubsetItems(data.getPartNumberField()) .homePage()
-	 * .clickonSubsetlink() .subsetPage() .serchSubset(data.getsubsetNamedata())
-	 * .clickOnSpecificCatelogBuilderButton(1) .clickOnSelectedLink()
-	 * .verifySelectedManufacturer(data.getmanufacturername())
-	 * .clickonRemoveMB(data.getmanufacturername()) .clickOnRefreshCatalog()
-	 * .homePage() .clickonSubsetlink() .subsetPage()
-	 * .specificSubsetDelete(data.getsubsetNamedata()); }
-	 * 
-	 * @Features("Subset Module")
-	 * 
-	 * @Description("This test case verified search fields in subset items page"
-	 * )
-	 * 
-	 * @TestCaseId("TC_Subset_20")
-	 * 
-	 * @Test(groups="regression") public void
-	 * verifySearchFieldsInSubsetItemsPage() throws Exception{
-	 * 
-	 * @author:yogish.mt
-	 * 
-	 * landingPage() <<<<<<< HEAD .enterUsername(userName)
-	 * .enterPassword(password) ======= .enterUsername(data.getUserName())
-	 * .enterPassword(data.getPassword()) >>>>>>>
-	 * 5156c7bcecaa5c6359b3f6773425cda6ccfadb74 .clickOnLogin() .homePage()
-	 * .verifyWelcomeMessage(data.getwelcomeMessage()) .clickonSubsetlink()
-	 * .subsetPage() .clickOnSubsetItemsLink() .verifySearchTemplate(); }
-	 * 
-	 * @Features("Subset Module")
-	 * 
-	 * @Description("This test case verifies search fields in subset items page"
-	 * )
-	 * 
-	 * @TestCaseId("TC_Subset_21")
-	 * 
-	 * @Test(groups="regression") public void verifySearchInSubsetItemsPage()
-	 * throws Exception{
-	 * 
-	 * @author:yogish.mt
-	 * 
-	 * landingPage() <<<<<<< HEAD .enterUsername(userName)
-	 * .enterPassword(password) ======= .enterUsername(data.getUserName())
-	 * .enterPassword(data.getPassword()) >>>>>>>
-	 * 5156c7bcecaa5c6359b3f6773425cda6ccfadb74 .clickOnLogin() .homePage()
-	 * .verifyWelcomeMessage(data.getwelcomeMessage()) .clickonSubsetlink()
-	 * .subsetPage() .clickOnSubsetItemsLink() .verifySearchTemplate(); }
-	 * 
-	 * @Features("Subset Module")
-	 * 
-	 * @Description("This test case verifies subset items page")
-	 * 
-	 * @TestCaseId("TC_Subset_22")
-	 * 
-	 * @Test(groups="regression") public void
-	 * veririfyFeaturedProductsDispPricing() throws Exception{
-	 * 
-	 * @author:yogish.mt
-	 * 
-	 * landingPage() <<<<<<< HEAD .enterUsername(userName)
-	 * .enterPassword(password) ======= .enterUsername(data.getUserName())
-	 * .enterPassword(data.getPassword()) >>>>>>>
-	 * 5156c7bcecaa5c6359b3f6773425cda6ccfadb74 .clickOnLogin() .homePage()
-	 * .verifyWelcomeMessage(data.getwelcomeMessage()) .clickonSubsetlink()
-	 * .subsetPage()
-	 * .clickOnFeaturedProductsDispPricingLink(data.getsubsetdisplayepricing());
-	 * }
-	 * 
-	 * @Features("Subset Module")
-	 * 
-	 * @Description("This test case verifies saving the featured product display pricing"
-	 * )
-	 * 
-	 * @TestCaseId("TC_Subset_23")
-	 * 
-	 * @Test(groups="regression") public void
-	 * veririfySavingFeaturedProductsDispPricing() throws Exception{
-	 * 
-	 * @author:yogish.mt
-	 * 
-	 * landingPage() <<<<<<< HEAD .enterUsername(userName)
-	 * .enterPassword(password) ======= .enterUsername(data.getUserName())
-	 * .enterPassword(data.getPassword()) >>>>>>>
-	 * 5156c7bcecaa5c6359b3f6773425cda6ccfadb74 .clickOnLogin() .homePage()
-	 * .verifyWelcomeMessage(data.getwelcomeMessage()) .clickonSubsetlink()
-	 * .subsetPage()
-	 * .addNewSubset(data.getSubsetFormLabel(),data.getsubsetNamedata(),data.
-	 * getSubsetDescription(),data.getpurpose(),data.getsubsetstatus(),data.
-	 * getSubsetsuccessmessage())
-	 * .clickOnFeaturedProductsDispPricingLink(data.getsubsetdisplayepricing())
-	 * .clickSubsetCheckbox(data.getsubsetNamedata()) .clickOnSaveIcon()
-	 * .verifyDisplayPriceSuccessMsg(data.getDiasplyPriceSucessMsg())
-	 * .homePage() .clickonSubsetlink() .subsetPage()
-	 * .specificSubsetDelete(data.getsubsetNamedata()); }
-	 */
+	
+	 
+	
+	  
+	 
+	 
+	
+	  
+	 
+	
+	 
 }

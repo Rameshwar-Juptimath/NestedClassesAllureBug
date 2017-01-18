@@ -29,6 +29,8 @@ import org.cimm2touch.pageobjects.taxonomymanagement.TaxonomyPageObjects;
 import org.cimm2touch.pageobjects.uom.UOMPageObjects;
 import org.openqa.selenium.support.PageFactory;
 import org.cimm2touch.pageobjects.subset.CatalogBuilderPageObjects;
+import org.cimm2touch.pageobjects.subset.FeaturedProductsDispPricingPageObjects;
+import org.cimm2touch.pageobjects.subset.SubsetItemsPageObjects;
 import org.cimm2touch.pageobjects.subset.SubsetPageObjects;
 import org.cimm2touch.pageobjects.homepage.HomePageObjects;
 
@@ -216,5 +218,15 @@ public class PageFactoryInitializer extends CallApplication
 	{
 		UOMPageObjects uompage = PageFactory.initElements(getDriver(), UOMPageObjects.class);
 		return uompage;
+	}
+	public SubsetItemsPageObjects subsetItem()
+	{
+		SubsetItemsPageObjects subsetItemPage = PageFactory.initElements(getDriver(), SubsetItemsPageObjects.class);
+		return subsetItemPage;
+	}
+	public FeaturedProductsDispPricingPageObjects featuredPricing()
+	{
+		FeaturedProductsDispPricingPageObjects featuredPricingPage = PageFactory.initElements(getDriver(), FeaturedProductsDispPricingPageObjects.class);
+		return featuredPricingPage;
 	}
 }
