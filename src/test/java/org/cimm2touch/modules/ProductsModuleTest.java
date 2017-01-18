@@ -487,7 +487,7 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		
 	}
 		
-	@Test(groups={"regression"},dependsOnGroups = {},alwaysRun=true)
+	@Test(groups={"regression"},dependsOnGroups = {productCreationDependent},alwaysRun=true)
 	public class ProductRemoval extends PageFactoryInitializer{
 
 		@Features(value = {"Products Module"})
