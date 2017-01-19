@@ -66,39 +66,16 @@ public class UOMModuleTest extends PageFactoryInitializer {
 		                .clickOnAddNewUOMLink()
 		                .verifyAllAddNewUOMFields(addNewUOMField);
 	}
-	@Features(value = {"UOM Module"})
-	@Description("Creation of new UOM and Verification of 'Search field' for valid UOM")
-	@TestCaseId("TC_UOM_003,TC_UOM_007")
-	@Test(groups={"regression"},dataProvider="UOMModuleTest",dataProviderClass=SearchData.class)
-	public void tc_UOM_003_007(String testCaseId, String userName, String password,String welComeMessage,String uomName, String uomDescription, String uomSaveMessage) throws Exception
-	{
-		                  landingPage()
-		                 .enterUsername(userName)
-		                 .enterPassword(password)
-		                 .clickOnLogin();
-			              homePage()
-		                .verifyWelcomeMessage(welComeMessage)
-		                .clickOnUomLink()
-		                .uomPage()
-		                .searchForUOM(uomName)
-		                .clickOnUomSearchCategory()
-		                .verifyUomPresent(uomName)
-		                .createUom(uomName,uomDescription)
-		                .verifySuccessMessage(uomSaveMessage)
-		                .searchForUOM(uomName)
-		                .clickOnUomSearchCategory()
-		                .verifyCreatedUom(uomName);
-	}
+	
+	
 	
 	
 	
 	@Features(value = {"UOM Module"})
-
 	@Description("Verification of 'Edit UOM' Form and Verification of updating UOM info and Verification of revision history icon and Verification of revision history icon")
-
-	@TestCaseId("TC_UOM_005,TC_UOM_010")
+	@TestCaseId("TC_UOM_003,TC_UOM_004,TC_UOM_005,C_UOM_007,TC_UOM_009,TC_UOM_010")
 	@Test(groups={"regression"}, dataProvider="UOMModuleTest",dataProviderClass=SearchData.class)
-	public void tc_UOM_004_005_009_010(String testCaseId,String uomName,String uomDescription,String uomSaveMessage,String  editFieldOfUOM,String updatedUomName,String welcomeMessage,String alertTextWhenHistoryIsClicked,String expectedHistoryPageTitle  ) throws Exception
+	public void tc_UOM_3_4_5_7_9_10(String testCaseId,String uomName,String uomDescription,String uomSaveMessage,String  editFieldOfUOM,String updatedUomName,String welcomeMessage,String alertTextWhenHistoryIsClicked,String expectedHistoryPageTitle  ) throws Exception
 	{
 		            landingPage()
 		           .enterUsername(loginData.get("userName"))
