@@ -361,6 +361,27 @@ public class SubsetModuleTest extends PageFactoryInitializer {
 		
 	}
 	
+	
+	@Features(value = { "Subset/Catlog Module" })
+	@Description("List Subset page should be display,verify Items assigned to subset should displayed")
+	@TestCaseId("TC_Subset_18,TC_Subset_19")
+	@Test(groups = { "regression" }, dataProvider = "SubsetModuleTest", dataProviderClass = SearchData.class)
+	public void tc_Subset_018_019(String testCaseID,String subsetName,String totalNoOfItem) throws InterruptedException, Exception
+	{
+		 landingPage()
+         .enterUsername(loginData.get("userName"))
+         .enterPassword(loginData.get("password"))
+         .clickOnLogin()
+	       .homePage()
+	     .clickOnSubset()
+	     .subsetPage()
+	     .checkSubsetPage()
+	     .clickOnSubsetItemsLink()
+	     .subsetItem()
+	     .checkSubsetPageItem()
+	     .selectSubset(subsetName)
+	     .verifyNumberOfItem(totalNoOfItem);
+	}
 	@Features(value = { "Subset/Catlog Module" })
 	@Description("items search result should display based on field")
 	@TestCaseId("TC_Subset_21")
@@ -387,26 +408,6 @@ public class SubsetModuleTest extends PageFactoryInitializer {
 		     .verifyNumberOfItem(noOfItemAfterSearch)
 		     .verifyNumberOfItemAfterSearched(itemNumber);
 	
-	}
-	@Features(value = { "Subset/Catlog Module" })
-	@Description("List Subset page should be display,verify Items assigned to subset should displayed")
-	@TestCaseId("TC_Subset_18,TC_Subset_19")
-	@Test(groups = { "regression" }, dataProvider = "SubsetModuleTest", dataProviderClass = SearchData.class)
-	public void tc_Subset_018_019(String testCaseID,String subsetName,String totalNoOfItem) throws InterruptedException, Exception
-	{
-		 landingPage()
-         .enterUsername(loginData.get("userName"))
-         .enterPassword(loginData.get("password"))
-         .clickOnLogin()
-	       .homePage()
-	     .clickOnSubset()
-	     .subsetPage()
-	     .checkSubsetPage()
-	     .clickOnSubsetItemsLink()
-	     .subsetItem()
-	     .checkSubsetPageItem()
-	     .selectSubset(subsetName)
-	     .verifyNumberOfItem(totalNoOfItem);
 	}
 	
 	@Features(value = { "Subset/Catlog Module" })
