@@ -1,11 +1,13 @@
-/*package org.cimm2touch.modules;
+package org.cimm2touch.modules;
 
 import java.io.File;
+import java.util.HashMap;
 
+import org.cimm2touch.dataprovider.SearchData;
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.utils.SearchDataPropertyFile;
 import org.framework.utils.ApplicationSetUpPropertyFile;
-
+import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import ru.yandex.qatools.allure.annotations.Description;
@@ -13,29 +15,35 @@ import ru.yandex.qatools.allure.annotations.Features;
 import ru.yandex.qatools.allure.annotations.TestCaseId;
 
 
- * @author:Anusha.Y
- * 
  
 public class ProductsModuleTest extends PageFactoryInitializer{
-
 	SearchDataPropertyFile data = new SearchDataPropertyFile();
-	ApplicationSetUpPropertyFile setUp = new ApplicationSetUpPropertyFile();
-	LoginModuleTest loginObj = new LoginModuleTest();
+	HashMap<String, String> loginData;
 	
+	
+	@Factory(dataProvider="loginTestData", dataProviderClass=SearchData.class)
+	public ProductsModuleTest(String userName, String password, String welcomMessage){
+		loginData=new HashMap<String, String>();
+		loginData.put("userName", userName);
+		loginData.put("password", password);
+		loginData.put("welcomeMessage", welcomMessage);
+	}
+
+
+		
 	@Features(value = {"Products Module"})
 	@Description("This is a test case which verifies 'Products' page")
 	@TestCaseId("TC_PRODUCTS_001")
-	@Test(groups={"regression"})
-	public void verifyProductsPage() throws Exception{
+	@Test(groups={"regression"}, dataProvider="ProductsModuleTest",dataProviderClass=SearchData.class)
+	public void verifyProductsPage(String testCaseId, String breadCrumbsList) throws Exception{
 	
 
-		landingPage().loginToCimm2v4Site().
-
-	
+		
+		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin();
 		homePage()
 		.clickOnProductsLink()
 		.productsPage()
-		.verifyTheProductsPageBreadCrumbs()
+		.verifyTheProductsPageBreadCrumbs(breadCrumbsList)
 		.verifyTotalCountInProductsPage()
 		.verifySearchFieldInProductsPage()
 		.verifyActionInProductsPage()
@@ -57,8 +65,7 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 	@Test(groups={"regression"})
 	public void verifyAddNewProductFields(String allFieldsInAddNewProduct) throws Exception{
 
-		landingPage().loginToCimm2v4Site().
-
+		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin();
 		homePage()
 		.clickOnProductsLink()
 		.productsPage()
@@ -74,7 +81,7 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 			String productFeatures,String  productMarketingDescription, String productCustomKeywords, String successMessageProductCreation, String successMessageProductRemove ) throws Exception {
 	
 
-		landingPage().loginToCimm2v4Site().
+		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin();
 
 		homePage()
 		.clickOnProductsLink()
@@ -104,9 +111,9 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 	@Description("This is a test case which verifies click on edit icon of any product.")
 	@TestCaseId("TC_PRODUCTS_004")
 	@Test(groups={"regression"})
-	public void verifyEditProductPage() throws Exception{
+	public void verifyEditProductPage(String testcaseId, String productsTabNames ) throws Exception{
 
-		landingPage().loginToCimm2v4Site().
+		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin().
 
 		
 
@@ -116,7 +123,7 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		.clickOnAddNewProductLink()
 		.clickOnEditProduct()
 		.editProductsPage()
-		.verifyProductsPageTabs();
+		.verifyProductsPageTabs(productsTabNames);
 	}
 
 	
@@ -125,8 +132,9 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 	@Description("This is a test case which verifies assigned items to product")
 	@TestCaseId("TC_PRODUCTS_013")
 	@Test(groups={"regression"})
-	public void verificationOfAssigningItemsToProduct() throws Exception{
-		landingPage().loginToCimm2v4Site()
+	public void verificationOfAssigningItemsToProduct(String testCaseId, String productName, String productNumber,
+			String newProductCreationSuccesfulMessage, String expectedSuccessfulMessageAfterDeletionOfProduct) throws Exception{
+		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin()
 		.homePage()
 		.clickOnProductsLink()
 		.productsListPage()
@@ -135,11 +143,11 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		.enterTheProductName(productName)
 		.enterTheProductNumber(productNumber)
 		.clickOnSaveButton()
-		.verifySuccesfulMessageAfterCreationOfNewProduct(data.getNewProductCreationSuccesfulMessage())
+		.verifySuccesfulMessageAfterCreationOfNewProduct(newProductCreationSuccesfulMessage)
 		.productsListPage()
 		.enterTheProductNameInSearchField(productName)
 		.clickOnSearchButton()
-		.verifyProduct(productName)
+		.verifyProductPresent(productName)
 		.editProductPage()
 		.clickOnEditIcon()
 		.clickOnItemsListTab()
@@ -151,7 +159,7 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		.productsListPage()
 		.enterTheProductNameInSearchField(productName)
 		.clickOnSearchButton()
-		.verifyProduct(productName)
+		.verifyProductPresent(productName)
 		.clickOnRemoveProduct(productName)
 		.cancelAlert()
 		.homePage()
@@ -159,10 +167,10 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		.productsListPage()
 		.enterTheProductNameInSearchField(productName)
 		.clickOnSearchButton()
-		.verifyProduct(productName)
+		.verifyProductPresent(productName)
 		.clickOnRemoveProduct(productName)
 		.acceptAlert()
-		.verifySuccessfulMessageAfterDeletion(data.getExpectedSuccessfulMessageAfterDeletionOfProduct());
+		.verifySuccessfulMessageAfterDeletion(expectedSuccessfulMessageAfterDeletionOfProduct);
 	
 	}
 	
@@ -170,8 +178,9 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 	@Description("This is a test case which gives Verification of alert message when remove icon is clicked in the product list page")
 	@TestCaseId("TC_PRODUCTS_014")
 	@Test(groups={"regression"})
-	public void VerificationOfAlertMessageWhenRemoveIconIsClickedInTheProductListPage() throws InterruptedException, Exception{
-		landingPage().loginToCimm2v4Site()
+	public void VerificationOfAlertMessage(String testCaseId, String productName, String productNumber,
+			String newProductCreationSuccesfulMessage, String expectedSuccessfulMessageAfterDeletionOfProduct) throws InterruptedException, Exception{
+		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin()
 		.homePage()
 		.clickOnProductsLink()
 		.productsListPage()
@@ -180,15 +189,15 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		.enterTheProductName(productName)
 		.enterTheProductNumber(productNumber)
 		.clickOnSaveButton()
-		.verifySuccesfulMessageAfterCreationOfNewProduct(data.getNewProductCreationSuccesfulMessage())
+		.verifySuccesfulMessageAfterCreationOfNewProduct(newProductCreationSuccesfulMessage)
 		.productsListPage()
 		.enterTheProductNameInSearchField(productName)
 		.clickOnSearchButton()
-		.verifyProduct(productName)
+		.verifyProductPresent(productName)
 		.clickOnRemoveProduct(productName)
 		.veryfyAlert()
 		.acceptAlert()
-		.verifySuccessfulMessageAfterDeletion(data.getExpectedSuccessfulMessageAfterDeletionOfProduct());
+		.verifySuccessfulMessageAfterDeletion(expectedSuccessfulMessageAfterDeletionOfProduct);
 			
 	}
 	
@@ -196,9 +205,9 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 	@Description("This is a test case which verifies 'General Info' tab in  'Edit Product' page")
 	@TestCaseId("TC_PRODUCTS_005")
 	@Test(groups={"regression"})
-	public void verifyGeneralInfoInEditProductPage() throws Exception{
+	public void verifyGeneralInfoInEditProductPage(String testCaseId, String generalInFoFieldNames) throws Exception{
 
-		landingPage().loginToCimm2v4Site().
+		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin().
 
 		
 
@@ -209,16 +218,18 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		.clickOnEditProduct()
 		.editProductsPage()
 		.clickOnGeneralInfoTab()
-		.verifyFieldNamesInGeneralInfoTab();
+		.verifyFieldNamesInGeneralInfoTab(generalInFoFieldNames);
 	}
 	
 	@Features(value = {"Products Module"})
 	@Description("This is a test case which verifies update product info in  'Edit Product' page")
 	@TestCaseId("TC_PRODUCTS_006")
 	@Test(groups={"regression"})
-	public void verifyUpdateProductInfo() throws Exception{
+	public void verifyUpdateProductInfo(String testCaseId, String productName, String productNumber,
+			String successMessageProductCreation,String editProductName, String expectedSuccessfulMessageAfterDeletionOfProduct,String updateProductName,
+			String productUpdateSuccessfulMessage,String successMessageProductRemove) throws Exception{
 
-		landingPage().loginToCimm2v4Site().
+		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin().
 
 		
 
@@ -235,15 +246,15 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		.verifyProduct(productName)
 		.clickOnEditProduct()
 		.editProductsPage()
-		.editProductNameField(data.getEditProductNameField())
+		.editProductNameField(editProductName)
 		.clickOnProducUpdateButtonLink()
-		.verifyProductUpdateSavedSuccessfulMessage(data.getProductUpdateSuccessfulMessage())
+		.verifyProductUpdateSavedSuccessfulMessage(productUpdateSuccessfulMessage)
 		.homePage()
 		.clickOnProductsLink()
 		.productsPage()
-		.enterTheUpdateProductNameInSearchField(data.getUpdateProductNameField())
+		.enterTheUpdateProductNameInSearchField(updateProductName)
 		.clickOnSearchButton()
-		.verifyUpdateProduct(data.getUpdateProductNameField())
+		.verifyUpdateProduct(updateProductName)
 		.clickOnRemoveUpdateProduct()
 		.alertToAccept()
 		.verifySuccessfulMessageAfterDeletionProduct(successMessageProductRemove);
@@ -253,9 +264,9 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 	@Description("This is a test case which verifies Product Images tab in  'Edit Product' page")
 	@TestCaseId("TC_PRODUCTS_007")
 	@Test(groups={"regression"})
-	public void verifyProductImagesTab() throws Exception{
+	public void verifyProductImagesTab(String testCaseId, String fieldNameProductImagesTab) throws Exception{
 
-		landingPage().loginToCimm2v4Site().
+		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin().
 
 		
 
@@ -265,7 +276,7 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		.clickOnEditProduct()
 		.editProductsPage()
 		.clickOnProductImagesTab()
-		.verifyFieldNamesInProductImagesTab()
+		.verifyFieldNamesInProductImagesTab(fieldNameProductImagesTab)
 		.verifyProductImageCheckbox()
 		.verifyAddNewProductImage();
 		
@@ -275,9 +286,9 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 	@Description("This is a test case which verifies Add New Product Image in  'Edit Product' page")
 	@TestCaseId("TC_PRODUCTS_008")
 	@Test(groups={"regression"})
-	public void verifyAddNewProductImage() throws Exception{
+	public void verifyAddNewProductImage(String testCaseId, String fieldNameProductImagesTab) throws Exception{
 
-		landingPage().loginToCimm2v4Site().
+		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin().
 
 		
 
@@ -288,7 +299,7 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		.editProductsPage()
 		.clickOnProductImagesTab()
 		.clickOnAddNewProductImage()
-		.verifyFieldNamesInAddNewProductImage()
+		.verifyFieldNamesInAddNewProductImage(fieldNameProductImagesTab)
 		.verifySaveURIconInAddNewProductImage()
 		.verifyResetIconInAddNewProductImage()
 		.verifyORTextInAddNewProductImage()
@@ -299,9 +310,11 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 	@Description("This is a test case which verifies adding product image using image URL")
 	@TestCaseId("TC_PRODUCTS_009")
 	@Test(groups={"regression"})
-	public void verifyAddProductImageUsingURL() throws Exception{
+	public void verifyAddProductImageUsingURL(String testCaseId, String productName, String productNumber,
+			String successMessageProductCreation,String imageDescription, String productImageURL,String imageURLSuccessfulMessage,
+			String successMessageProductRemove) throws Exception{
 
-		landingPage().loginToCimm2v4Site().
+		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin().
 
 		
 
@@ -320,10 +333,10 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		.editProductsPage()
 		.clickOnProductImagesTab()
 		.clickOnAddNewProductImage()
-		.enterImageDescField(data.getImageDescField())
-		.enterProductImageURLField(data.getProductImageURLField())
+		.enterImageDescField(imageDescription)
+		.enterProductImageURLField(productImageURL)
 		.clickOnSaveImageURLLink()
-		.verifyImageURLSavedSuccessfulMessage(data.getimageURLSuccessfulMessage())
+		.verifyImageURLSavedSuccessfulMessage(imageURLSuccessfulMessage)
 		.homePage()
 		.clickOnProductsLink()
 		.productsPage()
@@ -340,8 +353,9 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 	@Description("This is a test case which gives Verification of creation and removing the product from the list")
 	@TestCaseId("TC_PRODUCTS_015")
 	@Test(groups={"regression"})
-	public void verificationOfRemovingTheProductFromTheList() throws Exception{
-		landingPage().loginToCimm2v4Site()
+	public void verificationOfRemovingTheProductFromTheList(String testCaseId, String productName, String productNumber,
+			String successMessageProductCreation,String editProductName, String successMessageProductRemove) throws Exception{
+		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin()
 		.homePage()
 		.clickOnProductsLink()
 		.productsListPage()
@@ -350,11 +364,11 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		.enterTheProductName(productName)
 		.enterTheProductNumber(productNumber)
 		.clickOnSaveButton()
-		.verifySuccesfulMessageAfterCreationOfNewProduct(data.getNewProductCreationSuccesfulMessage())
+		.verifySuccesfulMessageAfterCreationOfNewProduct(successMessageProductCreation)
 		.productsListPage()
 		.enterTheProductNameInSearchField(productName)
 		.clickOnSearchButton()
-		.verifyProduct(productName)
+		.verifyProductPresent(productName)
 		.editProductPage()
 		.clickOnEditIcon()
 		.clickOnItemsListTab()
@@ -366,17 +380,18 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		.productsListPage()
 		.enterTheProductNameInSearchField(productName)
 		.clickOnSearchButton()
-		.verifyProduct(productName)
+		.verifyProductPresent(productName)
 		.clickOnRemoveProduct(productName)
 		.acceptAlert()
-		.verifySuccessfulMessageAfterDeletion(data.getExpectedSuccessfulMessageAfterDeletionOfProduct());
+		.verifySuccessfulMessageAfterDeletion(successMessageProductRemove);
 	}
 	@Features(value = {"Products Module"})
 	@Description("This is a test case which gives Verification of cancel the alert")
 	@TestCaseId("TC_PRODUCTS_016")
 	@Test(groups={"regression"})
-	public void verificationOfCancelTheAlert() throws Exception{
-		landingPage().loginToCimm2v4Site()
+	public void verificationOfCancelTheAlert(String testCaseId, String productName, String productNumber,
+			String successMessageProductCreation,String editProductName, String successMessageProductRemove) throws Exception{
+		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin()
 		
 		.homePage()
 		.clickOnProductsLink()
@@ -386,11 +401,11 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		.enterTheProductName(productName)
 		.enterTheProductNumber(productNumber)
 		.clickOnSaveButton()
-		.verifySuccesfulMessageAfterCreationOfNewProduct(data.getNewProductCreationSuccesfulMessage())
+		.verifySuccesfulMessageAfterCreationOfNewProduct(successMessageProductCreation)
 		.productsListPage()
 		.enterTheProductNameInSearchField(productName)
 		.clickOnSearchButton()
-		.verifyProduct(productName)
+		.verifyProductPresent(productName)
 		.editProductPage()
 		.clickOnEditIcon()
 		.clickOnItemsListTab()
@@ -402,7 +417,7 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		.productsListPage()
 		.enterTheProductNameInSearchField(productName)
 		.clickOnSearchButton()
-		.verifyProduct(productName)
+		.verifyProductPresent(productName)
 		.clickOnRemoveProduct(productName)
 		.cancelAlert()
 		.homePage()
@@ -410,31 +425,24 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		.productsListPage()
 		.enterTheProductNameInSearchField(productName)
 		.clickOnSearchButton()
-		.verifyProduct(productName)
+		.verifyProductPresent(productName)
 		.clickOnRemoveProduct(productName)
 		.acceptAlert()
-		.verifySuccessfulMessageAfterDeletion(data.getExpectedSuccessfulMessageAfterDeletionOfProduct());
+		.verifySuccessfulMessageAfterDeletion(successMessageProductRemove);
 		
 	}
 	@Features(value = {"Products Module"})
 	@Description("This is a test case which gives Verification of preview product's item page")
 	@TestCaseId("TC_PRODUCTS_017")
 	@Test(groups={"regression"})
-	public void verificationOfPreviewProductsItems() throws Exception{
-		landingPage().loginToCimm2v4Site()
+	public void verificationOfPreviewProductsItems(String testCaseId, String productName, String expectedItemsPageTitle) throws Exception{
+		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin()
 		.homePage()
 		.clickOnProductsLink()
 		.productsListPage()
-		.clickOnPlusSymbolToCreateProduct()
-		.addNewProductPage()
-		.enterTheProductName(productName)
-		.enterTheProductNumber(productNumber)
-		.clickOnSaveButton()
-		.verifySuccesfulMessageAfterCreationOfNewProduct(data.getNewProductCreationSuccesfulMessage())
-		.productsListPage()
 		.enterTheProductNameInSearchField(productName)
 		.clickOnSearchButton()
-		.verifyProduct(productName)
+		.verifyProductPresent(productName)
 		.editProductPage()
 		.clickOnEditIcon()
 		.clickOnItemsListTab()
@@ -446,20 +454,12 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		.productsListPage()
 		.enterTheProductNameInSearchField(productName)
 		.clickOnSearchButton()
-		.verifyProduct(productName)
+		.verifyProductPresent(productName)
 		.clickPreviewItemLink()
 		.productItemPage()
 		.clickOnEditItemIcon()
-		.verifyItemsPage(data.getExpectedItemsPageTitle())
-		.homePage()
-		.clickOnProductsLink()
-		.productsListPage()
-		.enterTheProductNameInSearchField(productName)
-		.clickOnSearchButton()
-		.verifyProduct(productName)
-		.clickOnRemoveProduct(productName)
-		.acceptAlert()
-		.verifySuccessfulMessageAfterDeletion(data.getExpectedSuccessfulMessageAfterDeletionOfProduct());
+		.verifyItemsPage(expectedItemsPageTitle);
+		
 		
 		
 	}
@@ -467,21 +467,14 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 	@Description("This is a test case which gives Verification of 'Edit Item' icon in product's item page")
 	@TestCaseId("TC_PRODUCTS_018_019")
 	@Test(groups={"regression"})
-	public void verificationOfEditItemIconInProductItemsPage() throws Exception{
-		landingPage().loginToCimm2v4Site()
+	public void verificationOfEditItemIconInProductItemsPage(String testCaseId, String productName, String expectedItemsTableHeaderTitles) throws Exception{
+		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin()
 		.homePage()
 		.clickOnProductsLink()
 		.productsListPage()
-		.clickOnPlusSymbolToCreateProduct()
-		.addNewProductPage()
-		.enterTheProductName(productName)
-		.enterTheProductNumber(productNumber)
-		.clickOnSaveButton()
-		.verifySuccesfulMessageAfterCreationOfNewProduct(data.getNewProductCreationSuccesfulMessage())
-		.productsListPage()
 		.enterTheProductNameInSearchField(productName)
 		.clickOnSearchButton()
-		.verifyProduct(productName)
+		.verifyProductPresent(productName)
 		.editProductPage()
 		.clickOnEditIcon()
 		.clickOnItemsListTab()
@@ -493,19 +486,11 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		.productsListPage()
 		.enterTheProductNameInSearchField(productName)
 		.clickOnSearchButton()
-		.verifyProduct(productName)
+		.verifyProductPresent(productName)
 		.clickPreviewItemLink()
 		.productItemPage()
-		.verifyItemsTableHeaders(data.getExpectedItemsTableHeaderTitles())
-		.homePage()
-		.clickOnProductsLink()
-		.productsListPage()
-		.enterTheProductNameInSearchField(productName)
-		.clickOnSearchButton()
-		.verifyProduct(productName)
-		.clickOnRemoveProduct(productName)
-		.acceptAlert()
-		.verifySuccessfulMessageAfterDeletion(data.getExpectedSuccessfulMessageAfterDeletionOfProduct());
+		.verifyItemsTableHeaders(expectedItemsTableHeaderTitles.split(","));
+		
 		
 		
 		
@@ -517,21 +502,14 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 	@Description("This is a test case which gives Verification Copy of Item' icon in product's item page")
 	@TestCaseId("TC_PRODUCTS_020")
 	@Test(priority=1,groups={"regression"})
-	public void verificationOfCopyOfItemIconInProductItemPage() throws Exception{
-		landingPage().loginToCimm2v4Site()
+	public void verificationOfCopyOfItemIconInProductItemPage(String testCaseId, String productName, String itemPartNumber, String numberOfCopiesForItem) throws Exception{
+		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin()
 		.homePage()
 		.clickOnProductsLink()
 		.productsListPage()
-		.clickOnPlusSymbolToCreateProduct()
-		.addNewProductPage()
-		.enterTheProductName(productName)
-		.enterTheProductNumber(productNumber)
-		.clickOnSaveButton()
-		.verifySuccesfulMessageAfterCreationOfNewProduct(data.getNewProductCreationSuccesfulMessage())
-		.productsListPage()
 		.enterTheProductNameInSearchField(productName)
 		.clickOnSearchButton()
-		.verifyProduct(productName)
+		.verifyProductPresent(productName)
 		.editProductPage()
 		.clickOnEditIcon()
 		.clickOnItemsListTab()
@@ -543,24 +521,16 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		.productsListPage()
 		.enterTheProductNameInSearchField(productName)
 		.clickOnSearchButton()
-		.verifyProduct(productName)
+		.verifyProductPresent(productName)
 		.clickPreviewItemLink()
 		.productItemPage()
 		.clickOnCopyIcon()
 		.enterPartNumber(itemPartNumber)
-		.enterNumerOfCopies(data.getNumberOfCopiesForItem())
+		.enterNumerOfCopies(numberOfCopiesForItem)
 		.clickOnsaveIconFoCopiedItem()
 		.productsListPage().acceptAlert()
 		.homePage().searchForCreatedItem(itemPartNumber)
-		.itemsPage().verifyAndRemoveItem(itemPartNumber)
-		.homePage().clickOnProductsLink()
-		.productsListPage()
-		.enterTheProductNameInSearchField(productName)
-		.clickOnSearchButton()
-		.verifyProduct(productName)
-		.clickOnRemoveProduct(productName)
-		.acceptAlert()
-		.verifySuccessfulMessageAfterDeletion(data.getExpectedSuccessfulMessageAfterDeletionOfProduct());
+		.itemsPage().verifyAndRemoveItem(itemPartNumber);
 		
 		
 	}
@@ -568,8 +538,8 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 	@Description("This is a test case which gives Verification Delink of Item from products")
 	@TestCaseId("TC_PRODUCTS_021")
 	@Test(groups={"regression"})
-	public void verificationOfEditIconInProductItemsPage() throws Exception{
-		landingPage().loginToCimm2v4Site()
+	public void verificationOfEditIconInProductItemsPage(String testCaseId, String productName,String productNumber, String newProductCreationSuccesfulMessage, String expectedSuccessfulMessageAfterDeletionOfProduct) throws Exception{
+		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin()
 		.homePage()
 		.clickOnProductsLink()
 		.productsListPage()
@@ -578,11 +548,11 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		.enterTheProductName(productName)
 		.enterTheProductNumber(productNumber)
 		.clickOnSaveButton()
-		.verifySuccesfulMessageAfterCreationOfNewProduct(data.getNewProductCreationSuccesfulMessage())
+		.verifySuccesfulMessageAfterCreationOfNewProduct(newProductCreationSuccesfulMessage)
 		.productsListPage()
 		.enterTheProductNameInSearchField(productName)
 		.clickOnSearchButton()
-		.verifyProduct(productName)
+		.verifyProductPresent(productName)
 		.editProductPage()
 		.clickOnEditIcon()
 		.clickOnItemsListTab()
@@ -594,7 +564,7 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		.productsListPage()
 		.enterTheProductNameInSearchField(productName)
 		.clickOnSearchButton()
-		.verifyProduct(productName)
+		.verifyProductPresent(productName)
 		.clickPreviewItemLink()
 		.clickOnDelinkItemIcon()
 		.acceptAlert()
@@ -603,48 +573,52 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		.productsListPage()
 		.enterTheProductNameInSearchField(productName)
 		.clickOnSearchButton()
-		.verifyProduct(productName)
+		.verifyProductPresent(productName)
 		.clickOnRemoveProduct(productName)
 		.acceptAlert()
-		.verifySuccessfulMessageAfterDeletion(data.getExpectedSuccessfulMessageAfterDeletionOfProduct());
+		.verifySuccessfulMessageAfterDeletion(expectedSuccessfulMessageAfterDeletionOfProduct);
 		
 		
 	}
+	
+	
 	@Features(value = {"Products Module"})
 	@Description("This is a test case which gives Verification of 'Display Records' in Products page")
 	@TestCaseId("TC_PRODUCTS_022")
 	@Test(groups={"regression"})
-	public void verifyDisplayOfNumberRecordsChosenInProductsPage() throws Exception{
-	data.setNumberOfRecordsToDisplay("10");
-	landingPage().loginToCimm2v4Site()
-	.homePage()
-	.clickOnProductsLink()
-	.productsListPage()
-	.selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
-	.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
-	data.setNumberOfRecordsToDisplay("25");
-	productsListPage().selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
-	.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
-	data.setNumberOfRecordsToDisplay("50");
-	productsListPage().selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
-	.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
-	data.setNumberOfRecordsToDisplay("75");
-	productsListPage().selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
-	.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
-	data.setNumberOfRecordsToDisplay("100");
-	productsListPage().selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
-	.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
+	public void verifyDisplayOfNumberRecordsChosenInProductsPage() throws Exception
+	{	
+			data.setNumberOfRecordsToDisplay("10");
+			landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin()
+			.homePage()
+			.clickOnProductsLink()
+			.productsListPage()
+			.selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
+			.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
+			data.setNumberOfRecordsToDisplay("25");
+			productsListPage().selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
+			.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
+			data.setNumberOfRecordsToDisplay("50");
+			productsListPage().selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
+			.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
+			data.setNumberOfRecordsToDisplay("75");
+			productsListPage().selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
+			.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
+			data.setNumberOfRecordsToDisplay("100");
+			productsListPage().selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
+			.verifyTheNumberOfRecordsDisplayed(data.getNumberOfRecordsToDisplay());
 	}
 
 	@Features(value = {"Products Module"})
 	@Description("This is a test case which verifies adding product image using 'Upload Product Image")
 	@TestCaseId("TC_PRODUCTS_010")
 	@Test(groups={"regression"})
-	public void verifyAddProductImageUsingUploadImage() throws Exception{
-		File file = new File(data.getImageFilePath());
-		System.out.println(file.getAbsolutePath());
+	public void verifyAddProductImageUsingUploadImage(String testCaseId, String productName,String productNumber, String successMessageProductCreation, String imageFilePath,
+			String successMessageProductRemove) throws Exception{
+		File file = new File(imageFilePath);
+		//System.out.println(file.getAbsolutePath());
 
-		landingPage().loginToCimm2v4Site().
+		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin().
 
 		
 
@@ -680,9 +654,10 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 	@Description("This is a test case which verifies removing the added product image")
 	@TestCaseId("TC_PRODUCTS_011")
 	@Test(groups={"regression"})
-	public void verifyRemoveAddedProductImage() throws Exception{
+	public void verifyRemoveAddedProductImage(String testCaseId, String productName,String productNumber, String successMessageProductCreation, String imageDescription,
+			String productImageURLField,String imageURLSuccessfulMessage,String successMessageProductRemove) throws Exception{
 
-		landingPage().loginToCimm2v4Site().
+		landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin().
 
 		
 
@@ -701,10 +676,10 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		.editProductsPage()
 		.clickOnProductImagesTab()
 		.clickOnAddNewProductImage()
-		.enterImageDescField(data.getImageDescField())
-		.enterProductImageURLField(data.getProductImageURLField())
+		.enterImageDescField(imageDescription)
+		.enterProductImageURLField(productImageURLField)
 		.clickOnSaveImageURLLink()
-		.verifyImageURLSavedSuccessfulMessage(data.getimageURLSuccessfulMessage())
+		.verifyImageURLSavedSuccessfulMessage(imageURLSuccessfulMessage)
 		.clickOnRemoveProductImage()
 		.alertToAccept()
 		.homePage()
@@ -724,10 +699,8 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 	@Test(groups={"regression"})
 	public void verifyItemListTab() throws Exception{
 
-		landingPage().loginToCimm2v4Site().
-
-		
-
+		landingPage()
+		.enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin();
 		homePage()
 		.clickOnProductsLink()
 		.productsPage()
@@ -743,4 +716,3 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 	}
 	
 }
-*/

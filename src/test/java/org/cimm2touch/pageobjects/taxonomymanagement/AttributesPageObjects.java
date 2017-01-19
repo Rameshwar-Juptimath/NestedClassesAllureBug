@@ -172,9 +172,9 @@ public class AttributesPageObjects extends PageFactoryInitializer
 	@Step("verify error message {0} if Attribute name exceeds more than 50 chars.")
 	public AttributesPageObjects verifyErrorMessageMoreAttributeName(String expAttributeName) {
 
-		waiting.explicitWaitVisibilityOfElement(succesfulMessageForAttributeNameExceed50Char, 10);
+		waiting.explicitWaitVisibilityOfElement(succesfulMessageForAttributeNameExceed50Char, 30);
 		Assert.assertNotEquals(succesfulMessageForAttributeNameExceed50Char.getText().trim(), expAttributeName, "Attribute name allowing morethan 50 chars");
-
+		//Assert.assertEquals(succesfulMessageForAttributeNameExceed50Char.getAttribute("value").trim(), expAttributeName.substring(0,Math.min(textToBeEnterInTheTextbox.length(),maximumNumberOfCharactersAcceptedByTheTexbox)),"PartNumber input Field is allowing more than acceptance value.");
 
 		return this;
 	}
@@ -190,7 +190,7 @@ public class AttributesPageObjects extends PageFactoryInitializer
 			Thread.sleep(3000);
 
 			int nextPageCount=Integer.parseInt(currentPageCountTextLocator.getText());
-			System.out.println(nextPageCount);
+			//System.out.println(nextPageCount);
 			Thread.sleep(3000);
 
 			paginationPreviousLinkLocator.click();
@@ -372,7 +372,7 @@ public class AttributesPageObjects extends PageFactoryInitializer
 	@Step("This method is used verify the attribute name")
 	public AttributesPageObjects verifyAttribute(String attributeName) {
 		waiting.explicitWaitVisibilityOfElement(attributeNameColumn, 15);
-		System.out.println(attributeNameColumn.getText());
+		//System.out.println(attributeNameColumn.getText());
 		Assert.assertEquals(attributeNameColumn.getText(), attributeName);
 		return this;
 	}
@@ -380,7 +380,7 @@ public class AttributesPageObjects extends PageFactoryInitializer
 	@Step("This method is used verify the update attribute name")
 	public AttributesPageObjects verifyUpdateAttribute(String updateAttributeName) {
 		waiting.explicitWaitVisibilityOfElement(updateAttributeNameColumn, 15);
-		System.out.println(updateAttributeNameColumn.getText());
+		//System.out.println(updateAttributeNameColumn.getText());
 		Assert.assertEquals(updateAttributeNameColumn.getText(), updateAttributeName);
 		return this;
 	}

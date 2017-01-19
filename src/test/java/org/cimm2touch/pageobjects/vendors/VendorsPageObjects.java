@@ -559,7 +559,7 @@ public class VendorsPageObjects extends PageFactoryInitializer
 	public VendorsPageObjects selectCustomerType(String customerType) {
 		
 
-		waiting.explicitWaitVisibilityOfElement(selectCustomerTypeLocator, 10);
+		waiting.explicitWaitVisibilityOfElement(selectCustomerTypeLocator, 20);
 		
 		new Select(selectCustomerTypeLocator).selectByVisibleText(customerType);
 		
@@ -602,7 +602,8 @@ public class VendorsPageObjects extends PageFactoryInitializer
 		return this;
 	}
 	@Step("verify and remove the {0} vendor ")
-	public VendorsPageObjects verifyAndRemoveVendore(String vendorName) {
+	public VendorsPageObjects verifyAndRemoveVendore(String vendorName) throws InterruptedException {
+		Thread.sleep(4000);
 		waiting.explicitWaitVisibilityOfElement(By.xpath("//span[contains(text(),'Vendor Name')]/ancestor::table/descendant::td[contains(text(),'"+vendorName+"')]"), 30);
 		Assert.assertTrue(getDriver().findElement(By.xpath("//span[contains(text(),'Vendor Name')]/ancestor::table/descendant::td[contains(text(),'"+vendorName+"')]")).isDisplayed(),"Vendor :"+vendorName+" is not available.");
 		WebElement wb=getDriver().findElement(By.xpath("//span[contains(text(),'Vendor Name')]/ancestor::table/descendant::td[contains(text(),'"+vendorName+"')]/preceding-sibling::td/descendant::input[@title='Remove Vendor']"));
@@ -613,8 +614,9 @@ public class VendorsPageObjects extends PageFactoryInitializer
 		
 	}
 
-	public VendorsPageObjects verifySuccessMessageForRemove(String vendorName) {
-
+	public VendorsPageObjects verifySuccessMessageForRemove(String vendorName) throws InterruptedException {
+		
+		Thread.sleep(3500);
 		waiting.explicitWaitVisibilityOfElement(successfulMessageRemoveVendorLocator, 30);
 		Assert.assertEquals(successfulMessageRemoveVendorLocator.getText(), "Vendor : '"+vendorName+"' removed Successfully");
 

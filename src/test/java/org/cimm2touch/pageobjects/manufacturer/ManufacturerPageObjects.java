@@ -322,9 +322,11 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	
 	@Step("click on brand list icon under manufacturer")
 	public ManufacturerPageObjects clickOnlisticon(String manufacturerName) throws InterruptedException {
+		Thread.sleep(2500);
 		WebElement wb= getDriver().findElement(By.xpath("//td[contains(text(),'"+manufacturerName+"')]/following-sibling::td/a[@title='List Brand']"));
 		waiting.explicitWaitElementToBeClickable(wb, 20);
 		wb.click();
+		Thread.sleep(3000);
 		return this;
 	}
 
@@ -350,7 +352,8 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	@Step("check whether brand is created or not {}")
 	public ManufacturerPageObjects verifyBrandBeforeRemove(String brandname) throws Exception
 	{
-		Assert.assertFalse(isBrandpresentHelp(brandname),"Brand is Present Already. Please delete to create.");
+		Thread.sleep(2500);
+		Assert.assertFalse(isBrandpresentHelp(brandname),"Brand is notPresent . Please create to remove.");
 		return this;
 	}
 	
@@ -1451,12 +1454,32 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	public ManufacturerPageObjects verifyAndRemoveBrand(String brandName) throws InterruptedException {
 		Thread.sleep(4000);
+		Assert.assertFalse(verifyBrandIsPresent(brandName),"brand is not available, please create before remove");
+		waiting.explicitWaitElementToBeClickable(By.xpath("//table[contains(@id,'brandTableId')]/descendant::td[contains(text(),'"+brandName+"')]/preceding-sibling::td/descendant::input[@title='Remove Brand']"), 50);
 		WebElement wb= getDriver().findElement(By.xpath("//td[contains(text(),'"+brandName+"')]/ancestor::td//preceding-sibling::td/descendant::input[@title='Remove Brand']"));
 		waiting.explicitWaitVisibilityOfElement(wb, 20);
 		wb.click();
 		tu.alertAccept();
+		
 		return this;
 	}
+
+	private boolean verifyBrandIsPresent(String brandName) {
+		
+		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		try {
+			if(getDriver().findElement(By.xpath("//table[contains(@id,'brandTableId')]/descendant::td[contains(text(),'"+brandName+"')]")).isDisplayed())
+			{
+				return false;
+			}
+		}
+		catch(NoSuchElementException e) {
+			return true;
+		}
+		return false;		    
+	}
+		
+	
 
 	public ManufacturerPageObjects removeAndVerifyManufacturer(String manufacturerName) throws InterruptedException {
 		Thread.sleep(2000);

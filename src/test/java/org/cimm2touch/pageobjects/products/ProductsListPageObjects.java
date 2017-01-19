@@ -1,7 +1,7 @@
 package org.cimm2touch.pageobjects.products;
 
 import java.util.List;
-
+import java.util.concurrent.TimeUnit;
 
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.framework.utils.TestUtility;
@@ -9,6 +9,7 @@ import org.framework.utils.Waiting;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
@@ -31,10 +32,10 @@ public class ProductsListPageObjects extends PageFactoryInitializer{
 	@FindBy(xpath="//a[@title='Add New Product']")
 	private WebElement creatingProductLink;
 	
-	@FindBy(xpath="(//input[@placeholder='Enter Product Name/Number to Search'])[1]")
+	@FindBy(xpath="//div[@class='topContent']/descendant::input[contains(@name,'searchKeywordId')]")
 	private WebElement productSearchPlaceHolder;
 	
-	@FindBy(xpath="(//div[@class='search list-search']/ul/li)[2]")
+	@FindBy(xpath="//div[@class='search list-search']/descendant::i[contains(@class,'list-search-icn')]")
 	private WebElement searchButton;
 	
 	@FindBy(xpath="//input[@title='Remove Product']")
@@ -58,6 +59,10 @@ public class ProductsListPageObjects extends PageFactoryInitializer{
 	@FindAll(value={@FindBy(xpath="//input[@title='Edit Product']")})
 	private List<WebElement> editButtonsLocator; 
 	
+	@FindBy(xpath="//span[@id='listProductForm:noResults']")
+	private WebElement removeCreatedProductSuccessMessageLocator;
+	
+	
 	@Step("verify the breadcrumbs of the Products page is {0}")
 	public ProductsListPageObjects verifyTheProductsPageBreadCrumbs(String breadcrumpsList[]) {
 
@@ -69,7 +74,7 @@ public class ProductsListPageObjects extends PageFactoryInitializer{
 	@Step("creation of Product")
 	public AddNewProductPageObjects clickOnPlusSymbolToCreateProduct() {
 
-		waiting.explicitWaitVisibilityOfElement(creatingProductLink, 15);
+		waiting.explicitWaitVisibilityOfElement(creatingProductLink, 35);
 		creatingProductLink.click();
 		return new AddNewProductPageObjects();
 	}
@@ -78,7 +83,7 @@ public class ProductsListPageObjects extends PageFactoryInitializer{
 	@Step("enter the product number in search field {0}")
 	public ProductsListPageObjects enterTheProductNameInSearchField(String productName) {
 
-		waiting.explicitWaitVisibilityOfElement(productSearchPlaceHolder, 15);
+		waiting.explicitWaitVisibilityOfElement(productSearchPlaceHolder, 45);
 		productSearchPlaceHolder.clear();
 		productSearchPlaceHolder.sendKeys(productName);
 		return this;
@@ -86,7 +91,7 @@ public class ProductsListPageObjects extends PageFactoryInitializer{
 	@Step("click on search buton in products page")
 	public ProductsListPageObjects clickOnSearchButton() throws InterruptedException {
 
-		waiting.explicitWaitVisibilityOfElement(searchButton, 15);
+		waiting.explicitWaitVisibilityOfElement(searchButton, 45);
 		searchButton.click();
 		
 		return this;
@@ -120,11 +125,34 @@ public class ProductsListPageObjects extends PageFactoryInitializer{
 	}
 	
 	@Step("verify the {0} product")
-	public ProductsListPageObjects verifyProduct(String productName) {
+	public ProductsListPageObjects searchForCreatedProduct(String productName) throws InterruptedException {
 
-		waiting.explicitWaitVisibilityOfElement(productNameColumn, 15);
-		Assert.assertEquals(productNameColumn.getText(), productName);
+		Thread.sleep(3000);
+		Assert.assertFalse(assertVerifyProduct(productName),"Product : "+productName+"is not available, Please create it to perform delete");
+		
 		return this;
+	}
+	@Step("verify the {0} product")
+	public ProductsListPageObjects verifyProductPresent(String productName) throws InterruptedException {
+
+		Thread.sleep(300);
+		Assert.assertTrue(assertVerifyProduct(productName),"Product already created, please remove to create again");
+		
+		return this;
+	}
+	private boolean assertVerifyProduct(String productName)
+	{
+		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		try{
+			if(getDriver().findElement(By.xpath("//tbody[@id='listProductForm:productTableID:tb']/descendant::td[contains(text(),'"+productName+"')]")).isDisplayed()){
+			return false;
+		}
+		}
+		catch(NoSuchElementException e) {
+		return true;
+
+	}
+	return false;
 	}
 	@Step("verify the alert text {0} to remove.")
 	public  ProductsListPageObjects veryfyAlert() {
@@ -192,4 +220,21 @@ private boolean assertForNumberOfRowsDisplayed(int editButtons, int numberOfReco
 	return false;
 	}	
 }
+	@Step("remove created product {0}")
+	public ProductsListPageObjects removeCreatedProduct(String productName) throws InterruptedException {
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//td[text()='"+productName+"']/preceding-sibling::td/descendant::input[@title='Remove Product']"), 50);
+		getDriver().findElement(By.xpath("//td[text()='"+productName+"']/preceding-sibling::td/descendant::input[@title='Remove Product']")).click();
+		waiting.explicitWaitForAlert(5);
+		tu.alertAccept();
+		Thread.sleep(2500);
+
+	
+	return this;
+	}
+	@Step("verify remove created product succeess message {0}")
+	public ProductsListPageObjects verifyRemoveSuccessMessage(String expRemoveSuccessMessage) {
+		waiting.explicitWaitVisibilityOfElement(removeCreatedProductSuccessMessageLocator, 50);
+		Assert.assertEquals(removeCreatedProductSuccessMessageLocator.getText().trim(), expRemoveSuccessMessage.trim());
+		return this;
+	}
 }

@@ -11,6 +11,7 @@ import org.cimm2touch.pageobjects.subset.SubsetPageObjects;
 import org.cimm2touch.pageobjects.taxonomymanagement.AttributeGroupsPageObjects;
 import org.cimm2touch.pageobjects.taxonomymanagement.AttributesPageObjects;
 import org.cimm2touch.pageobjects.taxonomymanagement.TaxonomyPageObjects;
+import org.cimm2touch.pageobjects.uom.UOMPageObjects;
 import org.framework.utils.Waiting;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
@@ -24,7 +25,7 @@ public class HomePageObjects extends PageFactoryInitializer{
 	
 	 Waiting waiting = new Waiting(getDriver());
 	
-	@FindBy(xpath="(//a[contains(.,'PIM')])[1]/ancestor::li/ul/descendant::span[contains(.,'Product Master')]/following-sibling::ul/descendant::a[contains(.,'Products')]")
+	@FindBy(xpath="//div[@id='clientLogoId']/following-sibling::div/descendant::a[contains(text(),'PIM')]/following-sibling::ul/descendant::a[text()='Products']")
 	private WebElement productslinkLocator;
 	
 	
@@ -52,18 +53,58 @@ public class HomePageObjects extends PageFactoryInitializer{
 	@FindBy(xpath="(//input[@placeholder='Enter Text to Search'])[2]")
 	private WebElement seachInputTextField;
 
-	@FindBy(xpath="(//a[contains(.,'PIM')])[1]/ancestor::li/ul/descendant::a[contains(.,'Taxonomy Management')]/following-sibling::ul/descendant::a[contains(.,'Taxonomy')][1]")
+	@FindBy(xpath="//div[@id='clientLogoId']/following-sibling::div/descendant::a[contains(text(),'PIM')]/following-sibling::ul/descendant::a[text()='Taxonomy']")
 	private WebElement taxonomylinkLocator;
 	
-	@FindBy(xpath="(//a[contains(.,'PIM')])[1]/ancestor::li/ul/descendant::a[contains(.,'Taxonomy Management')]/following-sibling::ul/descendant::a[contains(.,'Attributes')]")
+	@FindBy(xpath="//div[@id='clientLogoId']/following-sibling::div/descendant::a[contains(text(),'PIM')]/following-sibling::ul/descendant::a[text()='Attributes']")
 	private WebElement attributeslinkLocator;
 	
-	@FindBy(xpath="(//a[contains(.,'PIM')])[1]/ancestor::li/ul/descendant::a[contains(.,'Taxonomy Management')]/following-sibling::ul/descendant::a[contains(.,'Attribute Groups')]")
+	@FindBy(xpath="//div[@id='clientLogoId']/following-sibling::div/descendant::a[contains(text(),'PIM')]/following-sibling::ul/descendant::a[contains(text(),'Attribute Groups')]")
 	private WebElement attributesGroupsLinkLocator;
 
 	@FindAll(value={@FindBy(xpath="//div[@title='User Options']/descendant::li")})
 	private List<WebElement> linksUnderUserOptions;
+	
+	@FindBy(xpath="//div[@id='clientLogoId']/following-sibling::div/descendant::a[contains(text(),'PIM')]/following-sibling::ul/descendant::a[contains(text(),'Custom Fields')]")
+	private WebElement customFieldHeaderLocator;
 
+	@FindBy(xpath="//div[@id='clientLogoId']/following-sibling::div/descendant::a[contains(text(),'PIM')]/following-sibling::ul/descendant::a[contains(text(),'Subset/Catalog')]")
+	private WebElement subsetlink;
+		
+	@FindBy(xpath="//form[@id='menuFmId:headerForm']/descendant::div[contains(@class,'loggedInUser')]") //css="div.header-right > ul.cimm_boxShadow > li > div.header-right-icons > ul > li > div.loggedInUser"
+	private WebElement welcomeMessageLocator;
+	
+	@FindBy(xpath="//div[@id='clientLogoId']/following-sibling::div/descendant::a[contains(text(),'PIM')]/following-sibling::ul/descendant::a[contains(text(),'Manufacturers & Brands')]")
+	private WebElement MBlinkLocator;
+	
+	@FindBy(xpath="//div[@id='clientLogoId']/following-sibling::div/descendant::a[contains(text(),'PIM')]/following-sibling::ul/descendant::a[contains(text(),'Items')]")
+	private WebElement itemslinkLocator;
+	
+	
+	@FindBy(xpath="//li/a[contains(text(),'Vendors')]")
+	private WebElement vendorlinkLocator;
+	
+	
+	@FindBy(xpath="//div[contains(@class,'sliderLeftArrow')]")
+	private WebElement leftNavigationArrowLocator;
+	
+	@FindBy(xpath="(//a[contains(.,'ADMINISTRATION')])[1]/ancestor::li/descendant::a[contains(text(),'System Settings')]")
+	private WebElement systemSettingsLinkLocator;
+
+	@FindBy(xpath="//div[@id='clientLogoId']/following-sibling::div/descendant::a[contains(text(),'PIM')]/following-sibling::ul/descendant::a[contains(text(),'Manage Lists')]")
+	private WebElement manageListHeaderLink;
+	
+	@FindBy(xpath="//div[@id='clientLogoId']/following-sibling::div/descendant::a[contains(text(),'MANAGE SITE')]/following-sibling::ul/descendant::a[contains(text(),'Customers')]")
+	private WebElement customerHeaderLink;
+	
+	@FindBy(linkText="PIM")
+	private WebElement pimlinkLocator;
+	
+	@FindBy(xpath="(//li/span[contains(text(),'Product Master')])[1]")
+	private WebElement productmasterlinkLocator;
+	
+	@FindBy(xpath="//div[@id='clientLogoId']/following-sibling::div/descendant::a[contains(text(),'PIM')]/following-sibling::ul/descendant::a[contains(text(),'Warehouse')]")
+	private WebElement warehouseHeaderLink;
 	@Step("clicking on PIM link")
 	public HomePageObjects clickonPIM() {
 		pimlinkLocator.click();
@@ -103,7 +144,7 @@ public class HomePageObjects extends PageFactoryInitializer{
 	}
 
 	 @Step("click on right navigation bar")
-		public AddNewItemPageObjects clickOnRightNavigationBar() throws Exception {
+	public AddNewItemPageObjects clickOnRightNavigationBar() throws Exception {
 
 		 waiting.explicitWaitVisibilityOfElement(rightNavigationArrowLocator, 20);
 			((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",rightNavigationArrowLocator);
@@ -129,7 +170,6 @@ public class HomePageObjects extends PageFactoryInitializer{
 	
 	@Step("Click on Products link in Home page")
 	public ProductsListPageObjects clickOnProductsLink() {
-
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",productslinkLocator);
 		return new ProductsListPageObjects();
 	}
@@ -148,54 +188,30 @@ public class HomePageObjects extends PageFactoryInitializer{
 
 	
 	
-	@FindBy(xpath="(//a[contains(text(),'Subset/Catalog')])[2]")
-	private WebElement subsetlink;
+	/*@FindBy(xpath="(//a[contains(text(),'Subset/Catalog')])[2]")
+	private WebElement subsetlink;*/
+	@FindBy(xpath="//div[@id='clientLogoId']/following-sibling::div/descendant::a[contains(text(),'PIM')]/following-sibling::ul/descendant::a[contains(text(),'Subset/Catalog')]")
+	private WebElement subsetLinkLocator;
 		
-	@FindBy(xpath="//form[@id='menuFmId:headerForm']/descendant::div[contains(@class,'loggedInUser')]") //css="div.header-right > ul.cimm_boxShadow > li > div.header-right-icons > ul > li > div.loggedInUser"
-	private WebElement welcomeMessageLocator;
 	
-	@FindBy(xpath="(//li/a[contains(text(),'Manufacturers & Brands')])[1]")
-	private WebElement MBlinkLocator;
+	@FindBy(xpath="//div[@id='clientLogoId']/following-sibling::div/descendant::a[contains(text(),'PIM')]/following-sibling::ul/descendant::a[contains(text(),'UOM')]")
+	private WebElement uomLinkLocator;
 	
-	@FindBy(xpath="//span/li/a[contains(text(),'Items')]")
-	private WebElement itemslinkLocator;
-	
-	
-	@FindBy(xpath="//li/a[contains(text(),'Vendors')]")
-	private WebElement vendorlinkLocator;
-	
-	
-	@FindBy(xpath="//div[contains(@class,'sliderLeftArrow')]")
-	private WebElement leftNavigationArrowLocator;
-	
-	@FindBy(xpath="(//a[contains(.,'ADMINISTRATION')])[1]/ancestor::li/descendant::a[contains(text(),'System Settings')]")
-	private WebElement systemSettingsLinkLocator;
 
-	@FindBy(linkText="PIM")
-	private WebElement pimlinkLocator;
-	
-	@FindBy(xpath="(//li/span[contains(text(),'Product Master')])[1]")
-	private WebElement productmasterlinkLocator;
-	
-	
 	@Step("clicking on Manufacturers & Brands link")
-		public HomePageObjects clickonManufactureBrandsLink() throws InterruptedException {
+	public HomePageObjects clickonManufactureBrandsLink() throws InterruptedException {
 
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",MBlinkLocator);
 		return this;
 		}
 	
-
 	@Step("clicking on Product master link")
 	public HomePageObjects clickonProductMaster() {
 		
 		productmasterlinkLocator.click();
 		return this;
 	}
-	
-
-
-	
+		
 	@Step("verifying welcome message {0}")
 	public HomePageObjects verifyWelcomeMessage(String welcomeMessage)
 	{
@@ -206,11 +222,11 @@ public class HomePageObjects extends PageFactoryInitializer{
 	}
 
 	@Step("clicking on subset link")
-	public HomePageObjects clickOnSubset(){
+	public SubsetPageObjects clickOnSubset() throws InterruptedException{
+		Thread.sleep(2500);
 
-
-		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",subsetlink);
-		return this;
+		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",subsetLinkLocator);
+		return subsetPage();
 	}
 
 	@Step("clicking on vendors link")
@@ -266,13 +282,50 @@ public class HomePageObjects extends PageFactoryInitializer{
 		
 		return this;
 	}
-
+	@Step("click on user configuration tab")
 	public HomePageObjects clickOnUserConfigurationLink() {
 
 		waiting.explicitWaitVisibilityOfElement(userConfigurationLink, 15);
 		userConfigurationLink.click();
 		return this;
 	}
+
+	@Step("clicking on uom link")
+	public UOMPageObjects clickOnUomLink() {
+
+		((JavascriptExecutor)getDriver()).executeScript("arguments[0].click();",uomLinkLocator);
+		return uomPage();
+	}
+
+	@Step("click on custom filds tab")
+	public HomePageObjects clickOnCustomFieldsLink() throws InterruptedException {
+		((JavascriptExecutor)getDriver()).executeScript("arguments[0].click();",customFieldHeaderLocator);
+		Thread.sleep(2000);
+		return this;
+		
+	}
+	@Step("click on manage list link")
+	public HomePageObjects clickOnManageListLink() throws InterruptedException {
+		((JavascriptExecutor)getDriver()).executeScript("arguments[0].click()", manageListHeaderLink);
+		Thread.sleep(2500);
+		return this;
+	}
+
+	public HomePageObjects clickOnCustomerHeaderLink() throws InterruptedException
+	{
+		((JavascriptExecutor)getDriver()).executeScript("arguments[0].click()", customerHeaderLink);
+		Thread.sleep(2500);
+
+		return this;
+	}
+	@Step("click on warehouse header link")
+	public PageFactoryInitializer clickOnWarehouseLink() throws InterruptedException 
+	{
+		((JavascriptExecutor)getDriver()).executeScript("arguments[0].click()", warehouseHeaderLink);
+		Thread.sleep(2500);
+		return this;
+	}
+	
 	
 }
 

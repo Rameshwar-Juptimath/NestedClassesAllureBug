@@ -558,8 +558,8 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 		try
 		{
 			waiting.explicitWaitVisibilityOfElement(By.xpath("//span[text()='"+categoryName+"']"), 15);
-			getDriver().findElement(By.xpath("//span[text()='"+categoryName+"']")).click();
-		
+			//getDriver().findElement(By.xpath("//span[text()='"+categoryName+"']")).click();
+			((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",getDriver().findElement(By.xpath("//span[text()='"+categoryName+"']")));
 			
 		}
 		catch (Exception e)
@@ -569,7 +569,7 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 
 		waiting.explicitWaitElementToBeClickable(addNewCategoryButton, 30);
 		addNewCategoryButton.click();
-	
+		Thread.sleep(2000);
 		return this;
 	}
 
@@ -603,21 +603,25 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	}
 	@Step("enter parent category code {0}")
 	public ManageTaxonomyPageObjects enterParentCategoryCode(String categoryCodeforParentCategory) throws InterruptedException{
-
+		Thread.sleep(2000);
 		waiting.explicitWaitVisibilityOfElement(categoryCode, 15);
+		categoryCode.click();
 		categoryCode.clear();
 		categoryCode.sendKeys(categoryCodeforParentCategory);
 		return this;
 	}
 	@Step("enter parent category name {0}")
 	public ManageTaxonomyPageObjects enterParentCategoryName(String categoryNameforParentCategory) throws InterruptedException{
-		Thread.sleep(5000);
+		waiting.explicitWaitElementToBeClickable(categoryName, 20);
+		categoryName.click();
 		categoryName.clear();
 		categoryName.sendKeys(categoryNameforParentCategory);
 		return this;
 	}
 	@Step("enter parent category name {0}")
 	public ManageTaxonomyPageObjects enterDisplaySequenceOfParentCategory(String displaySequenceforParentCategory) throws InterruptedException{
+		waiting.explicitWaitElementToBeClickable(displaySequence, 20);
+		displaySequence.click();
 		displaySequence.clear();
 		displaySequence.sendKeys(displaySequenceforParentCategory);
 		return this;
@@ -625,34 +629,41 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	
 	public ManageTaxonomyPageObjects clickOnAddNewChildCategory() throws Exception 
 	{
-		Thread.sleep(5000);
+		Thread.sleep(2000);
+		waiting.explicitWaitVisibilityOfElement(addNewChildCategoryButton, 20);
 		addNewChildCategoryButton.click();
-		Thread.sleep(5000);
+		Thread.sleep(4000);
 		return this;
 	}
 
 
 	public ManageTaxonomyPageObjects clickOnCategory(String categoryName) 
 	{
-		Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class='treeCategoryName']/descendant::span[contains(@id,'treeNodeDataId') and text()='"+categoryName+"']")).getText(), categoryName);
-		waiting.explicitWaitElementToBeClickable(By.xpath("//div[@class='treeCategoryName']/descendant::span[contains(@id,'treeNodeDataId') and text()='"+categoryName+"']"), 15);
+		verifyCategoryBeforeRemove(categoryName);
+		//Assert.assertEquals(getDriver().findElement(By.xpath("//div[@class='treeCategoryName']/descendant::span[contains(@id,'treeNodeDataId') and text()='"+categoryName+"']")).getText(), categoryName);
+		//waiting.explicitWaitElementToBeClickable(By.xpath("//div[@class='treeCategoryName']/descendant::span[contains(@id,'treeNodeDataId') and text()='"+categoryName+"']"), 15);
 		getDriver().findElement(By.xpath("//div[@class='treeCategoryName']/descendant::span[contains(@id,'treeNodeDataId') and text()='"+categoryName+"']")).click();
 		return this;
 	}
 
-	public ManageTaxonomyPageObjects addNewChildCategory(String categoryCodeofChild1, 
-			String childCategoryName1, String displaySequence1) throws Exception 
+	public ManageTaxonomyPageObjects addNewChildCategory(String categoryname,String categoryCodeofChild, 
+			String childCategoryName, String displaySequence) throws Exception 
 	{
-		for(int i=0;i<2; i++){
-			waiting.explicitWaitElementToBeClickable(categoryCode, 20);
-			categoryCode.click();
+		for(int i=1;i<3; i++){
+			Thread.sleep(2000);
+		clickOnRespectiveCategory(categoryname);
+		clickOnAddNewChildCategory();
+		waiting.explicitWaitVisibilityOfElement(categoryCode, 20);
+		Thread.sleep(3000);
+		categoryCode.click();
 		categoryCode.clear();
-		categoryCode.sendKeys(categoryCodeofChild1);
+		categoryCode.sendKeys(categoryCodeofChild+i);
 		categoryName.clear();
-		categoryName.sendKeys(childCategoryName1);
-		displaySequence.clear();
-		displaySequence.sendKeys(displaySequence1);	
+		categoryName.sendKeys(childCategoryName+i);
+		DisplaySequence.clear();
+		DisplaySequence.sendKeys(displaySequence+i);	
 		saveNewCategory();
+		Thread.sleep(1000);
 		}
 		return this;
 	}
@@ -661,17 +672,18 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	public ManageTaxonomyPageObjects saveNewCategory() throws InterruptedException 
 	{
 		waiting.explicitWaitElementToBeClickable(saveCategory, 20);
-		
-		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",saveCategory);
+		saveCategory.click();
+		Thread.sleep(3000);
+		//((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",saveCategory);
 		return this;		
 	}
 
 	@Step("To Click on {0} Category")
 	public ManageTaxonomyPageObjects clickOnRespectiveCategory(String categoryName) throws Exception 
 	{
-		waiting.explicitWaitVisibilityOfElement(By.xpath("//span[contains(text(),'"+categoryName+"')]"), 30);
-		Assert.assertTrue(getDriver().findElement(By.xpath("//span[contains(text(),'"+categoryName+"')]")).isDisplayed(),"Category name is not available");
-		getDriver().findElement(By.xpath("//span[contains(text(),'"+categoryName+"')]")).click();
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//div[@id='searchFormId:taxonomyTreeId']/descendant::span[contains(text(),'"+categoryName+"')]"), 30);
+		Assert.assertTrue(getDriver().findElement(By.xpath("//div[@id='searchFormId:taxonomyTreeId']/descendant::span[contains(text(),'"+categoryName+"')]")).isDisplayed(),"Category name is not available");
+		getDriver().findElement(By.xpath("//div[@id='searchFormId:taxonomyTreeId']/descendant::span[contains(text(),'"+categoryName+"')]")).click();
 		return this;
 	}
 
@@ -1416,8 +1428,10 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 	@Step("remove child category {0}, {1}")
 	public ManageTaxonomyPageObjects removeAndVerifyChildCategory(String childCategoryName,String successMessageForRemove, String noOfChildCategoriesTobeDelete) throws InterruptedException {
 		Thread.sleep(4000);
+		verifyChildCategoryBeforeRemove(childCategoryName);
 	int noOfChildCat=Integer.parseInt(noOfChildCategoriesTobeDelete);
 			for(int i=1;i<noOfChildCat;i++){
+			
 			waiting.explicitWaitVisibilityOfElement(By.xpath("//div[@id='searchFormId:taxonomyTreeId:childs']/descendant::span[contains(text(),'"+childCategoryName+i+"')]"),20);
 			getDriver().findElement(By.xpath("//div[@id='searchFormId:taxonomyTreeId:childs']/descendant::span[contains(text(),'"+childCategoryName+"')]")).click();
 			Thread.sleep(2500);
@@ -1438,13 +1452,35 @@ public class ManageTaxonomyPageObjects extends PageFactoryInitializer
 		Assert.assertFalse(assertVerifyCategory(categoryName), "Category is not present, please create before remove");
 		return this;
 	}
+	public ManageTaxonomyPageObjects verifyChildCategoryBeforeRemove(String childCategoryName) {
+		Assert.assertTrue(assertVerifyChildCategory(childCategoryName), "child category is not present, please create before remove");
+		return this;
+	}
 	
 	
 	public ManageTaxonomyPageObjects verifyCategoryPresent(String categoryName) {
 		Assert.assertTrue(assertVerifyCategory(categoryName), "Category is already present, lease delete category to create again");
 		return this;
 	}
+	
+private boolean assertVerifyChildCategory(String categoryName) {
+		
+		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		try {
 
+
+			if(getDriver().findElement(By.xpath("//tr[contains(@title,'"+categoryName+"')]/descendant::img[contains(@src,'plus.png')]")).isDisplayed())
+			{
+				return false;
+			}
+		}
+		catch(NoSuchElementException e) {
+			return true;
+
+		}
+	
+		return false;
+	}
 	private boolean assertVerifyCategory(String categoryName) {
 		
 		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);

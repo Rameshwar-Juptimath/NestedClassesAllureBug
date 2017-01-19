@@ -20,14 +20,10 @@ public class LoginModuleTest extends PageFactoryInitializer{
 	@Description("This a test case which verifies login for cimm2touch.")
 	@TestCaseId("TC_LOGIN_001")
 	@Test(groups="regression")
-	public void login(String userName, String password) {
+	public void login() {
 
 		landingPage()
-		.enterUsername(userName)
-		.enterPassword(password)
-		.clickOnLogin()
-		.homePage();
-		/*.verifyWelcomeMessage(data.getWelcomeMessage());*/
+		.loginToCimm2Touch();
 	}
 }
 

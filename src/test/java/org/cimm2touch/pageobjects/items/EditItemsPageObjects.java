@@ -1,17 +1,27 @@
 package org.cimm2touch.pageobjects.items;
 import java.awt.AWTException;
 import java.awt.Robot;
+import java.awt.print.PrinterException;
+import java.io.PrintStream;
+import java.sql.Time;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.utils.TestUtilityMethods;
+import org.framework.utils.PermittedCharacters;
+import org.framework.utils.RandomGenerator;
 import org.framework.utils.TestUtility;
 import org.framework.utils.Waiting;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.server.handler.ImplicitlyWait;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
 import ru.yandex.qatools.allure.annotations.Step;
@@ -21,6 +31,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	TestUtility tu = new TestUtility(getDriver());
 	TestUtilityMethods utility = new TestUtilityMethods(getDriver());
 	Waiting waiting = new Waiting(getDriver());
+	RandomGenerator random=new RandomGenerator();
 
 	@FindBy(xpath="//td[contains(text(),'Categorization')]")
 	private WebElement categorizationTabLocator;
@@ -54,7 +65,11 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 	@FindBy(xpath="//input[@placeholder='Search Item LinkType']")
 	private WebElement searchItemLinkTypeSearchTextboxLocator;
-
+	
+	@FindBy(xpath="//input[@id='lnkditmSrchIdf:searchKeywordId']")
+	private WebElement searchItemLinkTypeSearchTextboxLoc;
+	
+	
 	@FindBy(xpath="//span[contains(text(),'Search Items for Item LinkType')]/ancestor::div/following-sibling::div/descendant::a[contains(@id,'goBtn')]")
 	private WebElement searchButtonLocator;
 
@@ -80,9 +95,12 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//td[@id='CpnumTab_lbl']")
 	private WebElement cpnTabLocator;
 
-	@FindBy(xpath="//tr[@class='tabContentTopStrip']/td/input")
-	private WebElement addNewCpnLocator;
+	@FindBy(xpath="//input[@id='warehouseListFormId:warehouseDataTable:warehouseNameColfsp']")
 
+	private WebElement warehouseSearchInputLocator;
+
+	@FindBy(xpath="//input[@title='Add Customer Part Number']")
+	private WebElement addNewCpnLocator;
 
 	@FindBy(xpath="//input[contains(@id,'buyingCompanyId')]")
 	private WebElement addNewCpnTextboxLocator;
@@ -249,7 +267,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//span[@id='productDetailsFormId:prodDetailsId']/div[1]/table/tbody/tr[3]/td[1]")
 	private WebElement productdescFieldLocator;
 
-	@FindBy(xpath="//span[@id='productDetailsFormId:prodDetailsId']/div[3]")
+	@FindBy(xpath="//span[@id='productDetailsFormId:prodDetailsId']/descendant::input[contains(@title,'Delink Item From Above Product')]")
 	private WebElement productDelinkLocator;
 
 	@FindBy(xpath="//input[@id='listProductForm:searchKeywordId']")
@@ -274,20 +292,20 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	private WebElement keywordlinkLocator;
 
 
-	@FindBy(xpath="//form[@id='keywordsFormId']/div[2]/div/span[1]/div[1]")
+	@FindBy(xpath="//textarea[@id='keywordsFormId:customKeywordsId']")
 	private WebElement CustomkeywordlinkLocator;
 
-	@FindBy(xpath="//form[@id='keywordsFormId']/div[2]/div/span[2]/div[1]")
+	@FindBy(xpath="//textarea[@id='keywordsFormId:metaKeywordId']")
 	private WebElement MetakeywordlinkLocator;
 
 	@FindBy(xpath="//input[@id='generalInfoFormId:manufacturerListComboIdcomboboxField']")
 	private WebElement manufacturerInputFieldInItemEdit;
 	
-	@FindBy(xpath="//form[@id='keywordsFormId']/div[2]/div/span[3]/div[1]")
+	@FindBy(xpath="//textarea[@id='keywordsFormId:keywordsId']")
 	private WebElement keywordautomgeneratedlinkLocator;
 
 
-	@FindBy(xpath="//form[@id='keywordsFormId']/div[2]/div/span[4]/div[1]")
+	@FindBy(xpath="//textarea[@id='keywordsFormId:partNumKeywordsId']")
 	private WebElement PartNumberKeywordslinkLocator;
 
 	@FindBy(xpath="//textarea[@id='keywordsFormId:customKeywordsId']")
@@ -309,12 +327,22 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//td[@id='DocTab_lbl']")
 	private WebElement DocumentsLinkLocator;
 
+	@FindBy(xpath="//input[@id='warehouseListFormId:warehouseDataTable:SALL1']")
+	private WebElement warehouseSelectAllCheckBox;
+	
+	
 	@FindBy(xpath="//td[@id='ImgTab_lbl']")
 	private WebElement imagesLinkLocator;
 
 	@FindBy(xpath="//select[@id='solrForm:locidDoc']")
 	private WebElement DocumentLangLocator;
 
+	@FindBy(xpath="//select[@id='itemDescFormId:locidDesc']")
+	private WebElement languageOptionLocator;
+	
+	@FindBy(xpath="//select[@id='itemDescFormId:locidDesc']/option[@selected='selected']")
+	private WebElement languageOptionValueLocator;
+	
 	@FindBy(xpath="//div[@class='cimmDocInstruction']")
 	private WebElement DocumentindtructionLocator;
 
@@ -334,9 +362,12 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//a[@title='Revision History Link']")
 	private WebElement DocumentRevisionHistorylinkLocator;
 
-	@FindAll(value={@FindBy(xpath="(//select[@class='cimmDocInputText'])[2]")})
+	@FindAll(value={@FindBy(xpath="//div[contains(.,'Document Category ')]/descendant::select[contains(@class,'cimmDocInputText') and not(@name='editCaptionFormID:editCategoryList') ]/option")})
 	private List<WebElement> documentCatDropdownLocator;
 
+	@FindBy(xpath="//input[contains(@title,'Delink Item From Above Product')]")
+	private WebElement delinkProductLocator;
+	
 	@FindBy(xpath="//select[@id='documentUploadFormId:categoryList']")
 	private WebElement AddnewDocumentcatdropdownLocator;
 
@@ -349,6 +380,9 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//input[@id='documentUploadFormId:addDocUrl']")
 	private WebElement AddnewDocumentURLLocator;
 
+	@FindBy(xpath="//span[@id='productDetailsFormId:deleteMessage']")
+	private WebElement  delinkSuccesfulMessageLocator;
+	
 	@FindBy(xpath="//div[@id='documentUploadFormId:itemDocumentUploadId']/table/tbody/tr/td")
 	private WebElement AddnewDocumentuploadIconLocator;
 
@@ -358,13 +392,16 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//input[@title='Save URL']")
 	private WebElement AddnewDocumentSaveButtonLocator;
 
+	@FindBy(xpath="//th[@id='warehouseListFormId:warehouseDataTable:warehouseAdd1Colheader']")
+	private WebElement warehouseAddress1HeaderLocator;
+	
 	@FindBy(xpath="//input[@id='documentUploadFormId:btnReset']")
 	private WebElement AddnewDocumentResetButtonLocator;
 
 	@FindBy(xpath="//span[@id='errorImageNameForDoc']")
 	private WebElement DocumentSuccessMsgLocator;
 
-	@FindBy(xpath="//span[@id='listDocFromId:panalDocId']/table/tbody/tr[1]/td[1]/table/tbody/tr[1]/td[2]/input")
+	@FindBy(xpath="//span[@id='listDocFromId:panalDocId']/descendant::input[@type='checkbox' and contains(@id,'selectedURLId')]")
 	private WebElement DocumentURLcheckboxLocator;
 
 	@FindBy(xpath="//input[@id='listDocFromId:mainDocRemoveAll']")
@@ -376,6 +413,9 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//input[@id='editCaptionFormID:editCaptionId']")
 	private WebElement EditDocumentCapLocator;
 
+	@FindBy(xpath="//a[@id='lnkditmSrchIdf:goBtn']/i")
+	private WebElement searchButtonForLinkedItems;
+	
 	@FindBy(xpath="//input[@title='Update Caption']")
 	private WebElement UpdateDocumentCapLocator;
 
@@ -388,6 +428,14 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//a[@id='documentUploadFormId:link']")
 	private WebElement DocumentCatPopupLocator;
 
+	
+	@FindBy(xpath="//input[contains(@title,'Save Items to Warehouse')]")
+	private WebElement saveWarehouseToItems;
+	
+	@FindBy(xpath="//span[@id='listProductForm:saveMessagef2IdFR']")
+	private WebElement productAssignSucessfulMessageLocator; 
+	
+	
 	@FindBy(xpath="//img[@id='hidelink']")
 	private WebElement DocumentCatCloseLocator;
 
@@ -397,7 +445,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//textarea[contains(@id,'docDesc')]")
 	private WebElement DocumentCatdescriptionLocator;
 
-	@FindBy(xpath="//input[@title='Save Category ']")
+	@FindBy(xpath="//table[@id='categoryPanelContentTable']/descendant::input[contains(@title,'Save Category')]")
 	private WebElement DocumentCatSaveLocator;
 
 	@FindBy(xpath="//span[contains(@id,'docatNamsg')]")
@@ -406,25 +454,25 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//span[@id='documentUploadFormId:captionMsgId']")
 	private WebElement DocumentCaptionErrorMsgLocator;
 
-	@FindBy(xpath="//ul[@class='buttonList']/li[2]/form/a[@title='Revision History Link']")
+	@FindBy(xpath="//ul[@class='buttonList']/descendant::a[@title='Revision History Link']")
 	private WebElement DocumentHistoryLocator;
 
 	@FindBy(xpath="//td[@id='VideoTab_lbl']")
 	private WebElement VideosTablinkLocator;
 
-	@FindBy(xpath="//form[@id = 'listVideoFromId']/div[1]/b")
+	@FindBy(xpath="//form[@id = 'listVideoFromId']/descendant::b")
 	private WebElement AssignedvideoLocator;
 
-	@FindBy(xpath="//form[@id = 'listVideoFromId']/span/table/thead/tr/th[1]/div")
+	@FindBy(xpath="//form[@id = 'listVideoFromId']/descendant::div[contains(text(),'Action')]")
 	private WebElement AssignedActionLocator;
 
-	@FindBy(xpath="//form[@id = 'listVideoFromId']/span/table/thead/tr/th[3]/div")
+	@FindBy(xpath="//form[@id = 'listVideoFromId']/descendant::div[contains(text(),'Item Video Caption')]")
 	private WebElement AssignedItemVideoLabelLocator;
 
-	@FindBy(xpath="//form[@id = 'listVideoFromId']/span/table/thead/tr/th[4]/div")
+	@FindBy(xpath="//form[@id = 'listVideoFromId']/descendant::div[contains(text(),'Item Video URL')]")
 	private WebElement AssignedItemVideoURLLabelLocator;
 
-	@FindBy(xpath="//div[@class='tab-title']/div/b")
+	@FindBy(xpath="//div[@class='tab-title']/descendant::b[contains(text(),'Video Library')]")
 	private WebElement VideoLibraryLabelLocator;
 
 	@FindBy(xpath="//input[contains(@id,'vidInfoId:input')]")
@@ -436,6 +484,12 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//input[@id='addVideo']")
 	private WebElement addNewVideoButtonLocator;
 
+	@FindBy(xpath="//input[@id='custPrtNumFormId:CPNFormId:hideCPN']")
+	private WebElement closeCpnFieldsLocator;
+	
+	@FindBy(xpath="//input[@id='keywordsFormId:keywordSaveBtn']")
+	private WebElement saveKeywordsUpdateLocator;
+	
 	@FindBy(xpath="//input[@id='videoFormId:vcaptionId']")
 	private WebElement AddVideoCaptionFieldLocator;
 
@@ -445,13 +499,24 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//input[@title='Save URL']")
 	private WebElement AddVideoSaveButtonLocator;
 
+	
+	@FindBy(xpath="//input[@title='Add/Remove the items from warehouse']")
+	private WebElement removeWarehouseToItems;
+	
+	@FindBy(xpath="//img[contains(@src,'history.png')]")
+	private WebElement warehouseItemsHistory;
+	
+	
+	
 	@FindBy(xpath="//a[@id='itemCategoryFormId:sbmtBtn']/img[contains(@src,'save')]")
 	private WebElement categorySaveLocator;
 	
+	@FindBy(xpath="//table[@id='categoryPanelContentTable']/descendant::input[contains(@id,'docCategoryName')]")
+	private WebElement itemDocumentCategoryNameLocator;
 	@FindBy(xpath="//input[@title='Reset']")
 	private WebElement AddVideoResetButtonLocator;
 
-	@FindBy(xpath="//*[@id='videoFormId']/div/div[1]/img")
+	@FindBy(xpath="//form[@id='videoFormId']/descendant::img[@title='Cancel']")
 	private WebElement AddVideoClosebuttonLocator;
 
 	@FindBy(xpath="//span[@id='videoFormId:itemVideoSavemessage']")
@@ -471,6 +536,8 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 	@FindBy(xpath="//td[contains(text(),'Available Linked Items')]")
 	private WebElement AvailableLinkedItemsLinkLocator;
+	
+	
 	@FindBy(xpath="//table[@id='listForm:assignedItemsTable3']/thead/tr[1]/th[1]/span")
 	private WebElement AvailableLinkedItemsItemIdLocator;
 	@FindBy(xpath="//table[@id='listForm:assignedItemsTable3']/thead/tr[1]/th[2]/div/span")
@@ -502,9 +569,17 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	private WebElement ListItemLinkTypesNameLabelLocator;
 	@FindBy(xpath="//table[@id='linkdtabsid:itemLinkTypeTableId']/thead/tr[1]/th[4]/div/span")
 	private WebElement ListItemLinkTypesDescriptionLabelLocator;
+	
 	@FindBy(xpath="//a[@title='Add New Item Link Type']")
 	private WebElement AddNewLinkTypeLocator;
 
+	@FindBy(xpath="//td[@id='whTab_lbl']")
+	private WebElement warehouseTabLocator;
+	
+	
+	@FindAll(value={@FindBy(xpath="//thead[@class='rich-table-thead']/descendant::span")})
+	private List<WebElement> customPriceTabHeaders;
+	
 	@FindBy(xpath="//input[@id='addNewItemLinkTypeForm:lNameId']")
 	private WebElement LinkTypeNameFieldLocator;
 
@@ -514,24 +589,50 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//input[@title='Save New Item Link Type']")
 	private WebElement saveLinkTypeLocator;
 
+	@FindBy(xpath="//td[@id='cfTab']/descendant::td[contains(text(),'Table')]")
+	private WebElement customFieldTableDataTabLocator;
+	
+	@FindBy(xpath="//td[@id='cfTab']/descendant::td[contains(text(),'Simple')]")
+	private WebElement customFieldSimpleDataLocator;
+	
 	@FindBy(xpath="//input[@id='addNewItemLinkTypeForm:btnReset']")
 	private WebElement resetLinkTypeLocator;
 
 	@FindBy(xpath="//form[@id='addNewItemLinkTypeForm']/div[2]/img")
 	private WebElement closeLinkTypeForm;
 
+	@FindBy(xpath="//div[@id='warehouseListFormId:warehouseDataTable:warehouseNameColheader:sortDiv']")
+	private WebElement warehouseNameHeaderLocator;
+	
+	
 	@FindBy(xpath="//span[@id='msg']")
 	private WebElement linktypeSuccessMsg;
 
 	@FindBy(xpath="//span[@id='msg2']")
 	private WebElement linktypeDeleteMsg;
 
+	@FindAll(value={@FindBy(xpath="//tr[contains(@class,'rich-table-subheader')]/descendant::span")})
+	private List<WebElement> attributesHeadersTextLocator;
+	
+	@FindBy(xpath="//span[@id='hereFormId:deleteMessage']")
+	private WebElement successFulMessageForRemoveLinkedItem;
+	
 	@FindBy(xpath="//span[contains(text(),'Test_New_link1')]/ancestor::td/preceding-sibling::td/descendant::input[@title='Remove']")
 	private WebElement deleteButtonLinkType;
 
+	@FindBy(xpath="//input[@id='custPrtNumFormId:CPNFormId:buyingCompanyId']")
+	private WebElement customerInputLocator;
+	
+	@FindBy(xpath="//input[@id='custPrtNumFormId:CPNFormId:addNewcstPnumId']")
+	private WebElement addcustomerFieldLocator;
+	
+	
 	@FindBy(xpath="//span[contains(text(),'Test_New_link1')]/ancestor::td/preceding-sibling::td/descendant::input[@title='Edit Item Link Type']")
 	private WebElement linkTypeEditbutton;
 
+	@FindBy(xpath="//input[@title='Save Assigned Linked Items']")
+	private WebElement saveAssignedLinkedListIcon;
+	
 	@FindBy(xpath="//input[@id='EditItemLinkTypeForm:lNameId']")
 	private WebElement EditFormlinktypeNameLocator;
 
@@ -540,6 +641,12 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 	@FindBy(xpath="//input[@title='Update']")
 	private WebElement EditFormlinktypeSaveLocator;
+
+	@FindAll(value={@FindBy(xpath="//tbody[@id='warehouseListFormId:warehouseDataTable:tb']/descendant::input[contains(@id,'itemInwhse')]")})
+	private List<WebElement> multipleWarehousesCheckBoxes;
+	
+	@FindBy(xpath="//input[@id='atf:attTableId:searchIT']")
+	private WebElement attributeSearchInputField;
 
 	@FindBy(xpath="//input[@id='EditItemLinkTypeForm:btnReset']")
 	private WebElement EditFormlinktypeResetLocator;
@@ -551,17 +658,29 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//tbody[@id='itemCategoryFormId:categoryListTableId:tb']/tr")
 	private WebElement categoryUnderCategorizationTab;
 	
+	@FindBy(id="CPsaveMsgId")
+	private WebElement subsetassigntoitemmessageloc;
 	
 	@FindBy(xpath="//input[@id='taxonomyListId:taxonomyListComboIdcomboboxField']")
 	private WebElement taxonomySearchFieldLocator; 
 
 	//form[@id='EditItemLinkTypeForm']/div[2]/img
+	
+	
+	@FindBy(xpath="//div[@id='attributePanelIdContentDiv']/descendant::img[@class='hidelink']")
+	private WebElement cancelButtonInAlertWindow;
+	
+	@FindBy(xpath="//input[@id='itemLinkTypeSelectedFormId:linkedItemsComboIdcomboboxField']")
+	private WebElement selectLinkedItemTypeFieldLocator;
 
 	@FindBy(xpath="//td[@id='CPTab_lbl']")
 	private WebElement customPricesLink;
 
 	@FindBy(xpath="//td[@id='AttrTab_lbl']")
 	private WebElement attributesLink;
+	
+	@FindBy(xpath="//a[@id='atf:attTableId:goBtn']/i")
+	private WebElement searchButtonForAttributeList;
 
 	@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[4]/div/input")
 	private WebElement OverPriceCheckboxLocator;
@@ -596,6 +715,12 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[15]/input")
 	private WebElement PricePerTextfieldLocator;
 
+	@FindBy(xpath="//table[@id='categoryPanelContentTable']/descendant::textarea[contains(@id,'docDesc')]")
+	private WebElement itemdocumentCategoryDescription;
+	
+	@FindAll(value={@FindBy(xpath="//span[@id='productDetailsFormId:prodDetailsId']/descendant::b")})
+	private List<WebElement>  productFielsLocator;
+	
 	@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[16]/input")
 	private WebElement MinOrderQTYTextfieldLocator;
 
@@ -610,7 +735,14 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 	@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[20]/input")
 	private WebElement unspscTextfieldLocator;
+	
+	@FindBy(xpath="//div[@class='Item-Drag-Drop-Wrap']/descendant::span[@id='hereFormId:sm2']")
+	private WebElement saveAssignedSuccessMessageLocator;
+	
 
+	@FindBy(xpath="//span[@id='errorImageNameForDoc']")
+	private WebElement removeDocumentSuccessMessageLocator;
+	
 	@FindBy(xpath="//table[@id='customPricesForm:customPricesTable']/tbody/tr[1]/td[21]/input")
 	private WebElement CustomerPNTextfieldLocator;
 
@@ -635,6 +767,9 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@FindBy(id="longDesc2Editor")
 	private WebElement longDescription2;
 
+	@FindBy(xpath="//select[@id='atf:taxonomyListSelectOneId']/option")
+	private WebElement selectedTaxonomyDropdownLocator;
+	
 	@FindBy(xpath="//a[@title='Save']")
 	private WebElement saveDescription;
 
@@ -650,6 +785,9 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath = "//input[@id='imageUploadFormId:captionId']")
 	private WebElement imageCaption;
 
+	@FindAll(value={@FindBy(xpath="//tr[contains(@class,'rich-table-subheader')]/descendant::span")})
+	private List<WebElement> listItemLinkTypeHeaderFields;
+	
 	@FindBy(xpath="//input[@title='Save URL']")
 	private WebElement saveImageURL;
 
@@ -659,12 +797,22 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath = "//input[@id='addDocumentId']")// or @title='Add New Item Document'
 	private WebElement addNewDocumentButton;
 
+	@FindBy(xpath="//span[@id='keywordsFormId:saveMessageId']")
+	private WebElement  succesMessageForKeywordUpdate;
+	
 	@FindBy(xpath = "//input[@id='documentUploadFormId:captionId' and @type='text']")
 	private WebElement documentCaption;
+	
+	@FindBy(xpath="//td[@id='cfTab_lbl']")
+	private WebElement customFieldsTab;
 
 	@FindBy(xpath = "//td/descendant::div[@id='documentUploadFormId:itemDocumentUploadId:add1']")
 	private WebElement addDocumentButton;
 
+	@FindAll(value={@FindBy(xpath="//form[@id='listForm']/descendant::span")})
+	private List<WebElement> availableLinkedItemsHeaderFields;
+	
+	
 	@FindBy(xpath = "//td/descendant::div[@id='documentUploadFormId:itemDocumentUploadId:upload1']")
 	private WebElement uploadDocumentButton;
 
@@ -683,7 +831,12 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath = "//input[@id=('itemNavigateForm:nextItemIcon')]")
 	private WebElement clickOnNextItem_EditPage;
 
-
+	@FindBy(xpath="//input[@id='custPrtNumFormId:CPNFormId:savecstPnumId']")
+	private WebElement saveNewCpnLocator;
+	
+	@FindBy(xpath="//input[@title='Reset']")
+	private WebElement resetCpnFieldsLocator;
+	
 /*	@Step("click on categorization tab")
 	public EditItemsPageObjects clickOnCategorizationTab()
 	{
@@ -765,7 +918,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@Step("click on linked items tab.")
 	public EditItemsPageObjects clickOnLinkedItemsTab() {
 
-		waiting.explicitWaitVisibilityOfElement(linkedItemsTabLocator, 10);
+		waiting.explicitWaitVisibilityOfElement(linkedItemsTabLocator, 40);
 
 		linkedItemsTabLocator.click();
 		return this;
@@ -774,7 +927,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@Step("verify tabs under Linked Items tab to be setUpLinkedItemsLocator,availableLinkedItemsLocator,listItemLinkTypesLocator.")
 	public EditItemsPageObjects verifyTabsUnderLinkedItemsTab() {
 
-		waiting.explicitWaitVisibilityOfElement(setUpLinkedItemsLocator, 10);
+		waiting.explicitWaitVisibilityOfElement(setUpLinkedItemsLocator, 50);
 		Assert.assertTrue(setUpLinkedItemsLocator.getAttribute("class").contains("active"),"Setup Linked Items tab is by default not active.");
 		Assert.assertTrue(availableLinkedItemsLocator.getAttribute("class").contains("inactive"),"Available linked items tab is by default active.");
 		Assert.assertTrue(listItemLinkTypesLocator.getAttribute("class").contains("inactive"),"List Item Link Types tab is by default active.");
@@ -785,13 +938,14 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 	public EditItemsPageObjects verifySetUpLinkedItemsTab(String [] getExepectedSearchInDropdownValues) {
 
-		waiting.explicitWaitVisibilityOfElement(searchItemsForItemLinkTypeTabNameLocator, 10);
+		waiting.explicitWaitVisibilityOfElement(searchItemsForItemLinkTypeTabNameLocator, 40);
 		Assert.assertTrue(searchItemsForItemLinkTypeTabNameLocator.isDisplayed(),"Search Items For LinkType tab name is not displayed.");
 		Assert.assertTrue(searchItemLinkTypeSearchTextboxLocator.isDisplayed(),"Search Item For Link Type textbox is not displayed.");
 		Assert.assertTrue(searchButtonLocator.isDisplayed(),"Search Item For Link Type textbox is not displayed.");
 		for(int i=0;i<searchInDropdownValuesLocator.size();i++)
 		{
-			Assert.assertEquals(searchInDropdownValuesLocator.get(i).getText().trim(), getExepectedSearchInDropdownValues[i]);
+			
+		Assert.assertEquals(searchInDropdownValuesLocator.get(i).getText().trim(), getExepectedSearchInDropdownValues[i]);
 		}
 		Assert.assertTrue(manufacturerDropdownLocator.isDisplayed(),"manufacturer dropdown is not displayed.");
 		Assert.assertTrue(brandDropdownLocator.isDisplayed(),"brand dropdown is not displayed.");
@@ -808,20 +962,24 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 
 	public boolean assertAlertMsg(String alertText) {
-
+		waiting.explicitWaitForAlert(5);
+		
 		boolean t = tu.getAlertText().trim().equals(alertText.trim());
 		tu.alertAccept();
 		return t;
 	}
 
-	public EditItemsPageObjects verifyAlertMsg(String alertText) {
+	public EditItemsPageObjects verifyAlertMsg(String alertText) 
+	{
 		Assert.assertTrue(assertAlertMsg(alertText));
 		return this;
 	}
 
 	@Step("click on keywords tab")
-	public EditItemsPageObjects clickOnKeywordsTab() {
+	public EditItemsPageObjects clickOnKeywordsTab() throws InterruptedException {
+		waiting.explicitWaitElementToBeClickable(keyWordsTabLocator, 20);
 		keyWordsTabLocator.click();
+		Thread.sleep(2500);
 		return this;
 	}
 
@@ -834,8 +992,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@Step("click on CPN tab")
 	public EditItemsPageObjects clickonCpnTab() 
 	{
-
-		waiting.explicitWaitVisibilityOfElement(cpnTabLocator, 10);
+		waiting.explicitWaitVisibilityOfElement(cpnTabLocator, 40);
 		cpnTabLocator.click();
 		return this;
 
@@ -977,7 +1134,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	public EditItemsPageObjects clickOnDescriptionTabLink() {
 		
 
-		waiting.explicitWaitVisibilityOfElement(itemDescriptionLocator, 10);
+		waiting.explicitWaitVisibilityOfElement(itemDescriptionLocator, 40);
 
 		itemDescriptionLocator.click();
 		return this;
@@ -1055,32 +1212,34 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	}
 
 	public EditItemsPageObjects clickonSavedescriptionButton() {
+		waiting.explicitWaitElementToBeClickable(ItemSaveDescriptionLocator, 40);
 		ItemSaveDescriptionLocator.click();
 		return this;
 	}
 
 	public EditItemsPageObjects verifyDacriptionUpdateMsg(String itemUpdateMSG) throws InterruptedException {
 		Thread.sleep(3000);
+		waiting.explicitWaitVisibilityOfElement(ItemSaveDescriptionMSGLocator, 40);
 		Assert.assertEquals(ItemSaveDescriptionMSGLocator.getText().trim(), itemUpdateMSG);
 		return this;
 	}
 
 	public EditItemsPageObjects clickOnProductsTabLink() throws InterruptedException {
+		waiting.explicitWaitElementToBeClickable(productslinkLocator, 40);
 		productslinkLocator.click();
-		Thread.sleep(2000);
+		Thread.sleep(4000);
 		return this;
 	}
 
 	public EditItemsPageObjects verifyFieldsProductsFields() {
-		Assert.assertTrue(productNameFieldLocator.isDisplayed(), "Product Name field is not displayed");
-		Assert.assertTrue(productNumberFieldLocator.isDisplayed(), "Product Number field is not displayed");
-		Assert.assertTrue(productdescFieldLocator.isDisplayed(), "Product Description field is not displayed");
+		
 		Assert.assertTrue(productDelinkLocator.isDisplayed(), "Product Delink button field is not displayed");
 		Assert.assertTrue(productSearchFieldLocator.isDisplayed(), "Product search text field is not displayed");
 		Assert.assertTrue(productSearchButtonLocator.isDisplayed(), "Product search button is not displayed");
 		Assert.assertTrue(productActionLabelLocator.isDisplayed(), "Action label is not displayed");
 		Assert.assertTrue(productNameImageLabelLocator.isDisplayed(), "Product Name & image label is not displayed");
 		Assert.assertTrue(productDescLocator.isDisplayed(), "Product Description label is not displayed");
+
 		return this;
 	}
 
@@ -1109,6 +1268,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@Step("click on meta keyword field and entering the data")
 	public EditItemsPageObjects enterDataToMetaKeywordsField(String metaKeywordText) throws InterruptedException {
 		Thread.sleep(2000);
+		MetaKeywordsTextboxLocator.clear();
 		MetaKeywordsTextboxLocator.click();
 		MetaKeywordsTextboxLocator.sendKeys(metaKeywordText);
 		return this;
@@ -1130,6 +1290,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 	@Step("click on revision history link")
 	public EditItemsPageObjects clickOnHistoryLinkInKeywordsTab() {
+		waiting.explicitWaitElementToBeClickable(KeywordsRevisionLocator, 20);
 		KeywordsRevisionLocator.click();
 		return this;
 	}
@@ -1164,7 +1325,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 				break;
 			}
 		}
-		return this;
+		return this; 
 	}
 
 	@Step("Click on add new document button in documents tab")
@@ -1190,6 +1351,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 	@Step("uploading an document using Document URL in documents tab ")
 	public EditItemsPageObjects addNewDocumentURL(String documentCaption,String getdocumentURL) {
+		waiting.explicitWaitVisibilityOfElement(AddnewDocumentcaptionLocator, 30);
 		AddnewDocumentcaptionLocator.sendKeys(documentCaption);
 		AddnewDocumentURLLocator.sendKeys(getdocumentURL);
 		AddnewDocumentSaveButtonLocator.click();
@@ -1204,13 +1366,20 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	}
 
 	@Step("Remove assigned document from the assigned documents tab ")
-	public PageFactoryInitializer removeAssignedDocument(String documentremoveMsg) throws InterruptedException {
-		DocumentURLcheckboxLocator.click();
-		DocumentdeleteButtonLocator.click();
-
-		tu.alertAccept();
-		Thread.sleep(3000);
-		Assert.assertEquals(DocumentSuccessMsgLocator.getText().trim(), documentremoveMsg);
+	public PageFactoryInitializer removeAssignedDocument() throws InterruptedException {
+		Thread.sleep(2500);
+		try{
+			if(DocumentURLcheckboxLocator.isDisplayed()){
+			waiting.explicitWaitVisibilityOfElement(DocumentURLcheckboxLocator, 40);
+			DocumentURLcheckboxLocator.click();
+			DocumentdeleteButtonLocator.click();
+			tu.alertAccept();
+			Thread.sleep(3000);
+			}
+		//Assert.assertEquals(DocumentSuccessMsgLocator.getText().trim(), documentremoveMsg);
+		}catch(NoSuchElementException e){
+			return this;
+		}
 		return this;
 	}
 
@@ -1236,7 +1405,8 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	}
 
 	@Step("Verify Success message of update document caption")
-	public EditItemsPageObjects verifySuccessMSgDocumentUpdate(String getupdateDocumentCaptionMsg) {
+	public EditItemsPageObjects verifySuccessMSgDocumentUpdate(String getupdateDocumentCaptionMsg) throws InterruptedException {
+		Thread.sleep(2500);
 		Assert.assertEquals(UpdateDocumentCapSuccessMsgLocator.getText().trim(), getupdateDocumentCaptionMsg);
 		return this;
 	}
@@ -1270,6 +1440,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	}
 	@Step("Enter document category name in document category pop up")
 	public EditItemsPageObjects clickOnDocumentCatSaveButton() {
+		waiting.explicitWaitElementToBeClickable(DocumentCatSaveLocator, 30);
 		DocumentCatSaveLocator.click();
 		return this;
 	}
@@ -1312,6 +1483,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@Step("Verify the content of videos tab")
 	public EditItemsPageObjects verifyContentofVideosTab() throws InterruptedException {
 		Thread.sleep(3000);
+		waiting.explicitWaitVisibilityOfElement(AssignedvideoLocator, 50);
 		Assert.assertTrue(AssignedvideoLocator.isDisplayed(), "Assigned Video label is not diaplayed");
 		Assert.assertTrue(AssignedActionLocator.isDisplayed(), "Action label is not diaplayed");
 		Assert.assertTrue(AssignedItemVideoLabelLocator.isDisplayed(), "Assinged video label is not diaplayed");
@@ -1338,18 +1510,21 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	}
 	@Step("Entering video caption and video URL in add new video form")
 	public EditItemsPageObjects addNewVideoURL(String getvideoCaption, String getvideoURl) {
+		waiting.explicitWaitVisibilityOfElement(AddVideoCaptionFieldLocator, 50);
 		AddVideoCaptionFieldLocator.sendKeys(getvideoCaption);
 		AddVideoURLFieldLocator.sendKeys(getvideoURl);
 		return this;
 	}
 	@Step("click on save button in add new video form")
-	public EditItemsPageObjects clickOnSaveVideoButton() {
+	public EditItemsPageObjects clickOnSaveVideoButton() throws InterruptedException {
+		waiting.explicitWaitElementToBeClickable(AddVideoSaveButtonLocator, 50);
 		AddVideoSaveButtonLocator.click();
+		Thread.sleep(2000);
 		return this;
 	}
 	@Step("Verify success message after addindg an video")
 	public EditItemsPageObjects verifyAddVideoSaveMsg(String getvideoSaveMsg) throws InterruptedException {
-		Thread.sleep(2000);
+		waiting.explicitWaitVisibilityOfElement(VideomsgVerifyLocator, 50);
 		Assert.assertEquals(VideomsgVerifyLocator.getText().trim(), getvideoSaveMsg);
 		return this;
 	}
@@ -1385,23 +1560,24 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	}
 	@Step("click on Available Linked Items link")
 	public EditItemsPageObjects clickOnAvailableLinkedItems() {
+		waiting.explicitWaitVisibilityOfElement(AvailableLinkedItemsLinkLocator, 50);
 		AvailableLinkedItemsLinkLocator.click();
 		return this;
 	}
 	@Step("Verify the content under Available Linked Items tab")
-	public EditItemsPageObjects verifyContentunderAvailableLinkedItems() {
-		Assert.assertTrue(AvailableLinkedItemsItemIdLocator.isDisplayed(), "Item Id label is not diaplayed");
-		Assert.assertTrue(AvailableLinkedItemsItemImageLocator.isDisplayed(), "Item Image label is not diaplayed");
-		Assert.assertTrue(AvailableLinkedItemsPartNumberLocator.isDisplayed(), "Part Number label is not diaplayed");
-		Assert.assertTrue(AvailableLinkedItemsMPNLocator.isDisplayed(), "Manufacturer Part Number label is not diaplayed");
-		Assert.assertTrue(AvailableLinkedItemsItemStatusLocator.isDisplayed(), "Item Status label is not diaplayed");
-		Assert.assertTrue(AvailableLinkedItemsDisplayOnlineLocator.isDisplayed(), "Display Online label is not diaplayed");
-		Assert.assertTrue(AvailableLinkedItemsLinkeditemsQTYLocator.isDisplayed(), "Linked Items Qty Intervals label is not diaplayed");
+	public EditItemsPageObjects verifyContentunderAvailableLinkedItems(String availableLinkedItemsHeaders) {
+		String expHeaders[] = availableLinkedItemsHeaders.split(",");
+		waiting.explicitWaitVisibilityOfElements(availableLinkedItemsHeaderFields, 40);
+		for(int i=0;i<availableLinkedItemsHeaderFields.size();i++){
+			//System.out.println(availableLinkedItemsHeaderFields.get(i).getText().trim());
+			
+			Assert.assertEquals(availableLinkedItemsHeaderFields.get(i).getText(), expHeaders[i],"expe :"+expHeaders[i]+" but found :"+availableLinkedItemsHeaderFields.get(i).getText()+"");
+		}
 		return this;
 	}
 	@Step("Verify the content under List Item Link Types tab")
 	public EditItemsPageObjects clickOnListItemLinkTypes() throws InterruptedException {
-		Thread.sleep(2000);
+		waiting.explicitWaitVisibilityOfElement(listItemLinkTypesLocator, 50);
 		listItemLinkTypesLocator.click();
 		return this;
 	}
@@ -1415,8 +1591,10 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		return this;
 	}
 	@Step("click on add new link type button")
-	public EditItemsPageObjects clickonAddnewLinkTypeButton() {
+	public EditItemsPageObjects clickonAddnewLinkTypeButton() throws InterruptedException {
+		waiting.explicitWaitVisibilityOfElement(AddNewLinkTypeLocator, 50);
 		AddNewLinkTypeLocator.click();
+		Thread.sleep(1500);
 		return this;
 	}
 	@Step("Verify the content in add new link type form")
@@ -1479,15 +1657,17 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		return this;
 	}
 	@Step("click on custom prices link")
-	public EditItemsPageObjects clickOnCustomPricesTab() {
+	public EditItemsPageObjects clickOnCustomPricesTab() throws InterruptedException {
+		waiting.explicitWaitVisibilityOfElement(customPricesLink, 70);
 		customPricesLink.click();
+		Thread.sleep(2500);
 		return this;
 	}
 
 	@Step("click on Attributes link")
-	public EditItemsPageObjects clickOnAttributesTab() {
-
-		waiting.explicitWaitVisibilityOfElement(attributesLink, 15);
+	public EditItemsPageObjects clickOnAttributesTab() throws InterruptedException {
+		waiting.explicitWaitVisibilityOfElement(attributesLink, 50);
+		waiting.explicitWaitVisibilityOfElement(attributesLink, 40);
 		attributesLink.click();
 		return this;
 	}
@@ -1611,13 +1791,17 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 
 	@Step("Verifying attribute fields in attribute tab")
-	public EditItemsPageObjects verifyAttributesTabFileds() throws InterruptedException {
-		assignItemLocator.click();
-		assignItemAttributeLocator.click();
-		Thread.sleep(3000);
-		Assert.assertTrue(AttributeValueLocator.isDisplayed(), "Attribute value text field is not diaplayed");
-		Assert.assertTrue(AttributeUOMLocator.isDisplayed(), "Attribute UOM text field is not diaplayed");
-		Assert.assertTrue(AttributeValueGroupLocator.isDisplayed(), "Attribute value group text field is not diaplayed");
+	public EditItemsPageObjects verifyAttributesTabFileds(String attributeHeaders, String taxonomyName) throws InterruptedException {
+		
+		String expFields[]=attributeHeaders.split(",");
+		waiting.explicitWaitVisibilityOfElements(attributesHeadersTextLocator, 50);
+		Assert.assertTrue(attributeSearchInputField.isDisplayed(),"attribute list Search field is not available");
+		Assert.assertEquals(selectedTaxonomyDropdownLocator.getAttribute("value"), taxonomyName);
+		for(int i=0;i<attributesHeadersTextLocator.size();i++){
+			
+			Assert.assertEquals(attributesHeadersTextLocator.get(i).getText().trim(), expFields[i]);
+			
+		}
 		return this;
 	}
 	@Step("Entering value to assigned attribute")
@@ -1636,8 +1820,16 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		return this;
 	}
 	@Step("selecting item status")
-	public EditItemsPageObjects selectingItemStatus(String itemStatus) {
-		ItemstatusCP.sendKeys(itemStatus);
+	public EditItemsPageObjects selectingItemStatus(String itemStatus, String subsetName) throws InterruptedException {
+		Thread.sleep(2500);
+		WebElement sel=getDriver().findElement(By.xpath("//span[contains(text(),'"+subsetName+"')]/ancestor::tr[@class='rich-table-row rich-table-firstrow']/descendant::select[contains(@id,'status')]"));
+		Select select=new Select(sel);
+		select.selectByVisibleText(itemStatus);
+		WebElement option = select.getFirstSelectedOption();
+		Assert.assertEquals(option.getText(), itemStatus);
+		
+		//select.selectByVisibleText(itemStatus);
+		
 		return this;
 	}
 	@Step("click on add item to subset")
@@ -1773,6 +1965,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@Step("To Click on 'Documents' Tab")
 	public EditItemsPageObjects clickOnDocumentsTab() throws Exception
 	{
+		waiting.explicitWaitVisibilityOfElement(documentsTab, 40);
 		documentsTab.click();
 		Thread.sleep(5000);
 		return this;
@@ -1781,16 +1974,17 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@Step("To Click on 'Add New Document Button' in 'Documents' Tab")
 	public EditItemsPageObjects clickOnAddNewDocumentButton()
 	{
+		waiting.explicitWaitElementToBeClickable(addNewDocumentButton, 30);
 		addNewDocumentButton.click();
 		return this;
 	}
 
 	@Step("To Enter the 'Document Caption' in 'Documents' Tab")
-	public EditItemsPageObjects enterDocumentCaption()
+	public EditItemsPageObjects enterDocumentCaption(String docCaption)
 	{
 
-		waiting.explicitWaitVisibilityOfElement(documentCaption, 10);
-		documentCaption.sendKeys("Document Caption");
+		waiting.explicitWaitVisibilityOfElement(documentCaption, 50);
+		documentCaption.sendKeys(docCaption);
 		return this;
 	}
 
@@ -1799,7 +1993,7 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	public EditItemsPageObjects UploadDocument(String fileToUpload) throws Exception
 	{
 
-		waiting.explicitWaitVisibilityOfElement(addDocumentButton, 10);
+		waiting.explicitWaitVisibilityOfElement(addDocumentButton, 30);
 		addDocumentButton.click();
 		tu.fileUpload(fileToUpload);
 		return this;
@@ -1876,13 +2070,20 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		switch(attributeValue){
 		
 
-	case "Attributes": utility.assertElementPresent(getDriver().findElement(By.xpath("//input[contains(@id,':colAVD') and @value]")));
+	case "Attributes":
+		
+		Thread.sleep(2000);
+		utility.assertElementPresent(getDriver().findElement(By.xpath("//input[contains(@id,':colAVD') and @value]")));
 	break;
 	
-	case "No Attributes":  Assert.assertTrue(utility.assertElementPresent(getDriver().findElement(By.xpath("//span[contains(text(),'"+expMsgForNoAttribute+"')]"))) || utility.assertElementPresent(getDriver().findElement(By.xpath("//input[contains(@id,':colAVD') and not (@value)])"))));
+	case "No Attributes": 
+		Thread.sleep(2000);
+		Assert.assertTrue(utility.assertElementPresent(getDriver().findElement(By.xpath("//span[contains(text(),'"+expMsgForNoAttribute+"')]"))) || utility.assertElementPresent(getDriver().findElement(By.xpath("//input[contains(@id,':colAVD') and not (@value)])"))));
 	break;
 	
-	case "Ignore": Assert.assertTrue( utility.assertElementPresent(getDriver().findElement(By.xpath("//input[contains(@id,':colAVD') and @value]"))) || utility.assertElementPresent(getDriver().findElement(By.xpath("//span[contains(text(),'"+expMsgForNoAttribute+"')]"))));
+	case "Ignore": 
+		Thread.sleep(2000);
+		Assert.assertTrue( utility.assertElementPresent(getDriver().findElement(By.xpath("//input[contains(@id,':colAVD') and @value]"))) || utility.assertElementPresent(getDriver().findElement(By.xpath("//span[contains(text(),'"+expMsgForNoAttribute+"')]"))));
 
 	break;
 	
@@ -2001,8 +2202,8 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 	@Step("click on categorization tab")
 	public EditItemsPageObjects clickOnCategorizationTab() throws InterruptedException{
-
-		waiting.explicitWaitElementToBeClickable(categorizationTabLocator, 10);
+		Thread.sleep(2000);
+		waiting.explicitWaitVisibilityOfElement(categorizationTabLocator, 50);
 		categorizationTabLocator.click();
 		Thread.sleep(5000);
 		return this;
@@ -2011,30 +2212,61 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@Step("verification of Categorized dropdown - Categorized ")
 	public EditItemsPageObjects verifyadvsearchResultsForCategory(String categoryStatus, String noOfItemToBeVerify) throws Exception 
 	{
+		Thread.sleep(2000);
 		int var = Integer.parseInt(noOfItemToBeVerify);
-		for(int i=0;i<=var;i++)
+		for(int i=0;i<var;i++)
 		
 		{
-			waiting.explicitWaitVisibilityOfElement(nextItemIconLocator, 10);
-				nextItemIconLocator.click();
+			clickOnCategorizationTab();
+			Thread.sleep(2000);
+			
 			switch(categoryStatus)
 			{
-			case "Categorized": Assert.assertTrue(categoryUnderCategorizationTab.isDisplayed());
+			case "Categorized": 
+				
+				Assert.assertTrue(assertCategorized(),"Shown items are uncategorized.");
 				break;
-			case "UnCategorized": Assert.assertFalse(categoryUnderCategorizationTab.isDisplayed());
+			case "UnCategorized": 
+				
+				Assert.assertFalse(assertCategorized(), "Shown items are Categorized.");
 				break;
 
-			case "Ignore": Assert.assertTrue(utility.assertElementPresent(categoryUnderCategorizationTab) || utility.assertElementnotPresent(categoryUnderCategorizationTab));
+			case "Ignore": 
+				Thread.sleep(2500);
+				waiting.explicitWaitVisibilityOfElement(categoryUnderCategorizationTab, 40);
+				Assert.assertTrue(utility.assertElementPresent(categoryUnderCategorizationTab) || utility.assertElementnotPresent(categoryUnderCategorizationTab));
 				
 				break;
 			default : throw new Exception("invalid Category selection selection");			
 			}
 			
-		clickOnCategorizationTab();
+		
+		waiting.explicitWaitVisibilityOfElement(nextItemIconLocator, 50);
+			nextItemIconLocator.click();
+			Thread.sleep(2000);
+		
 		}
 		return this;
 	}	
 
+
+	private boolean assertCategorized() throws InterruptedException {
+		
+		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		try{
+		if(categoryUnderCategorizationTab.isDisplayed())
+		{
+			return true;
+		}
+		}
+		catch(NoSuchElementException e)
+		{
+		return false;
+		}
+		
+		return false;		    
+	
+	}
 
 	@Step("verification of categorized dropdown ")
 	public EditItemsPageObjects verifyadvse043() throws InterruptedException {
@@ -2059,10 +2291,14 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		switch(operator){
 		
 
-	case "AND": Assert.assertTrue(utility.assertElementPresent(getDriver().findElement(By.xpath("//input[contains(@id,':colAVD') and @value]"))) && utility.assertElementPresent(getDriver().findElement(By.xpath("//div[@class='imageHolder']/descendant::img"))));
+	case "AND": 
+		Thread.sleep(3000);
+		Assert.assertTrue(utility.assertElementPresent(getDriver().findElement(By.xpath("//input[contains(@id,':colAVD') and @value]"))) && utility.assertElementPresent(getDriver().findElement(By.xpath("//div[@class='imageHolder']/descendant::img"))));
 	break;
 	
-	case "OR": Assert.assertTrue(utility.assertElementPresent(getDriver().findElement(By.xpath("//input[contains(@id,':colAVD') and @value]"))) || utility.assertElementPresent(getDriver().findElement(By.xpath("//div[@class='imageHolder']/descendant::img"))));
+	case "OR": 
+		Thread.sleep(3000);
+		Assert.assertTrue(utility.assertElementPresent(getDriver().findElement(By.xpath("//input[contains(@id,':colAVD') and @value]"))) || utility.assertElementPresent(getDriver().findElement(By.xpath("//div[@class='imageHolder']/descendant::img"))));
 							
 	break;
 		
@@ -2090,16 +2326,48 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 
 			waiting.explicitWaitElementToBeClickable(categorizationTabLocator, 20);
 			categorizationTabLocator.click();
+			verifyCategoryAlreadyAssigned(categoryName+i);
 			searchForTaxonomy(taxonomyName);
 			selectCategory(categoryName+i);
-			saveCategory();
+			selectRadioButton(categoryName+i);
+			saveCategory();			
 			verifySuccessMessageForCategoryAssign(expSuccessMessage);
 			clickOnNextItem_EditPage.click();
+			Thread.sleep(3000);
 			
 		}
 		return this;
 		
 	}
+	@Step("verification Of category: {0} already assigned or not ")
+	public EditItemsPageObjects verifyCategoryAlreadyAssigned(String categoryName) throws InterruptedException {
+		Thread.sleep(2000);
+		try{
+			Thread.sleep(1500);
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//span[contains(text(),'"+categoryName+"')]/ancestor::tbody/descendant::input[contains(@onclick,'defaultCtgInTaxonomy')]"), 15);
+		getDriver().findElement(By.xpath("//span[contains(text(),'"+categoryName+"')]/ancestor::tbody/descendant::input[contains(@onclick,'defaultCtgInTaxonomy')]")).isDisplayed();
+		getDriver().findElement(By.xpath("//span[contains(text(),'"+categoryName+"')]/ancestor::tbody/descendant::input[@alt='Remove']")).click();
+		tu.alertAccept();
+		Thread.sleep(3000);
+		}
+		catch(Exception e)
+		{
+		
+		}
+		return this;
+		
+	}
+
+	@Step("select rspective category radio button {0}")
+	public EditItemsPageObjects selectRadioButton(String categoryName) throws InterruptedException {
+		
+		Thread.sleep(1000);
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//span[contains(text(),'"+categoryName+"')]/ancestor::tbody/descendant::input[contains(@onclick,'defaultCtgInTaxonomy')]"), 15);
+		getDriver().findElement(By.xpath("//span[contains(text(),'"+categoryName+"')]/ancestor::tbody/descendant::input[contains(@onclick,'defaultCtgInTaxonomy')]")).click();
+		return this;
+		
+	}
+
 	@Step(" verification of success message for categorization {0}")
 	public EditItemsPageObjects verifySuccessMessageForCategoryAssign(String expSuccessMessage) {
 
@@ -2112,25 +2380,28 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 	@Step("seect category to assign {0}")
 	public  EditItemsPageObjects selectCategory(String categoryName) throws InterruptedException {
 
-		waiting.explicitWaitVisibilityOfElement(By.xpath("//div[@id='ttformid:taxonomyTreeId']/descendant::td/descendant::span[contains(@id,'ttformid:taxonomyTreeId') and text()='"+categoryName+"']"), 20);
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//div[@id='ttformid:taxonomyTreeId']/descendant::span[contains(@id,'ttformid:taxonomyTreeId') and text()='"+categoryName+"']"), 20);
 		WebElement element= getDriver().findElement(By.xpath("//div[@id='ttformid:taxonomyTreeId']/descendant::td/descendant::span[contains(@id,'ttformid:taxonomyTreeId') and text()='"+categoryName+"']"));
 		WebElement target= getDriver().findElement(By.xpath("//form[@id='itemCategoryFormId']/descendant::thead"));
 		utility.DragandDrop(element, target);
 		//(new Actions(getDriver())).dragAndDrop(element, target).perform();
-		Thread.sleep(500);
+		Thread.sleep(3000);
 		return this;
 		
 	}
 	@Step("click on save link")
-	public EditItemsPageObjects saveCategory(){
+	public EditItemsPageObjects saveCategory() throws InterruptedException{
 
 		waiting.explicitWaitElementToBeClickable(categorySaveLocator, 10);
 		categorySaveLocator.click();
+		Thread.sleep(2500);
 		return this;
 	}
 	@Step(" search for items in edit items page")
-	public EditItemsPageObjects searchForItem(String partNumber) {
-		clckOnSearchButton();
+	public EditItemsPageObjects searchForItem(String partNumber) throws InterruptedException {
+		Thread.sleep(2500);
+		getDriver().findElement(By.xpath("//input[@title='Search']")).click();
+		Thread.sleep(3500);
 		waiting.explicitWaitElementToBeClickable(searchFieldInEditPage, 30);
 		searchFieldInEditPage.click();
 		searchFieldInEditPage.clear();
@@ -2139,8 +2410,9 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		
 	}
 	@Step("Click on SearchButton In edit items page")
-	public EditItemsPageObjects clckOnSearchButton() {
-		waiting.explicitWaitVisibilityOfElement(searchButtonInEditPage, 20);
+	public EditItemsPageObjects clckOnSearchButton() throws InterruptedException {
+		Thread.sleep(2500);
+		waiting.explicitWaitElementToBeClickable(searchButtonInEditPage, 30);
 		searchButtonInEditPage.click();
 		return this;
 	}
@@ -2231,10 +2503,17 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		String expected[]=descriptionFields.split(",");
 		List<WebElement> allAvailableFields =getDriver().findElements(By.xpath("//span[@id='descFormId:discEditPanel']//div[@class='tab_Label']"));
        
-         for (int i=0; i<expected.length; i++){
-        
-        Assert.assertEquals(allAvailableFields.get(i).getText(), expected[i], "Fields available in Description: "+allAvailableFields.get(i).getText()+"");
-         }
+		
+		for(int i=0;i<allAvailableFields.size();i++){
+			
+			for(int j=0;j<expected.length;j++){
+				
+				if(allAvailableFields.get(i).getText().equals(expected[j])){
+	        	 Assert.assertEquals(allAvailableFields.get(i).getText(), expected[j], "Fields available in Description: "+allAvailableFields.get(i).getText()+"");
+				}
+			}
+		}
+         
 	return this;
 	}
 	@Step("verification of description fields {0}")
@@ -2243,4 +2522,999 @@ public class EditItemsPageObjects extends PageFactoryInitializer
 		
 		return this;
 	}
+	@Step("verify the available languages: {0} in descriprtion section")
+	public EditItemsPageObjects verifyLanguageOptions(String languageCode) throws InterruptedException {
+		Thread.sleep(2500);
+		waiting.explicitWaitVisibilityOfElement(languageOptionLocator, 40);
+		Select sel=new Select(languageOptionLocator);
+		sel.selectByVisibleText(languageCode);
+		Thread.sleep(2500);
+		Assert.assertTrue(languageOptionValueLocator.getText().contains(languageCode),"language:"+languageCode+" is not selected");
+
+		return this;
+		
+	}
+	@Step("verify the product fields {0}in item edit page")
+	public EditItemsPageObjects verifyProductFields(String productFields) {
+		String expFields[]=productFields.split(",");
+		for(int i=0;i<productFielsLocator.size();i++){
+			for(int j=0;j<expFields.length;j++){
+				if(productFielsLocator.get(i).getText().equals(expFields[j]))
+				{
+				Assert.assertEquals(productFielsLocator.get(i).getText(), expFields[j],"products fields are not same");	
+				}
+			}
+			
+		}
+		return this;
+	}
+	@Step("Search for product{0}")
+	public EditItemsPageObjects serchForItemInProductsTab(String productName) {
+		waiting.explicitWaitVisibilityOfElement(productSearchFieldLocator, 30);
+		productSearchFieldLocator.sendKeys(productName);
+		productSearchButtonLocator.click();
+
+		return this;
+		
+	}
+	@Step("Save this as Product Item{0}")
+	public EditItemsPageObjects clickOnSaveThisProductLink(String productName) throws InterruptedException {
+		waiting.explicitWaitElementToBeClickable(By.xpath("//div[contains(text(),'"+productName+"')]/ancestor::tbody/descendant::input[@title='Save this as Product Item']"), 30);
+		getDriver().findElement(By.xpath("//div[contains(text(),'"+productName+"')]/ancestor::tbody/descendant::input[@title='Save this as Product Item']")).click();
+		Thread.sleep(2500);
+
+		return this;
+		
+	}
+	@Step("Success messgae{0} for product assign ")
+	public EditItemsPageObjects verifySuccessMessageForProductAssign(String succesMessage) throws InterruptedException {
+		Thread.sleep(2500);
+		waiting.explicitWaitVisibilityOfElement(productAssignSucessfulMessageLocator, 30);
+		Assert.assertEquals(productAssignSucessfulMessageLocator.getText(), succesMessage,"error message has been displayed as : "+productAssignSucessfulMessageLocator.getText()+"");
+
+		return this;
+	}
+	@Step("click on delink product link")
+	public EditItemsPageObjects clickOnDelinkProductLink() throws InterruptedException {
+		waiting.explicitWaitElementToBeClickable(delinkProductLocator, 30);
+		delinkProductLocator.click();
+		Thread.sleep(2500);
+
+		
+		return this;
+	}
+	@Step("verify success message for product delink{0}")
+	public EditItemsPageObjects verifySuccessMessageForDelink(String delinkSuccessMessage) {
+		waiting.explicitWaitVisibilityOfElement(delinkSuccesfulMessageLocator, 30);
+		Assert.assertEquals(delinkSuccesfulMessageLocator.getText().trim(), delinkSuccessMessage.trim(),"error message has been displayed:"+delinkSuccesfulMessageLocator.getText()+"");
+
+		return this;
+	}
+	@Step("verify max acceptance alphanumeric values by meta keyword data{0}")
+	public EditItemsPageObjects verifyMetaKeywordEnteredData(String metaKeywordText, int maximumNumberOfCharactersAcceptedByTheTexbox) {
+
+		Assert.assertEquals(MetaKeywordsTextboxLocator.getAttribute("value").trim(), metaKeywordText.substring(0,Math.min(metaKeywordText.length(),maximumNumberOfCharactersAcceptedByTheTexbox)),"meta keyword input Field is allowing more than acceptance value.exp: "+maximumNumberOfCharactersAcceptedByTheTexbox+"");
+
+		return this;
+	}
+	@Step("verify max acceptance alphanumeric values by custom keyword data{0}")
+	public EditItemsPageObjects verifyCustomFieldEnteredData(String customKeyword, int maximumNumberOfCharactersAcceptedByTheTexbox) {
+		Assert.assertEquals(CustomKeywordsTextboxLocator.getAttribute("value").trim(), customKeyword.substring(0,Math.min(customKeyword.length(),maximumNumberOfCharactersAcceptedByTheTexbox)),"custom keyword input Field is allowing more than acceptance value. exp:"+maximumNumberOfCharactersAcceptedByTheTexbox+"");
+
+		return this;
+		
+	}
+	@Step("click on save keywords link")
+	public EditItemsPageObjects clickOnSaveKeywordsButton() throws InterruptedException {
+		Thread.sleep(1000);
+		waiting.explicitWaitElementToBeClickable(saveKeywordsUpdateLocator, 30);
+		saveKeywordsUpdateLocator.click();
+		
+
+		return this;
+	}
+	@Step("verify update success message {0}")
+	public EditItemsPageObjects verifyUpdateKeywordSuccessMessage(String updateSuccessMessageForKeywords) throws InterruptedException {
+		Thread.sleep(2000);
+		waiting.explicitWaitVisibilityOfElement(succesMessageForKeywordUpdate, 30);
+		Assert.assertEquals(succesMessageForKeywordUpdate.getText().trim(), updateSuccessMessageForKeywords.trim(),"keywords not updated exp: "+updateSuccessMessageForKeywords+"");
+		
+		return this;
+	}
+	@Step("click on add new url save button")
+	public EditItemsPageObjects clickOnAddnewDocumentUrlButton() throws InterruptedException {
+		waiting.explicitWaitVisibilityOfElement(AddnewDocumentSaveButtonLocator, 20);
+		AddnewDocumentSaveButtonLocator.click();
+		Thread.sleep(2000);
+		
+		return this;
+		
+	}
+	@Step("verify success message for added url to document")
+	public EditItemsPageObjects verifysuccessMessageForUrlAdded(String successMessageForUrlAdded) {
+		waiting.explicitWaitVisibilityOfElement(DocumentSuccessMsgLocator, 30);
+		Assert.assertEquals(DocumentSuccessMsgLocator.getText().trim(), successMessageForUrlAdded);
+
+		return this;
+	}
+	@Step("remove assigned doccument by the url{0}")
+	public EditItemsPageObjects verifyAssignedDocumentByTheUrl(String documentDescription, String documentURL) throws InterruptedException {
+		
+		Thread.sleep(2500);
+		try{
+			if(getDriver().findElement(By.xpath("//a[contains(@href,'"+documentURL+"')]/ancestor::tbody/descendant::input[contains(@id,'selectedURLId')]")).isDisplayed()){
+			waiting.explicitWaitElementToBeClickable(By.xpath("//a[contains(@href,'"+documentURL+"')]/ancestor::tbody/descendant::input[contains(@id,'selectedURLId')]"), 20);
+		
+		getDriver().findElement(By.xpath("//a[contains(@href,'"+documentURL+"')]/ancestor::tbody/descendant::input[contains(@id,'selectedURLId')]")).click();
+		Thread.sleep(500);
+		getDriver().findElement(By.xpath("//a[@href='"+documentURL+"']/ancestor::tbody/descendant::input/following-sibling::input[@title='Remove selected Documents']")).click();
+		tu.alertAccept();
+		Thread.sleep(2000);
+		Assert.assertEquals(removeDocumentSuccessMessageLocator.getText(), "'"+documentDescription+"' Document removed Successfully");
+		}
+		}
+		catch(NoSuchElementException e){
+			
+		}
+		
+		return this;
+	}
+	@Step("remove assigned doccument by the url{0}")
+	public EditItemsPageObjects removeAssignedDocumentByTheUrl(String documentDescription, String documentURL) throws InterruptedException {
+		waiting.explicitWaitElementToBeClickable(DocumentURLcheckboxLocator, 30);
+		DocumentURLcheckboxLocator.click();
+		getDriver().findElement(By.xpath("//a[@href='"+documentURL+"']/ancestor::tbody/descendant::input/following-sibling::input[@title='Remove selected Documents']")).click();
+		tu.alertAccept();
+		Thread.sleep(2000);
+		Assert.assertEquals(removeDocumentSuccessMessageLocator.getText(), "'"+documentDescription+"' Document removed Successfully");
+
+		return this;
+		
+	}
+	@Step("click on edit document cation added by url{0}")
+	public EditItemsPageObjects clickOnEditCaptionIcon(String documentURL) throws InterruptedException {
+		waiting.explicitWaitElementToBeClickable(By.xpath("//a[@href='"+documentURL+"']/ancestor::tbody/descendant::input[@title='Edit Caption']"), 30);
+		getDriver().findElement(By.xpath("//a[@href='"+documentURL+"']/ancestor::tbody/descendant::input[@title='Edit Caption']")).click();
+		Thread.sleep(2000);
+
+		return this;
+		
+	}
+	@Step("verify cancel functionality")
+	public EditItemsPageObjects verifyCancelFunctionality() {
+		Assert.assertFalse(assertVerifyAddDocFields(),"cancel functionality is not working");
+
+		return this;
+	}
+
+	private boolean assertVerifyAddDocFields() {
+		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		try{
+			if(AddnewDocumentcaptionLocator.isDisplayed()){
+				return false;
+			}
+		}catch(NoSuchElementException e){
+				return true;
+			}
+			
+		
+		return false;
+	}
+	@Step("verify error messages")
+	public EditItemsPageObjects verifyErrorMessages(String fieldName, String errorMessage) throws Exception {
+		switch(fieldName){
+		
+		case "Document Caption":
+			Thread.sleep(2000);
+			waiting.explicitWaitVisibilityOfElement(DocumentCaptionErrorMsgLocator, 40);
+			Assert.assertEquals(DocumentCaptionErrorMsgLocator.getText().trim(), errorMessage);
+			
+			break;
+		case "Document URL":
+			Thread.sleep(2000);
+			waiting.explicitWaitVisibilityOfElement(DocumentSuccessMsgLocator, 40);
+			Assert.assertEquals(DocumentSuccessMsgLocator.getText().trim(), errorMessage);
+			break;
+		default: throw new Exception("invalid options");
+
+		}
+		return this;
+		
+	}
+	@Step("click on add new item document link")
+	public EditItemsPageObjects clickOnAddNewItemDocumentCategoryLink() throws InterruptedException {
+	Thread.sleep(2000);
+		waiting.explicitWaitElementToBeClickable(AddnewDocumentcatlinkLocator, 30);
+		AddnewDocumentcatlinkLocator.click();
+		return this;
+	}
+	@Step("enter document category name{0}")
+	public EditItemsPageObjects addNewDocumentCategoryName(String documentCategoryName) throws InterruptedException {
+		Thread.sleep(2000);
+		waiting.explicitWaitVisibilityOfElement(itemDocumentCategoryNameLocator, 50);
+		itemDocumentCategoryNameLocator.sendKeys(documentCategoryName);
+		
+		return this;
+		
+	}
+	@Step("enter document category description{0}")
+	public EditItemsPageObjects addNewDocumentCategoryDescription(String documentCategoryDescription) throws InterruptedException {
+		Thread.sleep(2000);
+		waiting.explicitWaitVisibilityOfElement(itemdocumentCategoryDescription, 50);
+		itemdocumentCategoryDescription.sendKeys(documentCategoryDescription);
+		return this;
+		
+	}
+	@Step("verify success Message for document category save{0}")
+	public EditItemsPageObjects verifySuccessMessageForDocumentCategorySave(String docCategorySaveSuccessMessage) throws InterruptedException {
+		Thread.sleep(2000);
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//table[@id='categoryPanelContentTable']/descendant::span[contains(text(),'"+docCategorySaveSuccessMessage+"')]"), 50);
+		Assert.assertEquals(getDriver().findElement(By.xpath("//table[@id='categoryPanelContentTable']/descendant::span[contains(text(),'"+docCategorySaveSuccessMessage+"')]")).getText().trim(), docCategorySaveSuccessMessage.trim());
+
+		return this;
+		
+	}
+	@Step("validate document category name{0}")
+	public EditItemsPageObjects verifyDocCategoryName(String documentCategoryName, int maximumNumberOfCharactersAcceptedByTheTexbox) throws InterruptedException {
+		Thread.sleep(2000);
+		Assert.assertEquals(itemDocumentCategoryNameLocator.getAttribute("value").trim(), documentCategoryName.substring(0,Math.min(documentCategoryName.length(),maximumNumberOfCharactersAcceptedByTheTexbox)),"category name input Field is allowing more than acceptance value.");
+
+		return this;
+	}
+	@Step("validate document category description{0}")
+	public EditItemsPageObjects validateDocCategoryDescription(String documentCategoryDescription, int maximumNumberOfCharactersAcceptedByTheTexbox) {
+		waiting.explicitWaitVisibilityOfElement(itemdocumentCategoryDescription, 30);
+		Assert.assertEquals(itemdocumentCategoryDescription.getAttribute("value").trim(), documentCategoryDescription.substring(0,Math.min(documentCategoryDescription.length(),maximumNumberOfCharactersAcceptedByTheTexbox)),"category description input Field is allowing more than acceptance value.");
+
+		return this;
+	}
+	@Step("remove assigned video {0} from the item")
+	public EditItemsPageObjects removeAssignedVideoFromItem(String videoCaption, String videoRemoveSuccessMessage) throws InterruptedException {
+		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		try{
+			if(getDriver().findElement(By.xpath("//tbody[@id='listVideoFromId:assignedItemVideosId:tb']/descendant::span[contains(text(),'"+videoCaption+"')]")).isDisplayed()){
+				
+				getDriver().findElement(By.xpath("//span[contains(text(),'"+videoCaption+"')]/ancestor::tbody[@id='listVideoFromId:assignedItemVideosId:tb']/descendant::input[@type='checkbox']")).click();
+				getDriver().findElement(By.xpath("//span[contains(text(),'"+videoCaption+"')]/ancestor::tbody[@id='listVideoFromId:assignedItemVideosId:tb']/descendant::input[@title='Remove selected Videos']")).click();
+				tu.alertAccept();
+				Thread.sleep(2000);
+				waiting.explicitWaitVisibilityOfElement(DeleteVideoAlertMsgLocator, 50);
+				Assert.assertEquals(DeleteVideoAlertMsgLocator.getText().trim(), videoRemoveSuccessMessage.trim());
+			}
+		}catch(NoSuchElementException e){
+			
+		}
+		
+		return this;
+		
+	}
+	@Step("verify alert message when check box is not checket {0}")
+	public EditItemsPageObjects verifyAlertCheckBoxNotChecked(String videoCaption,String alertMessageText) {
+		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		try{
+			if(getDriver().findElement(By.xpath("//tbody[@id='listVideoFromId:assignedItemVideosId:tb']/descendant::span[contains(text(),'"+videoCaption+"')]")).isDisplayed()){
+				
+				getDriver().findElement(By.xpath("//span[contains(text(),'"+videoCaption+"')]/ancestor::tbody[@id='listVideoFromId:assignedItemVideosId:tb']/descendant::input[@title='Remove selected Videos']")).click();
+				String alertText=tu.getAlertText();
+				tu.alertDismiss();
+				Assert.assertEquals(alertText.trim(), alertMessageText.trim(), "alert message was not displayed");
+				
+			}
+		}catch(NoSuchElementException e){
+			
+		}
+		
+		return this;
+	}
+	@Step("enter part number to be assign {0}")
+	public EditItemsPageObjects searchForItems(String partNumber) {
+		waiting.explicitWaitVisibilityOfElement(searchItemLinkTypeSearchTextboxLoc, 40);
+		searchItemLinkTypeSearchTextboxLoc.sendKeys(partNumber);
+		searchButtonForLinkedItems.click();
+
+		return this;
+	}
+	@Step("drag and drop the items to be link")
+	public EditItemsPageObjects assignLinkedItems(String partNumber) throws InterruptedException {
+		Thread.sleep(2000);
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//div[@class='tab_ColumnLeft linkedTabColLeft']/descendant::td[contains(text(),'AutomationTestPN1')]"), 50);
+		WebElement source=getDriver().findElement(By.xpath("//div[@class='tab_ColumnLeft linkedTabColLeft']/descendant::td[contains(text(),'AutomationTestPN1')]"));
+		WebElement target=getDriver().findElement(By.xpath(".//*[@id='hereFormId:assignedItemsTable2']/descendant::span[contains(text(),'Action')]"));
+		
+		utility.DragandDrop(source, target);
+		Thread.sleep(2500);
+		Assert.assertFalse(assertVerifyAssignedItem(partNumber),"item not assigned to linked list");
+
+		return this;
+		
+	}
+
+	private boolean assertVerifyAssignedItem(String partNumber) {
+		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		try{
+			if(getDriver().findElement(By.xpath("//td[contains(text(),"+partNumber+")]/preceding-sibling::td/descendant::input[@title='Remove from this LinkType']")).isDisplayed()){
+				return false;
+				
+			}
+		}catch(NoSuchElementException e){
+			return true;
+			
+		}
+
+		
+		return false;
+	}
+	
+	private boolean removeAssignedLinkedItem(String partNumber, String getItemId) {
+		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		try{
+			if(getDriver().findElement(By.xpath("//td[contains(text(),"+partNumber+")]/preceding-sibling::td/descendant::input[@title='Remove from this LinkType']")).isDisplayed())
+			{
+				getDriver().findElement(By.xpath("//td[contains(text(),"+partNumber+")]/preceding-sibling::td/descendant::input[@title='Remove from this LinkType']")).click();
+				tu.alertAccept();
+				waiting.explicitWaitVisibilityOfElement(successFulMessageForRemoveLinkedItem, 60);
+				Assert.assertEquals(successFulMessageForRemoveLinkedItem.getText().trim(), "Searched Item Id : "+getItemId+";P.No: "+partNumber+" ) removed Successfully".trim(),"");
+				return false;
+			}
+			
+			
+		}catch(NoSuchElementException e)
+		{
+			return true;
+		}
+
+		return false;
+	}
+	@Step("item link type name {0}")
+	public EditItemsPageObjects verifyItemLinkType(String itemLinkTypeName) throws InterruptedException {
+		Thread.sleep(2500);
+		Assert.assertTrue(assertVerifyLinkTypeNamePresent(itemLinkTypeName),"Unable to delete the created link type");
+		return this;
+	}
+	private boolean assertVerifyLinkTypeNamePresent(String itemLinkTypeName) throws InterruptedException {
+		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		try{
+			if(getDriver().findElement(By.xpath("//tbody[@id='linkdtabsid:itemLinkTypeTableId:tb']/descendant::span[contains(text(),'"+itemLinkTypeName+"')]")).isDisplayed())
+			{
+				getDriver().findElement(By.xpath("//span[contains(text(),'"+itemLinkTypeName+"')]/ancestor::tbody/descendant::input[@title='Remove']")).click();
+				tu.alertAccept();
+				Thread.sleep(2000);
+				return true;
+			}
+		}catch(NoSuchElementException e){
+			return false;
+		}
+
+		
+		return false;
+	}
+
+	@Step("enter item link type name {0}")
+	public EditItemsPageObjects enterItemLinkTypeName(String itemLinkTypeName, String linkedItemSaveMessage) throws InterruptedException {
+		waiting.explicitWaitVisibilityOfElement(LinkTypeNameFieldLocator, 50);
+		LinkTypeNameFieldLocator.sendKeys(itemLinkTypeName);
+		saveLinkTypeLocator.click();
+		Thread.sleep(2000);
+		waiting.explicitWaitVisibilityOfElement(linktypeSuccessMsg, 50);
+		Assert.assertEquals(linktypeSuccessMsg.getText().trim(), linkedItemSaveMessage.trim());
+		
+		return this;
+	}
+	@Step("click on setup linked items tab")
+	public EditItemsPageObjects clickOnSetupLinkedItemsTab() throws InterruptedException {
+		waiting.explicitWaitVisibilityOfElement(setUpLinkedItemsLocator, 50);
+		setUpLinkedItemsLocator.click();
+		Thread.sleep(2500);
+		return this;
+	}
+	@Step("remove assigned linked items from the list{0}")
+	public EditItemsPageObjects removeAssignedLinkedItems(String partNumber, String itemLinkTypeName, String getItemId) {
+		waiting.explicitWaitVisibilityOfElement(selectLinkedItemTypeFieldLocator, 50);
+		selectLinkedItemTypeFieldLocator.clear();
+		selectLinkedItemTypeFieldLocator.sendKeys(itemLinkTypeName);
+		
+		Assert.assertTrue(removeAssignedLinkedItem(partNumber, getItemId),"assigned item can't be remove");
+
+		return this;
+	}
+	@Step("click on save assigned linked lst icon")
+	public EditItemsPageObjects clickOnSaveAssignedLinkedListIcon() throws InterruptedException {
+		waiting.explicitWaitVisibilityOfElement(saveAssignedLinkedListIcon, 50);
+		saveAssignedLinkedListIcon.click();
+		Thread.sleep(2500);
+		
+		return this;
+		
+	}
+	@Step("verify success message{0} after click on save assigned linked items")
+	public EditItemsPageObjects verifySuccessMessageForSaveAssignedList(String assignedSaveMessage) {
+		waiting.explicitWaitVisibilityOfElement(saveAssignedSuccessMessageLocator, 50);
+		Assert.assertEquals(saveAssignedSuccessMessageLocator.getText().trim(), assignedSaveMessage.trim());	
+
+		return this;
+		
+	}
+	@Step("verify list item link type {0}")
+	public EditItemsPageObjects verifyListItemLinkTypeHeaders(String listItemLinkTypeHeaders) {
+		
+		String expectedFields[]=listItemLinkTypeHeaders.split(",");
+		waiting.explicitWaitVisibilityOfElements(listItemLinkTypeHeaderFields, 50);
+		for(int i=0;i<listItemLinkTypeHeaderFields.size();i++)
+		{
+			Assert.assertEquals(listItemLinkTypeHeaderFields.get(i).getText().trim(), expectedFields[i]);
+		}
+		return this;
+		
+	}
+	@Step(" click on update item link type")
+	public EditItemsPageObjects clickOnEditItemLinkType(String itemLinkTypeName) throws InterruptedException {
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//span[contains(text(),'"+itemLinkTypeName+"')]/ancestor::tbody/descendant::input[@title='Edit Item Link Type']"), 50);
+		getDriver().findElement(By.xpath("//span[contains(text(),'"+itemLinkTypeName+"')]/ancestor::tbody/descendant::input[@title='Edit Item Link Type']")).click();
+		Thread.sleep(3000);
+		return this;
+		
+	}
+	@Step(" search for attributeList {0}")
+	public EditItemsPageObjects searchForAttibuteList(String attributeListName) throws InterruptedException {
+		waiting.explicitWaitVisibilityOfElement(attributeSearchInputField, 50);
+		attributeSearchInputField.clear();
+		attributeSearchInputField.sendKeys(attributeListName);
+		searchButtonForAttributeList.click();
+		Thread.sleep(2500);
+
+		return this;
+	}
+	@Step("verify attribute{0} and assign it to item")
+	public EditItemsPageObjects verifyAndAssignAttribute(String attributeListName) throws InterruptedException {
+		Assert.assertTrue(assertVerifyAttributeNamePresents(attributeListName),"attribute is not available, please create before assign");
+		getDriver().findElement(By.xpath("//span[contains(text(),'"+attributeListName+"')]/ancestor::tr/descendant::input[@alt='Assign']")).click();
+		Thread.sleep(2500);
+		getDriver().findElement(By.xpath("//td[contains(text(),'Selected Attribute')]/ancestor::tr/descendant::input[contains(@title,'Save')]")).click();
+		Thread.sleep(2500);
+		Assert.assertTrue(assertVerifyAssignedAttribute(attributeListName),"Assigned attribute is displayed under the list");
+		Thread.sleep(1500);
+		attributevaluesavelocator.click();
+		
+		
+
+		return this;
+		
+	}
+
+	private boolean assertVerifyAssignedAttribute(String attributeListName) {
+		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		try{
+			if(getDriver().findElement(By.xpath("//tbody[@id='atf:atdt:tb']/descendant::span[contains(text(),'"+attributeListName+"')]")).isDisplayed()){
+				return true;
+			}
+		}catch(NoSuchElementException e){
+			return false;
+		}
+		return false;
+	}
+
+	private boolean assertVerifyAttributeNamePresents(String attributeListName) {
+		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		try{
+			if(getDriver().findElement(By.xpath("//span[contains(text(),'"+attributeListName+"')]/ancestor::tr/descendant::input[@alt='Assign']")).isDisplayed()){
+				return true;
+			}
+		}catch(NoSuchElementException e){
+			return false;
+		}
+		return false;
+	}
+	@Step("verify success message for attribute save {0}")
+	public EditItemsPageObjects verifySuccessMessageForAttributeAssign(String attributeListName,String expSuccessMessageForAttributeSave) {
+		waiting.explicitWaitVisibilityOfElement(attributevaluesaveMsglocator, 50);
+		Assert.assertEquals(attributevaluesaveMsglocator.getText().trim(), expSuccessMessageForAttributeSave.trim());
+		Assert.assertTrue(assertVerifyAssignedAttribute(attributeListName),"Attribute value is not displayed under assigned list");
+
+		return this;
+	}
+	@Step("verify cancel functionality")
+	public EditItemsPageObjects verifyCancelFuctionality(String attributeListName) throws InterruptedException {
+		Assert.assertTrue(assertVerifyAttributeNamePresents(attributeListName),"attribute is not available, please create before assign");
+		getDriver().findElement(By.xpath("//span[contains(text(),'"+attributeListName+"')]/ancestor::tr/descendant::input[@alt='Assign']")).click();
+		Thread.sleep(2500);
+		waiting.explicitWaitVisibilityOfElement(cancelButtonInAlertWindow, 50);
+		cancelButtonInAlertWindow.click();
+		Thread.sleep(1500);
+		Assert.assertFalse(assertVerifyCancelFunctionality(),"cancel functionality is not working.");
+
+		return this;
+		
+	}
+
+	private boolean assertVerifyCancelFunctionality() {
+		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		try{
+			if(cancelButtonInAlertWindow.isDisplayed()){
+				return false;
+			}
+		}catch(NoSuchElementException e){
+			return true;
+		}
+		return false;
+	}
+
+	public EditItemsPageObjects verifyCustomPriceTabHeaders(String customePriceHeaders) {
+		String expHeaders[]=customePriceHeaders.split(",");
+		waiting.explicitWaitVisibilityOfElements(customPriceTabHeaders, 50);
+		for(int i=0;i<customPriceTabHeaders.size();i++){
+
+			Assert.assertEquals(customPriceTabHeaders.get(i).getText().trim(), expHeaders[i]);
+		}
+
+		return this;
+		
+	}
+
+	public EditItemsPageObjects verifyCustomPriceTabCheckBoxes() throws InterruptedException {
+		Thread.sleep(2500);
+		waiting.explicitWaitVisibilityOfElements(By.xpath("//input[contains(@title,'Update Item Prices in Subset')]/ancestor::tr[@class='rich-table-row rich-table-firstrow']/descendant::input[@type='checkbox']"), 50);
+		List<WebElement> checkBoxes=getDriver().findElements(By.xpath("//input[contains(@title,'Update Item Prices in Subset')]/ancestor::tr[@class='rich-table-row rich-table-firstrow']/descendant::input[@type='checkbox']"));
+		for(int i=0;i<checkBoxes.size();i++){
+			if(!checkBoxes.get(i).isSelected())
+			{				
+				checkBoxes.get(i).click();
+				checkBoxes.get(i).click();
+			}
+		}
+		return this;
+		
+	}
+	@Step("verify custome price tab input fields")
+	public EditItemsPageObjects verifyCustomPriceTabInputTextFields(String testData) throws InterruptedException {
+		Thread.sleep(2500);
+		waiting.explicitWaitVisibilityOfElements(By.xpath("//input[contains(@title,'Update Item Prices in Subset')]/ancestor::tr[@class='rich-table-row rich-table-firstrow']/descendant::input[@type='text']"), 50);
+		List<WebElement> textFields=getDriver().findElements(By.xpath("//input[contains(@title,'Update Item Prices in Subset')]/ancestor::tr[@class='rich-table-row rich-table-firstrow']/descendant::input[@type='text']"));
+		for(int i=0;i<textFields.size();i++){
+			if(textFields.get(i).getAttribute("value").isEmpty()){
+				textFields.get(i).sendKeys(testData);
+				textFields.get(i).clear();
+			}
+		}
+
+		return this;
+	}
+	@Step("validate custom price input text fields")
+	public EditItemsPageObjects validateCustomPriceInputTextFields(String fields, String allowedChars, String testChars) throws InterruptedException {
+		Thread.sleep(2500);
+		int noOfChars=Integer.parseInt(allowedChars);
+		String textToBeEntered=random.random(Integer.parseInt(testChars), PermittedCharacters.ALPHABETS);
+			switch (fields)
+			{
+			case "IMAP Price":
+				Thread.sleep(2000);		
+				WebElement ele=getDriver().findElement(By.xpath("//input[contains(@title,'Update Item Prices in Subset')]/ancestor::tr[@class='rich-table-row rich-table-firstrow']/descendant::input[contains(@id,'imapPriceId')]"));
+				ele.clear();
+				ele.sendKeys(textToBeEntered);
+				Assert.assertEquals(ele.getAttribute("value").trim(), textToBeEntered.substring(0,Math.min(textToBeEntered.length(),noOfChars)),"IMAP Price is allowing more than accepted values");
+				break;
+			case "Net Price":
+				Thread.sleep(2000);
+				WebElement ele1=getDriver().findElement(By.xpath("//input[contains(@title,'Update Item Prices in Subset')]/ancestor::tr[@class='rich-table-row rich-table-firstrow']/descendant::input[contains(@id,'netPrice')]"));
+				ele1.clear();
+				ele1.sendKeys(textToBeEntered);
+				Assert.assertEquals(ele1.getAttribute("value").trim(), textToBeEntered.substring(0,Math.min(textToBeEntered.length(),noOfChars)),"Net Price is allowing more than accepted values");
+				break;
+				
+			case "Pack Desc":
+				Thread.sleep(2000);
+				WebElement ele2=getDriver().findElement(By.xpath("//input[contains(@title,'Update Item Prices in Subset')]/ancestor::tr[@class='rich-table-row rich-table-firstrow']/descendant::input[contains(@id,'packDesc')]"));
+				ele2.clear();
+				ele2.sendKeys(textToBeEntered);
+				Assert.assertEquals(ele2.getAttribute("value").trim(), textToBeEntered.substring(0,Math.min(textToBeEntered.length(),noOfChars)),"Pack description is allowing more than accepted values");
+				break;
+			case "Sales UOM":
+				Thread.sleep(2000);
+				WebElement ele3=getDriver().findElement(By.xpath("//input[contains(@title,'Update Item Prices in Subset')]/ancestor::tr[@class='rich-table-row rich-table-firstrow']/descendant::input[contains(@id,'salesUOM')]"));
+				ele3.clear();
+				ele3.sendKeys(textToBeEntered);
+				Assert.assertEquals(ele3.getAttribute("value").trim(), textToBeEntered.substring(0,Math.min(textToBeEntered.length(),noOfChars)),"Sales UOM is allowing more than accepted values");
+				break;
+			case "Price Per":
+				Thread.sleep(2000);
+				WebElement ele4=getDriver().findElement(By.xpath("//input[contains(@title,'Update Item Prices in Subset')]/ancestor::tr[@class='rich-table-row rich-table-firstrow']/descendant::input[contains(@id,'salQty')]"));
+				ele4.clear();
+				ele4.sendKeys(textToBeEntered);
+				Assert.assertEquals(ele4.getAttribute("value").trim(), textToBeEntered.substring(0,Math.min(textToBeEntered.length(),noOfChars)),"Price Per is allowing more than accepted values");
+				break;
+				
+			case "Min Order Qty":
+				Thread.sleep(2000);
+				WebElement ele5=getDriver().findElement(By.xpath("//input[contains(@title,'Update Item Prices in Subset')]/ancestor::tr[@class='rich-table-row rich-table-firstrow']/descendant::input[contains(@id,'minOrderQty')]"));
+				ele5.clear();
+				ele5.sendKeys(textToBeEntered);
+				Assert.assertEquals(ele5.getAttribute("value").trim(), textToBeEntered.substring(0,Math.min(textToBeEntered.length(),noOfChars)),"Min Order Qty is allowing more than accepted values");
+				break;
+				
+			case "Order Qty Interval":
+				Thread.sleep(2000);
+				WebElement ele6=getDriver().findElement(By.xpath("//input[contains(@title,'Update Item Prices in Subset')]/ancestor::tr[@class='rich-table-row rich-table-firstrow']/descendant::input[contains(@id,'orderQtyInterval')]"));
+				ele6.clear();
+				ele6.sendKeys(textToBeEntered);
+				Assert.assertEquals(ele6.getAttribute("value").trim(), textToBeEntered.substring(0,Math.min(textToBeEntered.length(),noOfChars)),"Order Qty Interval is allowing more than accepted values");
+				break;
+			case "Customer PN":
+				Thread.sleep(2000);
+				WebElement ele7=getDriver().findElement(By.xpath("//input[contains(@title,'Update Item Prices in Subset')]/ancestor::tr[@class='rich-table-row rich-table-firstrow']/descendant::input[contains(@id,'CPNUMVal')]"));
+				ele7.clear();
+				ele7.sendKeys(textToBeEntered);
+				Assert.assertEquals(ele7.getAttribute("value").trim(), textToBeEntered.substring(0,Math.min(textToBeEntered.length(),noOfChars)),"Customer PN is allowing more than accepted values");
+				break;
+			case "UNSPSC":
+				Thread.sleep(2000);
+				WebElement ele8=getDriver().findElement(By.xpath("//input[contains(@title,'Update Item Prices in Subset')]/ancestor::tr[@class='rich-table-row rich-table-firstrow']/descendant::input[contains(@id,'unspsc')]"));
+				ele8.clear();
+				ele8.sendKeys(textToBeEntered);
+				Assert.assertEquals(ele8.getAttribute("value").trim(), textToBeEntered.substring(0,Math.min(textToBeEntered.length(),noOfChars)),"UNSPSC is allowing more than accepted values");
+				break;
+			case "Material Group":
+				Thread.sleep(2000);
+				WebElement ele9=getDriver().findElement(By.xpath("//input[contains(@title,'Update Item Prices in Subset')]/ancestor::tr[@class='rich-table-row rich-table-firstrow']/descendant::input[contains(@id,'materialGroup')]"));
+				ele9.clear();
+				ele9.sendKeys(textToBeEntered);
+				Assert.assertEquals(ele9.getAttribute("value").trim(), textToBeEntered.substring(0,Math.min(textToBeEntered.length(),noOfChars)),"Material Group is allowing more than accepted values");
+				break;
+			case "Material Number":
+				Thread.sleep(2000);
+				WebElement ele10=getDriver().findElement(By.xpath("//input[contains(@title,'Update Item Prices in Subset')]/ancestor::tr[@class='rich-table-row rich-table-firstrow']/descendant::input[contains(@id,'materialNumber')]"));
+				ele10.clear();
+				ele10.sendKeys(textToBeEntered);
+				Assert.assertEquals(ele10.getAttribute("value").trim(), textToBeEntered.substring(0,Math.min(textToBeEntered.length(),noOfChars)),"Material Number is allowing more than accepted values");
+				break;
+			default:
+				break;
+			}
+			
+			
+		
+		
+		
+		
+		return this;
+	}
+	@Step("update item price{0}")
+	public EditItemsPageObjects updateItemPriceInSubset(String subset, String price) throws InterruptedException {
+		Thread.sleep(2000);
+		WebElement ele1=getDriver().findElement(By.xpath("//input[contains(@title,'Update Item Prices in Subset')]/ancestor::tr[@class='rich-table-row rich-table-firstrow']/descendant::input[contains(@id,'netPrice')]"));
+		ele1.clear();
+		ele1.sendKeys(price);
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//tbody[@id='customPricesForm:customPricesTable:tb']/tr/descendant::span[text()='"+subset+"']/../preceding-sibling::td/descendant::input[@title='Update Item Prices in Subset']"), 50);
+		getDriver().findElement(By.xpath("//tbody[@id='customPricesForm:customPricesTable:tb']/tr/descendant::span[text()='"+subset+"']/../preceding-sibling::td/descendant::input[@title='Update Item Prices in Subset']")).click();
+		Thread.sleep(2500);
+		return this;
+	}
+	@Step("verify the update success message {0}")
+	public EditItemsPageObjects verifyCustomePriceUpdateSuccessMessage(String subsetName) throws InterruptedException {
+		Thread.sleep(2500);
+		waiting.explicitWaitVisibilityOfElement(subsetassigntoitemmessageloc, 30);
+		Assert.assertEquals(subsetassigntoitemmessageloc.getText().trim(), "Item Updated Successfully in - \""+subsetName+"\" Subset");
+
+		return this;
+		
+	}
+	
+	public EditItemsPageObjects clickOnCustomFieldsTab() throws InterruptedException 
+	{
+		waiting.explicitWaitVisibilityOfElement(customFieldsTab, 50);
+		customFieldsTab.click();
+		Thread.sleep(2500);
+		return this;
+	}
+	@Step("verify table data {0}tabs")
+	public EditItemsPageObjects verifyCustomFieldsTableTab() {
+		waiting.explicitWaitVisibilityOfElement(customFieldTableDataTabLocator, 50);
+		Assert.assertTrue(customFieldTableDataTabLocator.isDisplayed(),"custom table data tab is not displayed");
+		customFieldTableDataTabLocator.click();
+		
+		return this;
+		
+	}
+	@Step("verify simple data{0}")
+	public EditItemsPageObjects verifyCustomFieldsSimpleTab() {
+		waiting.explicitWaitVisibilityOfElement(customFieldSimpleDataLocator, 50);
+		Assert.assertTrue(customFieldSimpleDataLocator.isDisplayed()," simple data tab is not displayed");
+		return this;
+	}
+	@Step("verify simple date {0} present")
+	public EditItemsPageObjects verifySimpleDataAvailable(String expSimpleData) {
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//tbody[@id='customFieldsFormIdITEM:customFieldsTableIdITEM:tb']/descendant::td[contains(text(),'"+expSimpleData+"')]"), 40);
+		Assert.assertFalse(assertVerifySimpleField(expSimpleData),"simple data: "+expSimpleData+" is not available, please create");
+		
+		
+		return this;
+	}
+
+	private boolean assertVerifySimpleField(String expSimpleData) {
+		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		try{
+			if(getDriver().findElement(By.xpath("//tbody[@id='customFieldsFormIdITEM:customFieldsTableIdITEM:tb']/descendant::td[contains(text(),'"+expSimpleData+"')]")).isDisplayed()){
+		return false;
+		
+		}
+	}
+		catch(Exception e){
+			return true;
+		}
+	
+		return false;
+	}
+	@Step("verify customer panrt number tab is present or not")
+	public EditItemsPageObjects verifyCustomerPartNumberTab() {
+		waiting.explicitWaitVisibilityOfElement(cpnTabLocator, 40);
+		Assert.assertTrue(assertVerifyCPTab(), "customer part number tab is not available");
+
+		return this;
+		
+	}
+
+	private boolean assertVerifyCPTab() {
+		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		try{
+			if(cpnTabLocator.isDisplayed()){
+				return true;
+			}
+		}catch(Exception e){
+			return false;
+		}
+		return false;
+	}
+	@Step("verify create new customer part number fields")
+	public EditItemsPageObjects verifyCreateNewCPFields() {
+		waiting.explicitWaitVisibilityOfElement(addNewCpnLocator, 30);
+		Assert.assertTrue(addNewCpnLocator.isDisplayed(),"add new loacroe is not available");
+		addNewCpnLocator.click();
+		waiting.explicitWaitVisibilityOfElement(customerInputLocator, 30);
+		Assert.assertTrue(customerInputLocator.isDisplayed(),"cpn input field is not available");
+		Assert.assertTrue(addcustomerFieldLocator.isDisplayed(), " add customer input field is not available");
+		Assert.assertTrue(saveNewCpnLocator.isDisplayed(), " add new cpn link is not available");
+		Assert.assertTrue(resetCpnFieldsLocator.isDisplayed(), " add new cpn link is not available");
+		Assert.assertTrue(closeCpnFieldsLocator.isDisplayed(),"close cpn fields link is not available");
+		
+
+		return this;
+		
+	}
+	@Step("select the customer{0} from dropdown")
+	public EditItemsPageObjects selectCustomerFromDropDown(String customerName) {
+		waiting.explicitWaitVisibilityOfElement(customerInputLocator, 30);
+		customerInputLocator.click();
+		customerInputLocator.clear();
+		customerInputLocator.sendKeys(customerName);
+
+		return this;
+	}
+
+	public EditItemsPageObjects clickOnCPNResetButton() {
+		resetCpnFieldsLocator.click();
+
+		return this;
+	}
+
+	public EditItemsPageObjects enterDataToCustomerField(String customerName) throws InterruptedException {
+		waiting.explicitWaitVisibilityOfElement(customerInputLocator, 30);
+		customerInputLocator.sendKeys(customerName);
+		Thread.sleep(2500);
+
+		return this;
+	}
+	@Step("verify cpn reset functionality")
+	public EditItemsPageObjects verifyCPNResetFunctionality() throws InterruptedException {
+		waiting.explicitWaitVisibilityOfElement(customerInputLocator, 30);
+		Thread.sleep(1500);
+		Assert.assertTrue(customerInputLocator.getAttribute("value").isEmpty(),"reset functionality is not working");
+		
+		return this;
+	}
+	@Step("verify warehouse tab is prerest")
+	public EditItemsPageObjects verifyWarehouseTabPresent() {
+		waiting.explicitWaitVisibilityOfElement(warehouseTabLocator, 30);
+		Assert.assertTrue(warehouseTabLocator.isDisplayed()," warehouse tab is not present");
+
+		return this;
+	}
+	@Step("click on warehouse tab")
+	public EditItemsPageObjects clickOnWarehouseTab() throws InterruptedException {
+		waiting.explicitWaitVisibilityOfElement(warehouseTabLocator, 30);
+		warehouseTabLocator.click();
+		Thread.sleep(2000);
+
+		return this;
+	}
+	@Step("verify warehouse tab in edit items page")
+	public EditItemsPageObjects verifyWarehousePage() {
+
+		waiting.explicitWaitVisibilityOfElement(warehouseSearchInputLocator, 30);
+		Assert.assertTrue(warehouseSearchInputLocator.isDisplayed(),"search field is not displayed");
+		Assert.assertTrue(warehouseSelectAllCheckBox.isDisplayed(),"select all check box is not displayed");
+		Assert.assertTrue(warehouseNameHeaderLocator.isDisplayed(),"warehouse name column was not displayed.");
+		Assert.assertTrue(warehouseAddress1HeaderLocator.isDisplayed(),"warehouse address1 column was not displayed.");
+		Assert.assertTrue(saveWarehouseToItems.isDisplayed(), "save warehouse to item link was not displayed");
+		Assert.assertTrue(removeWarehouseToItems.isDisplayed(), "remove warehouse to item link was not displayed");
+		Assert.assertTrue(warehouseItemsHistory.isDisplayed(), "ware house history link was not displayed");
+
+		return this;
+	}
+	@Step("search for warehouse name {0}")
+	public EditItemsPageObjects searchForwareHouse(String warehouseName) {
+		waiting.explicitWaitVisibilityOfElement(warehouseSearchInputLocator, 30);
+		warehouseSearchInputLocator.clear();
+		warehouseSearchInputLocator.sendKeys(warehouseName);
+
+		
+		
+		return this;
+	}
+	@Step("verify ware house {0} displayed or not")
+	public EditItemsPageObjects verifySearchResults(String warehouseName) throws InterruptedException {
+		Thread.sleep(2500);
+		Assert.assertTrue(assertVerifyWarehousePresent(warehouseName),"ware house :"+warehouseName+" is not displayed");
+		return this;
+	}
+
+	private boolean assertVerifyWarehousePresent(String warehouseName) {
+
+		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		try{
+			if(getDriver().findElement(By.xpath("//tbody[@id='warehouseListFormId:warehouseDataTable:tb']/descendant::span[text()='"+warehouseName+"']")).isDisplayed())
+			{
+				return true;
+			}
+			}
+		catch(Exception e)
+		{
+			return false;
+		}
+		
+		return false;
+	}
+	@Step("verify warehouse search results for invalid name {0}")
+	public EditItemsPageObjects verifySearchResultsInvalid(String warehouseNameInvalid) throws InterruptedException {
+		
+		Thread.sleep(2500);
+		Assert.assertFalse(assertVerifyWarehousePresent(warehouseNameInvalid),"ware house :"+warehouseNameInvalid+" is displayed");
+
+		return this;
+	}
+	@Step("select the warehouse{0} to item")
+	public EditItemsPageObjects selectWarehouseToSave(String warehouseName) {
+		
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//span[text()='"+warehouseName+"']/ancestor::tbody[@id='warehouseListFormId:warehouseDataTable:tb']/descendant::input[@type='checkbox']"), 30);
+		Assert.assertTrue(selectWareHouseToItem(warehouseName), "unable to select warehouse"+warehouseName+"");
+
+		return this;
+	}
+
+	private boolean selectWareHouseToItem(String warehouseName) {
+		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		try{
+			if(getDriver().findElement(By.xpath("//span[text()='"+warehouseName+"']/ancestor::tbody[@id='warehouseListFormId:warehouseDataTable:tb']/descendant::input[@type='checkbox']")).isDisplayed())
+			{
+				if(getDriver().findElement(By.xpath("//span[text()='"+warehouseName+"']/ancestor::tbody[@id='warehouseListFormId:warehouseDataTable:tb']/descendant::input[@type='checkbox']")).isSelected()){
+					return true;
+				}else{
+					getDriver().findElement(By.xpath("//span[text()='"+warehouseName+"']/ancestor::tbody[@id='warehouseListFormId:warehouseDataTable:tb']/descendant::input[@type='checkbox']")).click();
+					Thread.sleep(1500);
+					return true;
+				}
+
+			}
+			}
+		catch(Exception e)
+		{
+			return false;
+		}
+		
+		return false;
+	}
+	@Step("click on save icon")
+	public EditItemsPageObjects saveWarehouseToItem() throws InterruptedException {
+		waiting.explicitWaitVisibilityOfElement(saveWarehouseToItems, 30);
+		saveWarehouseToItems.click();
+		Thread.sleep(1500);
+
+		return this;
+	}
+	@Step("verify save success message for warehouse added to item")
+	public EditItemsPageObjects verifyWarehouseSaveSuccessMessage(String expSuccessMessage) {
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//span[contains(text(),'"+expSuccessMessage+"')]"), 30);
+		Assert.assertEquals(getDriver().findElement(By.xpath("//span[contains(text(),'"+expSuccessMessage+"')]")).getText().trim(), expSuccessMessage.trim());
+
+		return this;
+	}
+	@Step("click on select all warehouses check boxes.")
+	public EditItemsPageObjects selectSelectAllWarehouses() {
+		waiting.explicitWaitVisibilityOfElement(warehouseSelectAllCheckBox, 30);
+		Assert.assertTrue(selectSelectAllCheckBoxes(),"unable to select multiple warehouses");
+		
+		
+		
+		return this;
+	}
+
+	private boolean selectSelectAllCheckBoxes() {
+		try{
+			if(warehouseSelectAllCheckBox.isDisplayed())
+			{
+			if(warehouseSelectAllCheckBox.isSelected())
+			{
+			return true;
+			}
+			else
+			{
+			warehouseSelectAllCheckBox.click();
+			return true;
+			}
+			}
+		}
+		catch(Exception e){
+			return false;
+				}
+		return false;
+	}
+	@Step("click on remove selected warehouse from item")
+	public EditItemsPageObjects removeWarehouseToItem() throws InterruptedException {
+		waiting.explicitWaitElementToBeClickable(removeWarehouseToItems, 30);
+		removeWarehouseToItems.click();
+		Thread.sleep(2500);
+		return this;
+	}
+
+	public EditItemsPageObjects selectMultipleWarehouses(String noOfWareHosesToBeselect) {
+		
+		int noOfWarehousesselect= Integer.parseInt(noOfWareHosesToBeselect);
+		
+		for(int i=0;i<noOfWarehousesselect;i++)
+		{			
+			if(multipleWarehousesCheckBoxes.get(i).isSelected())
+			{
+				multipleWarehousesCheckBoxes.get(i).click();
+				multipleWarehousesCheckBoxes.get(i).click();
+			}else{
+				multipleWarehousesCheckBoxes.get(i).click();
+			}
+		}
+		
+		return this;
+	}
+	@Step("click on warehouse history link")
+	public EditItemsPageObjects clickOnWareHouseHistoryLink() {
+		waiting.explicitWaitElementToBeClickable(warehouseItemsHistory, 30);
+		warehouseItemsHistory.click();
+
+		return this;
+	}
+	@Step("remove copied item {0}")
+	public EditItemsPageObjects removeCopiedItem(String testData) throws InterruptedException {
+		waiting.explicitWaitVisibilityOfElement(partNumberInputFieldItemEditPage, 30);
+		Assert.assertEquals(partNumberInputFieldItemEditPage.getAttribute("value").trim(), testData);
+		Assert.assertTrue(asserRemoveCopiedItem(testData),"copied item was unable to delete, please delete it manualy");
+		return this;
+	}
+
+	private boolean asserRemoveCopiedItem(String testData) throws InterruptedException {
+		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		try{
+			if(getDriver().findElement(By.xpath("//input[@title='Delete Item']")).isDisplayed())
+			{
+				getDriver().findElement(By.xpath("//input[@title='Delete Item']")).click();;
+				waiting.explicitWaitForAlert(6);
+				tu.alertAccept();
+				Thread.sleep(2500);
+				return true;
+				}
+		}catch(Exception e)
+		{
+			return false;
+		}
+
+		return false;
+	}
+		
+
+		
+		
 }

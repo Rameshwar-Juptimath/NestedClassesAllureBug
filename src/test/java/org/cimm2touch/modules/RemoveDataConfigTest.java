@@ -1,17 +1,31 @@
 package org.cimm2touch.modules;
 
+import java.util.HashMap;
+
 import org.cimm2touch.dataprovider.SearchData;
 import org.cimm2touch.initializer.PageFactoryInitializer;
+import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Features;
+import ru.yandex.qatools.allure.annotations.TestCaseId;
 /**
  * 
  * @author thiruveedhi Chinna
  *
  */
 public class RemoveDataConfigTest extends PageFactoryInitializer{
+	HashMap<String, String> loginData;
+	
+	@Factory(dataProvider="loginTestData", dataProviderClass=SearchData.class)
+	public RemoveDataConfigTest(String userName, String password, String welcomMessage){
+		loginData=new HashMap<String, String>();
+		loginData.put("userName", userName);
+		loginData.put("password", password);
+		loginData.put("welcomeMessage", welcomMessage);
+	}
+	
 	@Features("RemoveDataConfig Module")
 	@Description("delete the created item(s)")
 	@Test(priority=0,groups="regression",dataProvider ="RemoveDataConfigTest", dataProviderClass=SearchData.class)
@@ -32,6 +46,7 @@ public class RemoveDataConfigTest extends PageFactoryInitializer{
 		
 		
 	}
+	
 	@Features("RemoveDataConfig Module")
 	@Description("delete the created subset")
 	@Test(priority=1,groups="regression",dataProvider ="RemoveDataConfigTest", dataProviderClass=SearchData.class)
@@ -70,7 +85,6 @@ public class RemoveDataConfigTest extends PageFactoryInitializer{
 		.manufacturerSearchBeforeRemove(manufacturerName)
 		.clickOnlisticon(manufacturerName);
 		manufacturersAndBrandsPage()
-		.verifyBrandBeforeRemove(brandName)
 		.verifyAndRemoveBrand(brandName);
 	
 	}
@@ -130,7 +144,6 @@ public class RemoveDataConfigTest extends PageFactoryInitializer{
 		.clickOnManageTaxonomy()
 		.manageTaxonomyPage()
 		.verifyLeftPanelTaxonomyName(taxonomy)
-		.verifyCategoryBeforeRemove(categoryName)
 		.removeCreatedCategory(categoryName,noOfCategories,errorChildCatMessage,expSuccessMsgForRemoveCategory);
 }
 	@Features(value = {"RemoveDataConfig Module"})
@@ -147,6 +160,7 @@ public class RemoveDataConfigTest extends PageFactoryInitializer{
 		.clickOnTaxonomyLink()
 		.taxonomyPage()
 		.searchForTaxonomy(taxonomy)
+		.verifyTaxonomyAlreadyPresent(taxonomy)
 		.verifyTaxonomyPresent(taxonomy)
 		.clickOnManageTaxonomy()
 		.manageTaxonomyPage()
@@ -155,6 +169,31 @@ public class RemoveDataConfigTest extends PageFactoryInitializer{
 		.clickOnRespectiveCategoryPlusIcon(categoryName)
 		.removeAndVerifyChildCategory(ChildCategoryName, successMessageForRemove, noOfChildCategoriesTobeDelete);
 	}
-	
+	@Features(value={"RemoveDataConfig Module"})
+	@TestCaseId("TC_PRODUCTS_015")
+	@Description("Verification of removing the product from the list")
+	@Test(priority=7,groups="regression",dataProvider="RemoveDataConfigTest", dataProviderClass=SearchData.class)
+	public void remoeveCreatedProduct(String testCaseId, String productName,  String expRemoveSuccessMessage) throws Exception
+	{
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"))
+		.homePage()
+		.clickOnProductsLink()
+		.productsPage()
+		.enterTheProductNameInSearchField(productName)
+		.clickOnSearchButton()
+		.productsListPage()
+		.searchForCreatedProduct(productName);
+		productsListPage()
+		.removeCreatedProduct(productName)
+		.verifyRemoveSuccessMessage(expRemoveSuccessMessage)
+		.verifyProductPresent(productName);
+		
+		
+	}
 
 }

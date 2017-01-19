@@ -308,9 +308,9 @@ public class ProductsPageObjects extends PageFactoryInitializer {
 	    }
 		 
 		 @Step("This method is used verify the breadCrums of the Products page")
-		 public ProductsPageObjects verifyTheProductsPageBreadCrumbs(String[] breadCrumpsList) {
+		 public ProductsPageObjects verifyTheProductsPageBreadCrumbs(String breadCrumpsList) {
 			 
-			 String breadcrumpsList[] =breadCrumpsList;
+			 String breadcrumpsList[] =breadCrumpsList.split(",");
 
 		     waiting.explicitWaitVisibilityOfElements(breadCrumbsLink, 15);  
 		     for(int i=0;i<breadCrumbsLink.size();i++)
