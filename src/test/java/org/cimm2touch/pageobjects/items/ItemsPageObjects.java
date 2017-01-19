@@ -37,7 +37,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="(//div[@class='advancedSearchBtn']/input)[1]")
 	private WebElement advancedSearchButtonLocator;
 
-	@FindBy(xpath="//span[@class='breadCrumb_LastChild']/span/span/a")
+	@FindBy(xpath="//span[@class='breadCrumb_LastChild']/descendant::a[text()='Items']")
 	private WebElement itemsBreadCrumpWhenInItemsLandingPageLocator;
 
 	@FindBy(xpath="//select[@id='headerForm:moduleCmBxId']")
@@ -146,6 +146,14 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	@FindAll(value={@FindBy(xpath="//div[contains(text(),'Field Names')]/ancestor::thead/following-sibling::tbody/tr/descendant::span[1]")})
 	private List<WebElement> fieldNamesDynamicSettingsTableLocator;
 
+	
+	@FindBy(xpath="//input[@id='searchFormId:taxonomyListComboIdcomboboxField']")
+	private WebElement taxonomySearchInLeftPanel;
+	
+	@FindBy(xpath="//input[@id='searchFormId:applyFilterId']")
+	private WebElement filterTaxonomyLink;
+	
+	
 	@FindAll(value={@FindBy(xpath="//div[contains(text(),'Display Names')]/ancestor::thead/following-sibling::tbody/tr/descendant::td/input")})
 	private List<WebElement> displayNamesInDynamicSettingsTableLocator;
 
@@ -372,21 +380,23 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	public ItemsPageObjects clickOnSearchCategory() throws InterruptedException {
 		Thread.sleep(2500);
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",searchIconLocator);
+		Thread.sleep(3500);
 		return this;
 	}
 
 	@Step("verify whether the search textbox does not contain {0} text")
 	public ItemsPageObjects verifyClearingOfSearchTextbox(String searchCategory) {
 
-		Assert.assertEquals(searchTextboxInTaxonomySectionLocator.getAttribute("value").trim(),"");
+		Assert.assertEquals(searchTextboxInTaxonomySectionLocator.getAttribute("value").trim(),searchCategory);
 		return this;
 	}
 
 	@Step("click on filter")
-	public ItemsPageObjects clickOnFilter() {
+	public ItemsPageObjects clickOnFilter() throws InterruptedException {
 
 		waiting.explicitWaitVisibilityOfElement(filterTaxonomyLinkLocator, 40);
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",filterTaxonomyLinkLocator);
+		Thread.sleep(3500);
 		return this;
 	}
 
@@ -400,11 +410,11 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	}
 
 	@Step("click on specific edit button")
-	public EditItemsPageObjects clickOnSpecificItemEditButton(String itemPartnumber) {
+	public EditItemsPageObjects clickOnSpecificItemEditButton(String itemPartnumber) throws InterruptedException {
 
-		waiting.explicitWaitVisibilityOfElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+itemPartnumber+"')]/preceding-sibling::td/descendant::input[@title='Edit Item']"), 15);
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+itemPartnumber+"')]/preceding-sibling::td/descendant::input[@title='Edit Item']"), 50);
 		getDriver().findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[contains(text(),'"+itemPartnumber+"')]/preceding-sibling::td/descendant::input[@title='Edit Item']")).click();
-		
+		Thread.sleep(2500);
 		return new EditItemsPageObjects();
 	}
 
@@ -614,16 +624,27 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 
 	public ItemsPageObjects clickOnWorkbookDropdown() {
-		waiting.explicitWaitElementToBeClickable(WorkbookDropDownLocator, 20);
+		waiting.explicitWaitElementToBeClickable(WorkbookDropDownLocator, 30);
 		WorkbookDropDownLocator.click();
 		return this;
 	}
 
 
 	public ItemsPageObjects enterWorkbookName(String getworkbookname) throws InterruptedException {
-		waiting.explicitWaitVisibilityOfElement(WorkbookTextBoxLocator, 20);
+		
+		try{
+		if(WorkbookTextBoxLocator.isDisplayed()){
+			
 		WorkbookTextBoxLocator.clear();
 		WorkbookTextBoxLocator.sendKeys(getworkbookname);
+		}
+		}
+		catch(Exception e)
+		{
+			clickOnWorkbookDropdown();
+			Thread.sleep(2500);
+			enterWorkbookName(getworkbookname);
+		}
 		return this;
 
 	}
@@ -646,14 +667,24 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	public ItemsPageObjects deleteWorkbook(String workBookName,String workbookRemovemsg) throws InterruptedException {
 		Thread.sleep(2500);
-		waiting.explicitWaitElementToBeClickable(WorkbookDropDownLocator, 20);
-		WorkbookDropDownLocator.click();
-		waiting.explicitWaitVisibilityOfElement(workbookDeleteIcon, 20);
-		workbookDeleteIcon.click();
-
-		tu.alertAccept();
-		Thread.sleep(2000);
-		Assert.assertEquals(workbookdeleteSuccessMsg.getText().trim(), "'"+workBookName+"' "+workbookRemovemsg);
+		try
+			{
+				if(getDriver().findElement(By.xpath("//a[contains(text(),'"+workBookName+"')]/ancestor::tr[contains(@class,'rich-table-row')]/descendant::input[@title='Remove this WorkBook']")).isDisplayed())
+				{
+				getDriver().findElement(By.xpath("//a[contains(text(),'"+workBookName+"')]/ancestor::tr[contains(@class,'rich-table-row')]/descendant::input[@title='Remove this WorkBook']")).click();
+				waiting.explicitWaitForAlert(6);
+				tu.alertAccept();
+				Thread.sleep(2000);
+				Assert.assertEquals(workbookdeleteSuccessMsg.getText().trim(), "'"+workBookName+"' "+workbookRemovemsg);
+				Thread.sleep(2500);
+				clickOnWorkbookDropdown();
+				}
+			}
+		catch(Exception e)
+		{
+			clickOnWorkbookDropdown();
+			deleteWorkbook(workBookName,workbookRemovemsg);
+		}
 		return this;
 	}
 
@@ -675,7 +706,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	}
 
 	public ItemsPageObjects searchItem(String partnumber) throws InterruptedException {
-		waiting.explicitWaitElementToBeClickable(itemSearchLocator, 20);
+		waiting.explicitWaitElementToBeClickable(itemSearchLocator, 40);
 		itemSearchLocator.click();
 		itemSearchLocator.clear();
 		itemSearchLocator.sendKeys(partnumber);
@@ -810,7 +841,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 		for(int i=0;i<fieldNamesDynamicSettingsTableLocator.size();i++)
 		{
 			Thread.sleep(3000);
-			//System.out.print(fieldNamesDynamicSettingsTableLocator.get(i).getText().trim()+", ");
+			//System.out.println(fieldNamesDynamicSettingsTableLocator.size());
 			Assert.assertEquals(fieldNamesDynamicSettingsTableLocator.get(i).getText().trim(), verifyFieldNames[i].trim());
 		}
 		return this;
@@ -948,7 +979,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	public ItemsPageObjects verifyWhetherSearchedTaxonomyStyleIsNotGreen(String taxonomyToSearch) throws Exception {
 		Thread.sleep(3000);
 
-		Assert.assertFalse(getDriver().findElement(By.xpath("//span[text()='"+taxonomyToSearch+"']")).getAttribute("style").trim().contains("green"));
+		Assert.assertTrue(getDriver().findElement(By.xpath("//span[text()='"+taxonomyToSearch+"']")).getAttribute("style").trim().contains("green"));
 		return this;
 	}
 
@@ -1036,9 +1067,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	}
 
 	public ItemsPageObjects clickOncustomPricesTabLocator() throws InterruptedException {
-		
-
-		waiting.explicitWaitVisibilityOfElement(customPricesTabLocator, 10);
+		waiting.explicitWaitVisibilityOfElement(customPricesTabLocator, 50);
 		customPricesTabLocator.click();
 		
 		return this;
@@ -1046,14 +1075,14 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 	public ItemsPageObjects assignSubsettoItems(String subsetname) throws InterruptedException {
 		Thread.sleep(2000);
-
-		(getDriver().findElement(By.xpath("//tbody[@id='customPricesForm:customPricesTable:tb']/tr[td='"+subsetname+"']/descendant::input[@title='Add Item Into Subset']"))).click();
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//tbody[@id='customPricesForm:customPricesTable:tb']/tr/descendant::span[text()='"+subsetname+"']/../preceding-sibling::td/descendant::input[@title='Add Item Into Subset']"), 50);
+		(getDriver().findElement(By.xpath("//tbody[@id='customPricesForm:customPricesTable:tb']/tr/descendant::span[text()='"+subsetname+"']/../preceding-sibling::td/descendant::input[@title='Add Item Into Subset']"))).click();
 		return this;
 	}
 
 	public ItemsPageObjects verifySubsetAssignToItemmessageloc(String subsetname) {
 
-		waiting.explicitWaitVisibilityOfElement(subsetassigntoitemmessageloc, 10);
+		waiting.explicitWaitVisibilityOfElement(subsetassigntoitemmessageloc, 50);
 		Assert.assertEquals(subsetassigntoitemmessageloc.getText().trim(),"Item added to Subset \""+subsetname+"\" Successfully");
 		return this;
 	}
@@ -2024,7 +2053,7 @@ public class ItemsPageObjects extends PageFactoryInitializer
 			
 			List<WebElement>ls=getDriver().findElements(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::input[contains(@id,'ITMSLCT')]/ancestor::label"));
 			ls.get(i).click();
-			Thread.sleep(1000);
+			Thread.sleep(2000);
 		}
 		
 		return this;
@@ -2048,24 +2077,39 @@ public class ItemsPageObjects extends PageFactoryInitializer
 	@Step("verify work book {0}")
 	public ItemsPageObjects verifyWorkBookName(String workBookName, String workbookRemovemsg) throws InterruptedException {
 		Thread.sleep(2500);
-		//waiting.explicitWaitVisibilityOfElement(By.xpath("//tbody[@id='searchFormId:workBookDataTable:tb']/descendant::a[contains(text(),'"+workBookName+"')]"), 20);
-		Assert.assertTrue(assertVerifyWorkBook(workBookName,workbookRemovemsg),"unable to delete created workBook :"+workBookName+"");
+		try
+			{
+				
+			if(getDriver().findElement(By.xpath("//tbody[@id='searchFormId:workBookDataTable:tb']/descendant::a[contains(text(),'"+workBookName+"')]")).isDisplayed())
+			
+			{
+				deleteWorkbook(workBookName, workbookRemovemsg);
+				//Assert.assertTrue(assertVerifyWorkBook(workBookName,workbookRemovemsg),"unable to delete created workBook :"+workBookName+"");
+			}
+			}
+		catch(Exception e)
+			{
+				clickOnWorkbookDropdown();
+				verifyWorkBookName(workBookName,workbookRemovemsg);
+			}
 		return this;
 	}
 	private boolean assertVerifyWorkBook(String workBookName, String workbookRemovemsg) throws InterruptedException {
 		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		try {
-
-
-			if(getDriver().findElement(By.xpath("//tbody[@id='searchFormId:workBookDataTable:tb']/descendant::a[contains(text(),'"+workBookName+"')]")).isDisplayed())
-			{
-				deleteWorkbook(workBookName, workbookRemovemsg);
+	
+	
+				if(getDriver().findElement(By.xpath("//tbody[@id='searchFormId:workBookDataTable:tb']/descendant::a[contains(text(),'"+workBookName+"')]")).isDisplayed())
+				{
+					deleteWorkbook(workBookName, workbookRemovemsg);
+					return true;
+				}
 			}
-		}
-		catch(NoSuchElementException e) {
-			return true;
-
-		}
+		catch(NoSuchElementException e) 
+			{
+				return true;
+	
+			}
 		return false;
 	}
 	
@@ -2092,6 +2136,59 @@ public class ItemsPageObjects extends PageFactoryInitializer
 
 		}
 		return false;
+	}
+	@Step("get the item id from the item list page{0}")
+	public String getTheItemId(String partNumber) {
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//td[contains(text(),'AutomationTestPN1')]/preceding-sibling::td/descendant::span[contains(@id,'ITMID')]"), 70);
+		String itemId=getDriver().findElement(By.xpath("//td[contains(text(),'AutomationTestPN1')]/preceding-sibling::td/descendant::span[contains(@id,'ITMID')]")).getText();
+
+		
+		return itemId;
+	}
+
+	public CopyOfItemPageObjects clickOnSpecificItemCopyButton(String partNumber) {
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[text()='"+partNumber+"']/preceding-sibling::td/descendant::input[@title='Copy Of Item']"), 50);
+		getDriver().findElement(By.xpath("//tbody[@id='searchFormId:itemListTableId:tb']/descendant::td[text()='"+partNumber+"']/preceding-sibling::td/descendant::input[@title='Copy Of Item']")).click();
+		return new CopyOfItemPageObjects() ;
+	}
+	@Step("verify the remoe success message{0}")
+	public ItemsPageObjects verifyRemoveItemSuccessMessage(String testData) {
+		waiting.explicitWaitVisibilityOfElement(succesfulItemDeleteMessage, 30);
+		Assert.assertEquals(succesfulItemDeleteMessage.getText().trim(), "Item with Part No. : '"+testData+"' removed Successfully");
+
+		return this;
+	}
+
+	public ItemsPageObjects verifyWorkBookExist(String workBookName, String workbookRemovemsg) throws InterruptedException {
+		Thread.sleep(2500);
+		try
+			{
+				
+			if(getDriver().findElement(By.xpath("//tbody[@id='searchFormId:workBookDataTable:tb']/descendant::a[contains(text(),'"+workBookName+"')]")).isDisplayed())
+			
+			{
+				
+				deleteWorkbook(workBookName, workbookRemovemsg);
+				//Assert.assertTrue(assertVerifyWorkBook(workBookName,workbookRemovemsg),"unable to delete created workBook :"+workBookName+"");
+			}
+			else{
+				return this;
+			}
+			}
+		catch(Exception e)
+			{
+				
+			}
+
+		return this;
+	}
+	@Step("search for taxonomy{0} in items list page")
+	public ItemsPageObjects searchForTaxonomy(String taxonomy) {
+		waiting.explicitWaitVisibilityOfElement(taxonomySearchInLeftPanel, 30);
+		taxonomySearchInLeftPanel.clear();
+		taxonomySearchInLeftPanel.sendKeys(taxonomy);
+
+		return this;
 	}
 
 	

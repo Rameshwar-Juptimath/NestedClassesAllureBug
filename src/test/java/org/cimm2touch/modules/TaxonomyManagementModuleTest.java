@@ -7,7 +7,6 @@ import org.cimm2touch.dataprovider.SearchData;
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.utils.SearchDataPropertyFile;
 import org.cimm2touch.utils.TestUtilityMethods;
-import org.framework.utils.ApplicationSetUpPropertyFile;
 import org.framework.utils.PermittedCharacters;
 import org.framework.utils.RandomGenerator;
 import org.testng.annotations.Factory;

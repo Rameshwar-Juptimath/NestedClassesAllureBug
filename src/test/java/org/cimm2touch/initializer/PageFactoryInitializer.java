@@ -1,5 +1,6 @@
 package org.cimm2touch.initializer;
 import org.cimm2touch.pageobjects.landingpage.LandingPageObjects;
+import org.cimm2touch.pageobjects.managelists.ManageListsPageObjets;
 import org.cimm2touch.pageobjects.manufacturer.EditBrandsPageObjects;
 import org.cimm2touch.pageobjects.manufacturer.EditManufacturerPageObjects;
 import org.cimm2touch.pageobjects.manufacturer.ManufacturerPageObjects;
@@ -9,14 +10,20 @@ import org.cimm2touch.pageobjects.products.ProductEditPageObjects;
 import org.cimm2touch.pageobjects.products.ProductItemsPageObjects;
 import org.cimm2touch.pageobjects.products.ProductsListPageObjects;
 import org.cimm2touch.pageobjects.products.ProductsPageObjects;
+import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.cimm2touch.pageobjects.adminstration.SystemSettingsPageObjects;
+import org.cimm2touch.pageobjects.customers.CustomersPageObjects;
+import org.cimm2touch.pageobjects.customfields.CustomFieldsSimpleDataPageObjects;
+import org.cimm2touch.pageobjects.customfields.CustomFieldsTableDataPageObjects;
 import org.cimm2touch.pageobjects.items.AddNewItemPageObjects;
+import org.cimm2touch.pageobjects.items.CopyOfItemPageObjects;
 import org.cimm2touch.pageobjects.items.EditItemsPageObjects;
 import org.cimm2touch.pageobjects.items.HistoryPageObjects;
 import org.cimm2touch.pageobjects.items.ItemsPageObjects;
 import org.cimm2touch.pageobjects.userconfiguration.UserConfigurationPageObjects;
 import org.cimm2touch.pageobjects.vendors.EditVendorsPageObjects;
 import org.cimm2touch.pageobjects.vendors.VendorsPageObjects;
+import org.cimm2touch.pageobjects.warehouse.WareHousePageObjects;
 import org.framework.maincontroller.CallApplication;
 import org.framework.maincontroller.MainController;
 import org.cimm2touch.pageobjects.taxonomymanagement.AttributeGroupsPageObjects;
@@ -214,6 +221,7 @@ public class PageFactoryInitializer extends CallApplication
 		UserConfigurationPageObjects userConfigPage=PageFactory.initElements(getDriver(), UserConfigurationPageObjects.class);
 		return userConfigPage;
 	}
+
 	public UOMPageObjects uomPage()
 	{
 		UOMPageObjects uompage = PageFactory.initElements(getDriver(), UOMPageObjects.class);
@@ -228,5 +236,43 @@ public class PageFactoryInitializer extends CallApplication
 	{
 		FeaturedProductsDispPricingPageObjects featuredPricingPage = PageFactory.initElements(getDriver(), FeaturedProductsDispPricingPageObjects.class);
 		return featuredPricingPage;
+	}
+	public CustomFieldsSimpleDataPageObjects customSimpleDataPage(){
+		
+		CustomFieldsSimpleDataPageObjects simpleData=PageFactory.initElements(getDriver(), CustomFieldsSimpleDataPageObjects.class);
+		return simpleData;
+	}
+	public CustomFieldsTableDataPageObjects customTableDataPage(){
+		CustomFieldsTableDataPageObjects tableData=PageFactory.initElements(getDriver(), CustomFieldsTableDataPageObjects.class);
+		return tableData;
+	}
+	
+	public ManageListsPageObjets manageListPage(){
+		
+		ManageListsPageObjets manageList=PageFactory.initElements(getDriver(), ManageListsPageObjets.class);
+		return manageList;
+	}
+	
+	public CustomersPageObjects customersPage(){
+		
+		CustomersPageObjects customers=PageFactory.initElements(getDriver(), CustomersPageObjects.class);
+		
+		return customers;
+	}
+	
+	public WareHousePageObjects warehousePage(){
+		
+		WareHousePageObjects warehouse=PageFactory.initElements(getDriver(), WareHousePageObjects.class);
+		
+		return warehouse;
+		
+	}
+	public CopyOfItemPageObjects copyItemPage()
+	{
+		
+		CopyOfItemPageObjects copyItem=PageFactory.initElements(getDriver(), CopyOfItemPageObjects.class);
+		
+		return copyItem;
+
 	}
 }

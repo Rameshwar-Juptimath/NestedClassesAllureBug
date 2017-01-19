@@ -3,8 +3,13 @@ import java.util.concurrent.TimeUnit;
 
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.utils.TestUtilityMethods;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
+
+import org.framework.utils.Waiting;
+import org.openqa.selenium.By;
+
 import org.testng.Assert;
 
 import ru.yandex.qatools.allure.annotations.Step;
@@ -12,6 +17,7 @@ import ru.yandex.qatools.allure.annotations.Step;
 public class HistoryPageObjects extends PageFactoryInitializer
 {
 	TestUtilityMethods tu= new TestUtilityMethods(getDriver());
+	Waiting waiting=new Waiting(getDriver());
 	public boolean assertPageTitle(String expectedHistoryPageTitle) throws Exception 
 	{
 		
@@ -23,11 +29,12 @@ public class HistoryPageObjects extends PageFactoryInitializer
 	
 	public HistoryPageObjects verifyPageTitle(String expectedHistoryPageTitle) throws Exception
 	{
-		tu.switchToRecentWindow(1);
 		
-		Assert.assertTrue(assertPageTitle(expectedHistoryPageTitle),"Actual Title : "+getDriver().getTitle().trim()+" but expecting "+expectedHistoryPageTitle);
+		Thread.sleep(2000);
+		Assert.assertEquals(getDriver().getTitle().trim(),expectedHistoryPageTitle,"Actual Title : "+getDriver().getTitle().trim()+" but expecting "+expectedHistoryPageTitle);
 		getDriver().close();
 		tu.switchBackToFirstWindow();
+		
 	
 		return this;
 	}
@@ -44,6 +51,7 @@ public class HistoryPageObjects extends PageFactoryInitializer
 		Assert.assertTrue(assertPageTitle(expectedAttributeGroupHistoryPageTitle),"Actual Title : "+getDriver().getTitle().trim()+" but expecting "+expectedAttributeGroupHistoryPageTitle);
 		return this;
 	}
+
 	@Step("verify created  updated uom name{0}")
 	public HistoryPageObjects verifyUpdatedUomNamePresentInHistoryPage(String updatedUomName) throws InterruptedException {
 		Thread.sleep(2500);
@@ -62,5 +70,15 @@ public class HistoryPageObjects extends PageFactoryInitializer
 		}
 		return false;
 	}
+
+	@Step("verify recent activty on warehouse {0}")
+	public HistoryPageObjects verifyrecentWareHouseActivity(String warehouseName) throws InterruptedException {
+		Thread.sleep(3000);
+		//waiting.explicitWaitVisibilityOfElement(By.xpath("//span[contains(text(),'"+warehouseName+"')]"), 30);
+		Assert.assertTrue(getDriver().findElement(By.xpath("//span[contains(text(),'"+warehouseName+"')]")).isDisplayed(),"recent activity was not shown in warehouse history page");
+
+		return this;
+	}
+
 	
 }

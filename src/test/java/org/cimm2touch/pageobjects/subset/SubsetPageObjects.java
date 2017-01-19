@@ -749,7 +749,17 @@ public class SubsetPageObjects extends PageFactoryInitializer
 	}
 
 	
+	public String verifyandDeleteSubset(String subsetName) throws Exception {
+		Thread.sleep(3000);
+		WebElement wb=getDriver().findElement(By.xpath("//span[contains(text(),'"+subsetName+"')]/ancestor::td//preceding-sibling::td/descendant::input[@value='Remove']"));
+		//waiting.explicitWaitVisibilityOfElement(wb, 20);
+		Assert.assertEquals(getDriver().findElement(By.xpath("//span[contains(text(),'"+subsetName+"')]")).getText(), subsetName,""+subsetName+" is not available");
+		String subsetId=getDriver().findElement(By.xpath("//span[contains(text(),'"+subsetName+"')]/ancestor::td//preceding-sibling::td[contains(@id,'subsetID')]")).getText();
+		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",wb);
+		tu.alertAccept();
+		return subsetId;
 
+	}
 	
 
 	@Step("To Click On 'Edit Subset' {0}.")
@@ -791,30 +801,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 		return this;
 	}
 
-	
 
-	
-	
-	
-	
-	
-	
-	public String verifyandDeleteSubset(String subsetName) throws Exception {
-		
-		Thread.sleep(3000);
-		
-		WebElement wb=getDriver().findElement(By.xpath("//span[contains(text(),'"+subsetName+"')]/ancestor::td//preceding-sibling::td/descendant::input[@value='Remove']"));
-		
-		//waiting.explicitWaitVisibilityOfElement(wb, 20);
-		
-		Assert.assertEquals(getDriver().findElement(By.xpath("//span[contains(text(),'"+subsetName+"')]")).getText(), subsetName,""+subsetName+" is not available");
-		
-		String subsetId=getDriver().findElement(By.xpath("//span[contains(text(),'"+subsetName+"')]/ancestor::td//preceding-sibling::td[1]")).getText();
-		
-		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",wb);
-		tu.alertAccept();
-		return subsetId;
-	}
 	public SubsetPageObjects verifySuccessMessageForDeletionOfSubset( String subsetName,String subsetId) throws InterruptedException {
 	
 		Thread.sleep(3000);
@@ -964,6 +951,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 		updatedSubsetNameTextBoxLocator.sendKeys(updatedSubsetName);
 		return this;
 	}
+
 	
 	@FindBy(xpath = "//input[@id='EditSubsetForm:sName']")
 	private WebElement updatedSubsetNameTextBoxLocator;
@@ -974,6 +962,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 		updateSubsetLocator.click();
              return this;		
 	}
+	
 	
 	@FindBy(xpath = "//input[@title='Update Subset']")
 	private WebElement updateSubsetLocator;
