@@ -636,7 +636,7 @@ public class SubsetPageObjects extends PageFactoryInitializer
 	}
 	private boolean assertVerifySubsetPresent(String subsetname) throws Exception
 	{
-
+		Thread.sleep(3000);
 		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		try {
 			if(getDriver().findElement(By.xpath(" //tbody[@id='subsetForm:subsetTableId:tb']/descendant::span[text()='"+subsetname+"']")).isDisplayed())
@@ -728,14 +728,15 @@ public class SubsetPageObjects extends PageFactoryInitializer
 
 	
 
-	@Step("To Search for an Subset {0}.")
-	public SubsetPageObjects searchForAnSubset(String subsetName) 
+	@Step("To Search for Subset {0}.")
+	public SubsetPageObjects searchForAnSubset(String subsetName) throws InterruptedException 
 	{
 
 		waiting.explicitWaitVisibilityOfElement(searchFieldLocator, 40);
 		searchFieldLocator.clear();
 		searchFieldLocator.sendKeys(subsetName);
-		//subset_SearchIcon.click();
+		searchButtonLocator.click();
+		Thread.sleep(2500);
 		return this;
 	}
 

@@ -160,6 +160,7 @@ public class RemoveDataConfigTest extends PageFactoryInitializer{
 		.clickOnTaxonomyLink()
 		.taxonomyPage()
 		.searchForTaxonomy(taxonomy)
+		.verifyTaxonomyAlreadyPresent(taxonomy)
 		.verifyTaxonomyPresent(taxonomy)
 		.clickOnManageTaxonomy()
 		.manageTaxonomyPage()

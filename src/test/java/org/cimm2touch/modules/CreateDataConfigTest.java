@@ -94,6 +94,8 @@ HashMap<String, String> loginData;
 		.verifyWelcomeMessage(welcomeMessage)
 		.clickOnTaxonomyLink()
 		.taxonomyPage()
+		.searchForTaxonomy(taxonomyName)
+		.verifyTaxonomyAlreadyPresent(taxonomyName)
 		.clickOnAddnewTaxonomy()
 		.enterTaxonomyName(taxonomyName)
 		.enterTaxonomyDesciption(taxonomyDesc)
