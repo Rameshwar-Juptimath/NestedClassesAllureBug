@@ -13,7 +13,7 @@ import org.cimm2touch.pageobjects.products.ProductsPageObjects;
 import org.apache.xmlbeans.impl.xb.xsdschema.Public;
 import org.cimm2touch.pageobjects.adminstration.SystemSettingsPageObjects;
 
-import org.cimm2touch.pageobjects.dataImports.DataImportsPageObjects;
+
 
 import org.cimm2touch.pageobjects.customers.CustomersPageObjects;
 import org.cimm2touch.pageobjects.customfields.CustomFieldsSimpleDataPageObjects;
@@ -53,11 +53,7 @@ public class PageFactoryInitializer extends CallApplication
 		return homePage;
 	}
 
-	public DataImportsPageObjects DataImportpage()
-	{
-		DataImportsPageObjects DataImportpage = PageFactory.initElements(getDriver(),DataImportsPageObjects.class);
-		return DataImportpage;
-	}
+
 	
 	public LandingPageObjects landingPage()
 	{
