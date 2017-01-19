@@ -193,7 +193,7 @@ public class ProductsPageObjects extends PageFactoryInitializer {
 	@Step("Verify the product name is \'{0}\'")
 	public ProductsPageObjects verifyProductNameAfterSearchingIt(String productName) {
 
-		waiting.explicitWaitVisibilityOfElement(By.xpath("//td[contains(text(),'" + productName + "')]"), 25);
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//td[contains(text(),'" + productName + "')]"), 10);
 		Assert.assertEquals(getDriver().findElement(By.xpath("//td[contains(text(),'" + productName + "')]")).getText(),
 				productName, "Searching for product has failed.");
 		return this;

@@ -8,7 +8,7 @@ import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.utils.SearchDataPropertyFile;
 import org.framework.utils.PermittedCharacters;
 import org.framework.utils.RandomGenerator;
-import org.testng.annotations.Factory;
+import org.openqa.selenium.TimeoutException;
 import org.testng.annotations.Test;
 
 import ru.yandex.qatools.allure.annotations.Description;
@@ -20,26 +20,10 @@ import ru.yandex.qatools.allure.annotations.TestCaseId;
  
 public class ProductsModuleTest extends PageFactoryInitializer{
 	SearchDataPropertyFile data = new SearchDataPropertyFile();
-	Hashtable<String, String> loginData;
-	Hashtable<String, String> creationData;
+	Hashtable<String, String> creationData=new Hashtable<String,String>();
 	
 	final static String productCreationDependent="ProductCreationDependent";
 	final static String productCreation="ProductCreation";
-	
-	@Factory(dataProvider="ProductCreationTest", dataProviderClass=SearchData.class)
-	public ProductsModuleTest(String userName, String password, String welcomMessage, String productName, String productNumber, String successMessageProductCreation,
-			String prodcutSearchErrorMessage){
-		loginData=new Hashtable<String, String>();
-		loginData.put("userName", userName);
-		loginData.put("password", password);
-		loginData.put("welcomeMessage", welcomMessage);
-		
-		creationData=new Hashtable<String, String>();
-		creationData.put("productName", productName);
-		creationData.put("productNumber", productNumber+new RandomGenerator().random(6, PermittedCharacters.NUMERIC));
-		creationData.put("successMessageProductCreation", successMessageProductCreation);
-		creationData.put("prodcutSearchErrorMessage", prodcutSearchErrorMessage);
-	}
 	
 	@Test(groups = {"regression"})
 	public class IndependentMentods extends PageFactoryInitializer{
@@ -51,7 +35,7 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		@Test(dataProvider="ProductsModuleTest",dataProviderClass=SearchData.class)
 		public void TC_PRODUCTS_001(String breadCrumbsList) throws Exception{
 			
-			landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin();
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin();
 			homePage()
 			.clickOnProductsLink()
 			.productsPage()
@@ -77,7 +61,7 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		@Test(dataProvider="ProductsModuleTest",dataProviderClass=SearchData.class)
 		public void TC_PRODUCTS_002(String allFieldsInAddNewProduct) throws Exception{
 
-			landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin();
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin();
 			homePage()
 			.clickOnProductsLink()
 			.productsPage()
@@ -91,7 +75,7 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		@Test(dataProvider="ProductsModuleTest",dataProviderClass=SearchData.class)
 		public void TC_PRODUCTS_004(String productsTabNames ) throws Exception{
 
-			landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin().
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin().
 
 			homePage()
 			.clickOnProductsLink()
@@ -107,7 +91,7 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		@Test(dataProvider="ProductsModuleTest",dataProviderClass=SearchData.class)
 		public void TC_PRODUCTS_005(String generalInFoFieldNames) throws Exception{
 
-			landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin().
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin().
 
 			homePage()
 			.clickOnProductsLink()
@@ -129,7 +113,7 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 				productNumber+=new RandomGenerator().random(6, PermittedCharacters.NUMERIC);
 				editProductName+=new RandomGenerator().randomAlphabetic(3);
 				
-				landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin().
+				landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin().
 
 				homePage()
 				.clickOnProductsLink()
@@ -162,7 +146,7 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		@Test(dataProvider="ProductsModuleTest",dataProviderClass=SearchData.class)
 		public void TC_PRODUCTS_007(String fieldNamesOfProductImagesTab) throws Exception{
 
-			landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin().
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin().
 
 			homePage()
 			.clickOnProductsLink()
@@ -180,7 +164,7 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		@Test(dataProvider="ProductsModuleTest",dataProviderClass=SearchData.class)
 		public void TC_PRODUCTS_008(String fieldNameProductImagesTab) throws Exception{
 
-			landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin().
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin().
 
 			homePage()
 			.clickOnProductsLink()
@@ -202,7 +186,7 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		public void TC_PRODUCTS_012() throws Exception{
 
 			landingPage()
-			.enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin();
+			.enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin();
 			homePage()
 			.clickOnProductsLink()
 			.clickOnFirstEditProduct()
@@ -223,7 +207,7 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		public void TC_PRODUCTS_022() throws Exception
 		{	
 				data.setNumberOfRecordsToDisplay("10");
-				landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin()
+				landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
 				.homePage()
 				.clickOnProductsLink()
 				.selectNumberOfRecordsToDisplayInThePage(data.getNumberOfRecordsToDisplay())
@@ -258,17 +242,30 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		@Features(value = {"Products Module"})
 		@Description("Verification of adding new product")
 		@TestCaseId("TC_PRODUCTS_003")
-		@Test()
 		public void TC_PRODUCTS_003() throws Exception{
-			landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin().
+
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin().
 			
 			homePage()
 			.clickOnProductsLink()
-			.clickOnAddNewProductLink()
-			.enterProductName(creationData.get("productName"))
-			.enterProductNumber(creationData.get("productNumber"))
+			.clickOnAddNewProductLink();
+			
+			try{
+				productsPage()
+				.enterTheProductNameInSearchField(data.getProductName())
+				.clickOnSearchButton()
+				.verifyProductNameAfterSearchingIt(data.getProductName())
+				.clickOnRemoveProduct(data.getProductName())
+				.acceptAlert();
+				Thread.sleep(3000);
+			}catch(TimeoutException e){
+			}
+			
+			productsPage()
+			.enterProductName(data.getProductName())
+			.enterProductNumber(data.getProductNumber())
 			.clickOnProducSaveButtonLink()
-			.verifyProductSavedSuccessMessage(creationData.get("successMessageProductCreation"));
+			.verifyProductSavedSuccessMessage(data.getProductCreationSuccessMsg());
 		}
 	}
 	
@@ -282,13 +279,13 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		@Test(dataProvider="ProductsModuleTest",dataProviderClass=SearchData.class )
 		public void TC_PRODUCTS_009(String imageDescription, String productImageURL,String imageURLSuccessfulMessage) throws Exception{
 
-			landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin().
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin().
 			
 			homePage()
 			.clickOnProductsLink()
-			.enterTheProductNameInSearchField(creationData.get("productName"))
+			.enterTheProductNameInSearchField(data.getProductName())
 			.clickOnSearchButton()
-			.verifyProductNameAfterSearchingIt(creationData.get("productName"))
+			.verifyProductNameAfterSearchingIt(data.getProductName())
 			.clickOnFirstEditProduct()
 			.clickOnProductImagesTab()
 			.clickOnAddNewProductImage()
@@ -308,14 +305,14 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 			File file = new File(imageFilePath);
 
 			System.out.println(file.getAbsolutePath());
-			landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin().
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin().
 
 			homePage()
 			.clickOnProductsLink()
 			.clickOnAddNewProductLink()
-			.enterTheProductNameInSearchField(creationData.get("productName"))
+			.enterTheProductNameInSearchField(data.getProductName())
 			.clickOnSearchButton()
-			.verifyProductNameAfterSearchingIt(creationData.get("productName"))
+			.verifyProductNameAfterSearchingIt(data.getProductName())
 			.clickOnFirstEditProduct()
 			.clickOnProductImagesTab()
 			.clickOnAddNewProductImage()
@@ -332,14 +329,14 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		@Test(dataProvider="ProductsModuleTest",dataProviderClass=SearchData.class, dependsOnMethods={"TC_PRODUCTS_009"})
 		public void TC_PRODUCTS_011(String imageRemoveSuccessMessage) throws Exception{
 
-			landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin().
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin().
 
 			homePage()
 			.clickOnProductsLink()
 			.productsPage()
-			.enterTheProductNameInSearchField(creationData.get("productName"))
+			.enterTheProductNameInSearchField(data.getProductName())
 			.clickOnSearchButton()
-			.verifyProductNameAfterSearchingIt(creationData.get("productName"))
+			.verifyProductNameAfterSearchingIt(data.getProductName())
 			.clickOnFirstEditProduct()
 			.clickOnProductImagesTab()
 			.clickOnRemoveProductImage()
@@ -352,18 +349,18 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		@TestCaseId("TC_PRODUCTS_013")
 		@Test(dataProvider="ProductsModuleTest",dataProviderClass=SearchData.class)
 		public void TC_PRODUCTS_013(String expectedItemAssignSuccessMessage) throws Exception{
-			landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin();
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin();
 			
 			String itemAdded=homePage()
 			.clickOnProductsLink()
-			.enterTheProductNameInSearchField(creationData.get("productName"))
+			.enterTheProductNameInSearchField(data.getProductName())
 			.clickOnSearchButton()
-			.verifyProductNameAfterSearchingIt(creationData.get("productName"))
+			.verifyProductNameAfterSearchingIt(data.getProductName())
 			.clickOnFirstEditProduct()
 			.clickOnItemsListTab()
 			.dragAndDropTheItemsToProduct()
 			.clickOnSaveButton()
-			.verifyItemsAssignSuccessMessage(expectedItemAssignSuccessMessage.trim(),creationData.get("productName"))
+			.verifyItemsAssignSuccessMessage(expectedItemAssignSuccessMessage.trim(),data.getProductName())
 			.fetchTheAddedItem();	
 			creationData.put("associatedItem", itemAdded);
 		}
@@ -373,13 +370,13 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		@TestCaseId("TC_PRODUCTS_014")
 		@Test()
 		public void TC_PRODUCTS_014() throws InterruptedException, Exception{
-			landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin()
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
 			.homePage()
 			.clickOnProductsLink()
-			.enterTheProductNameInSearchField(creationData.get("productName"))
+			.enterTheProductNameInSearchField(data.getProductName())
 			.clickOnSearchButton()
-			.clickOnRemoveProduct(creationData.get("productName"))
-			.verifyAlert(creationData.get("productName"));
+			.clickOnRemoveProduct(data.getProductName())
+			.verifyAlert(data.getProductName());
 				
 		}
 		
@@ -388,16 +385,16 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		@TestCaseId("TC_PRODUCTS_016")
 		@Test()
 		public void TC_PRODUCTS_016() throws Exception{
-			landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin()
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
 			
 			.homePage()
 			.clickOnProductsLink()
-			.enterTheProductNameInSearchField(creationData.get("productName"))
+			.enterTheProductNameInSearchField(data.getProductName())
 			.clickOnSearchButton()
-			.verifyProductNameAfterSearchingIt(creationData.get("productName"))
-			.clickOnRemoveProduct(creationData.get("productName"))
+			.verifyProductNameAfterSearchingIt(data.getProductName())
+			.clickOnRemoveProduct(data.getProductName())
 			.cancelAlert()
-			.verifyProductNameAfterSearchingIt(creationData.get("productName"));		
+			.verifyProductNameAfterSearchingIt(data.getProductName());		
 		}
 
 		@Features(value = {"Products Module"})
@@ -406,12 +403,12 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		@Test(dependsOnMethods= {"TC_PRODUCTS_013"})
 		public void TC_PRODUCTS_017() throws Exception{
 		
-			landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin()
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
 			.homePage()
 			.clickOnProductsLink()
-			.enterTheProductNameInSearchField(creationData.get("productName"))
+			.enterTheProductNameInSearchField(data.getProductName())
 			.clickOnSearchButton()
-			.verifyProductNameAfterSearchingIt(creationData.get("productName"))
+			.verifyProductNameAfterSearchingIt(data.getProductName())
 			.clickOnPreviewItemLink()
 			.verifyItemName(creationData.get("associatedItem"));
 			
@@ -423,13 +420,13 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		@Test(dataProvider="ProductsModuleTest",dataProviderClass=SearchData.class, dependsOnMethods= {"TC_PRODUCTS_013"})
 		public void TC_PRODUCTS_018(String expectedItemsTableHeaderTitles) throws Exception{
 			
-			landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin()
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
 			
 			.homePage()
 			.clickOnProductsLink()
-			.enterTheProductNameInSearchField(creationData.get("productName"))
+			.enterTheProductNameInSearchField(data.getProductName())
 			.clickOnSearchButton()
-			.verifyProductNameAfterSearchingIt(creationData.get("productName"))
+			.verifyProductNameAfterSearchingIt(data.getProductName())
 			.clickOnPreviewItemLink()
 			.clickOnFirstItemEditIcon()
 			.verifyItemsTableHeaders(expectedItemsTableHeaderTitles.split(","));
@@ -440,13 +437,13 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		@TestCaseId("TC_PRODUCTS_020")
 		@Test(dataProvider="ProductsModuleTest",dataProviderClass=SearchData.class, dependsOnMethods= {"TC_PRODUCTS_013"})
 		public void TC_PRODUCTS_020(String itemPartNumber, String numberOfCopiesForItem) throws Exception{
-			landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin()
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
 			
 			.homePage()
 			.clickOnProductsLink()
-			.enterTheProductNameInSearchField(creationData.get("productName"))
+			.enterTheProductNameInSearchField(data.getProductName())
 			.clickOnSearchButton()
-			.verifyProductNameAfterSearchingIt(creationData.get("productName"))
+			.verifyProductNameAfterSearchingIt(data.getProductName())
 			.clickOnPreviewItemLink()
 			.clickOnCopyIcon()
 			.enterPartNumber(itemPartNumber)
@@ -473,13 +470,13 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		@TestCaseId("TC_PRODUCTS_021")
 		@Test(dependsOnMethods= {"TC_PRODUCTS_013"})
 		public void TC_PRODUCTS_021() throws Exception{
-			landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin()
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
 			
 			.homePage()
 			.clickOnProductsLink()
-			.enterTheProductNameInSearchField(creationData.get("productName"))
+			.enterTheProductNameInSearchField(data.getProductName())
 			.clickOnSearchButton()
-			.verifyProductNameAfterSearchingIt(creationData.get("productName"))
+			.verifyProductNameAfterSearchingIt(data.getProductName())
 			.clickOnPreviewItemLink()
 			.clickOnDelinkItemIcon()
 			.acceptAlert();
@@ -495,14 +492,14 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		@TestCaseId("TC_PRODUCTS_015")
 		@Test(dataProvider="ProductsModuleTest",dataProviderClass=SearchData.class,alwaysRun=true)
 		public void TC_PRODUCTS_015(String successMessageProductRemove) throws Exception{
-			landingPage().enterUsername(loginData.get("userName")).enterPassword(loginData.get("password")).clickOnLogin()
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
 			.homePage()
 			.clickOnProductsLink()
 			.productsListPage()
-			.enterTheProductNameInSearchField(creationData.get("productName"))
+			.enterTheProductNameInSearchField(data.getProductName())
 			.clickOnSearchButton()
-			.verifyProductPresent(creationData.get("productName"))
-			.clickOnRemoveProduct(creationData.get("productName"))
+			.verifyProductPresent(data.getProductName())
+			.clickOnRemoveProduct(data.getProductName())
 			.acceptAlert()
 			.verifySuccessfulMessageAfterDeletion(successMessageProductRemove);
 		}
