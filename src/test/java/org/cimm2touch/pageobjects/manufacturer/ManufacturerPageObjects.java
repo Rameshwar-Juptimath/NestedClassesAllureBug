@@ -149,7 +149,8 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	@FindBy(xpath="//span[@id='listManufacturerForm:noResults']")
 	private WebElement successMessageRemoveMfgLocator;
 
-
+	@FindBy(xpath="//span[contains(text(),'Total Count : ')]/following-sibling::span")
+	private WebElement manufacturersearchresultcount;
 
 	/*****************************************************************************************************************************************************************
 	 *****************************************************************************************************************************************************************/
@@ -308,7 +309,17 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 
 	@FindBy(xpath="//div[@class='closeColSorTable closeSortTable pull-right']")
 	private WebElement clickOnCloseSortOrderLocator;
-
+	
+	@FindBy(xpath="//a[contains(text(),'Show Fields')]")
+	private WebElement showfieldlistLocator;
+	
+	@FindBy(xpath="//div[contains(text(),'Dynamic Table Settings')]")
+	private WebElement DynamicTable;
+	
+	@FindBy(xpath="//div[@class='box-footer']/div/input[contains(@title,'Save')]")
+	private WebElement saveFieldSettings;
+	
+	
 	@Step("click on brand list icon under manufacturer")
 	public ManufacturerPageObjects clickOnlisticon(String manufacturerName) throws InterruptedException {
 		WebElement wb= getDriver().findElement(By.xpath("//td[contains(text(),'"+manufacturerName+"')]/following-sibling::td/a[@title='List Brand']"));
@@ -1241,13 +1252,14 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 	}
 
 	@Step("To Verify the working of 'Reset' Button in Manufacturer and Brand")
-	public ManufacturerPageObjects verifyManufacturersFormItemsAfterClickingResetButton() throws Exception 
+	public ManufacturerPageObjects verifyManufacturersFormItemsAfterClickingResetButton(String manufacturerActiveStatus) throws Exception 
 	{
 		Thread.sleep(5000);
 		String ManufacturerName = newManufacturersNameLocator.getAttribute("value");
 		String ManufacturerCode = newManufacturersCodeLocator.getAttribute("value");
 		Assert.assertEquals(ManufacturerName.length(), 0);
 		Assert.assertEquals(ManufacturerCode.length(), 0);
+		Assert.assertFalse((newManufacturersActiveStatus.isSelected()));
 		return this;
 	}
 
@@ -1474,4 +1486,68 @@ public class ManufacturerPageObjects extends PageFactoryInitializer
 		return this;
 	}
 
+	public void verifyAfterSearchingForManufacturer2() throws InterruptedException {
+		
+		Thread.sleep(3000);
+		Assert.assertEquals(Integer.parseInt(manufacturersearchresultcount.getText().trim()),0);
+		
+		
+	}
+
+	@Step("Click on show field")
+	public ManufacturerPageObjects clickOnShowField() throws InterruptedException {
+		showfieldlistLocator.click();
+		Thread.sleep(2000);
+		return this;
+	}
+	
+	
+	@Step("clickOnRequiredFieldNames")
+	public ManufacturerPageObjects clickOnRequiredFieldNames(String fieldnames) throws InterruptedException {
+		
+		String[] fields =  fieldnames.split(",");
+		for(int i=0;i<fields.length;i++) {
+			
+			if(getDriver().findElement(By.xpath("//tbody[contains(@id,'listManufacturerForm')]/tr/td/span[contains(text(),'"+fields[i]+"')]/../../td[2]/*/*[1]")).isSelected()) {
+				
+				getDriver().findElement(By.xpath("//tbody[contains(@id,'listManufacturerForm')]/tr/td/span[contains(text(),'"+fields[i]+"')]/../../td[2]"));
+			}
+			else {
+				getDriver().findElement(By.xpath("//tbody[contains(@id,'listManufacturerForm')]/tr/td/span[contains(text(),'"+fields[i]+"')]/../../td[2]")).click();
+				Thread.sleep(1500);
+			}
+		}
+		
+		
+		return this;
+	}
+	
+	@Step("Verify Show field Table settings")
+	public ManufacturerPageObjects verifyShowFieldsSettings() throws Exception {
+	
+		utility.assertElementPresent(getDriver().findElement(By.xpath("//table/thead/tr/th/div[contains(text(),'Field Names')]")));
+		utility.assertElementPresent(getDriver().findElement(By.xpath("//table/thead/tr/th/div[contains(text(),'Desktop View')]")));
+		utility.assertElementPresent(getDriver().findElement(By.xpath("//table/thead/tr/th/div[contains(text(),'Tablet View')]")));
+		utility.assertElementPresent(getDriver().findElement(By.xpath("//table/thead/tr/th/div[contains(text(),'Mobile View')]")));
+		utility.assertElementPresent(getDriver().findElement(By.xpath("//table/thead/tr/th/div[contains(text(),'Display Names')]")));
+		return this;
+	}
+	
+	@Step("Verify fields are reflected after saving changes")
+	public ManufacturerPageObjects verifyFields(String fieldnames) throws Exception {
+		Thread.sleep(2000);
+		String[] fields =  fieldnames.split(",");
+		for(int i=0;i<fields.length;i++) {
+			if(fields[i].equals("Manufacturer Logo") ) {
+				
+				utility.assertElementPresent(getDriver().findElement(By.xpath("//th/div[contains(text(),'Manufacturer Logo')]")));
+			}
+			else {
+			utility.assertElementPresent(getDriver().findElement(By.xpath("//th/div/span[contains(text(),'"+fields[i]+"')]")));
+			}
+		}
+		return this;
+	}
+	
+	
 }

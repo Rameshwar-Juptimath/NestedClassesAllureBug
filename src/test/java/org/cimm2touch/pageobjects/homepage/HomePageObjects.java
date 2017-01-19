@@ -27,7 +27,10 @@ public class HomePageObjects extends PageFactoryInitializer{
 	@FindBy(xpath="(//a[contains(.,'PIM')])[1]/ancestor::li/ul/descendant::span[contains(.,'Product Master')]/following-sibling::ul/descendant::a[contains(.,'Products')]")
 	private WebElement productslinkLocator;
 	
-
+	
+	@FindBy(xpath="//li/a[contains(text(),'Import')]")
+	private WebElement dataimportlocator;
+	
 	@FindBy(xpath="//div[@title='User Options']")
 	private WebElement userOptionsLink;
 	
@@ -116,6 +119,14 @@ public class HomePageObjects extends PageFactoryInitializer{
 		return new ManufacturerPageObjects();
 	}
 
+	@Step("click on the Data Imports link")
+	public HomePageObjects clickOnDataImportsLink() throws Exception {
+
+		((JavascriptExecutor)getDriver()).executeScript("arguments[0].click();",dataimportlocator);
+		return new HomePageObjects();
+	}
+	
+	
 	@Step("Click on Products link in Home page")
 	public ProductsListPageObjects clickOnProductsLink() {
 

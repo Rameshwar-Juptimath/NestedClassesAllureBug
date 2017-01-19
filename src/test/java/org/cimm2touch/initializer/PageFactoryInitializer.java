@@ -10,6 +10,7 @@ import org.cimm2touch.pageobjects.products.ProductItemsPageObjects;
 import org.cimm2touch.pageobjects.products.ProductsListPageObjects;
 import org.cimm2touch.pageobjects.products.ProductsPageObjects;
 import org.cimm2touch.pageobjects.adminstration.SystemSettingsPageObjects;
+import org.cimm2touch.pageobjects.dataImports.DataImportsPageObjects;
 import org.cimm2touch.pageobjects.items.AddNewItemPageObjects;
 import org.cimm2touch.pageobjects.items.EditItemsPageObjects;
 import org.cimm2touch.pageobjects.items.HistoryPageObjects;
@@ -38,6 +39,12 @@ public class PageFactoryInitializer extends CallApplication
 		return homePage;
 	}
 
+	public DataImportsPageObjects DataImportpage()
+	{
+		DataImportsPageObjects DataImportpage = PageFactory.initElements(getDriver(),DataImportsPageObjects.class);
+		return DataImportpage;
+	}
+	
 	public LandingPageObjects landingPage()
 	{
 		LandingPageObjects landingPage = PageFactory.initElements(getDriver(),LandingPageObjects.class);
@@ -206,4 +213,11 @@ public class PageFactoryInitializer extends CallApplication
 		return userConfigPage;
 	}
 
+	public DataImportsPageObjects dataimportPage() {
+		
+		DataImportsPageObjects dataimportPage=PageFactory.initElements(getDriver(), DataImportsPageObjects.class);
+		return dataimportPage;
+		
+	}
+	
 }
