@@ -91,28 +91,14 @@ public class UOMModuleTest extends PageFactoryInitializer {
 	}
 	
 	
+	
 	@Features(value = {"UOM Module"})
-	@Description("Verification of 'Edit UOM' Form ")
-	@TestCaseId("TC_UOM_004")
-	@Test(groups={"regression"}, dataProvider="UOMModuleTest",dataProviderClass=SearchData.class)
-	public void tc_UOM_004(String testCaseId,String uomName,String editFieldOfUOM) throws InterruptedException
-	{
-		              landingPage()
-		             .enterUsername(loginData.get("userName"))
-		             .enterPassword(loginData.get("password"))
-		             .clickOnLogin();
-		              homePage()
-		             .clickOnUomLink()
-		             .uomPage()
-		             .clickOnEditUomPartialMatch(uomName)
-		             .verifyAllEditUOMFields(editFieldOfUOM);
-		
-	}
-	@Features(value = {"UOM Module"})
-	@Description("Verification of updating UOM info and Verification of revision history icon")
+
+	@Description("Verification of 'Edit UOM' Form and Verification of updating UOM info and Verification of revision history icon and Verification of revision history icon")
+
 	@TestCaseId("TC_UOM_005,TC_UOM_010")
 	@Test(groups={"regression"}, dataProvider="UOMModuleTest",dataProviderClass=SearchData.class)
-	public void tc_UOM_005_010(String testCaseId,String uomName,String uomDescription,String uomSaveMessage,String updatedUomName,String welcomeMessage,String alertTextWhenHistoryIsClicked,String expectedHistoryPageTitle  ) throws Exception
+	public void tc_UOM_004_005_009_010(String testCaseId,String uomName,String uomDescription,String uomSaveMessage,String  editFieldOfUOM,String updatedUomName,String welcomeMessage,String alertTextWhenHistoryIsClicked,String expectedHistoryPageTitle  ) throws Exception
 	{
 		            landingPage()
 		           .enterUsername(loginData.get("userName"))
@@ -130,6 +116,11 @@ public class UOMModuleTest extends PageFactoryInitializer {
 		          .clickOnUomSearchCategory()
 		           .verifyCreatedUom(uomName)
 		          .clickOnEditUom(uomName)
+         
+		          .verifyAllEditUOMFields(editFieldOfUOM)
+		          .verifyWhetherHistoryIconPresent()
+		          
+
 		          .createUpdatedUom(updatedUomName)
 		          .clickOnUpdateUomLink()
 		          .verifyUpdateWelcomeMessage(welcomeMessage)
@@ -195,25 +186,7 @@ public class UOMModuleTest extends PageFactoryInitializer {
 		       .verifyErrorTotalCount(countOfUomName)
 		       .verifyErrorMessage(errorMessage);
 }
-	@Features(value = {"UOM Module"})
-	@Description("Verification of revision history icon ")
-	@TestCaseId("TC_UOM_009 ")
-	@Test(groups={"regression"}, dataProvider="UOMModuleTest",dataProviderClass=SearchData.class)
-	public void tc_UOM_009(String testCaseId,String uomName,String editFieldOfUOM) throws Exception
-	{
-		          landingPage()
-			     .enterUsername(loginData.get("userName"))
-			     .enterPassword(loginData.get("password"))
-			     .clickOnLogin();
-			      homePage()
-			     .clickOnUomLink()
-			     .uomPage() 
-			     .clickOnEditUomPartialMatch(uomName)   
-			     .verifyAllEditUOMFields(editFieldOfUOM)
-			     .verifyWhetherHistoryIconPresent();
-			
-	}
-	
+
 	
 	
 	

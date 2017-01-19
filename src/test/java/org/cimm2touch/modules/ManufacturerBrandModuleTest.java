@@ -11,6 +11,8 @@ import org.framework.utils.PermittedCharacters;
 import org.framework.utils.RandomGenerator;
 import org.testng.annotations.Test;
 
+import com.thoughtworks.selenium.webdriven.commands.Click;
+
 import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Features;
 import ru.yandex.qatools.allure.annotations.TestCaseId;
@@ -20,50 +22,6 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 
 	RandomGenerator random=new RandomGenerator();
 
-	
-	@Features(value = {"Manufacturers & Brands Module"})
-	@Description("This is a Method that Creates Manufacturers.")
-	@Test(priority=1, enabled=true, groups={"regression"},dataProvider="ManufacturerBrandModuleTest",dataProviderClass=SearchData.class)
-	public void createManufacturers(String testCaseID,String userName,String password, String manufacturersName, String manufacturersCode, String manufacturerActiveStatus, String saveMessage) throws Exception
-	{
-		landingPage()
-		.enterUsername(userName)
-		.enterPassword(password)
-		.clickOnLogin()
-		.homePage()
-		.clickOnManufacturerAndBrands()
-		.manufacturersAndBrandsPage()
-		.verifyManufacturersAndBrandsPageItems()
-		.clickOnAddNewManufacturerButton()
-		.verifyAddNewManufacturerFormItems()
-		.addNewManufacture(manufacturersName, manufacturersCode, manufacturerActiveStatus)
-		.clickOnSaveNewManufacturer()
-		.verifyMessageAfterSavingManufacturer(saveMessage);
-	}
-
-	@Features(value = {"Manufacturers & Brands Module"})
-	@Description("This is a Method that Creates Brands for Specific Manufactures {1}.")
-	@Test(priority=2,enabled=true, groups={"regression"},dataProvider="ManufacturerBrandModuleTest",dataProviderClass=SearchData.class)
-	public void createBrands(String testCaseID,String userName,String password, String manufacturersName, String brandName, String brandDesc, String brandActiveStatus,
-			String brandURL, String saveMessage) throws Exception
-	{
-		landingPage()
-		.enterUsername(userName)
-		.enterPassword(password)
-		.clickOnLogin()
-		.homePage()
-		.clickOnManufacturerAndBrands()
-		.manufacturersAndBrandsPage()
-		.verifyManufacturersAndBrandsPageItems()
-		.searchForManufacturer(manufacturersName)
-		.verifyAfterSearchingForManufacturer(manufacturersName)
-		.clickOnAddNewBrand()
-		.verifyAddNewBrandFormItems()
-		.verifyPreSelectedManufacturerWhenAddingBrand(manufacturersName)
-		.addNewBrand(brandName, brandDesc, brandActiveStatus, brandURL)
-		.clickOnSaveNewBrand()
-		.verifyMessageAfterSavingBrands(saveMessage);
-	}
 
 	@Features(value = {"Manufacturers & Brands Module"})
 	@Description("This Test Case is to verify the 'Add New Manufacturer' Form Items")
@@ -85,7 +43,7 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 
 	@Features(value = {"Manufacturers & Brands Module"})
 	@Description("This Test Case is to verify the 'Add New Manufacturer' Form Items")
-	@TestCaseId("TC_MB_002, TC_MB_003, TC_MB_007, TC_MB_008")
+	@TestCaseId("TC_MB_002, TC_MB_003, TC_MB_007, TC_MB_008,TC_MB_009")
 	@Test(groups = {"regression"},dataProvider="ManufacturerBrandModuleTest",dataProviderClass=SearchData.class)
 	public void TC_MB_002(String testCaseID,String userName,String password, String manufacturersName, String manufacturersCode, String manufacturerActiveStatus, String saveMessage) throws Exception 
 	{
@@ -145,7 +103,7 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 		.verifyAddNewManufacturerFormItems()
 		.addNewManufacture(manufacturersName, manufacturersCode, manufacturerActiveStatus)
 		.clickOnResetManufacturersFieldsButton()
-		.verifyManufacturersFormItemsAfterClickingResetButton();
+		.verifyManufacturersFormItemsAfterClickingResetButton(manufacturerActiveStatus);
 	}
 
 
@@ -164,6 +122,25 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 		.manufacturersAndBrandsPage()
 		.verifyManufacturersAndBrandsPageItems()
 		.verifyDisplayNoOfItemsDropdown();
+	}
+	
+	
+	@Features(value = {"Manufacturers & Brands Module"})
+	@Description("Verification of Manufacturer search functionality with Invalid Keyword")
+	@TestCaseId("TC_MB_009")
+	@Test(groups = {"regression"},dataProvider="ManufacturerBrandModuleTest",dataProviderClass=SearchData.class,enabled=true)
+	public void TC_MB_009(String testCaseID,String userName,String password,String searchkeyword) throws Exception
+	{
+		landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin()
+		.homePage()
+		.clickOnManufacturerAndBrands()
+		.manufacturersAndBrandsPage()
+		.verifyManufacturersAndBrandsPageItems()
+		.searchForManufacturer(searchkeyword)
+		.verifyAfterSearchingForManufacturer2();
 	}
 
 
@@ -203,9 +180,9 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 
 	@Features(value = {"Manufacturers & Brands Module"})
 	@Description("This Test Case is to Verify the Working of the 'Last Option' in Pagination in Manufacturers & Brands Page.")
-	@TestCaseId("TC_MB_012")
+	@TestCaseId("TC_MB_013")
 	@Test(groups = {"regression"},dataProvider="ManufacturerBrandModuleTest",dataProviderClass=SearchData.class)
-	public void TC_MB_012(String testCaseID,String userName,String password) throws Exception
+	public void TC_MB_013(String testCaseID,String userName,String password) throws Exception
 	{
 		landingPage()
 		.enterUsername(userName)
@@ -220,9 +197,9 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 
 	@Features(value = {"Manufacturers & Brands Module"})
 	@Description("This Test Case is to Verify the Working of the 'First Option' in Pagination in Manufacturers & Brands Page.")
-	@TestCaseId("TC_MB_013")
+	@TestCaseId("TC_MB_012")
 	@Test(groups = {"regression"},dataProvider="ManufacturerBrandModuleTest",dataProviderClass=SearchData.class)
-	public void TC_MB_013(String testCaseID,String userName,String password) throws Exception
+	public void TC_MB_012(String testCaseID,String userName,String password) throws Exception
 	{
 		landingPage()
 		.enterUsername(userName)
@@ -250,9 +227,78 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 		.manufacturersAndBrandsPage()
 		.verifyManufacturersAndBrandsPageItems()
 		.clickOnGenericColumnSettings()
-		.verifyGenericColumnSettingsItems();
+		.verifyGenericColumnSettingsItems()
+		.clickOnShowField()
+		.verifyShowFieldsSettings();
 	}
 
+	
+	@Features(value = {"Manufacturers & Brands Module"})
+	@Description("This Test Case is to Verify the Working of the 'Generic Column Settings' in Manufacturers & Brands Page.")
+	@TestCaseId("TC_MB_018")
+	@Test(groups = {"regression"},dataProvider="ManufacturerBrandModuleTest",dataProviderClass=SearchData.class)
+	public void TC_MB_018(String testCaseID,String userName,String password) throws Exception
+	{
+		landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin()
+		.homePage()
+		.clickOnManufacturerAndBrands()
+		.manufacturersAndBrandsPage()
+		.verifyManufacturersAndBrandsPageItems()
+		.clickOnGenericColumnSettings()
+		.verifyGenericColumnSettingsItems()
+		.clickOnShowField();
+		
+		
+	}
+	
+	@Features(value = {"Manufacturers & Brands Module"})
+	@Description("This Test Case is to Verify the Working of the 'Generic Column Settings' in Manufacturers & Brands Page.")
+	@TestCaseId("TC_MB_016,TC_MB_017")
+	@Test(groups = {"regression"},dataProvider="ManufacturerBrandModuleTest",dataProviderClass=SearchData.class)
+	public void TC_MB_016(String testCaseID,String userName,String password,String fieldnames) throws Exception
+	{
+		landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin()
+		.homePage()
+		.clickOnManufacturerAndBrands()
+		.manufacturersAndBrandsPage()
+		.verifyManufacturersAndBrandsPageItems()
+		.clickOnGenericColumnSettings()
+		.verifyGenericColumnSettingsItems()
+		.clickOnShowField()
+		.clickOnRequiredFieldNames(fieldnames)
+		.clickOnSaveFields()
+		.verifyFields(fieldnames);
+	}
+
+	@Features(value = {"Manufacturers & Brands Module"})
+	@Description("This Test Case is to Verify the Working of the 'Generic Column Settings'- cancel in Manufacturers & Brands Page.")
+	@TestCaseId("TC_MB_018")
+	@Test(groups = {"regression"},dataProvider="ManufacturerBrandModuleTest",dataProviderClass=SearchData.class)
+	public void TC_MB_018(String testCaseID,String userName,String password,String fieldnames) throws Exception
+	{
+		landingPage()
+		.enterUsername(userName)
+		.enterPassword(password)
+		.clickOnLogin()
+		.homePage()
+		.clickOnManufacturerAndBrands()
+		.manufacturersAndBrandsPage()
+		.verifyManufacturersAndBrandsPageItems()
+		.clickOnGenericColumnSettings()
+		.verifyGenericColumnSettingsItems()
+		.clickOnShowField()
+		.clickOnRequiredFieldNames(fieldnames);
+	}
+
+	
+	
+	
 	@Features(value = {"Manufacturers & Brands Module"})
 	@Description("This Test Case is to Verify the Working of the 'Sort Order' Option under 'Generic Column Settings'  in Manufacturers & Brands Page.")
 	@TestCaseId("TC_MB_019, TC_MB_020, TC_MB_022")
@@ -682,372 +728,6 @@ public class ManufacturerBrandModuleTest extends PageFactoryInitializer
 		.verifyCharacterLimitForEditBrandURL();
 	}
 
-	/*@Features("Create Manufacturers")
-	@Description("This a test case which creates Manufacturers")
-	@Test(groups="regression",priority=1)
-	public void create_Manufacturer() throws Exception {
-
-	 * @author:yogish.mt
-
-		landingPage()
-
-		.enterUsername(userName)
-		.enterPassword(password)
-=======
-		.enterUsername(userName)
-		.enterPassword(password)
->>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
-		.clickOnLogin()
-		.homePage()
-		.verifyWelcomeMessage(data.getwelcomeMessage())
-		.clickOnManufacturerAndBrands()
-		.manufacturersAndBrandsPage()
-		.assrtManufacturerbrandtextLocator()
-		.typeonMBsearch(data.getmanufacturername1())
-		.clickonMBsearch()
-		.manufacturerSearchResult(data.getmanufacturername1())
-		.homePage().clickOnManufacturerAndBrands().manufacturersAndBrandsPage()
-		.assrtManufacturerbrandtextLocator()
-		.clickonmanufacturerbutton()
-		.typeinmanufield(data.getmanufacturername1())
-		.typeinmanucodefield(data.getmanufacturername1())
-		.checkmanufactureractive()
-		.clickonmanufacturersave()
-		.verifymessage(data.getmanufacturername1()+" "+data.getmanufacturerSuccessmessage());
-	}
-
-	@Features("Create Brand Under Manufacturer")
-	@Description("This a test case which creates Brand under a Manufacturer")
-	@Test(groups="regression",priority=2)
-	public void createBrand() throws Exception {
-
-
-	 * @author:yogish.mt
-
-
-		landingPage()
-
-		.enterUsername(userName)
-		.enterPassword(password)
-=======
-		.enterUsername(userName)
-		.enterPassword(password)
->>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
-		.clickOnLogin()
-		.homePage()
-		.verifyWelcomeMessage(data.getwelcomeMessage())
-		.homePage()
-		.clickOnManufacturerAndBrands()
-		.manufacturersAndBrandsPage()
-		.assrtManufacturerbrandtextLocator()
-		.typeonMBsearch(data.getmanufacturername1())
-		.clickonMBsearch()
-		.checkManufacturerAlreadyExist(data.getmanufacturername1())
-		.clickOnlisticon()
-		.isBrandpresent(data.getBrnadName())
-		.clickOnaddnewbrandbutton()
-		.checkBrandFormEnabled()
-		.selectmanufacturerfromdropdown(data.getmanufacturername1())
-		.typeinbrandname(data.getBrnadName())
-		.typeinBrandDescField(data.getbrandDesc())
-		.checkOnBrandActive().checkOnItemActive()
-		.clickonbrandsave()
-		.checkBrandSaveMessage(data.getbrandsavemsg());			
-	}
-
-	@Features(value = {"manufacturer and brands Module"})
-	@Description("This is a test case which verifies validity of manufacturer name field, creation of new manufacturer and search of new manufacturer and deletion of the same")
-	@TestCaseId("TC_MB_2,TC_MB_3,TC_MB_7,TC_MB_8")
-	@Test(groups = {"regression"})
-	public void createManufacturer() throws Exception {
-
-
-
-	 * @author:Ashray Ramesh
-	 * 
-
-		landingPage()
-
-		.enterUsername(userName)
-		.enterPassword(password)
-=======
-		.enterUsername(userName)
-		.enterPassword(password)
->>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
-		.clickOnLogin()
-		.homePage()
-		.clickOnManufacturerAndBrands()
-		.manufacturersAndBrandsPage()
-		.clickOnAddNewManufacturerButton()
-		.clickOnSaveButton()
-		.verifyUnsuccessfullMessage(data.getunsuccessfullMessageOfManufacturerSave())
-		.enterNewManufacturerNames(data.getmanufacturerNewName())
-		.clickOnSaveButton()
-		.verifySuccessMessageNewManuCreation(data.getmanufacturerNewName())
-		.enterCreatedManufacturerToDelete(data.getcreatedManufacturerToDelete())
-		.clickOnSearchManufacturerList()
-		.clickOnDeleteManufacturerButton()
-		.verifyAlertText(data.getAlertTextToDeleteManufacturer())
-		.verifyManufacturerDeletion();
-	}
-
-
-	@Features(value = {"manufacturer and brands Module"})
-	@Description("This is a test case which verifies no results for non-existing manufacturer search")
-	@TestCaseId("TC_MB_9")
-	@Test(groups = {"regression"})
-	public void searchManufacturerNoResultsFound() throws Exception {
-
-
-
-	 * @author:Ashray Ramesh
-	 * 
-
-		landingPage()
-
-		.enterUsername(userName)
-		.enterPassword(password)
-=======
-		.enterUsername(userName)
-		.enterPassword(password)
->>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
-		.clickOnLogin()
-		.homePage()
-		.clickOnManufacturerAndBrands()
-		.manufacturersAndBrandsPage()
-		.enterCreatedManufacturerToDelete(Integer.toString(RandomNumberGenerator.generateEightRandomNumbers()))
-		.clickOnSearchManufacturerList()
-		.verifyZeroManufacturersFound();
-	}
-
-
-	@Features(value = {"manufacturer and brands Module"})
-	@Description("This is a test case which verifies the pagination for manufacturer and brands page")
-	@TestCaseId("TC_MB_10, TC_MB_11,TC_MB_12,TC_MB_13")
-	@Test(groups = {"regression"})
-	public void clickOnNavigation() throws Exception{
-
-
-	 * @author:Ashray Ramesh
-	 * 
-
-		landingPage()
-
-		.enterUsername(userName)
-		.enterPassword(password)
-=======
-		.enterUsername(userName)
-		.enterPassword(password)
->>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
-		.clickOnLogin()
-		.homePage()
-		.clickOnManufacturerAndBrands()
-		.manufacturersAndBrandsPage()
-		.clickOnNextButton();
-	}
-
-
-	@Features(value = {"manufacturer and brands Module"})
-	@Description("This is a test case which verifies all the fields are present after clicking on add manufacturer")
-	@TestCaseId("TC_MB_1")
-	@Test(groups = {"regression"})
-	public void verifyAllFieldsPresent() throws Exception{
-
-
-	 * @author:Ashray Ramesh
-	 * 
-
-		landingPage()
-
-		.enterUsername(userName)
-		.enterPassword(password)
-=======
-		.enterUsername(userName)
-		.enterPassword(password)
->>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
-		.clickOnLogin()
-		.homePage()
-		.clickOnManufacturerAndBrands()
-		.manufacturersAndBrandsPage()
-		.clickOnAddNewManufacturerButton()
-		.clickOnSaveButton()
-		.clickOnResetButton()
-		.clickOnNewManufacturerName()
-		.clickOnManufacturerCode();
-	}
-
-
-	@Features(value = {"manufacturer and brands Module"})
-	@Description("This is a test case which verifies all the fields are present in the table of the manufacturers page ")
-	@TestCaseId("TC_MB_5")
-	@Test(groups = {"regression"})
-	public void verifyAllFieldsPresentInTable() throws Exception{
-
-
-	 * @author:Ashray Ramesh
-	 * 
-
-		landingPage()
-
-		.enterUsername(userName)
-		.enterPassword(password)
-=======
-		.enterUsername(userName)
-		.enterPassword(password)
->>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
-		.clickOnLogin()
-		.homePage()
-		.clickOnManufacturerAndBrands()
-		.manufacturersAndBrandsPage()
-		.clickOnAction()
-		.clickOnSiNumber()
-		.clickOnManufacturerName()
-		.clickOnNumberOfBrands()
-		.enterCreatedManufacturerToDelete(data.getcreatedManufacturerToDelete());
-	}
-
-
-	@Features(value = {"manufacturer and brands Module"})
-	@Description("This is a test case which generic column settings button and the options Show Fields and Sort Order")
-	@TestCaseId("TC_MB_14")
-	@Test(groups = {"regression"})
-	public void verifyGenericColumnSettings() throws Exception{
-
-
-	 * @author:Ashray Ramesh
-	 * 
-
-		landingPage()
-
-		.enterUsername(userName)
-		.enterPassword(password)
-=======
-		.enterUsername(userName)
-		.enterPassword(password)
->>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
-		.clickOnLogin()
-		.homePage()
-		.clickOnManufacturerAndBrands()
-		.manufacturersAndBrandsPage()
-		.clickOnGenericColumnnSettings()
-		.verifyShowFieldsText()
-		.verifySortOrderText();
-	}
-
-
-
-	@Features(value = {"manufacturer and brands Module"})
-	@Description("This is a test case which generic column settings button and the options Show Fields and Sort Order")
-	@TestCaseId("TC_MB_15")
-	@Test(groups = {"regression"})
-	public void verifyShowFieldsFields() throws Exception{
-		landingPage()
-
-		.enterUsername(userName)
-		.enterPassword(password)
-=======
-		.enterUsername(userName)
-		.enterPassword(password)
->>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
-		.clickOnLogin()
-		.homePage()
-		.clickOnManufacturerAndBrands()
-		.manufacturersAndBrandsPage()
-		.clickOnGenericColumnnSettings()
-		.clickOnShowFieldsText()
-		.verifyDynamicSettingsField()
-		.verifyFieldNamesField()
-		.verifyDesktopViewField()
-		.verifyMobileViewField()
-		.verifyTabletViewField()
-		.verifyDisplayNamesField();
-	}
-
-
-	@Features(value = {"manufacturer and brands Module"})
-	@Description("This is a test case which generic column settings button and the options Show Fields and Sort Order")
-	@TestCaseId("TC_MB_4")
-	@Test(groups = {"regression"})
-	public void verifyResetButton() throws Exception {
-		landingPage()
-
-		.enterUsername(userName)
-		.enterPassword(password)
-=======
-		.enterUsername(userName)
-		.enterPassword(password)
->>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
-		.clickOnLogin()
-		.homePage()
-		.clickOnManufacturerAndBrands()
-		.manufacturersAndBrandsPage()
-		.clickOnAddNewManufacturerButton()
-		.enterNewManufacturerNames(data.getmanufacturerNewName())
-		.clickOnResetButton()
-		.verifyEmptyFieldAfterReset();
-	}
-
-	@Features(value = {"manufacturer and brands Module"})
-	@Description("This is a test case to display fields in manufacturer list page")
-	@TestCaseId("TC_MB_16, TC_MB_17, TC_MB_18")
-	@Test(groups = {"regression"})
-	public void viewSelectedFieldInManufacturerList() throws Exception {
-		landingPage()
-
-		.enterUsername(userName)
-		.enterPassword(password)
-=======
-		.enterUsername(userName)
-		.enterPassword(password)
->>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
-		.clickOnLogin()
-		.homePage()
-		.clickOnManufacturerAndBrands()
-		.manufacturersAndBrandsPage()
-		.clickOnGenericColumnnSettings()
-		.clickOnShowFieldsText()
-		.clickOnManufacturerLogoCheckBox()
-		.clickOnSaveFields()
-		.verifyManufacturerLogoPresent()
-		.clickOnGenericColumnnSettings()
-		.clickOnShowFieldsText()
-		.clickOnManufacturerLogoCheckBox()
-		.clickOnSaveFields()
-		.clickOnGenericColumnnSettings()
-		.clickOnShowFieldsText()
-		.clickOnCancelButton();
-	}
-
-	@Features(value = {"manufacturer and brands Module"})
-	@Description("This is a test case to display fields in manufacturer list page")
-	@TestCaseId("TC_MB_19, TC_MB_20, TC_MB_21,TC_MB_22")
-	@Test(groups = {"regression"})
-	public void viewSortOrderSettings() throws Exception {
-		landingPage()
-
-		.enterUsername(userName)
-		.enterPassword(password)
-=======
-		.enterUsername(userName)
-		.enterPassword(password)
->>>>>>> 5156c7bcecaa5c6359b3f6773425cda6ccfadb74
-		.clickOnLogin()
-		.homePage()
-		.clickOnManufacturerAndBrands()
-		.manufacturersAndBrandsPage()
-		.clickOnGenericColumnnSettings()
-		.clickOnSortOrder()
-		.clickOnAddNewSortOrder()
-		.enterSortFieldName(data.getSortFieldName())
-		.enterDescendingOrder(data.getDescendingOrderText())
-		.clickOnSaveSortOrder()
-		.clickOnGenericColumnnSettings()
-		.clickOnSortOrder()
-		.clickOnDeleteSortOrder()
-		.clickOnCloseSortOrder();
-
-	}
-	 */
 
 }
 

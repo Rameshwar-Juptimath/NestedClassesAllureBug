@@ -25,10 +25,14 @@ public class HomePageObjects extends PageFactoryInitializer{
 	
 	 Waiting waiting = new Waiting(getDriver());
 	
-	@FindBy(xpath="//div[@class='navigationBar']//a[contains(text(),'Products')]")
+
+	@FindBy(xpath="//div[@id='clientLogoId']/following-sibling::div/descendant::a[contains(text(),'PIM')]/following-sibling::ul/descendant::a[text()='Products']")
 	private WebElement productslinkLocator;
 	
-
+	
+	@FindBy(xpath="//li/a[contains(text(),'Import')]")
+	private WebElement dataimportlocator;
+	
 	@FindBy(xpath="//div[@title='User Options']")
 	private WebElement userOptionsLink;
 	
@@ -50,13 +54,13 @@ public class HomePageObjects extends PageFactoryInitializer{
 	@FindBy(xpath="(//input[@placeholder='Enter Text to Search'])[2]")
 	private WebElement seachInputTextField;
 
-	@FindBy(xpath="(//a[contains(.,'PIM')])[1]/ancestor::li/ul/descendant::a[contains(.,'Taxonomy Management')]/following-sibling::ul/descendant::a[contains(.,'Taxonomy')][1]")
+	@FindBy(xpath="//div[@id='clientLogoId']/following-sibling::div/descendant::a[contains(text(),'PIM')]/following-sibling::ul/descendant::a[text()='Taxonomy']")
 	private WebElement taxonomylinkLocator;
 	
-	@FindBy(xpath="(//a[contains(.,'PIM')])[1]/ancestor::li/ul/descendant::a[contains(.,'Taxonomy Management')]/following-sibling::ul/descendant::a[contains(.,'Attributes')]")
+	@FindBy(xpath="//div[@id='clientLogoId']/following-sibling::div/descendant::a[contains(text(),'PIM')]/following-sibling::ul/descendant::a[text()='Attributes']")
 	private WebElement attributeslinkLocator;
 	
-	@FindBy(xpath="(//a[contains(.,'PIM')])[1]/ancestor::li/ul/descendant::a[contains(.,'Taxonomy Management')]/following-sibling::ul/descendant::a[contains(.,'Attribute Groups')]")
+	@FindBy(xpath="//div[@id='clientLogoId']/following-sibling::div/descendant::a[contains(text(),'PIM')]/following-sibling::ul/descendant::a[contains(text(),'Attribute Groups')]")
 	private WebElement attributesGroupsLinkLocator;
 
 	@FindAll(value={@FindBy(xpath="//div[@title='User Options']/descendant::li")})
@@ -68,10 +72,10 @@ public class HomePageObjects extends PageFactoryInitializer{
 	@FindBy(xpath="//form[@id='menuFmId:headerForm']/descendant::div[contains(@class,'loggedInUser')]") //css="div.header-right > ul.cimm_boxShadow > li > div.header-right-icons > ul > li > div.loggedInUser"
 	private WebElement welcomeMessageLocator;
 	
-	@FindBy(xpath="(//li/a[contains(text(),'Manufacturers & Brands')])[1]")
+	@FindBy(xpath="//div[@id='clientLogoId']/following-sibling::div/descendant::a[contains(text(),'PIM')]/following-sibling::ul/descendant::a[contains(text(),'Manufacturers & Brands')]")
 	private WebElement MBlinkLocator;
 	
-	@FindBy(xpath="//span/li/a[contains(text(),'Items')]")
+	@FindBy(xpath="//div[@id='clientLogoId']/following-sibling::div/descendant::a[contains(text(),'PIM')]/following-sibling::ul/descendant::a[contains(text(),'Items')]")
 	private WebElement itemslinkLocator;
 	
 	
@@ -152,6 +156,14 @@ public class HomePageObjects extends PageFactoryInitializer{
 		return new ManufacturerPageObjects();
 	}
 
+	@Step("click on the Data Imports link")
+	public HomePageObjects clickOnDataImportsLink() throws Exception {
+
+		((JavascriptExecutor)getDriver()).executeScript("arguments[0].click();",dataimportlocator);
+		return new HomePageObjects();
+	}
+	
+	
 	@Step("Click on Products link in Home page")
 	public ProductsPageObjects clickOnProductsLink() {
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",productslinkLocator);
@@ -176,8 +188,7 @@ public class HomePageObjects extends PageFactoryInitializer{
 	}
 	
 	
-	
-	
+
 	@FindBy(xpath="//div[@id='clientLogoId']/following-sibling::div/descendant::a[contains(text(),'PIM')]/following-sibling::ul/descendant::a[contains(text(),'Subset/Catalog')]")
 	private WebElement subsetLinkLocator;
 		
@@ -189,11 +200,15 @@ public class HomePageObjects extends PageFactoryInitializer{
 	@FindBy(xpath="(//li/span[contains(text(),'Product Master')])[1]")
 	private WebElement productmasterlinkLocator;
 
+	/*@FindBy(xpath="(//a[contains(text(),'Subset/Catalog')])[2]")
+	private WebElement subsetlink;*/
+	
+		
+	
 	@FindBy(xpath="//div[@id='clientLogoId']/following-sibling::div/descendant::a[contains(text(),'PIM')]/following-sibling::ul/descendant::a[contains(text(),'UOM')]")
 	private WebElement uomLinkLocator;
 	
 
-	
 	@Step("clicking on Manufacturers & Brands link")
 	public HomePageObjects clickonManufactureBrandsLink() throws InterruptedException {
 
@@ -218,9 +233,9 @@ public class HomePageObjects extends PageFactoryInitializer{
 	}
 
 	@Step("clicking on subset link")
-	public SubsetPageObjects clickOnSubset(){
 
-
+	public SubsetPageObjects clickOnSubset() throws InterruptedException{
+		Thread.sleep(2500);
 		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();",subsetLinkLocator);
 		return subsetPage();
 	}
@@ -286,6 +301,14 @@ public class HomePageObjects extends PageFactoryInitializer{
 		return this;
 	}
 
+
+	@Step("clicking on uom link")
+	public UOMPageObjects clickOnUomLink() {
+
+		((JavascriptExecutor)getDriver()).executeScript("arguments[0].click();",uomLinkLocator);
+		return uomPage();
+	}
+
 	@Step("click on custom filds tab")
 	public HomePageObjects clickOnCustomFieldsLink() throws InterruptedException {
 		((JavascriptExecutor)getDriver()).executeScript("arguments[0].click();",customFieldHeaderLocator);
@@ -315,14 +338,6 @@ public class HomePageObjects extends PageFactoryInitializer{
 		return this;
 	}
 	
-
-
-	@Step("clicking on uom link")
-	public UOMPageObjects clickOnUomLink() {
-
-		((JavascriptExecutor)getDriver()).executeScript("arguments[0].click();",uomLinkLocator);
-		return uomPage();
-	}
 
 	
 }

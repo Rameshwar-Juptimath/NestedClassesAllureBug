@@ -94,6 +94,8 @@ HashMap<String, String> loginData;
 		.verifyWelcomeMessage(welcomeMessage)
 		.clickOnTaxonomyLink()
 		.taxonomyPage()
+		.searchForTaxonomy(taxonomyName)
+		.verifyTaxonomyAlreadyPresent(taxonomyName)
 		.clickOnAddnewTaxonomy()
 		.enterTaxonomyName(taxonomyName)
 		.enterTaxonomyDesciption(taxonomyDesc)
@@ -302,28 +304,6 @@ HashMap<String, String> loginData;
 	}
 
 
-	@Features(value={"CreateDataConfigTest"})
-	@Description("add new custom fields (simple data type)")
-	@Test(groups="regression",priority=10,dataProvider="CreateDataConfigTest", dataProviderClass=SearchData.class)
-	public void addNewManageList(String testCaseId,  String manageListName, String valueListDataType,
-			String valueListDescription, String successMessage) throws Exception
-	{
-		landingPage()
-		.enterUsername(loginData.get("userName"))
-		.enterPassword(loginData.get("password"))
-		.clickOnLogin()
-		.homePage()
-		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
-		homePage()
-		.clickOnManageListLink()
-		.manageListPage()
-		.searchForManageList(manageListName)
-		.verifyManageListPresent(manageListName)
-		.clickOnAddNewManageList()
-		.createNewValueList(manageListName,valueListDataType,valueListDescription)
-		.verifySuccessMessageForNewlyCreatedList(successMessage);
-	}
-
 	@Description("Creation of new brand.")
 	@Features(value={"CreateDataConfigTest"})
 	@Test(enabled=true,priority=10,groups={"regression"},dataProvider="CreateDataConfigTest",dataProviderClass=SearchData.class)
@@ -345,6 +325,29 @@ HashMap<String, String> loginData;
 		 .searchForUOM(uomName)
 		 .clickOnUomSearchCategory()
 		  .verifyCreatedUom(uomName);
+
+
+	}
+	@Features(value={"CreateDataConfigTest"})
+	@Description("add new custom fields (simple data type)")
+	@Test(groups="regression",priority=10,dataProvider="CreateDataConfigTest", dataProviderClass=SearchData.class)
+	public void addNewManageList(String testCaseId,  String manageListName, String valueListDataType,
+			String valueListDescription, String successMessage) throws Exception
+	{
+		landingPage()
+		.enterUsername(loginData.get("userName"))
+		.enterPassword(loginData.get("password"))
+		.clickOnLogin()
+		.homePage()
+		.verifyWelcomeMessage(loginData.get("welcomeMessage"));
+		homePage()
+		.clickOnManageListLink()
+		.manageListPage()
+		.searchForManageList(manageListName)
+		.verifyManageListPresent(manageListName)
+		.clickOnAddNewManageList()
+		.createNewValueList(manageListName,valueListDataType,valueListDescription)
+		.verifySuccessMessageForNewlyCreatedList(successMessage);
 
 	}
 	

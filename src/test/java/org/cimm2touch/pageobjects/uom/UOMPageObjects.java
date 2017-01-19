@@ -212,13 +212,15 @@ public class UOMPageObjects extends PageFactoryInitializer {
 	@Step("create new uom  name: {0} , Description {1}")
 	public UOMPageObjects createUom(String uomName, String uomDescription) throws Exception {
 		clickOnAddNewUOMLink();
-		enterTheUomName(uomName).enterTheUomDescription(uomDescription).clickOnSaveLink();
+
+		enterTheUomName(uomName)
+		.enterTheUomDescription(uomDescription)
+		.clickOnSaveLink();
 		return this;
 	}
 
 	@Step("enter UOM Name:{0}")
 	public UOMPageObjects enterTheUomName(String uomName) {
-		System.out.println(uomName + "Inside enter UOM");
 		waiting.explicitWaitVisibilityOfElement(uOMNameTextBox, 30);
 		uOMNameTextBox.clear();
 		uOMNameTextBox.sendKeys(uomName);
@@ -394,7 +396,6 @@ public class UOMPageObjects extends PageFactoryInitializer {
 
 	@Step("enter updated UOM Name:{0}")
 	public UOMPageObjects enterTheUpdatedUomName(String updatedUomName) {
-		System.out.println(updatedUomName + "Inside enter UOM");
 
 		waiting.explicitWaitVisibilityOfElement(updatedUomNameTextBoxLocator, 30);
 		updatedUomNameTextBoxLocator.clear();

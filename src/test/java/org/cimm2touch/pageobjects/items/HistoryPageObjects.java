@@ -3,7 +3,6 @@ import java.util.concurrent.TimeUnit;
 
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.utils.TestUtilityMethods;
-
 import org.framework.utils.Waiting;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
@@ -49,6 +48,7 @@ public class HistoryPageObjects extends PageFactoryInitializer
 		return this;
 	}
 
+
 	@Step("verify recent activty on warehouse {0}")
 	public HistoryPageObjects verifyrecentWareHouseActivity(String warehouseName) throws InterruptedException {
 		Thread.sleep(3000);
@@ -57,6 +57,7 @@ public class HistoryPageObjects extends PageFactoryInitializer
 
 		return this;
 	}
+
 
 	@Step("verify created  updated uom name{0}")
 	public HistoryPageObjects verifyUpdatedUomNamePresentInHistoryPage(String updatedUomName) throws InterruptedException {
@@ -77,5 +78,6 @@ public class HistoryPageObjects extends PageFactoryInitializer
 		return false;
 	}
 
+	
 	
 }

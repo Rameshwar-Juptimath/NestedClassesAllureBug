@@ -5,7 +5,7 @@ import static org.hamcrest.Matchers.containsString;
 
 import java.util.Arrays;
 import java.util.List;
-
+import java.util.concurrent.TimeUnit;
 
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.utils.SearchDataPropertyFile;
@@ -314,10 +314,10 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 	@Step("search for taxonomy{0}.")
 	public TaxonomyPageObjects searchForTaxonomy(String taxonomyName){
 
-		waiting.explicitWaitVisibilityOfElement(taxonomySearchField, 10);
+		waiting.explicitWaitVisibilityOfElement(taxonomySearchField, 30);
 		taxonomySearchField.clear();
 		taxonomySearchField.sendKeys(taxonomyName);
-		waiting.explicitWaitVisibilityOfElement(searchIconInTaxonomySectionLocator, 10);
+		waiting.explicitWaitVisibilityOfElement(searchIconInTaxonomySectionLocator, 30);
 		taxonomySearchButton.click();
 		return this;
 	}
@@ -465,13 +465,23 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 	}
 
 	@Step("To Verify If Taxonomy is  Present")
-	public TaxonomyPageObjects verifyTaxonomyPresent(String taxonomyName) throws InterruptedException
+	public boolean assertVerifyTaxonomyPresent(String taxonomyName) throws InterruptedException
 	{
 		Thread.sleep(2000);
-		waiting.explicitWaitVisibilityOfElement(By.xpath("//table[@id='taxonomyTableForm:taxonomyDataTable']//span[contains(@id,'taxonomyName') and contains(.,'"+taxonomyName+"')]"), 30);
+		getDriver().manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+		try{
+			if(getDriver().findElement(By.xpath("//table[@id='taxonomyTableForm:taxonomyDataTable']//span[contains(@id,'taxonomyName') and contains(.,'"+taxonomyName+"')]")).isDisplayed())
+			{
+				return true;
+			}
+		}catch(Exception e){
+			return false;
+		}
+		/*waiting.explicitWaitVisibilityOfElement(By.xpath("//table[@id='taxonomyTableForm:taxonomyDataTable']//span[contains(@id,'taxonomyName') and contains(.,'"+taxonomyName+"')]"), 30);
 		WebElement ele=getDriver().findElement(By.xpath("//table[@id='taxonomyTableForm:taxonomyDataTable']//span[contains(@id,'taxonomyName') and contains(.,'"+taxonomyName+"')]"));
 		Assert.assertTrue(ele.isDisplayed(), "Taxonomy :"+taxonomyName+" is not Present");
-		return this;
+		return this;*/
+		return false;
 	}
 
 	@Step("To Verify If Taxonomy is Not Present")
@@ -556,6 +566,21 @@ public class TaxonomyPageObjects extends PageFactoryInitializer {
 		createNewCategoryIconLocator.click();
 		return this;
 		
+	}
+	@Step("verify taxonomy present {0} is present")
+	public TaxonomyPageObjects verifyTaxonomyPresent(String taxonomyName) throws InterruptedException {
+		Thread.sleep(3000);
+		Assert.assertTrue(assertVerifyTaxonomyPresent(taxonomyName), "taxonomy is not yet created, please create it to remove.");
+
+		return this;
+	}
+	@Step("verify taxonomy {0} before create it.")
+	public TaxonomyPageObjects verifyTaxonomyAlreadyPresent(String taxonomyName) throws InterruptedException {
+
+		Thread.sleep(3000);
+		Assert.assertFalse(assertVerifyTaxonomyPresent(taxonomyName), "taxonomy is already present, please remve it to create new.");
+
+		return this;
 	}
 
 }
