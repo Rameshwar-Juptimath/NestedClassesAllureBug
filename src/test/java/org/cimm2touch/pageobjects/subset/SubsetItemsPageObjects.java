@@ -37,15 +37,12 @@ public class SubsetItemsPageObjects extends PageFactoryInitializer {
 	@FindBy(xpath = "//input[@id='listSubsetItems:subsetCombocomboboxField']")
 	private static WebElement dropDownLocator;
 
-	/*@FindBy(xpath = "//input[@id='listSubsetItems:subsetCombocomboboxButton']")
-	private static WebElement dropDownClickLocator;*/
 
 	public SubsetItemsPageObjects selectSubset(String subsetName) throws InterruptedException {
 		waiting.explicitWaitVisibilityOfElement(dropDownLocator, 10);
 		dropDownLocator.clear();
 		dropDownLocator.sendKeys(subsetName);
 		
-		//Thread.sleep(4000);
 		waiting.explicitWaitVisibilityOfElement(getDriver()
 				.findElement(By.xpath("//div[@id='listSubsetItems:subsetCombolistDecoration']/descendant::span[text()='"
 						+ subsetName + "']")),
@@ -69,19 +66,15 @@ public class SubsetItemsPageObjects extends PageFactoryInitializer {
 
 		waiting.explicitWaitVisibilityOfElement(searchButtonLocator, 20);
 		searchButtonLocator.click();
-		//((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", searchButtonLocator);
 		Thread.sleep(7000);
-		System.out.println("enter inside the click On Search ButtonOfSubsetItem");
 		return this;
 
 	}
 
 	public SubsetItemsPageObjects verifyNumberOfItem(String totalNoOfItem) {
-		waiting.explicitWaitVisibilityOfElement(getDriver()
-				.findElement(By.xpath("//span[contains(text(),'Total no. of Items : ')]/following-sibling::span")), 20);
-		WebElement numberOfItemPresent = getDriver()
-				.findElement(By.xpath("//span[contains(text(),'Total no. of Items : ')]/following-sibling::span"));
-		System.out.println(numberOfItemPresent.getText());
+		
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//span[contains(text(),'Total no. of Items : ')]/following-sibling::span"), 20);
+		WebElement numberOfItemPresent = getDriver().findElement(By.xpath("//span[contains(text(),'Total no. of Items : ')]/following-sibling::span"));
 		Assert.assertEquals(numberOfItemPresent.getText(), totalNoOfItem);
 		return this;
 
@@ -110,7 +103,6 @@ public class SubsetItemsPageObjects extends PageFactoryInitializer {
 	public SubsetItemsPageObjects selectParticularItemBasedOnTheDropDownField(String particularFieldName) throws InterruptedException {
 		  waiting.explicitWaitVisibilityOfElement(searchDropDownLocator, 10);
 		Select sel = new Select(searchDropDownLocator);
-		//sel.deselectByVisibleText(particularFieldName);
 		sel.selectByVisibleText(particularFieldName);
 		Thread.sleep(2000);
 		return this;

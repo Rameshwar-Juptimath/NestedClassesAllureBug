@@ -124,8 +124,8 @@ public class SubsetModuleTest extends PageFactoryInitializer {
 	@Test(groups = { "regression" }, dataProvider = "SubsetModuleTest", dataProviderClass = SearchData.class)
 	public void tc_Subset_006_003_008_009(String testCaseID, String subsetName, String subsetDescription,String subsetSaveMessage, String editFieldOfSubset, String updatedSubsetName, String updateMessage)throws Exception
 		{
-		        landingPage()
-		       .enterUsername(loginData.get("userName"))
+		         landingPage()
+		        .enterUsername(loginData.get("userName"))
 		        .enterPassword(loginData.get("password"))
 		        .clickOnLogin()
 				.homePage()
@@ -145,6 +145,7 @@ public class SubsetModuleTest extends PageFactoryInitializer {
 				.createUpdatedUom(updatedSubsetName)
 				.clickOnUpdateSubsetLink()
 				.verifyUpdateWelcomeMessage(updateMessage);
+		         
 		String subsetId = subsetPage()
 				        .searchForAnSubset(updatedSubsetName)
 				       .clickOnSubsetSearchGoButton()
@@ -200,7 +201,7 @@ public class SubsetModuleTest extends PageFactoryInitializer {
 	@Test(groups = { "regression" }, dataProvider = "SubsetModuleTest", dataProviderClass = SearchData.class)
 	public void tc_Subset_011_012_013(String testCaseID, String subsetName,String subsetDescription,String subsetSaveMessage, String manufacturerName, String brandName,String selectedTabField,String brandCount,String manufacturerCount,String messageOfCount)throws Exception 
 	{
-		   landingPage()
+		    landingPage()
 	       .enterUsername(loginData.get("userName"))
 	        .enterPassword(loginData.get("password"))
 	        .clickOnLogin()
@@ -361,31 +362,51 @@ public class SubsetModuleTest extends PageFactoryInitializer {
 	}
 	
 	@Features(value = { "Subset/Catlog Module" })
-	@Description("List Subset page should be display,verify Items assigned to subset should displayed,items search result should display based on field")
-	@TestCaseId("TC_Subset_18,TC_Subset_19,TC_Subset_21")
+	@Description("items search result should display based on field")
+	@TestCaseId("TC_Subset_21")
 	@Test(groups = { "regression" }, dataProvider = "SubsetModuleTest", dataProviderClass = SearchData.class)
-	public void tc_Subset_018_019_021(String testCaseID,String subsetName,String totalNoOfItem,String particularFieldName,String itemNumber,String noOfItemAfterSearch) throws InterruptedException, Exception
+	public void tc_Subset_021(String testCaseID,String subsetName,String totalNoOfItem,String particularFieldName,String itemNumber,String noOfItemAfterSearch) throws InterruptedException, Exception
 			                        
 	{
-		       landingPage()
-              .enterUsername(loginData.get("userName"))
-              .enterPassword(loginData.get("password"))
-              .clickOnLogin()
-		      .homePage()
-		    .clickOnSubset()
-		    .subsetPage()
-		    .checkSubsetPage()
-		    .clickOnSubsetItemsLink()
-		    .subsetItem()
-		    .checkSubsetPageItem()
-		    .selectSubset(subsetName)
-		    .verifyNumberOfItem(totalNoOfItem)
-		    .selectParticularItemBasedOnTheDropDownField(particularFieldName)
-		    .enterParticularNumberOfItem(itemNumber)
-		    .clickOnSearchButtonOfSubsetItem()
-		    .verifyNumberOfItem(noOfItemAfterSearch)
-		    .verifyNumberOfItemAfterSearched(itemNumber);
+		        landingPage()
+               .enterUsername(loginData.get("userName"))
+               .enterPassword(loginData.get("password"))
+               .clickOnLogin()
+		       .homePage()
+		     .clickOnSubset()
+		     .subsetPage()
+		     .checkSubsetPage()
+		     .clickOnSubsetItemsLink()
+		     .subsetItem()
+		     .checkSubsetPageItem()
+		     .selectSubset(subsetName)
+		     .verifyNumberOfItem(totalNoOfItem)
+		     .selectParticularItemBasedOnTheDropDownField(particularFieldName)
+		     .enterParticularNumberOfItem(itemNumber)
+		     .clickOnSearchButtonOfSubsetItem()
+		     .verifyNumberOfItem(noOfItemAfterSearch)
+		     .verifyNumberOfItemAfterSearched(itemNumber);
 	
+	}
+	@Features(value = { "Subset/Catlog Module" })
+	@Description("List Subset page should be display,verify Items assigned to subset should displayed")
+	@TestCaseId("TC_Subset_18,TC_Subset_19")
+	@Test(groups = { "regression" }, dataProvider = "SubsetModuleTest", dataProviderClass = SearchData.class)
+	public void tc_Subset_018_019(String testCaseID,String subsetName,String totalNoOfItem) throws InterruptedException, Exception
+	{
+		 landingPage()
+         .enterUsername(loginData.get("userName"))
+         .enterPassword(loginData.get("password"))
+         .clickOnLogin()
+	       .homePage()
+	     .clickOnSubset()
+	     .subsetPage()
+	     .checkSubsetPage()
+	     .clickOnSubsetItemsLink()
+	     .subsetItem()
+	     .checkSubsetPageItem()
+	     .selectSubset(subsetName)
+	     .verifyNumberOfItem(totalNoOfItem);
 	}
 	
 	@Features(value = { "Subset/Catlog Module" })
