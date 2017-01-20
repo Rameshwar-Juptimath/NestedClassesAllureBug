@@ -390,6 +390,7 @@ public class ProductEditPageObjects extends PageFactoryInitializer {
 
 	@Step("Enter File path as \"{0}\" in File Upload dialog box")
 	public ProductEditPageObjects enterFileLocationInUploadDialogbox(String fileLocation) throws Exception {
+
 		Thread.sleep(2000);
 
 		tu.fileUpload(fileLocation);

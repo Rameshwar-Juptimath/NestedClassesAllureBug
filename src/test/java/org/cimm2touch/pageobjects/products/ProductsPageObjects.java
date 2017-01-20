@@ -13,6 +13,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
@@ -130,6 +131,9 @@ public class ProductsPageObjects extends PageFactoryInitializer {
 	@FindAll(value = {
 			@FindBy(xpath = "//tbody[@id='listProductForm:productTableID:tb']//tr[contains(@class,'rich-table-row')]") })
 	private List<WebElement> productsListLocator;
+	
+	@FindBy(how=How.XPATH,xpath="//a[contains(@title,'Preview')]/following-sibling::span[contains(@id,'noOfItems')]")
+	private WebElement linkedItemsCountLocator;
 
 	@Step("Click on add new product")
 	public ProductsPageObjects clickOnAddNewProductLink() throws Exception {
@@ -480,5 +484,11 @@ public class ProductsPageObjects extends PageFactoryInitializer {
 		Assert.assertNotEquals(getDriver().findElement(By.xpath("//td[contains(text(),'" + productName + "')]")).getText(),
 				productName, "Product \'"+productName+"\' already exists. Kindly delete it before proceeding ahead.");
 		return this;
+	}
+
+	@Step("Verify if product has \'{0}\' items linked")
+	public void verifyLinkedItemsCount(String itemCount) {
+		waiting.explicitWaitVisibilityOfElement(linkedItemsCountLocator, 25);
+		Assert.assertEquals(linkedItemsCountLocator.getText(), itemCount,"De-linking of items from prducts is not working. Item count");
 	}
 }

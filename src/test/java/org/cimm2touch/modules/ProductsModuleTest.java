@@ -27,7 +27,6 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 	
 	@Test(groups = {"regression"})
 	public class IndependentMentods extends PageFactoryInitializer{
-	
 
 		@Features(value = {"Products Module"})
 		@Description("Verification of 'Products' page")
@@ -139,6 +138,7 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 				.clickOnRemoveProduct(productNumber)
 				.acceptAlert();
 		}
+		
 		
 		@Features(value = {"Products Module"})
 		@Description("Verification of 'Product Images' tab in 'Edit Product' page")
@@ -272,7 +272,6 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 	@Test(groups = { "regression",productCreationDependent },dependsOnGroups= {productCreation})
 	public class ProductCreationDependent extends PageFactoryInitializer {
 
-
 		@Features(value = {"Products Module"})
 		@Description("Verification of adding product image using image URL")
 		@TestCaseId("TC_PRODUCTS_009")
@@ -298,8 +297,8 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 		@Features(value = {"Products Module"})
 		@Description("Verification of adding product image using 'Upload Product Image'")
 		@TestCaseId("TC_PRODUCTS_010")
-		@Issue("Need to implement Auto IT scripts")
-		@Test(dataProvider="ProductsModuleTest",dataProviderClass=SearchData.class,enabled=false)
+		@Issue("\"Product Image Name already exists, please change Image Name\" - Error is seen")
+		@Test(dataProvider="ProductsModuleTest",dataProviderClass=SearchData.class)
 		public void TC_PRODUCTS_010(String imageFilePath,String imageUploadSuccessfulMessage) throws Exception{
 			
 			File file = new File(imageFilePath);
@@ -480,6 +479,9 @@ public class ProductsModuleTest extends PageFactoryInitializer{
 			.clickOnPreviewItemLink()
 			.clickOnDelinkItemIcon()
 			.acceptAlert();
+			Thread.sleep(5000);
+			productsPage()
+			.verifyLinkedItemsCount("0");
 		}
 		
 	}
