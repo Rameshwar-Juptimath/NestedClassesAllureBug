@@ -1,14 +1,12 @@
-
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="CIMM2Touch Test" parallel="classes"
 	data-provider-thread-count="10" thread-count="10">
 
 	<test name="regression">
 		<parameter name="browser" value="chrome" />
-		<parameter name="Remote Url" value="http://10.200.1.188:5555/wd/hub" />
+		<parameter name="Remote Url" value="http://10.200.1.188:4444/wd/hub" />
 		<classes>
 			<class name="org.cimm2touch.modules.UOMModuleTest" />
-			<class name="org.cimm2touch.modules.ProductsModuleTest" />
 		</classes>
 	</test>
 </suite>
