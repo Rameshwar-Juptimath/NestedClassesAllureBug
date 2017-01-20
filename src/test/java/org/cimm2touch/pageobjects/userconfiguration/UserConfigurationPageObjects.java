@@ -7,7 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
 
 public class UserConfigurationPageObjects extends PageFactoryInitializer{
-		
+	// Chinna Code Begins
 	Waiting waiting=new Waiting(getDriver());
 	
 	@FindBy(xpath="//div[contains(text(),'Session Timeout')]/following-sibling::div[contains(.,'In Minutes') ]/table")
@@ -23,11 +23,20 @@ public class UserConfigurationPageObjects extends PageFactoryInitializer{
 	public UserConfigurationPageObjects verifyTheTimeRange() {
 		waiting.explicitWaitVisibilityOfElement(sessionTimeoutDropDown, 15);
 		System.out.println(sessionTimeoutDropDown.getText());
-		
-		
-		
 		return this;
-		
 	}
 
+	// Chinna Code Ends
+
+	// Priya Code Begins
+
+	// Priya Code Ends
+
+	// Rameshwar Code Begins
+	
+	// Rameshwar Code Ends
+	
+	// Vadi Code Begins
+	
+	// Vadi Code Ends
 }

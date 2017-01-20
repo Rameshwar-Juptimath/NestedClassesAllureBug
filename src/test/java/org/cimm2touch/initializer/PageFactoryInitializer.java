@@ -1,4 +1,5 @@
 package org.cimm2touch.initializer;
+
 import org.cimm2touch.pageobjects.adminstration.SystemSettingsPageObjects;
 import org.cimm2touch.pageobjects.customers.CustomersPageObjects;
 import org.cimm2touch.pageobjects.customfields.CustomFieldsSimpleDataPageObjects;
@@ -37,234 +38,218 @@ import org.cimm2touch.pageobjects.warehouse.WareHousePageObjects;
 import org.framework.maincontroller.CallApplication;
 import org.openqa.selenium.support.PageFactory;
 
-
-public class PageFactoryInitializer extends CallApplication
-{
-	public HomePageObjects homePage()
-	{
-		HomePageObjects homePage = PageFactory.initElements(getDriver(),HomePageObjects.class);
+public class PageFactoryInitializer extends CallApplication {
+	// Chinna Code Begins
+	public HomePageObjects homePage() {
+		HomePageObjects homePage = PageFactory.initElements(getDriver(), HomePageObjects.class);
 		return homePage;
 	}
 
-	public LandingPageObjects landingPage()
-	{
-		LandingPageObjects landingPage = PageFactory.initElements(getDriver(),LandingPageObjects.class);
+	public LandingPageObjects landingPage() {
+		LandingPageObjects landingPage = PageFactory.initElements(getDriver(), LandingPageObjects.class);
 		return landingPage;
 	}
 
-	public SubsetPageObjects subsetPage()
-	{
+	public SubsetPageObjects subsetPage() {
 		SubsetPageObjects subsetPage = PageFactory.initElements(getDriver(), SubsetPageObjects.class);
 		return subsetPage;
 	}
-	public CatalogBuilderPageObjects catalogBuilderPage()
-	{
-		CatalogBuilderPageObjects catalogBuilderPage = PageFactory.initElements(getDriver(), CatalogBuilderPageObjects.class);
+
+	public CatalogBuilderPageObjects catalogBuilderPage() {
+		CatalogBuilderPageObjects catalogBuilderPage = PageFactory.initElements(getDriver(),
+				CatalogBuilderPageObjects.class);
 		return catalogBuilderPage;
 	}
 
-	public ItemsPageObjects itemsPage()
-	{
+	public ItemsPageObjects itemsPage() {
 		ItemsPageObjects ItemsPage = PageFactory.initElements(getDriver(), ItemsPageObjects.class);
 		return ItemsPage;
 	}
 
-	public AddNewItemPageObjects addNewItemPage()
-	{
-		AddNewItemPageObjects addNewItemPage = PageFactory.initElements(getDriver(),AddNewItemPageObjects.class);
+	public AddNewItemPageObjects addNewItemPage() {
+		AddNewItemPageObjects addNewItemPage = PageFactory.initElements(getDriver(), AddNewItemPageObjects.class);
 		return addNewItemPage;
 	}
 
-	public SystemSettingsPageObjects systemSettingsPage()
-	{
-		SystemSettingsPageObjects systemSettingsPage = PageFactory.initElements(getDriver(),SystemSettingsPageObjects.class);
+	public SystemSettingsPageObjects systemSettingsPage() {
+		SystemSettingsPageObjects systemSettingsPage = PageFactory.initElements(getDriver(),
+				SystemSettingsPageObjects.class);
 		return systemSettingsPage;
 	}
 
-	public EditItemsPageObjects editItemsPage()
-	{
-		EditItemsPageObjects editItemsPage = PageFactory.initElements(getDriver(),EditItemsPageObjects.class);
+	public EditItemsPageObjects editItemsPage() {
+		EditItemsPageObjects editItemsPage = PageFactory.initElements(getDriver(), EditItemsPageObjects.class);
 		return editItemsPage;
 	}
 
-	public HistoryPageObjects historyPage()
-	{
-		HistoryPageObjects historyPage = PageFactory.initElements(getDriver(),HistoryPageObjects.class);
+	public HistoryPageObjects historyPage() {
+		HistoryPageObjects historyPage = PageFactory.initElements(getDriver(), HistoryPageObjects.class);
 		return historyPage;
 	}
 
-	public ProductsPageObjects productsPage()
-	{
-		ProductsPageObjects productsPage = PageFactory.initElements(getDriver(),ProductsPageObjects.class);
+	public ProductsPageObjects productsPage() {
+		ProductsPageObjects productsPage = PageFactory.initElements(getDriver(), ProductsPageObjects.class);
 		return productsPage;
 	}
 
-	public ProductsListPageObjects productsListPage()
-	{
-		ProductsListPageObjects productsPage = PageFactory.initElements(getDriver(),ProductsListPageObjects.class);
+	public ProductsListPageObjects productsListPage() {
+		ProductsListPageObjects productsPage = PageFactory.initElements(getDriver(), ProductsListPageObjects.class);
 		return productsPage;
 	}
 
-	public ManufacturerPageObjects manufacturersAndBrandsPage()
-	{
-		ManufacturerPageObjects manufacturerPage = PageFactory.initElements(getDriver(),ManufacturerPageObjects.class);
+	public ManufacturerPageObjects manufacturersAndBrandsPage() {
+		ManufacturerPageObjects manufacturerPage = PageFactory.initElements(getDriver(), ManufacturerPageObjects.class);
 		return manufacturerPage;
 	}
-	
-	public EditManufacturerPageObjects editManufacturersPage()
-	{
-		EditManufacturerPageObjects editManufacturersPage = PageFactory.initElements(getDriver(),EditManufacturerPageObjects.class);
+
+	public EditManufacturerPageObjects editManufacturersPage() {
+		EditManufacturerPageObjects editManufacturersPage = PageFactory.initElements(getDriver(),
+				EditManufacturerPageObjects.class);
 		return editManufacturersPage;
 	}
-	
-	public EditBrandsPageObjects editBrandsPage()
-	{
-		EditBrandsPageObjects editBrandsPage = PageFactory.initElements(getDriver(),EditBrandsPageObjects.class);
+
+	public EditBrandsPageObjects editBrandsPage() {
+		EditBrandsPageObjects editBrandsPage = PageFactory.initElements(getDriver(), EditBrandsPageObjects.class);
 		return editBrandsPage;
 	}
-	
 
-	public AddNewProductPageObjects addNewProductPage(){
-
-		AddNewProductPageObjects addNewProductPage=PageFactory.initElements(getDriver(),AddNewProductPageObjects.class);
+	public AddNewProductPageObjects addNewProductPage() {
+		AddNewProductPageObjects addNewProductPage = PageFactory.initElements(getDriver(),
+				AddNewProductPageObjects.class);
 		return addNewProductPage;
 	}
-	
-	public ProductEditPageObjects editProductPage()
-	{
-		ProductEditPageObjects editProductPage=PageFactory.initElements(getDriver(),ProductEditPageObjects.class);
+
+	public ProductEditPageObjects editProductPage() {
+		ProductEditPageObjects editProductPage = PageFactory.initElements(getDriver(), ProductEditPageObjects.class);
 		return editProductPage;
 	}
-	
-	public TaxonomyPageObjects taxonomyPageObjects()
-	{
-		TaxonomyPageObjects taxonomyPageObjects = PageFactory.initElements(getDriver(),TaxonomyPageObjects.class);
+
+	public TaxonomyPageObjects taxonomyPageObjects() {
+		TaxonomyPageObjects taxonomyPageObjects = PageFactory.initElements(getDriver(), TaxonomyPageObjects.class);
 		return taxonomyPageObjects;
 	}
 
-	public ManageTaxonomyPageObjects manageTaxonomyPageObjects()
-	{
-		ManageTaxonomyPageObjects manageTaxonomyPageObjects = PageFactory.initElements(getDriver(),ManageTaxonomyPageObjects.class);
+	public ManageTaxonomyPageObjects manageTaxonomyPageObjects() {
+		ManageTaxonomyPageObjects manageTaxonomyPageObjects = PageFactory.initElements(getDriver(),
+				ManageTaxonomyPageObjects.class);
 		return manageTaxonomyPageObjects;
 	}
 
-	public TaxonomyPageObjects taxonomyPage()
-	{
-		TaxonomyPageObjects taxonomyPage=PageFactory.initElements(getDriver(),TaxonomyPageObjects.class);
+	public TaxonomyPageObjects taxonomyPage() {
+		TaxonomyPageObjects taxonomyPage = PageFactory.initElements(getDriver(), TaxonomyPageObjects.class);
 		return taxonomyPage;
 	}
 
-	public TaxonomyMappingPageObjects taxonomyMappingPage()
-	{
-		TaxonomyMappingPageObjects taxonomyMappingPage=PageFactory.initElements(getDriver(),TaxonomyMappingPageObjects.class);
+	public TaxonomyMappingPageObjects taxonomyMappingPage() {
+		TaxonomyMappingPageObjects taxonomyMappingPage = PageFactory.initElements(getDriver(),
+				TaxonomyMappingPageObjects.class);
 		return taxonomyMappingPage;
 	}
-	
-	public AttributeGroupsPageObjects attributeGroupsPage()
-	{
-		AttributeGroupsPageObjects attributeGroupsPage=PageFactory.initElements(getDriver(),AttributeGroupsPageObjects.class);
+
+	public AttributeGroupsPageObjects attributeGroupsPage() {
+		AttributeGroupsPageObjects attributeGroupsPage = PageFactory.initElements(getDriver(),
+				AttributeGroupsPageObjects.class);
 		return attributeGroupsPage;
 	}
-	
-	public AttributesPageObjects attributesPage()
-	{
-		AttributesPageObjects attributesPage=PageFactory.initElements(getDriver(),AttributesPageObjects.class);
+
+	public AttributesPageObjects attributesPage() {
+		AttributesPageObjects attributesPage = PageFactory.initElements(getDriver(), AttributesPageObjects.class);
 		return attributesPage;
 	}
 
-	public ManageTaxonomyPageObjects manageTaxonomyPage()
-	{
-		ManageTaxonomyPageObjects manageTaxonomyPage = PageFactory.initElements(getDriver(),ManageTaxonomyPageObjects.class);
+	public ManageTaxonomyPageObjects manageTaxonomyPage() {
+		ManageTaxonomyPageObjects manageTaxonomyPage = PageFactory.initElements(getDriver(),
+				ManageTaxonomyPageObjects.class);
 		return manageTaxonomyPage;
 	}
 
-	public CategoryAndAttributesPageObjects categoryAndAttributesPage()
-	{
-		CategoryAndAttributesPageObjects categoryAndAttributesPage=PageFactory.initElements(getDriver(),CategoryAndAttributesPageObjects.class);	
+	public CategoryAndAttributesPageObjects categoryAndAttributesPage() {
+		CategoryAndAttributesPageObjects categoryAndAttributesPage = PageFactory.initElements(getDriver(),
+				CategoryAndAttributesPageObjects.class);
 		return categoryAndAttributesPage;
 	}
 
-	public ImageUploadSectionPageObjects imageUploadPage()
-	{
-		ImageUploadSectionPageObjects imageUploadPage=PageFactory.initElements(getDriver(),ImageUploadSectionPageObjects.class);	
+	public ImageUploadSectionPageObjects imageUploadPage() {
+		ImageUploadSectionPageObjects imageUploadPage = PageFactory.initElements(getDriver(),
+				ImageUploadSectionPageObjects.class);
 		return imageUploadPage;
 	}
 
-	public VendorsPageObjects vendorsPage()
-	{
-		VendorsPageObjects vendorPage=PageFactory.initElements(getDriver(),VendorsPageObjects.class);
+	public VendorsPageObjects vendorsPage() {
+		VendorsPageObjects vendorPage = PageFactory.initElements(getDriver(), VendorsPageObjects.class);
 		return vendorPage;
 	}
-	
-	public EditVendorsPageObjects editVendorsPage()
-	{
-		EditVendorsPageObjects editVendorsPage=PageFactory.initElements(getDriver(),EditVendorsPageObjects.class);
+
+	public EditVendorsPageObjects editVendorsPage() {
+		EditVendorsPageObjects editVendorsPage = PageFactory.initElements(getDriver(), EditVendorsPageObjects.class);
 		return editVendorsPage;
 	}
-	public UserConfigurationPageObjects userConfigPage(){
-		
-		UserConfigurationPageObjects userConfigPage=PageFactory.initElements(getDriver(), UserConfigurationPageObjects.class);
+
+	public UserConfigurationPageObjects userConfigPage() {
+		UserConfigurationPageObjects userConfigPage = PageFactory.initElements(getDriver(),
+				UserConfigurationPageObjects.class);
 		return userConfigPage;
 	}
 
-
-
-
-	public SubsetItemsPageObjects subsetItem()
-	{
+	public SubsetItemsPageObjects subsetItem() {
 		SubsetItemsPageObjects subsetItemPage = PageFactory.initElements(getDriver(), SubsetItemsPageObjects.class);
 		return subsetItemPage;
 	}
-	public FeaturedProductsDispPricingPageObjects featuredPricing()
-	{
-		FeaturedProductsDispPricingPageObjects featuredPricingPage = PageFactory.initElements(getDriver(), FeaturedProductsDispPricingPageObjects.class);
+
+	public FeaturedProductsDispPricingPageObjects featuredPricing() {
+		FeaturedProductsDispPricingPageObjects featuredPricingPage = PageFactory.initElements(getDriver(),
+				FeaturedProductsDispPricingPageObjects.class);
 		return featuredPricingPage;
 	}
 
-	public CustomFieldsSimpleDataPageObjects customSimpleDataPage(){
-		
-		CustomFieldsSimpleDataPageObjects simpleData=PageFactory.initElements(getDriver(), CustomFieldsSimpleDataPageObjects.class);
+	public CustomFieldsSimpleDataPageObjects customSimpleDataPage() {
+		CustomFieldsSimpleDataPageObjects simpleData = PageFactory.initElements(getDriver(),
+				CustomFieldsSimpleDataPageObjects.class);
 		return simpleData;
 	}
-	public CustomFieldsTableDataPageObjects customTableDataPage(){
-		CustomFieldsTableDataPageObjects tableData=PageFactory.initElements(getDriver(), CustomFieldsTableDataPageObjects.class);
+
+	public CustomFieldsTableDataPageObjects customTableDataPage() {
+		CustomFieldsTableDataPageObjects tableData = PageFactory.initElements(getDriver(),
+				CustomFieldsTableDataPageObjects.class);
 		return tableData;
 	}
-	
-	public ManageListsPageObjets manageListPage(){
-		
-		ManageListsPageObjets manageList=PageFactory.initElements(getDriver(), ManageListsPageObjets.class);
+
+	public ManageListsPageObjets manageListPage() {
+		ManageListsPageObjets manageList = PageFactory.initElements(getDriver(), ManageListsPageObjets.class);
 		return manageList;
 	}
-	
-	public CustomersPageObjects customersPage(){
-		
-		CustomersPageObjects customers=PageFactory.initElements(getDriver(), CustomersPageObjects.class);
-		
+
+	public CustomersPageObjects customersPage() {
+		CustomersPageObjects customers = PageFactory.initElements(getDriver(), CustomersPageObjects.class);
 		return customers;
 	}
-	
-	public WareHousePageObjects warehousePage(){
-		
-		WareHousePageObjects warehouse=PageFactory.initElements(getDriver(), WareHousePageObjects.class);
-		
-		return warehouse;
-		
-	}
-	public CopyOfItemPageObjects copyItemPage()
-	{
-		
-		CopyOfItemPageObjects copyItem=PageFactory.initElements(getDriver(), CopyOfItemPageObjects.class);
-		
-		return copyItem;
 
+	public WareHousePageObjects warehousePage() {
+		WareHousePageObjects warehouse = PageFactory.initElements(getDriver(), WareHousePageObjects.class);
+		return warehouse;
 	}
-	public UOMPageObjects uomPage()
-	{
+
+	public CopyOfItemPageObjects copyItemPage() {
+		CopyOfItemPageObjects copyItem = PageFactory.initElements(getDriver(), CopyOfItemPageObjects.class);
+		return copyItem;
+	}
+
+	public UOMPageObjects uomPage() {
 		UOMPageObjects uompage = PageFactory.initElements(getDriver(), UOMPageObjects.class);
 		return uompage;
-
-
 	}
 
+	// Chinna Code Ends
+
+	// Priya Code Begins
+
+	// Priya Code Ends
+
+	// Rameshwar Code Begins
+	
+	// Rameshwar Code Ends
+	
+	// Vadi Code Begins
+	
+	// Vadi Code Ends
 }

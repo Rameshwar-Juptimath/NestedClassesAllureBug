@@ -16,6 +16,7 @@ import ru.yandex.qatools.allure.annotations.TestCaseId;
  *
  */
 public class RemoveDataConfigTest extends PageFactoryInitializer{
+	// Chinna Code Begins
 	HashMap<String, String> loginData;
 	
 	@Factory(dataProvider="loginTestData", dataProviderClass=SearchData.class)
@@ -195,5 +196,17 @@ public class RemoveDataConfigTest extends PageFactoryInitializer{
 		
 		
 	}
+	// Chinna Code Ends
 
+	// Priya Code Begins
+
+	// Priya Code Ends
+
+	// Rameshwar Code Begins
+	
+	// Rameshwar Code Ends
+	
+	// Vadi Code Begins
+	
+	// Vadi Code Ends
 }

@@ -11,6 +11,7 @@ import ru.yandex.qatools.allure.annotations.Step;
 public class AddNewProductPageObjects extends PageFactoryInitializer{
 
 
+	// Chinna Code Begins
 	Waiting waiting= new Waiting(getDriver());
 	@FindBy(id="newProductForm:productNameId")
 	private WebElement productNameTextField;
@@ -57,5 +58,19 @@ public class AddNewProductPageObjects extends PageFactoryInitializer{
 		Assert.assertEquals(succesfulMessageTextForNewProductCreation.getText(), expectedSuccesfulMessageForNewProductCreation);
 		return new ProductsListPageObjects();
 	}
+	
+	// Chinna Code Ends
+
+	// Priya Code Begins
+
+	// Priya Code Ends
+
+	// Rameshwar Code Begins
+	
+	// Rameshwar Code Ends
+	
+	// Vadi Code Begins
+	
+	// Vadi Code Ends
 	
 }

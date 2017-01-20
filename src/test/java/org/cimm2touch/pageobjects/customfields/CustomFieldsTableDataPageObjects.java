@@ -8,6 +8,8 @@ import org.openqa.selenium.support.FindBy;
 import ru.yandex.qatools.allure.annotations.Step;
 
 public class CustomFieldsTableDataPageObjects extends PageFactoryInitializer{
+	
+	// Chinna Code Begins
 	Waiting waiting=new Waiting(getDriver());
 	
 	
@@ -43,5 +45,17 @@ public class CustomFieldsTableDataPageObjects extends PageFactoryInitializer{
 
 		return this;
 	}
+	// Chinna Code Ends
 
+	// Priya Code Begins
+
+	// Priya Code Ends
+
+	// Rameshwar Code Begins
+	
+	// Rameshwar Code Ends
+	
+	// Vadi Code Begins
+	
+	// Vadi Code Ends
 }

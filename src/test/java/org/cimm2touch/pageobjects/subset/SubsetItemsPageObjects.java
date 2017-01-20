@@ -7,7 +7,6 @@ import org.cimm2touch.utils.TestUtilityMethods;
 import org.framework.utils.TestUtility;
 import org.framework.utils.Waiting;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
@@ -17,6 +16,7 @@ import ru.yandex.qatools.allure.annotations.Step;
 
 public class SubsetItemsPageObjects extends PageFactoryInitializer {
 
+	// Chinna Code Begins
 	TestUtility tu = new TestUtility(getDriver());
 	Waiting waiting = new Waiting(getDriver());
 	TestUtilityMethods utility = new TestUtilityMethods(getDriver());
@@ -128,5 +128,17 @@ public class SubsetItemsPageObjects extends PageFactoryInitializer {
 		return this;		
 	}
 
+	// Chinna Code Ends
+
+	// Priya Code Begins
+
+	// Priya Code Ends
+
+	// Rameshwar Code Begins
 	
+	// Rameshwar Code Ends
+	
+	// Vadi Code Begins
+	
+	// Vadi Code Ends
 }

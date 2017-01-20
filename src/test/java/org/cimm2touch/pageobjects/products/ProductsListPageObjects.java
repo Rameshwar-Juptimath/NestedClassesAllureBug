@@ -20,7 +20,7 @@ import ru.yandex.qatools.allure.annotations.Step;
 
 public class ProductsListPageObjects extends PageFactoryInitializer{
 
-
+	// Chinna Code Begins
 	Waiting waiting=new Waiting(getDriver());
 	TestUtility tu=new TestUtility(getDriver());
 
@@ -210,4 +210,17 @@ private boolean assertForNumberOfRowsDisplayed(int editButtons, int numberOfReco
 		Assert.assertEquals(removeCreatedProductSuccessMessageLocator.getText().trim(), expRemoveSuccessMessage.trim());
 		return this;
 	}
+	// Chinna Code Ends
+
+	// Priya Code Begins
+
+	// Priya Code Ends
+
+	// Rameshwar Code Begins
+	
+	// Rameshwar Code Ends
+	
+	// Vadi Code Begins
+	
+	// Vadi Code Ends
 }

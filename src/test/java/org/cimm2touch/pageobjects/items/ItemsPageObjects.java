@@ -19,6 +19,8 @@ import org.testng.Assert;
 import ru.yandex.qatools.allure.annotations.Step;
 
 public class ItemsPageObjects extends PageFactoryInitializer {
+
+	// Chinna Code Begins
 	TestUtility tu = new TestUtility(getDriver());
 	Waiting waiting = new Waiting(getDriver());
 
@@ -854,9 +856,7 @@ public class ItemsPageObjects extends PageFactoryInitializer {
 					assertForNumberOfRowsDisplayed(editButtonsLocator.size(),
 							Integer.parseInt(getNumberOfRecordsToDisplay)),
 					"DISPLAYED RECORDS WERE MORE THAN EXPECTED");
-		} 
-		catch(StaleElementReferenceException e)
-		{
+		} catch (StaleElementReferenceException e) {
 
 			getDriver().navigate().refresh();
 			verifyTheNumberOfRecordsDisplayed(getNumberOfRecordsToDisplay);
@@ -2462,5 +2462,17 @@ public class ItemsPageObjects extends PageFactoryInitializer {
 		tu.alertAccept();
 		return this;
 	}
+	// Chinna Code Ends
 
+	// Priya Code Begins
+
+	// Priya Code Ends
+
+	// Rameshwar Code Begins
+
+	// Rameshwar Code Ends
+
+	// Vadi Code Begins
+
+	// Vadi Code Ends
 }

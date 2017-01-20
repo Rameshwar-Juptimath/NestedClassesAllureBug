@@ -1,9 +1,5 @@
 package org.cimm2touch.pageobjects.products;
 
-import java.awt.Robot;
-import java.awt.Toolkit;
-import java.awt.datatransfer.StringSelection;
-import java.awt.event.KeyEvent;
 import java.util.List;
 
 import org.cimm2touch.initializer.PageFactoryInitializer;
@@ -14,7 +10,6 @@ import org.framework.utils.Waiting;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -24,6 +19,7 @@ import ru.yandex.qatools.allure.annotations.Step;
 
 public class EditProductsPageObjects extends PageFactoryInitializer {
 
+	// Chinna Code Begins
 	TestUtility tu = new TestUtility(getDriver());
 	Waiting waiting = new Waiting(getDriver());
 
@@ -411,5 +407,19 @@ public class EditProductsPageObjects extends PageFactoryInitializer {
 		Assert.assertTrue(searchInIconLocator.isDisplayed(), "Seach In icon is not displayed.");
 		return this;
 	}
+	
+	// Chinna Code Ends
+
+	// Priya Code Begins
+
+	// Priya Code Ends
+
+	// Rameshwar Code Begins
+	
+	// Rameshwar Code Ends
+	
+	// Vadi Code Begins
+	
+	// Vadi Code Ends
 
 }

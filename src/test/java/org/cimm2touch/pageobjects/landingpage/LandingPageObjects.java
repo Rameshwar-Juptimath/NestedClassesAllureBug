@@ -12,20 +12,20 @@ import org.openqa.selenium.support.PageFactory;
 import org.testng.annotations.Factory;
 
 import ru.yandex.qatools.allure.annotations.Step;
+
 /**
  * 
  * @author thiruveedhi.chinna
  *
  */
-public class LandingPageObjects extends PageFactoryInitializer{
+public class LandingPageObjects extends PageFactoryInitializer {
 
-	//SearchDataPropertyFile data = new SearchDataPropertyFile();
-HashMap<String, String> loginData;
-	
-	
-	@Factory(dataProvider="loginTestData", dataProviderClass=SearchData.class)
-	public LandingPageObjects(String userName, String password, String welcomMessage){
-		loginData=new HashMap<String, String>();
+	// Chinna Code Begins
+	HashMap<String, String> loginData;
+
+	@Factory(dataProvider = "loginTestData", dataProviderClass = SearchData.class)
+	public LandingPageObjects(String userName, String password, String welcomMessage) {
+		loginData = new HashMap<String, String>();
 		loginData.put("userName", userName);
 		loginData.put("password", password);
 		loginData.put("welcomeMessage", welcomMessage);
@@ -35,46 +35,59 @@ HashMap<String, String> loginData;
 		PageFactory.initElements(driver, this);
 	}
 
-	@FindBy(id="login:userName")
+	@FindBy(id = "login:userName")
 	private WebElement usernameLocator;
-	
-	@FindBy(id="login:password")
+
+	@FindBy(id = "login:password")
 	private WebElement passwordLocator;
-	
-	@FindBy(id="login:submit")
+
+	@FindBy(id = "login:submit")
 	private WebElement loginButtonLocator;
 
-	@FindBy(css="div.header-right > ul.cimm_boxShadow > li > div.header-right-icons > ul > li > div.loggedInUser")
+	@FindBy(css = "div.header-right > ul.cimm_boxShadow > li > div.header-right-icons > ul > li > div.loggedInUser")
 	private WebElement welcomeMessageLocator;
-	
+
 	@Step("Enter username as \'{0}\'")
-	public LandingPageObjects enterUsername(String userName){
+	public LandingPageObjects enterUsername(String userName) {
 		usernameLocator.clear();
 		usernameLocator.sendKeys(userName);
 		return this;
 	}
-	
+
 	@Step("Enter password \'{0}\'")
-	public LandingPageObjects enterPassword(String password){
+	public LandingPageObjects enterPassword(String password) {
 		passwordLocator.clear();
 		passwordLocator.sendKeys(password);
 		return this;
 	}
-	
+
 	@Step("Click on login")
-	public HomePageObjects clickOnLogin(){
+	public HomePageObjects clickOnLogin() {
 		loginButtonLocator.click();
 		return new HomePageObjects();
 	}
 
-	
 	@Step("login to cimm2touch site with username{0}, password{1}")
 	public LandingPageObjects loginToCimm2Touch() {
-	
+
 		enterUsername(loginData.get("userName"));
 		enterPassword(loginData.get("password"));
 		clickOnLogin();
 		return this;
 	}
+	
+	// Chinna Code Ends
+
+	// Priya Code Begins
+
+	// Priya Code Ends
+
+	// Rameshwar Code Begins
+	
+	// Rameshwar Code Ends
+	
+	// Vadi Code Begins
+	
+	// Vadi Code Ends
 
 }
