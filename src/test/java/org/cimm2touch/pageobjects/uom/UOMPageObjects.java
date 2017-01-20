@@ -4,10 +4,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.cimm2touch.initializer.PageFactoryInitializer;
-import org.cimm2touch.pageobjects.homepage.HomePageObjects;
-import org.cimm2touch.pageobjects.items.ItemsPageObjects;
-import org.cimm2touch.pageobjects.products.ProductsPageObjects;
-import org.cimm2touch.pageobjects.subset.SubsetPageObjects;
 import org.cimm2touch.utils.TestUtilityMethods;
 import org.framework.utils.TestUtility;
 import org.framework.utils.Waiting;
@@ -25,6 +21,7 @@ import ru.yandex.qatools.allure.annotations.Step;
 
 public class UOMPageObjects extends PageFactoryInitializer {
 
+	// Chinna Code Begins
 	TestUtility tu = new TestUtility(getDriver());
 	Waiting waiting = new Waiting(getDriver());
 	TestUtilityMethods utility = new TestUtilityMethods(getDriver());
@@ -79,8 +76,11 @@ public class UOMPageObjects extends PageFactoryInitializer {
 	@FindBy(xpath = "//span[contains(text(),'Total Count :')]/following-sibling::span")
 	private WebElement numberOfUomCountLocator;
 
-	/*@FindAll(value = { @FindBy(xpath = "//input[@title='Edit Unit Of Measure']") })
-	private List<WebElement> editButtonsLocator;*/
+	/*
+	 * @FindAll(value = { @FindBy(xpath =
+	 * "//input[@title='Edit Unit Of Measure']") }) private List<WebElement>
+	 * editButtonsLocator;
+	 */
 
 	@FindBy(xpath = "//div[contains(text(),'Display ')]/select")
 	private WebElement selectRecordsDropdownLocator;
@@ -93,8 +93,8 @@ public class UOMPageObjects extends PageFactoryInitializer {
 
 	@FindBy(xpath = "//span[contains(text(),'No results Found')]")
 	private WebElement noResultFoundLocator;
-	
-	@FindAll(value={@FindBy(xpath="//tbody[@id='listUnitOfMeasureForm:unitOfMeasureTableId:tb']/tr")})
+
+	@FindAll(value = { @FindBy(xpath = "//tbody[@id='listUnitOfMeasureForm:unitOfMeasureTableId:tb']/tr") })
 	private List<WebElement> numberOfRowCountLocator;
 
 	@Step("This method verify  bread crumbs of UOM page")
@@ -213,9 +213,7 @@ public class UOMPageObjects extends PageFactoryInitializer {
 	public UOMPageObjects createUom(String uomName, String uomDescription) throws Exception {
 		clickOnAddNewUOMLink();
 
-		enterTheUomName(uomName)
-		.enterTheUomDescription(uomDescription)
-		.clickOnSaveLink();
+		enterTheUomName(uomName).enterTheUomDescription(uomDescription).clickOnSaveLink();
 		return this;
 	}
 
@@ -303,8 +301,6 @@ public class UOMPageObjects extends PageFactoryInitializer {
 		Thread.sleep(4000);
 		return this;
 	}
-	
-	
 
 	@Step("verifying whether {0} is the number of records that is displayed.")
 	public UOMPageObjects verifyTheNumberOfRecordsDisplayed(String getNumberOfRecordsToDisplay) throws Exception {
@@ -410,5 +406,17 @@ public class UOMPageObjects extends PageFactoryInitializer {
 		return this;
 
 	}
+	// Chinna Code Ends
 
+	// Priya Code Begins
+
+	// Priya Code Ends
+
+	// Rameshwar Code Begins
+
+	// Rameshwar Code Ends
+
+	// Vadi Code Begins
+
+	// Vadi Code Ends
 }

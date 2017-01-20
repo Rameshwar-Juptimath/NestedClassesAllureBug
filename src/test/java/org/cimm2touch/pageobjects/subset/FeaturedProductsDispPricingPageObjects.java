@@ -14,6 +14,7 @@ import ru.yandex.qatools.allure.annotations.Step;
 
 public class FeaturedProductsDispPricingPageObjects extends PageFactoryInitializer {
 	
+	// Chinna Code Begins
 	TestUtility tu = new TestUtility(getDriver());
 	Waiting waiting = new Waiting(getDriver());
 	TestUtilityMethods utility = new TestUtilityMethods(getDriver());
@@ -68,5 +69,17 @@ public class FeaturedProductsDispPricingPageObjects extends PageFactoryInitializ
 		return this;
 	}
 
+	// Chinna Code Ends
 
+	// Priya Code Begins
+
+	// Priya Code Ends
+
+	// Rameshwar Code Begins
+	
+	// Rameshwar Code Ends
+	
+	// Vadi Code Begins
+	
+	// Vadi Code Ends
 }

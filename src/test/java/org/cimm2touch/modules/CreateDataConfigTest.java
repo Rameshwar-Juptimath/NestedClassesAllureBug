@@ -1,6 +1,5 @@
 package org.cimm2touch.modules;
 
-import java.io.File;
 import java.util.HashMap;
 
 import org.cimm2touch.dataprovider.SearchData;
@@ -21,7 +20,7 @@ import ru.yandex.qatools.allure.annotations.TestCaseId;
 public class CreateDataConfigTest extends PageFactoryInitializer{
 HashMap<String, String> loginData;
 	
-	
+	// Chinna Code Begins
 	@Factory(dataProvider="loginTestData", dataProviderClass=SearchData.class)
 	public CreateDataConfigTest(String userName, String password, String welcomMessage){
 		loginData=new HashMap<String, String>();
@@ -447,12 +446,19 @@ HashMap<String, String> loginData;
 		.verifySuccessMessage(expSuccessMessage)
 		.searchForCreatedWarehouse(warehouseName);
 		
-		
-		
-		
-		
-		
-		
-		
 	}
+	
+	// Chinna Code Ends
+
+		// Priya Code Begins
+
+		// Priya Code Ends
+
+		// Rameshwar Code Begins
+		
+		// Rameshwar Code Ends
+		
+		// Vadi Code Begins
+		
+		// Vadi Code Ends
 }

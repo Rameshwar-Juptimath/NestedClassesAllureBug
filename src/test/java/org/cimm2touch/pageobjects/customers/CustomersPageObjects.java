@@ -13,6 +13,8 @@ import org.testng.Assert;
 import ru.yandex.qatools.allure.annotations.Step;
 
 public class CustomersPageObjects extends PageFactoryInitializer{
+	
+	// Chinna Code Begins
 	Waiting waiting=new Waiting(getDriver());
 	TestUtility tu= new TestUtility(getDriver());
 	
@@ -168,8 +170,17 @@ public class CustomersPageObjects extends PageFactoryInitializer{
 		createNewCustomerIcon.click();
 		return this;
 	}
-	
-	
-	
+	// Chinna Code Ends
 
+	// Priya Code Begins
+
+	// Priya Code Ends
+
+	// Rameshwar Code Begins
+	
+	// Rameshwar Code Ends
+	
+	// Vadi Code Begins
+	
+	// Vadi Code Ends
 }

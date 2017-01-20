@@ -7,8 +7,22 @@
 		<parameter name="browser" value="chrome" />
 		<parameter name="Remote Url" value="http://10.200.1.188:5555/wd/hub" />
 		<classes>
+			<!-- Chinna Classes Begins -->
 			<class name="org.cimm2touch.modules.UOMModuleTest" />
 			<class name="org.cimm2touch.modules.ProductsModuleTest" />
+			<!-- Chinna Classes Ends -->
+			
+			<!-- Priya Classes Begins -->
+			
+			<!-- Priya Classes Ends -->
+			
+			<!-- Rameshwar Classes Begins -->
+			
+			<!-- Rameshwar Classes Ends -->
+			
+			<!-- Vadi Classes Begins -->
+			
+			<!-- Vadi Classes Ends -->
 		</classes>
 	</test>
 </suite>

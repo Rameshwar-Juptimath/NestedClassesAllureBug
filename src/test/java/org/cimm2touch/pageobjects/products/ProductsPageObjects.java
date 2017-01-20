@@ -20,7 +20,8 @@ import org.testng.Assert;
 import ru.yandex.qatools.allure.annotations.Step;
 
 public class ProductsPageObjects extends PageFactoryInitializer {
-
+	
+	// Chinna Code Begins
 	Waiting waiting = new Waiting(getDriver());
 	TestUtility tu = new TestUtility(getDriver());
 
@@ -491,4 +492,18 @@ public class ProductsPageObjects extends PageFactoryInitializer {
 		waiting.explicitWaitVisibilityOfElement(linkedItemsCountLocator, 25);
 		Assert.assertEquals(linkedItemsCountLocator.getText(), itemCount,"De-linking of items from prducts is not working. Item count");
 	}
+	
+	// Chinna Code Ends
+
+	// Priya Code Begins
+
+	// Priya Code Ends
+
+	// Rameshwar Code Begins
+	
+	// Rameshwar Code Ends
+	
+	// Vadi Code Begins
+	
+	// Vadi Code Ends
 }

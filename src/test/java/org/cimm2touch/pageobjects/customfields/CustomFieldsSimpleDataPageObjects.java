@@ -3,7 +3,6 @@ package org.cimm2touch.pageobjects.customfields;
 import java.util.concurrent.TimeUnit;
 
 import org.cimm2touch.initializer.PageFactoryInitializer;
-import org.cimm2touch.pageobjects.taxonomymanagement.ManageTaxonomyPageObjects;
 import org.framework.utils.TestUtility;
 import org.framework.utils.Waiting;
 import org.openqa.selenium.By;
@@ -13,11 +12,11 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
 
-import com.jayway.restassured.specification.Argument;
-
 import ru.yandex.qatools.allure.annotations.Step;
 
 public class CustomFieldsSimpleDataPageObjects extends PageFactoryInitializer{
+	
+	// Chinna Code Begins
 	TestUtility tu = new TestUtility(getDriver());
 	Waiting waiting = new Waiting(getDriver());
 	
@@ -172,13 +171,17 @@ public class CustomFieldsSimpleDataPageObjects extends PageFactoryInitializer{
 		return this;
 		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
+	// Chinna Code Ends
 
+	// Priya Code Begins
+
+	// Priya Code Ends
+
+	// Rameshwar Code Begins
+	
+	// Rameshwar Code Ends
+	
+	// Vadi Code Begins
+	
+	// Vadi Code Ends
 }

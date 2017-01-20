@@ -3,7 +3,6 @@ package org.cimm2touch.pageobjects.managelists;
 import java.util.concurrent.TimeUnit;
 
 import org.cimm2touch.initializer.PageFactoryInitializer;
-import org.cimm2touch.pageobjects.homepage.HomePageObjects;
 import org.framework.utils.TestUtility;
 import org.framework.utils.Waiting;
 import org.openqa.selenium.By;
@@ -17,6 +16,7 @@ import ru.yandex.qatools.allure.annotations.Step;
 
 public class ManageListsPageObjets extends PageFactoryInitializer{
 	
+	// Chinna Code Begins
 	TestUtility tu = new TestUtility(getDriver());
 	Waiting waiting = new Waiting(getDriver());
 	
@@ -137,4 +137,17 @@ public class ManageListsPageObjets extends PageFactoryInitializer{
 		return this;
 	}
 
+	// Chinna Code Ends
+
+	// Priya Code Begins
+
+	// Priya Code Ends
+
+	// Rameshwar Code Begins
+	
+	// Rameshwar Code Ends
+	
+	// Vadi Code Begins
+	
+	// Vadi Code Ends
 }

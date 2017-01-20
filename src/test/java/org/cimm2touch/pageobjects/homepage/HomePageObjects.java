@@ -23,6 +23,7 @@ import ru.yandex.qatools.allure.annotations.Step;
 
 public class HomePageObjects extends PageFactoryInitializer{
 	
+	// Chinna Code Begins
 	 Waiting waiting = new Waiting(getDriver());
 	
 
@@ -337,8 +338,19 @@ public class HomePageObjects extends PageFactoryInitializer{
 		Thread.sleep(2500);
 		return this;
 	}
-	
+	// Chinna Code Ends
 
+	// Priya Code Begins
+
+	// Priya Code Ends
+
+	// Rameshwar Code Begins
+	
+	// Rameshwar Code Ends
+	
+	// Vadi Code Begins
+	
+	// Vadi Code Ends
 	
 }
 

@@ -4,10 +4,23 @@ import org.framework.maincontroller.MainController;
 import org.framework.utils.PropertyFileReader;
 
 public class SearchDataPropertyFile extends MainController {
+	
+	// Chinna Code Begins
 	private String numberOfRecordsToDisplay;
 
 	PropertyFileReader propertyFileReader = new PropertyFileReader();
-	//Rameshwar Start
+	
+	// Chinna Code Ends
+	
+	// Priya Code Begins
+
+	// Priya Code Ends
+
+	// Vadi Code Begins
+	
+	// Vadi Code Ends
+	
+	//Rameshwar Code Begins
 	private String loginData="resources/LoginData.properties";
 	private String productData="resources/ProductData.properties";
 	
@@ -18,7 +31,6 @@ public class SearchDataPropertyFile extends MainController {
 	private String productName = propertyFileReader.propertiesReader(productData, "productName");
 	private String productNumber = propertyFileReader.propertiesReader(productData, "productNumber");
 	private String productCreationSuccessMsg = propertyFileReader.propertiesReader(productData, "productCreationSuccessMsg");
-	//Rameshwar End
 	
 	public void setNumberOfRecordsToDisplay(String numberOfRecordsToDisplay) {
 		this.numberOfRecordsToDisplay = numberOfRecordsToDisplay;
@@ -33,7 +45,6 @@ public class SearchDataPropertyFile extends MainController {
 		this.numberOfRecordsToDisplay = numberOfRecordsToDisplay;
 	}
 
-	//Rameshwar Start
 	public String getUsername(){
 		return userName;
 	}
@@ -54,5 +65,5 @@ public class SearchDataPropertyFile extends MainController {
 		return productCreationSuccessMsg;
 	}
 	
-	//Rameshwar End
+	//Rameshwar Code Ends
 }
