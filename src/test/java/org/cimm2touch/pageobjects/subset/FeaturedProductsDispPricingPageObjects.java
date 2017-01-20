@@ -37,7 +37,7 @@ public class FeaturedProductsDispPricingPageObjects extends PageFactoryInitializ
 		utility.assertElementPresent(featuredProductsPageLocator);
 		waiting.explicitWaitVisibilityOfElement(subsetListDisplayPricingLocator, 10);
 		Assert.assertEquals(subsetListDisplayPricingLocator.getText().trim(), subsetDisplayePricing.trim());
-		//Thread.sleep(2000);
+		Thread.sleep(2000);
 		return this;
 	}
 	

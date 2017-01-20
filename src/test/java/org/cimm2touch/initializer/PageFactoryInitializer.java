@@ -1,14 +1,9 @@
 package org.cimm2touch.initializer;
 import org.cimm2touch.pageobjects.adminstration.SystemSettingsPageObjects;
-
-
-
 import org.cimm2touch.pageobjects.customers.CustomersPageObjects;
 import org.cimm2touch.pageobjects.customfields.CustomFieldsSimpleDataPageObjects;
 import org.cimm2touch.pageobjects.customfields.CustomFieldsTableDataPageObjects;
-
 import org.cimm2touch.pageobjects.homepage.HomePageObjects;
-
 import org.cimm2touch.pageobjects.items.AddNewItemPageObjects;
 import org.cimm2touch.pageobjects.items.CopyOfItemPageObjects;
 import org.cimm2touch.pageobjects.items.EditItemsPageObjects;
@@ -24,6 +19,8 @@ import org.cimm2touch.pageobjects.products.ProductEditPageObjects;
 import org.cimm2touch.pageobjects.products.ProductsListPageObjects;
 import org.cimm2touch.pageobjects.products.ProductsPageObjects;
 import org.cimm2touch.pageobjects.subset.CatalogBuilderPageObjects;
+import org.cimm2touch.pageobjects.subset.FeaturedProductsDispPricingPageObjects;
+import org.cimm2touch.pageobjects.subset.SubsetItemsPageObjects;
 import org.cimm2touch.pageobjects.subset.SubsetPageObjects;
 import org.cimm2touch.pageobjects.taxonomymanagement.AttributeGroupsPageObjects;
 import org.cimm2touch.pageobjects.taxonomymanagement.AttributesPageObjects;
@@ -40,12 +37,6 @@ import org.cimm2touch.pageobjects.warehouse.WareHousePageObjects;
 import org.framework.maincontroller.CallApplication;
 import org.openqa.selenium.support.PageFactory;
 
-import org.cimm2touch.pageobjects.subset.CatalogBuilderPageObjects;
-import org.cimm2touch.pageobjects.subset.FeaturedProductsDispPricingPageObjects;
-import org.cimm2touch.pageobjects.subset.SubsetItemsPageObjects;
-import org.cimm2touch.pageobjects.subset.SubsetPageObjects;
-import org.cimm2touch.pageobjects.homepage.HomePageObjects;
-
 
 public class PageFactoryInitializer extends CallApplication
 {
@@ -55,7 +46,6 @@ public class PageFactoryInitializer extends CallApplication
 		return homePage;
 	}
 
-	
 	public LandingPageObjects landingPage()
 	{
 		LandingPageObjects landingPage = PageFactory.initElements(getDriver(),LandingPageObjects.class);
