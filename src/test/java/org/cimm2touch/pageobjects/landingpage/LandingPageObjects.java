@@ -64,7 +64,7 @@ public class LandingPageObjects extends PageFactoryInitializer {
 	@Step("Click on login")
 	public HomePageObjects clickOnLogin() {
 		loginButtonLocator.click();
-		return new HomePageObjects();
+		return homePage();
 	}
 
 	@Step("login to cimm2touch site with username{0}, password{1}")

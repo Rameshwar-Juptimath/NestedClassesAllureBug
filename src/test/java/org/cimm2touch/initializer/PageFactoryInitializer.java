@@ -35,6 +35,7 @@ import org.cimm2touch.pageobjects.userconfiguration.UserConfigurationPageObjects
 import org.cimm2touch.pageobjects.vendors.EditVendorsPageObjects;
 import org.cimm2touch.pageobjects.vendors.VendorsPageObjects;
 import org.cimm2touch.pageobjects.warehouse.WareHousePageObjects;
+import org.cimm2touch.pageobjects.workbookutilities.WorkBookUtilitiesPageObjects;
 import org.framework.maincontroller.CallApplication;
 import org.openqa.selenium.support.PageFactory;
 
@@ -246,10 +247,15 @@ public class PageFactoryInitializer extends CallApplication {
 	// Priya Code Ends
 
 	// Rameshwar Code Begins
-	
+
+	public WorkBookUtilitiesPageObjects workBookUtilitiesPage() {
+		WorkBookUtilitiesPageObjects workBookUtilitiesPage = PageFactory.initElements(getDriver(),
+				WorkBookUtilitiesPageObjects.class);
+		return workBookUtilitiesPage;
+	}
 	// Rameshwar Code Ends
-	
+
 	// Vadi Code Begins
-	
+
 	// Vadi Code Ends
 }

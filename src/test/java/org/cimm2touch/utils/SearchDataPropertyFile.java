@@ -23,6 +23,7 @@ public class SearchDataPropertyFile extends MainController {
 	//Rameshwar Code Begins
 	private String loginData="resources/LoginData.properties";
 	private String productData="resources/ProductData.properties";
+	private String workbookData="resources/WorkbookData.properties";
 	
 	private String userName = propertyFileReader.propertiesReader(loginData, "userName");
 	private String password = propertyFileReader.propertiesReader(loginData, "password");
@@ -31,6 +32,9 @@ public class SearchDataPropertyFile extends MainController {
 	private String productName = propertyFileReader.propertiesReader(productData, "productName");
 	private String productNumber = propertyFileReader.propertiesReader(productData, "productNumber");
 	private String productCreationSuccessMsg = propertyFileReader.propertiesReader(productData, "productCreationSuccessMsg");
+	
+	private String workbookName = propertyFileReader.propertiesReader(workbookData, "workbookName");
+	private String workbookCreationSuccessMsg = propertyFileReader.propertiesReader(workbookData, "workbookCreationSuccessMsg");
 	
 	public void setNumberOfRecordsToDisplay(String numberOfRecordsToDisplay) {
 		this.numberOfRecordsToDisplay = numberOfRecordsToDisplay;
@@ -65,5 +69,13 @@ public class SearchDataPropertyFile extends MainController {
 		return productCreationSuccessMsg;
 	}
 	
+	
+	public String getWorkbookName(){
+		return workbookName;
+	}
+	
+	public String getWorkbookCreationSuccessMsg(){
+		return workbookCreationSuccessMsg;
+	}
 	//Rameshwar Code Ends
 }

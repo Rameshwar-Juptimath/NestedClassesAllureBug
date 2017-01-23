@@ -133,6 +133,13 @@ public class SearchData {
 	// Vadi Code Ends
 
 	// Rameshwar Code Begins
-
+	
+	@DataProvider(name = "WorkbookUtilitiesModuleTest")
+	public static Object[][] workbookUtilitiesModuleTest(Method methodName) throws Exception {
+		File file = new File("resources/ExcelSheetData/WorkbookUtilitiesModuleTest.xlsx");
+		ExcelLibrary excel = new ExcelLibrary("resources/ExcelSheetData/WorkbookUtilitiesModuleTest.xlsx", methodName.getName());
+		Object data[][] = excel.readFromExcelDataForTestNGDataProvider(file.getAbsolutePath(), methodName.getName());
+		return data;
+	}
 	// Rameshwar Code Ends
 }
