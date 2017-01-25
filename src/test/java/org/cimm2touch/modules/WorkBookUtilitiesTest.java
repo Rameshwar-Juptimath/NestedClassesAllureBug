@@ -1,9 +1,11 @@
 package org.cimm2touch.modules;
 
+import java.io.File;
 import java.util.Hashtable;
 
 import org.cimm2touch.dataprovider.SearchData;
 import org.cimm2touch.initializer.PageFactoryInitializer;
+import org.cimm2touch.utils.ExcelWriter;
 import org.cimm2touch.utils.SearchDataPropertyFile;
 import org.framework.utils.PermittedCharacters;
 import org.framework.utils.RandomGenerator;
@@ -11,6 +13,7 @@ import org.testng.annotations.Test;
 
 import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Features;
+import ru.yandex.qatools.allure.annotations.Issue;
 import ru.yandex.qatools.allure.annotations.TestCaseId;
 
 public class WorkBookUtilitiesTest extends PageFactoryInitializer{
@@ -85,6 +88,47 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 			.verifyBlankWorkbookErrorMessage(saveBlankWorkBookErrorMsg);
 		}
 	
+		@Features(value = {"Workbook Utitlites Module"})
+		@Description("Verification of 'Import Items to Workbook' page")
+		@TestCaseId("TC_WU_012")
+		public void TC_WU_012() throws Exception{
+			
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
+			.clickOnWorkbookUtilitiesLink()
+			.clickOnImportItemsToWorkbookTab()
+			.verifySelectWorkBookDropDown()
+			.verifyDownloadTemplateLink()
+			.verifySelectFileFormatDropDown()
+			.verifyUploadButton()
+			.verifyItemsInWorkbookDropDown();
+		}
+
+		@Features(value = {"Workbook Utitlites Module"})
+		@Description("Verification of 'Bulk Item Categorization' page")
+		@TestCaseId("TC_WU_021")
+		public void TC_WU_021() throws Exception{
+			String taxonomyName="Automation_Taxonomy";
+			String[] categoriesList = { "BIKES_Automation", "BOOKS_Automation", "CARS_Automation123",
+					"MOBILES_Automation" };
+			
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin();
+			homePage()
+			.clickOnWorkbookUtilitiesLink()
+			.clickOnBulkItemCategorizationTab();
+			Thread.sleep(6000);
+			workBookUtilitiesPage()
+			.verifyForWorkbookItemsDropDown()
+			.verifyMakeSelectedCategoryAsDefaultCheckbox()
+			.verifyItemsInWorkbookDropDown()
+			.verifyDoChangesForWorkbookItemsButton()
+			.enterTaxonomyName(taxonomyName)
+			.clickOnTaxonomyName(taxonomyName);
+			Thread.sleep(3000);
+			workBookUtilitiesPage()
+			.verifyCategoriesList(categoriesList);
+			
+		}
+		
 	}
 	
 	@Test(groups={"regression", workBookUtilitiesCreation})
@@ -106,6 +150,9 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 	
 	@Test(groups = { "regression",workBookUtilitiesDependent })//,dependsOnGroups= {workBookUtilitiesCreation})
 	public class WorkBookUtilitiesCreationDependent extends PageFactoryInitializer {
+		
+		final static String importItemsByPN="ImportItemsByPN";
+		final static String importItemsByPnMpn="ImportItemsByPN-MN";
 		
 		@Features(value = {"Workbook Utitlites Module"})
 		@Description("Verification of 'Reset' functionality")
@@ -134,11 +181,294 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 			.clickOnListItemsInWorkbookButton(data.getWorkbookName())
 			.verifyAllItemListHeaders(itemListHeaders);
 		}
+		
+		
+		@Features(value = {"Workbook Utitlites Module"})
+		@Description("Verification of downloading template and 'Import Items to Workbook' functionality using file format as 'Part Number'")
+		@TestCaseId("TC_WU_013_014")
+		@Issue("Need to implement Auto IT scripts")
+		@Test(groups = importItemsByPN,dataProvider="WorkbookUtilitiesModuleTest",dataProviderClass=SearchData.class)//,enabled=false)
+		public void TC_WU_013_14(String excelSheetPath, String excelSheetName,String itemAddedSuccessMsg) throws Exception{
+			
+			String projectPath = System.getProperty("user.dir");
+			excelSheetPath = projectPath + "/" + excelSheetPath;
+
+			String[] itemPartNumbers = { "Auto TestPN 1", "Auto TestPN 2", "Auto TestPN 3" };
+			String templateFilePath = System.getProperty("user.home") + "\\Downloads\\WorkbookItemsTemplate.xlsx";
+
+			File file = new File(templateFilePath);
+			file.delete();
+			
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
+			.clickOnWorkbookUtilitiesLink()
+			.clickOnImportItemsToWorkbookTab()
+			.clickOnDownloadTemplateButton();
+			
+			Thread.sleep(10000);
+			
+			workBookUtilitiesPage()
+			.verifyTemplateFileDownload(templateFilePath);
+			
+			ExcelWriter workBookTemplateFile = new ExcelWriter(excelSheetPath, excelSheetName);
+			for (int i = 0; i < itemPartNumbers.length; i++) {
+				workBookTemplateFile.writeToCell(i + 1, 0, itemPartNumbers[i]);
+			}
+			
+			workBookUtilitiesPage()
+			.selectWorkbook(data.getWorkbookName())
+			.clickOnUploadButton()
+			.enterFileLocationInUploadDialogbox(excelSheetPath);
+			Thread.sleep(4000);
+			workBookUtilitiesPage()
+			.clickOnUploadFileButton()
+			.verifyItemsAddedToWorkbookMsg(itemAddedSuccessMsg,itemPartNumbers.length);
+		}
+
+		@Features(value = { "Workbook Utitlites Module" })
+		@Description("Verification of removing items from the workbook")
+		@TestCaseId("TC_WU_008")
+		@Test(groups = importItemsByPN,dependsOnMethods = "TC_WU_013_14")
+		public void TC_WU_008() throws Exception {
+			
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
+			.clickOnWorkbookUtilitiesLink()
+			.clickOnListItemsInWorkbook(data.getWorkbookName())
+			.clickOnRemoveButtonOfItem("AutoTestPN 1")
+			.acceptAlert();
+			Thread.sleep(6000);
+			workBookUtilitiesPage()
+			.verifyItemNotPresentInList("AutoTestPN 1");
+		}
+		
+		@Features(value = { "Workbook Utitlites Module" })
+		@Description("Verification of removing all items from the workbook ")
+		@TestCaseId("TC_WU_009")
+		@Test(groups = "ImportItemsByPN",dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class, dependsOnMethods = { "TC_WU_008" }, alwaysRun=true)
+		public void TC_WU_009(String allItemsRemoveMsg) throws Exception {
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
+			.clickOnWorkbookUtilitiesLink()
+			.clickOnListItemsInWorkbook(data.getWorkbookName())
+			.clickOnSelectAllCheckbox();
+			Thread.sleep(3000);
+			workBookUtilitiesPage()
+			.clickOnRemoveSelectedItemsFromWorkbook()
+			.acceptAlert();
+			Thread.sleep(6000);
+			workBookUtilitiesPage()
+			.verifyItemRemoveMsg(allItemsRemoveMsg);
+		}
+		
+		
+		@Features(value = { "Workbook Utitlites Module" })
+		@Description("Verification of 'Import Items to Workbook' functionality using file format as Part Number, Manufacturer Name' ")
+		@TestCaseId("TC_WU_015")
+		@Issue("Need to implement Auto IT scripts")
+		@Test(groups = importItemsByPnMpn, dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class, dependsOnGroups = {
+				importItemsByPN }, alwaysRun = true, enabled = false)
+		public void TC_WU_015(String excelSheetPath, String excelSheetName,String itemAddedSuccessMsg) throws Exception{
+			
+			String projectPath = System.getProperty("user.dir");
+			excelSheetPath = projectPath + "/" + excelSheetPath;
+
+			String[] itemPartNumbers = { "Auto TestPN 1", "Auto TestPN 2", "Auto TestPN 3" };
+			String[] manufacturerNames = { "Auto TestManufacturer 2212", "Auto TestManufacturer 2212", "Auto TestManufacturer 2212" };
+
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
+			.clickOnWorkbookUtilitiesLink()
+			.clickOnImportItemsToWorkbookTab();
+			
+			Thread.sleep(10000);
+			
+			ExcelWriter workBookTemplateFile = new ExcelWriter(excelSheetPath, excelSheetName);
+			for (int i = 0; i < itemPartNumbers.length; i++) {
+				workBookTemplateFile.writeToCell(i + 1, 0, itemPartNumbers[i]);
+				workBookTemplateFile.writeToCell(i + 1, 1, manufacturerNames[i]);
+			}
+			
+			workBookUtilitiesPage()
+			.selectWorkbook(data.getWorkbookName())
+			.selectFileFormat("Part Number, Manufacturer Name")
+			.clickOnUploadButton()
+			.enterFileLocationInUploadDialogbox(excelSheetPath)
+			.clickOnUploadFileButton()
+			.verifyItemsAddedToWorkbookMsg(itemAddedSuccessMsg,itemPartNumbers.length);
+		}
+		
+		@Features(value = { "Workbook Utitlites Module" })
+		@Description("Verification of 'Purge all items in this workbook' functionality")
+		@TestCaseId("TC_WU_015")
+		@Issue("Need to implement Auto IT scripts")
+		@Test(groups = importItemsByPnMpn, dependsOnMethods = { "TC_WU_015" })
+		public void TC_WU_010() throws Exception{
+			
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
+			.clickOnWorkbookUtilitiesLink()
+			.clickOnPurgeAllItemsInThisWorkbookButton(data.getWorkbookName())
+			.acceptAlert()
+			.verifyPurgeAllItemsInThisWorkbookSuccessMsg(data.getWorkbookName());
+		}
+	
+		@Features(value = { "Workbook Utitlites Module" })
+		@Description("Verification of 'Import Items to Workbook' functionality using file format as 'Part Number, Brand Name, Manufacturer Name'")
+		@TestCaseId("TC_WU_016")
+		@Issue("Need to implement Auto IT scripts")
+		@Test(dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class, dependsOnGroups = { importItemsByPN }, alwaysRun = true, enabled = false)
+		public void TC_WU_016(String excelSheetPath, String excelSheetName,String itemAddedSuccessMsg) throws Exception{
+			
+			String projectPath = System.getProperty("user.dir");
+			excelSheetPath = projectPath + "/" + excelSheetPath;
+
+			String[] itemPartNumbers = { "Auto TestPN 1", "Auto TestPN 2", "Auto TestPN 3" };
+			String[] brandNames = { "Auto TestBrand 2212", "Auto TestBrand 2212", "Auto TestBrand 2212" };
+			String[] manufacturerNames = { "Auto TestManufacturer 2212", "Auto TestManufacturer 2212", "Auto TestManufacturer 2212" };
+
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
+			.clickOnWorkbookUtilitiesLink()
+			.clickOnImportItemsToWorkbookTab();
+			
+			Thread.sleep(10000);
+			
+			ExcelWriter workBookTemplateFile = new ExcelWriter(excelSheetPath, excelSheetName);
+			for (int i = 0; i < itemPartNumbers.length; i++) {
+				workBookTemplateFile.writeToCell(i + 1, 0, itemPartNumbers[i]);
+				workBookTemplateFile.writeToCell(i + 1, 1, brandNames[i]);
+				workBookTemplateFile.writeToCell(i + 1, 2, manufacturerNames[i]);
+			}
+			
+			workBookUtilitiesPage()
+			.selectWorkbook(data.getWorkbookName())
+			.selectFileFormat("Part Number, Brand Name, Manufacturer Name")
+			.clickOnUploadButton()
+			.enterFileLocationInUploadDialogbox(excelSheetPath)
+			.clickOnUploadFileButton()
+			.verifyItemsAddedToWorkbookMsg(itemAddedSuccessMsg,itemPartNumbers.length);
+		}
+	
+		@Features(value = { "Workbook Utitlites Module" })
+		@Description("Verification of 'Import Items to Workbook' functionality using file format as 'Manufacturer Part Number, Manufacturer Name'")
+		@TestCaseId("TC_WU_017")
+		@Issue("Need to implement Auto IT scripts")
+		@Test(dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class, dependsOnGroups = { importItemsByPN }, alwaysRun = true, enabled = false)
+		public void TC_WU_017(String excelSheetPath, String excelSheetName,String itemAddedSuccessMsg) throws Exception{
+			
+			String projectPath = System.getProperty("user.dir");
+			excelSheetPath = projectPath + "/" + excelSheetPath;
+
+			String[] manufacturerPartNumbers = { "Auto TestMPN 1", "Auto TestMPN 2", "Auto TestMPN 3" };
+			String[] manufacturerNames = { "Auto TestManufacturer 2212", "Auto TestManufacturer 2212", "Auto TestManufacturer 2212" };
+
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
+			.clickOnWorkbookUtilitiesLink()
+			.clickOnImportItemsToWorkbookTab();
+			
+			Thread.sleep(10000);
+			
+			ExcelWriter workBookTemplateFile = new ExcelWriter(excelSheetPath, excelSheetName);
+			for (int i = 0; i < manufacturerPartNumbers.length; i++) {
+				workBookTemplateFile.writeToCell(i + 1, 0, manufacturerPartNumbers[i]);
+				workBookTemplateFile.writeToCell(i + 1, 1, manufacturerNames[i]);
+			}
+			
+			workBookUtilitiesPage()
+			.selectWorkbook(data.getWorkbookName())
+			.selectFileFormat("Manufacturer Part Number, Manufacturer Name")
+			.clickOnUploadButton()
+			.enterFileLocationInUploadDialogbox(excelSheetPath)
+			.clickOnUploadFileButton();
+			Thread.sleep(5000);
+			workBookUtilitiesPage()
+			.verifyItemsAddedToWorkbookMsg(itemAddedSuccessMsg,manufacturerPartNumbers.length);
+		}
+
+		@Features(value = { "Workbook Utitlites Module" })
+		@Description("Verification of 'Import Items to Workbook' functionality using file format as 'Manufacturer Part Number, Brand Name'")
+		@TestCaseId("TC_WU_018")
+		@Issue("Need to implement Auto IT scripts")
+		@Test(dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class, dependsOnGroups = { importItemsByPN }, alwaysRun = true, enabled = false)
+		public void TC_WU_018(String excelSheetPath, String excelSheetName,String itemAddedSuccessMsg) throws Exception{
+			
+			String projectPath = System.getProperty("user.dir");
+			excelSheetPath = projectPath + "/" + excelSheetPath;
+
+			String[] manufacturerPartNumbers = { "Auto TestMPN 1", "Auto TestMPN 2", "Auto TestMPN 3" };
+			String[] brandNames = { "Auto TestBrand 2212", "Auto TestBrand 2212", "Auto TestBrand 2212" };
+
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
+			.clickOnWorkbookUtilitiesLink()
+			.clickOnImportItemsToWorkbookTab();
+			
+			Thread.sleep(10000);
+			
+			ExcelWriter workBookTemplateFile = new ExcelWriter(excelSheetPath, excelSheetName);
+			for (int i = 0; i < manufacturerPartNumbers.length; i++) {
+				workBookTemplateFile.writeToCell(i + 1, 0, manufacturerPartNumbers[i]);
+				workBookTemplateFile.writeToCell(i + 1, 1, brandNames[i]);
+			}
+			
+			workBookUtilitiesPage()
+			.selectWorkbook(data.getWorkbookName())
+			.selectFileFormat("Manufacturer Part Number, Brand Name")
+			.clickOnUploadButton()
+			.enterFileLocationInUploadDialogbox(excelSheetPath)
+			.clickOnUploadFileButton();
+			Thread.sleep(5000);
+			workBookUtilitiesPage()
+			.verifyItemsAddedToWorkbookMsg(itemAddedSuccessMsg,manufacturerPartNumbers.length);
+		}
+
+		@Features(value = { "Workbook Utitlites Module" })
+		@Description("Verification of 'Import Items to Workbook' functionality using file format as 'UPC'")
+		@TestCaseId("TC_WU_019")
+		@Issue("Need to implement Auto IT scripts")
+		@Test(dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class, dependsOnGroups = { importItemsByPN }, alwaysRun = true, enabled = false)
+		public void TC_WU_019(String excelSheetPath, String excelSheetName,String itemAddedSuccessMsg) throws Exception{
+			
+			String projectPath = System.getProperty("user.dir");
+			excelSheetPath = projectPath + "/" + excelSheetPath;
+
+			String[] uPCs = { "Auto UPC 1", "Auto UPC 2", "Auto UPC 3" };
+
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
+			.clickOnWorkbookUtilitiesLink()
+			.clickOnImportItemsToWorkbookTab();
+			
+			Thread.sleep(10000);
+			
+			ExcelWriter workBookTemplateFile = new ExcelWriter(excelSheetPath, excelSheetName);
+			for (int i = 0; i < uPCs.length; i++) {
+				workBookTemplateFile.writeToCell(i + 1, 0, uPCs[i]);
+			}
+			
+			workBookUtilitiesPage()
+			.selectWorkbook(data.getWorkbookName())
+			.selectFileFormat("UPC")
+			.clickOnUploadButton()
+			.enterFileLocationInUploadDialogbox(excelSheetPath)
+			.clickOnUploadFileButton();
+			Thread.sleep(5000);
+			workBookUtilitiesPage()
+			.verifyItemsAddedToWorkbookMsg(itemAddedSuccessMsg,uPCs.length);
+		}
+
 	}
 		
 	@Test(groups={"regression"},dependsOnGroups = {workBookUtilitiesDependent},alwaysRun=true)
 	public class WorkBookUtilitiesRemoval extends PageFactoryInitializer{
 
+		@Features(value = { "Workbook Utitlites Module" })
+		@Description("Verification of 'Remove this workbook' functionality")
+		@TestCaseId("TC_WU_011")
+		public void TC_WU_011() throws Exception {
+			
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
+			.clickOnWorkbookUtilitiesLink()
+			.clickOnRemoveButtonOfWorkbook(data.getWorkbookName())
+			.acceptAlert();
+			Thread.sleep(5000);
+			workBookUtilitiesPage()
+			.verifyWorkbookNameNotPresentInDropDown(data.getWorkbookName());
+		}
+		
 	}
 		
 

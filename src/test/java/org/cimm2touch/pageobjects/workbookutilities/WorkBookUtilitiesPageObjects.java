@@ -1,5 +1,6 @@
 package org.cimm2touch.pageobjects.workbookutilities;
 
+import java.io.File;
 import java.util.List;
 
 import org.cimm2touch.initializer.PageFactoryInitializer;
@@ -51,6 +52,60 @@ public class WorkBookUtilitiesPageObjects extends PageFactoryInitializer {
 
 	@FindAll(value = { @FindBy(xpath = "//span[contains(@id,'storedItemListTableId')]") })
 	private List<WebElement> allListItemHeadersLocator;
+
+	@FindBy(how = How.XPATH, using = "//td[contains(text(),'Import Items to Workbook')]")
+	private WebElement importItemsToWorkbookTabLocator;
+
+	@FindBy(how = How.XPATH, using = "//select[contains(@id,'newWBid')]")
+	private WebElement selectWorkbookLocator;
+
+	@FindBy(how = How.XPATH, using = "//a[@id='selectWorkbookForm:sampleTamplete']")
+	private WebElement downloadTemplateLinkLocator;
+
+	@FindBy(how = How.XPATH, using = "//select[@id='selectWorkbookForm:uploadFormatSelectionId']")
+	private WebElement selectFileFormatDropDownLocator;
+
+	@FindBy(how = How.XPATH, using = "//object[@id='selectWorkbookForm:dataFileUploadId:flashContainer']")
+	private WebElement uploadButtonLocator;
+
+	@FindBy(how = How.XPATH, using = "//span[@id='selectWorkbookForm:itemsToWorkbookSessionMessage']")
+	private WebElement itemAddedSuccessMsgLocator;
+
+	@FindBy(how = How.XPATH, using = "//div[normalize-space(text())='Upload File']")
+	private WebElement uploadFileButtonLocator;
+
+	@FindBy(how = How.XPATH, using = "//span[@id='storeItemListTableFormId:removeMsId']")
+	private WebElement itemRemoveMsgLocator;
+
+	@FindBy(how = How.XPATH, using = "//input[@id='storeItemListTableFormId:storedItemListTableId:SALL']")
+	private WebElement selectAllItemsLocator;
+
+	@FindBy(how = How.XPATH, using = "//input[normalize-space(@title)='Remove Selected Items From WorkBook']")
+	private WebElement removeSelectedItemsFromWorkbookLocator;
+
+	@FindBy(how = How.XPATH, using = "//td[normalize-space(text())='workBookName']/..//input[normalize-space(@title)='Purge All Items In this WorkBook']")
+	private WebElement purgeItemsInThisWorkbookLocator;
+
+	@FindBy(how = How.XPATH, using = "//span[contains(@id,'AddNewWrkSaveMes')]")
+	private WebElement purgeAllItemsInThisWorkbookSuccessMsgLocator;
+
+	@FindBy(how = How.XPATH, using = "//td[contains(text(),'Bulk Item Categorization')]")
+	private WebElement bulkItemCategorizationTabLocator;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'For WorkBook Items')]//select[contains(@id,'MIUitemCtgForm:searchInId')]")
+	private WebElement forWorkbookItemsDropDownLocator;
+
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Make Selected Category As Default')]/input[@id='MIUitemCtgForm:defaultCategory']")
+	private WebElement makeSelectedCategoryAsDefaultLocator;
+
+	@FindBy(how = How.XPATH, using = "//input[@value='Do Changes For Workbook Items']")
+	private WebElement doChangesForWorkbookItemsLocator;
+
+	@FindBy(how = How.XPATH, using = "//input[@id='MIUtaxonomyListId:MIUtaxonomyListComboIdcomboboxField']")
+	private WebElement taxonomyLocator;
+
+	@FindAll(@FindBy(how = How.XPATH, using = "//span[contains(@id,'ttformid:MIUtaxonomyTreeId')]"))
+	private List<WebElement> taxonomyCategoriesListLocator;
 
 	@Step("Verify if tabs \"{0}\" are present in Workbook Utilites Page")
 	public WorkBookUtilitiesPageObjects verifyAllTabs(String tabsList) {
@@ -214,6 +269,248 @@ public class WorkBookUtilitiesPageObjects extends PageFactoryInitializer {
 		for (int i = 0; i < fieldsListTobeVerified.length; i++) {
 			Assert.assertEquals(fieldsListTobeVerified[i].trim(), allListItemHeadersLocator.get(i).getText().trim(),
 					"A header in Item list Headers is displayed incorrectly");
+		}
+		return this;
+	}
+
+	@Step("Click On \"Import Items to Workbook\" tab")
+	public WorkBookUtilitiesPageObjects clickOnImportItemsToWorkbookTab() {
+		waiting.explicitWaitVisibilityOfElement(importItemsToWorkbookTabLocator, 10);
+		importItemsToWorkbookTabLocator.click();
+		return this;
+	}
+
+	@Step("Verify if \"Select workbook\" drop down is displayed in \"Import Items to Workbook\" tab")
+	public WorkBookUtilitiesPageObjects verifySelectWorkBookDropDown() {
+		waiting.explicitWaitVisibilityOfElement(selectWorkbookLocator, 10);
+		Assert.assertTrue(selectWorkbookLocator.isDisplayed(),
+				"\"Select workbook\" drop down is not displayed in \"Import Items to Workbook\" tab");
+		return this;
+	}
+
+	@Step("Verify if \"Download Template\" link is displayed in \"Import Items to Workbook\" tab")
+	public WorkBookUtilitiesPageObjects verifyDownloadTemplateLink() {
+		waiting.explicitWaitVisibilityOfElement(downloadTemplateLinkLocator, 10);
+		Assert.assertTrue(downloadTemplateLinkLocator.isDisplayed(),
+				"\"Download Template\" link is not displayed in \"Import Items to Workbook\" tab");
+		return this;
+	}
+
+	@Step("Verify if \"Select the File format\" drop down is displayed in \"Import Items to Workbook\" tab")
+	public WorkBookUtilitiesPageObjects verifySelectFileFormatDropDown() {
+		waiting.explicitWaitVisibilityOfElement(selectFileFormatDropDownLocator, 10);
+		Assert.assertTrue(selectFileFormatDropDownLocator.isDisplayed(),
+				"\"Select the File format\" drop down is not displayed in \"Import Items to Workbook\" tab");
+		return this;
+	}
+
+	@Step("Verify if \"Upload\" button is displayed in \"Import Items to Workbook\" tab")
+	public WorkBookUtilitiesPageObjects verifyUploadButton() {
+		waiting.explicitWaitVisibilityOfElement(uploadButtonLocator, 10);
+		Assert.assertTrue(uploadButtonLocator.isDisplayed(),
+				"\"Upload\" button is not displayed in \"Import Items to Workbook\" tab");
+		return this;
+	}
+
+	@Step("Click On \"Download template\" button in \"Import Items to Workbook\" in tab")
+	public WorkBookUtilitiesPageObjects clickOnDownloadTemplateButton() {
+		waiting.explicitWaitVisibilityOfElement(downloadTemplateLinkLocator, 10);
+		downloadTemplateLinkLocator.click();
+		return this;
+	}
+
+	@Step("Verify if template file has been downloaded at \"{0}\"")
+	public WorkBookUtilitiesPageObjects verifyTemplateFileDownload(String filePath) {
+		Assert.assertTrue(new File(filePath).exists(), "Unable to download template file");
+		return this;
+	}
+
+	@Step("Click On Upload button in \"Import Items to Workbook\" in tab")
+	public WorkBookUtilitiesPageObjects clickOnUploadButton() {
+		waiting.explicitWaitVisibilityOfElement(uploadButtonLocator, 10);
+		uploadButtonLocator.click();
+		return this;
+	}
+
+	@Step("Enter File path as \"{0}\" in File Upload dialog box")
+	public WorkBookUtilitiesPageObjects enterFileLocationInUploadDialogbox(String fileLocation) throws Exception {
+
+		Thread.sleep(2000);
+
+		String path = fileLocation.replaceAll("/+", "\\\\");
+		tu.fileUpload(path);
+
+		Thread.sleep(2500);
+		return this;
+	}
+
+	@Step("Verify message after adding items to workbook: Msg:{0}, TotalItems:{1}")
+	public WorkBookUtilitiesPageObjects verifyItemsAddedToWorkbookMsg(String itemAddedSuccessMsg, int totalItemsAdded) {
+		waiting.explicitWaitVisibilityOfElement(itemAddedSuccessMsgLocator, 10);
+		Assert.assertEquals(itemAddedSuccessMsgLocator.getText().trim().toLowerCase(),
+				(totalItemsAdded + " " + itemAddedSuccessMsg.trim()).toLowerCase(),
+				"Adding items to workbook generated an incorrect message");
+		return this;
+	}
+
+	@Step("Click On Upload File button in \"Import Items to Workbook\" in tab")
+	public WorkBookUtilitiesPageObjects clickOnUploadFileButton() {
+		waiting.explicitWaitVisibilityOfElement(uploadFileButtonLocator, 10);
+		uploadFileButtonLocator.click();
+		return this;
+	}
+
+	@Step("Select Workbook \"{0}\" in \"Import Items to Workbook\" in tab")
+	public WorkBookUtilitiesPageObjects selectWorkbook(String workBookName) {
+		waiting.explicitWaitVisibilityOfElement(selectWorkbookLocator, 10);
+		Select workBook = new Select(selectWorkbookLocator);
+		List<WebElement> options = workBook.getOptions();
+		int i;
+		for (i = 0; i < options.size(); i++) {
+			if (options.get(i).getText().contains(workBookName)) {
+				break;
+			}
+		}
+		workBook.selectByIndex(i);
+		return this;
+	}
+
+	@Step("Click On \"List Items in Workbook\" button of workbook:{0}")
+	public WorkBookUtilitiesPageObjects clickOnListItemsInWorkbook(String workBookName) {
+		waiting.explicitWaitVisibilityOfElement(
+				By.xpath("//span[text()='" + workBookName + "']/../..//input[@title='List Items in this WorkBook']"),
+				10);
+		getDriver()
+				.findElement(By.xpath(
+						"//span[text()='" + workBookName + "']/../..//input[@title='List Items in this WorkBook']"))
+				.click();
+		return this;
+	}
+
+	@Step("Verify Items remove Message \"{0}\"")
+	public WorkBookUtilitiesPageObjects verifyItemRemoveMsg(String msgToBeVerified) {
+		waiting.explicitWaitVisibilityOfElement(itemRemoveMsgLocator, 10);
+		Assert.assertTrue(itemRemoveMsgLocator.getText().contains(msgToBeVerified),
+				"Item Remove message was displayed incorrectly");
+		return this;
+	}
+
+	@Step("Click On select all items checkbox in workbook page")
+	public WorkBookUtilitiesPageObjects clickOnSelectAllCheckbox() {
+		waiting.explicitWaitVisibilityOfElement(selectAllItemsLocator, 10);
+		selectAllItemsLocator.click();
+		return this;
+	}
+
+	@Step("Click On \"Remove Selected Items From WorkBook\" button in workbook page")
+	public WorkBookUtilitiesPageObjects clickOnRemoveSelectedItemsFromWorkbook() {
+		waiting.explicitWaitVisibilityOfElement(removeSelectedItemsFromWorkbookLocator, 10);
+		removeSelectedItemsFromWorkbookLocator.click();
+		return this;
+	}
+
+	@Step("Click On Remove button of Item with part number:{0}")
+	public WorkBookUtilitiesPageObjects clickOnRemoveButtonOfItem(String itemPartNumber) {
+		waiting.explicitWaitVisibilityOfElement(By.xpath(
+				"//td[normalize-space(text())='" + itemPartNumber + "']/..//input[@title='Remove from this List']"),
+				10);
+		getDriver().findElement(By.xpath(
+				"//td[normalize-space(text())='" + itemPartNumber + "']/..//input[@title='Remove from this List']"))
+				.click();
+		return this;
+	}
+
+	@Step("Verify if item with part Number:{0}, is not present in the workbook's Item List")
+	public WorkBookUtilitiesPageObjects verifyItemNotPresentInList(String itemPartNumber) {
+		Assert.assertEquals(getDriver().findElements(By
+				.xpath("//tbody[@id='storeItemListTableFormId:storedItemListTableId:tb']//tr[1]//td[normalize-space(text())='"
+						+ itemPartNumber + "']"))
+				.size(), 0, "Delete item from Workbook is not working");
+		return this;
+	}
+
+	@Step("Select file Format as:{0}")
+	public WorkBookUtilitiesPageObjects selectFileFormat(String value) throws InterruptedException {
+		waiting.explicitWaitVisibilityOfElement(selectFileFormatDropDownLocator, 10);
+		Select selectFileFormat = new Select(selectFileFormatDropDownLocator);
+		Thread.sleep(2000);
+		selectFileFormat.selectByVisibleText(value);
+		return this;
+	}
+
+	@Step("Click On \"Purge All Items In This Workbook\" button of workbook:{0}")
+	public WorkBookUtilitiesPageObjects clickOnPurgeAllItemsInThisWorkbookButton(String workbookName) {
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//span[normalize-space(text())='" + workbookName
+				+ "']/../..//input[normalize-space(@title)='Purge All Items In this WorkBook']"), 10);
+		getDriver().findElement(By.xpath("//span[normalize-space(text())='" + workbookName
+				+ "']/../..//input[normalize-space(@title)='Purge All Items In this WorkBook']")).click();
+		return this;
+	}
+
+	@Step("Verify if message \"{0}\" is displayed after Purging All Item in a workbook")
+	public WorkBookUtilitiesPageObjects verifyPurgeAllItemsInThisWorkbookSuccessMsg(String workbookName)
+			throws InterruptedException {
+		Thread.sleep(5000);
+		waiting.explicitWaitVisibilityOfElement(purgeAllItemsInThisWorkbookSuccessMsgLocator, 10);
+		Assert.assertEquals(purgeAllItemsInThisWorkbookSuccessMsgLocator.getText(),
+				"All Items Purged from '" + workbookName + "' Successfully",
+				"Purging All Items of a workbook is not working");
+		return this;
+	}
+
+	@Step("Click On \"Bulk Item Categorization\" tab")
+	public WorkBookUtilitiesPageObjects clickOnBulkItemCategorizationTab() {
+		waiting.explicitWaitVisibilityOfElement(bulkItemCategorizationTabLocator, 10);
+		bulkItemCategorizationTabLocator.click();
+		return this;
+	}
+
+	@Step("Verify if \"For WorkBook Items\" dropdown is displayed")
+	public WorkBookUtilitiesPageObjects verifyForWorkbookItemsDropDown() {
+		waiting.explicitWaitVisibilityOfElement(forWorkbookItemsDropDownLocator, 10);
+		Assert.assertTrue(forWorkbookItemsDropDownLocator.isDisplayed(),
+				"\"For WorkBook Items\" items dropdown is not displayed");
+		return this;
+	}
+
+	@Step("Verify if \"Make Selected Category As Default\" checkbox is displayed")
+	public WorkBookUtilitiesPageObjects verifyMakeSelectedCategoryAsDefaultCheckbox() {
+		waiting.explicitWaitVisibilityOfElement(makeSelectedCategoryAsDefaultLocator, 10);
+		Assert.assertTrue(makeSelectedCategoryAsDefaultLocator.isDisplayed(),
+				"\"Make Selected Category As Default\" checkbox is not displayed");
+		return this;
+	}
+
+	@Step("Verify if \"Do Changes For Workbook Items\" button is displayed")
+	public WorkBookUtilitiesPageObjects verifyDoChangesForWorkbookItemsButton() {
+		waiting.explicitWaitVisibilityOfElement(doChangesForWorkbookItemsLocator, 10);
+		Assert.assertTrue(doChangesForWorkbookItemsLocator.isDisplayed(),
+				"\"Do Changes For Workbook Items\" button is not displayed");
+		return this;
+	}
+
+	@Step("Enter Taxonomy name as \"{0}\" in \"Bulk Item Categorization\" Tab")
+	public WorkBookUtilitiesPageObjects enterTaxonomyName(String taxonomyName) {
+		waiting.explicitWaitVisibilityOfElement(taxonomyLocator, 10);
+		taxonomyLocator.clear();
+		taxonomyLocator.sendKeys(taxonomyName);
+		return this;
+	}
+
+	@Step("Click On Taxonomy \"{0}\"")
+	public WorkBookUtilitiesPageObjects clickOnTaxonomyName(String taxonomyName) {
+		waiting.explicitWaitVisibilityOfElement(By.xpath(
+				"//div[@id='MIUtaxonomyListId:MIUtaxonomyListComboIdlist']//span[text()='" + taxonomyName + "']"), 10);
+		getDriver().findElement(By.xpath(
+				"//div[@id='MIUtaxonomyListId:MIUtaxonomyListComboIdlist']//span[text()='" + taxonomyName + "']"))
+				.click();
+		return this;
+	}
+
+	@Step("Verify if Categories:\"{0}\" are displayed")
+	public WorkBookUtilitiesPageObjects verifyCategoriesList(String[] categoriesList) {
+		for (int i = 0; i < categoriesList.length; i++) {
+			Assert.assertEquals(taxonomyCategoriesListLocator.get(i).getText().trim().toLowerCase(),categoriesList[i].trim().toLowerCase(),"Taxonomy Categories are displayed incorrectly.");
 		}
 		return this;
 	}
