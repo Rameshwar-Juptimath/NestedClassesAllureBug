@@ -151,7 +151,7 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 	@Test(groups = { "regression",workBookUtilitiesDependent })//,dependsOnGroups= {workBookUtilitiesCreation})
 	public class WorkBookUtilitiesCreationDependent extends PageFactoryInitializer {
 		
-		final static String importItemsByPN="ImportItemsByPN";
+		final static String importItems="ImportItems";
 		final static String importItemsByPnMpn="ImportItemsByPN-MN";
 		
 		@Features(value = {"Workbook Utitlites Module"})
@@ -187,7 +187,7 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 		@Description("Verification of downloading template and 'Import Items to Workbook' functionality using file format as 'Part Number'")
 		@TestCaseId("TC_WU_013_014")
 		@Issue("Need to implement Auto IT scripts")
-		@Test(groups = importItemsByPN,dataProvider="WorkbookUtilitiesModuleTest",dataProviderClass=SearchData.class)//,enabled=false)
+		@Test(groups = importItems,dataProvider="WorkbookUtilitiesModuleTest",dataProviderClass=SearchData.class,enabled=false)
 		public void TC_WU_013_14(String excelSheetPath, String excelSheetName,String itemAddedSuccessMsg) throws Exception{
 			
 			String projectPath = System.getProperty("user.dir");
@@ -227,7 +227,7 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 		@Features(value = { "Workbook Utitlites Module" })
 		@Description("Verification of removing items from the workbook")
 		@TestCaseId("TC_WU_008")
-		@Test(groups = importItemsByPN,dependsOnMethods = "TC_WU_013_14")
+		@Test(dependsOnMethods = "TC_WU_013_14")
 		public void TC_WU_008() throws Exception {
 			
 			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
@@ -243,7 +243,7 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 		@Features(value = { "Workbook Utitlites Module" })
 		@Description("Verification of removing all items from the workbook ")
 		@TestCaseId("TC_WU_009")
-		@Test(groups = "ImportItemsByPN",dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class, dependsOnMethods = { "TC_WU_008" }, alwaysRun=true)
+		@Test(dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class, dependsOnMethods = { "TC_WU_008" }, alwaysRun=true)
 		public void TC_WU_009(String allItemsRemoveMsg) throws Exception {
 			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
 			.clickOnWorkbookUtilitiesLink()
@@ -258,13 +258,25 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 			.verifyItemRemoveMsg(allItemsRemoveMsg);
 		}
 		
+		@Features(value = { "Workbook Utitlites Module" })
+		@Description("Verification of 'Purge all items in this workbook' functionality")
+		@TestCaseId("TC_WU_015")
+		@Issue("Need to implement Auto IT scripts")
+		@Test(dependsOnGroups = { importItems })
+		public void TC_WU_010() throws Exception{
+			
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
+			.clickOnWorkbookUtilitiesLink()
+			.clickOnPurgeAllItemsInThisWorkbookButton(data.getWorkbookName())
+			.acceptAlert()
+			.verifyPurgeAllItemsInThisWorkbookSuccessMsg(data.getWorkbookName());
+		}
 		
 		@Features(value = { "Workbook Utitlites Module" })
 		@Description("Verification of 'Import Items to Workbook' functionality using file format as Part Number, Manufacturer Name' ")
 		@TestCaseId("TC_WU_015")
 		@Issue("Need to implement Auto IT scripts")
-		@Test(groups = importItemsByPnMpn, dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class, dependsOnGroups = {
-				importItemsByPN }, alwaysRun = true, enabled = false)
+		@Test(groups = importItems, dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class, enabled = false)
 		public void TC_WU_015(String excelSheetPath, String excelSheetName,String itemAddedSuccessMsg) throws Exception{
 			
 			String projectPath = System.getProperty("user.dir");
@@ -295,24 +307,10 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 		}
 		
 		@Features(value = { "Workbook Utitlites Module" })
-		@Description("Verification of 'Purge all items in this workbook' functionality")
-		@TestCaseId("TC_WU_015")
-		@Issue("Need to implement Auto IT scripts")
-		@Test(groups = importItemsByPnMpn, dependsOnMethods = { "TC_WU_015" })
-		public void TC_WU_010() throws Exception{
-			
-			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
-			.clickOnWorkbookUtilitiesLink()
-			.clickOnPurgeAllItemsInThisWorkbookButton(data.getWorkbookName())
-			.acceptAlert()
-			.verifyPurgeAllItemsInThisWorkbookSuccessMsg(data.getWorkbookName());
-		}
-	
-		@Features(value = { "Workbook Utitlites Module" })
 		@Description("Verification of 'Import Items to Workbook' functionality using file format as 'Part Number, Brand Name, Manufacturer Name'")
 		@TestCaseId("TC_WU_016")
 		@Issue("Need to implement Auto IT scripts")
-		@Test(dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class, dependsOnGroups = { importItemsByPN }, alwaysRun = true, enabled = false)
+		@Test(groups = {importItems}, dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class, enabled = false)
 		public void TC_WU_016(String excelSheetPath, String excelSheetName,String itemAddedSuccessMsg) throws Exception{
 			
 			String projectPath = System.getProperty("user.dir");
@@ -348,7 +346,7 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 		@Description("Verification of 'Import Items to Workbook' functionality using file format as 'Manufacturer Part Number, Manufacturer Name'")
 		@TestCaseId("TC_WU_017")
 		@Issue("Need to implement Auto IT scripts")
-		@Test(dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class, dependsOnGroups = { importItemsByPN }, alwaysRun = true, enabled = false)
+		@Test(groups = {importItems},dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class, enabled = false)
 		public void TC_WU_017(String excelSheetPath, String excelSheetName,String itemAddedSuccessMsg) throws Exception{
 			
 			String projectPath = System.getProperty("user.dir");
@@ -384,7 +382,7 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 		@Description("Verification of 'Import Items to Workbook' functionality using file format as 'Manufacturer Part Number, Brand Name'")
 		@TestCaseId("TC_WU_018")
 		@Issue("Need to implement Auto IT scripts")
-		@Test(dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class, dependsOnGroups = { importItemsByPN }, alwaysRun = true, enabled = false)
+		@Test(groups = {importItems},dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class, enabled = false)
 		public void TC_WU_018(String excelSheetPath, String excelSheetName,String itemAddedSuccessMsg) throws Exception{
 			
 			String projectPath = System.getProperty("user.dir");
@@ -420,7 +418,7 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 		@Description("Verification of 'Import Items to Workbook' functionality using file format as 'UPC'")
 		@TestCaseId("TC_WU_019")
 		@Issue("Need to implement Auto IT scripts")
-		@Test(dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class, dependsOnGroups = { importItemsByPN }, alwaysRun = true, enabled = false)
+		@Test(groups = {importItems},dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class, enabled = false)
 		public void TC_WU_019(String excelSheetPath, String excelSheetName,String itemAddedSuccessMsg) throws Exception{
 			
 			String projectPath = System.getProperty("user.dir");
