@@ -20,8 +20,11 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 	SearchDataPropertyFile data = new SearchDataPropertyFile();
 	Hashtable<String, String> creationData=new Hashtable<String,String>();
 	
-	final static String workBookUtilitiesDependent="WorkBookUtilitiesDependent";
-	final static String workBookUtilitiesCreation="WorkBookUtilitiesCreation";
+	final static String workBookUtilitiesDependent = "WorkBookUtilitiesDependent";
+	final static String workBookUtilitiesCreation = "WorkBookUtilitiesCreation";
+	final static String importItemsToWorkbook = "ImportItemsToWorkbook";
+	final static String removeItemsFromWorkbook = "RemoveItemFromWorkbook";
+	final static String importDependent = "ItemImportDependent";
 	
 	@Test(groups = {"regression"})
 	public class IndependentMentods extends PageFactoryInitializer{
@@ -128,7 +131,25 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 			.verifyCategoriesList(categoriesList);
 			
 		}
-		
+
+		@Features(value = {"Workbook Utitlites Module"})
+		@Description("Verification of 'Items to Subset' page")
+		@TestCaseId("TC_WU_025")
+		public void TC_WU_025() throws Exception{
+			
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin();
+			homePage()
+			.clickOnWorkbookUtilitiesLink()
+			.clickOnItemsToSubsetTab();
+			Thread.sleep(6000);
+			workBookUtilitiesPage()
+			.verifyForWorkbookItemsDropDown()
+			.verifySusbsetNameDropDown()
+			.verifyDoChangesForWorkbookItemsButton()
+			.verifyItemsInWorkbookDropDown()
+			.verifyRemoveSelectedItemsFromWorkbookIcon();			
+		}
+
 	}
 	
 	@Test(groups={"regression", workBookUtilitiesCreation})
@@ -151,8 +172,6 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 	@Test(groups = { "regression",workBookUtilitiesDependent })//,dependsOnGroups= {workBookUtilitiesCreation})
 	public class WorkBookUtilitiesCreationDependent extends PageFactoryInitializer {
 		
-		final static String importItems="ImportItems";
-		final static String importItemsByPnMpn="ImportItemsByPN-MN";
 		
 		@Features(value = {"Workbook Utitlites Module"})
 		@Description("Verification of 'Reset' functionality")
@@ -182,12 +201,16 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 			.verifyAllItemListHeaders(itemListHeaders);
 		}
 		
+	}
+	
+	@Test(groups = { "regression", importItemsToWorkbook })//,dependsOnGroups= {workBookUtilitiesCreation})
+	public class ImportItemsToWorkBook extends PageFactoryInitializer{
 		
 		@Features(value = {"Workbook Utitlites Module"})
 		@Description("Verification of downloading template and 'Import Items to Workbook' functionality using file format as 'Part Number'")
 		@TestCaseId("TC_WU_013_014")
 		@Issue("Need to implement Auto IT scripts")
-		@Test(groups = importItems,dataProvider="WorkbookUtilitiesModuleTest",dataProviderClass=SearchData.class,enabled=false)
+		@Test(dataProvider="WorkbookUtilitiesModuleTest",dataProviderClass=SearchData.class,enabled=false)
 		public void TC_WU_013_14(String excelSheetPath, String excelSheetName,String itemAddedSuccessMsg) throws Exception{
 			
 			String projectPath = System.getProperty("user.dir");
@@ -225,58 +248,10 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 		}
 
 		@Features(value = { "Workbook Utitlites Module" })
-		@Description("Verification of removing items from the workbook")
-		@TestCaseId("TC_WU_008")
-		@Test(dependsOnMethods = "TC_WU_013_14")
-		public void TC_WU_008() throws Exception {
-			
-			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
-			.clickOnWorkbookUtilitiesLink()
-			.clickOnListItemsInWorkbook(data.getWorkbookName())
-			.clickOnRemoveButtonOfItem("AutoTestPN 1")
-			.acceptAlert();
-			Thread.sleep(6000);
-			workBookUtilitiesPage()
-			.verifyItemNotPresentInList("AutoTestPN 1");
-		}
-		
-		@Features(value = { "Workbook Utitlites Module" })
-		@Description("Verification of removing all items from the workbook ")
-		@TestCaseId("TC_WU_009")
-		@Test(dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class, dependsOnMethods = { "TC_WU_008" }, alwaysRun=true)
-		public void TC_WU_009(String allItemsRemoveMsg) throws Exception {
-			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
-			.clickOnWorkbookUtilitiesLink()
-			.clickOnListItemsInWorkbook(data.getWorkbookName())
-			.clickOnSelectAllCheckbox();
-			Thread.sleep(3000);
-			workBookUtilitiesPage()
-			.clickOnRemoveSelectedItemsFromWorkbook()
-			.acceptAlert();
-			Thread.sleep(6000);
-			workBookUtilitiesPage()
-			.verifyItemRemoveMsg(allItemsRemoveMsg);
-		}
-		
-		@Features(value = { "Workbook Utitlites Module" })
-		@Description("Verification of 'Purge all items in this workbook' functionality")
-		@TestCaseId("TC_WU_015")
-		@Issue("Need to implement Auto IT scripts")
-		@Test(dependsOnGroups = { importItems })
-		public void TC_WU_010() throws Exception{
-			
-			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
-			.clickOnWorkbookUtilitiesLink()
-			.clickOnPurgeAllItemsInThisWorkbookButton(data.getWorkbookName())
-			.acceptAlert()
-			.verifyPurgeAllItemsInThisWorkbookSuccessMsg(data.getWorkbookName());
-		}
-		
-		@Features(value = { "Workbook Utitlites Module" })
 		@Description("Verification of 'Import Items to Workbook' functionality using file format as Part Number, Manufacturer Name' ")
 		@TestCaseId("TC_WU_015")
 		@Issue("Need to implement Auto IT scripts")
-		@Test(groups = importItems, dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class, enabled = false)
+		@Test(dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class, enabled = false)
 		public void TC_WU_015(String excelSheetPath, String excelSheetName,String itemAddedSuccessMsg) throws Exception{
 			
 			String projectPath = System.getProperty("user.dir");
@@ -305,12 +280,12 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 			.clickOnUploadFileButton()
 			.verifyItemsAddedToWorkbookMsg(itemAddedSuccessMsg,itemPartNumbers.length);
 		}
-		
+
 		@Features(value = { "Workbook Utitlites Module" })
 		@Description("Verification of 'Import Items to Workbook' functionality using file format as 'Part Number, Brand Name, Manufacturer Name'")
 		@TestCaseId("TC_WU_016")
 		@Issue("Need to implement Auto IT scripts")
-		@Test(groups = {importItems}, dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class, enabled = false)
+		@Test(dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class, enabled = false)
 		public void TC_WU_016(String excelSheetPath, String excelSheetName,String itemAddedSuccessMsg) throws Exception{
 			
 			String projectPath = System.getProperty("user.dir");
@@ -346,7 +321,7 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 		@Description("Verification of 'Import Items to Workbook' functionality using file format as 'Manufacturer Part Number, Manufacturer Name'")
 		@TestCaseId("TC_WU_017")
 		@Issue("Need to implement Auto IT scripts")
-		@Test(groups = {importItems},dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class, enabled = false)
+		@Test(dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class, enabled = false)
 		public void TC_WU_017(String excelSheetPath, String excelSheetName,String itemAddedSuccessMsg) throws Exception{
 			
 			String projectPath = System.getProperty("user.dir");
@@ -382,7 +357,7 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 		@Description("Verification of 'Import Items to Workbook' functionality using file format as 'Manufacturer Part Number, Brand Name'")
 		@TestCaseId("TC_WU_018")
 		@Issue("Need to implement Auto IT scripts")
-		@Test(groups = {importItems},dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class, enabled = false)
+		@Test(dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class, enabled = false)
 		public void TC_WU_018(String excelSheetPath, String excelSheetName,String itemAddedSuccessMsg) throws Exception{
 			
 			String projectPath = System.getProperty("user.dir");
@@ -418,7 +393,7 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 		@Description("Verification of 'Import Items to Workbook' functionality using file format as 'UPC'")
 		@TestCaseId("TC_WU_019")
 		@Issue("Need to implement Auto IT scripts")
-		@Test(groups = {importItems},dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class, enabled = false)
+		@Test(dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class, enabled = false)
 		public void TC_WU_019(String excelSheetPath, String excelSheetName,String itemAddedSuccessMsg) throws Exception{
 			
 			String projectPath = System.getProperty("user.dir");
@@ -448,9 +423,170 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 			.verifyItemsAddedToWorkbookMsg(itemAddedSuccessMsg,uPCs.length);
 		}
 
+		@Features(value = { "Workbook Utitlites Module" })
+		@Description("Verification of removing all items from the workbook ")
+		@TestCaseId("TC_WU_009")
+		@Test(dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class, dependsOnMethods = { "TC_WU_013_14" }, alwaysRun=true)
+		public void TC_WU_009(String allItemsRemoveMsg) throws Exception {
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
+			.clickOnWorkbookUtilitiesLink()
+			.clickOnListItemsInWorkbook(data.getWorkbookName())
+			.clickOnSelectAllCheckbox();
+			Thread.sleep(3000);
+			workBookUtilitiesPage()
+			.clickOnRemoveSelectedItemsFromWorkbook()
+			.acceptAlert();
+			Thread.sleep(6000);
+			workBookUtilitiesPage()
+			.verifyItemRemoveMsg(allItemsRemoveMsg);
+		}
+	
 	}
 		
-	@Test(groups={"regression"},dependsOnGroups = {workBookUtilitiesDependent},alwaysRun=true)
+	@Test(groups = { "regression", importDependent })//, dependsOnGroups = { importItemsToWorkbook },alwaysRun=true)
+	public class ImportDependent extends PageFactoryInitializer{
+
+		@Features(value = { "Workbook Utitlites Module" })
+		@Description("Verification of 'Bulk Item Categorization' functionality by selecting 'For WorkBook Items' option as 'Attach Selected category'")
+		@TestCaseId("TC_WU_022")
+		@Test(dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class)
+		public void TC_WU_022(String itemAssignToCategorySuccessMsg) throws Exception {
+			
+			String taxonomyName = "Automation_Taxonomy";
+			String categoryName = "BIKES_Automation";
+			
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
+			.clickOnWorkbookUtilitiesLink()
+			.clickOnBulkItemCategorizationTab()
+			.selectForWorkbookItems("Attach Selected Category")
+			.enterTaxonomyName(taxonomyName)
+			.clickOnTaxonomyName(taxonomyName);
+			Thread.sleep(4000);
+			workBookUtilitiesPage()
+			.selectItemsInWorkbook(data.getWorkbookName())
+			.doubleClickOnCategoryName(categoryName);
+			Thread.sleep(4000);
+			workBookUtilitiesPage()
+			.clickOnDoChangesForWorkbookItemsButton()
+			.acceptAlert()
+			.verifyItemAssignToCategoryMsg(itemAssignToCategorySuccessMsg);
+			
+		}
+	
+		@Features(value = { "Workbook Utitlites Module" })
+		@Description("Verification of 'Bulk Item Categorization' functionality by selecting 'For WorkBook Items' option as 'Remove old and assign selected category'")
+		@TestCaseId("TC_WU_023")
+		@Test(dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class,dependsOnMethods={"TC_WU_022"},alwaysRun=true)
+		public void TC_WU_023(String itemAssignToCategorySuccessMsg) throws Exception {
+			
+			String taxonomyName = "Automation_Taxonomy";
+			String categoryName = "BOOKS_Automation";
+			
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
+			.clickOnWorkbookUtilitiesLink()
+			.clickOnBulkItemCategorizationTab()
+			.selectForWorkbookItems("Remove Old and Assign Selected Category")
+			.enterTaxonomyName(taxonomyName)
+			.clickOnTaxonomyName(taxonomyName);
+			Thread.sleep(4000);
+			workBookUtilitiesPage()
+			.selectItemsInWorkbook(data.getWorkbookName())
+			.doubleClickOnCategoryName(categoryName);
+			Thread.sleep(4000);
+			workBookUtilitiesPage()
+			.clickOnDoChangesForWorkbookItemsButton()
+			.acceptAlert()
+			.verifyItemAssignToCategoryMsg(itemAssignToCategorySuccessMsg);
+			
+		}
+		
+		@Features(value = { "Workbook Utitlites Module" })
+		@Description("Verification of 'Bulk Item Categorization' functionality by selecting 'For WorkBook Items' option as 'Remove items from selected category'")
+		@TestCaseId("TC_WU_024")
+		@Test(dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class,dependsOnMethods={"TC_WU_023"},alwaysRun=true)
+		public void TC_WU_024(String itemRemoveFromCategorySuccessMsg) throws Exception {
+			
+			String taxonomyName = "Automation_Taxonomy";
+			String categoryName = "BOOKS_Automation";
+			
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
+			.clickOnWorkbookUtilitiesLink()
+			.clickOnBulkItemCategorizationTab()
+			.selectForWorkbookItems("Remove Items From Selected Category")
+			.enterTaxonomyName(taxonomyName)
+			.clickOnTaxonomyName(taxonomyName);
+			Thread.sleep(4000);
+			workBookUtilitiesPage()
+			.selectItemsInWorkbook(data.getWorkbookName())
+			.doubleClickOnCategoryName(categoryName);
+			Thread.sleep(4000);
+			workBookUtilitiesPage()
+			.clickOnDoChangesForWorkbookItemsButton()
+			.acceptAlert()
+			.verifyItemAssignToCategoryMsg(itemRemoveFromCategorySuccessMsg);
+			
+		}
+
+		@Features(value = { "Workbook Utitlites Module" })
+		@Description("Verification of adding items to subset")
+		@TestCaseId("TC_WU_026")
+		@Test(dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class)
+		public void TC_WU_026(String itemsToSubsetSuccessMsg) throws Exception {
+			
+			String subsetName="AutomationTestSubset";
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
+			.clickOnWorkbookUtilitiesLink()
+			.clickOnItemsToSubsetTab()
+			.selectSubsetName(subsetName);
+			Thread.sleep(4000);
+			workBookUtilitiesPage()
+			.selectItemsInWorkbook(data.getWorkbookName());
+			Thread.sleep(4000);
+			workBookUtilitiesPage()
+			.clickOnDoChangesForWorkbookItemsButton()
+			.acceptAlert();
+			Thread.sleep(4000);
+			workBookUtilitiesPage()
+			.verifyItemsToSubsetMsg(itemsToSubsetSuccessMsg);
+			
+		}
+		
+	}
+	
+	@Test(groups = { "regression", removeItemsFromWorkbook }, dependsOnGroups = importDependent, alwaysRun = true)
+	public class RemoveItemFromWorkbook extends PageFactoryInitializer{
+		
+		@Features(value = { "Workbook Utitlites Module" })
+		@Description("Verification of removing items from the workbook")
+		@TestCaseId("TC_WU_008")
+		public void TC_WU_008() throws Exception {
+			
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
+			.clickOnWorkbookUtilitiesLink()
+			.clickOnListItemsInWorkbook(data.getWorkbookName())
+			.clickOnRemoveButtonOfItem("AutoTestPN 1")
+			.acceptAlert();
+			Thread.sleep(6000);
+			workBookUtilitiesPage()
+			.verifyItemNotPresentInList("AutoTestPN 1");
+		}
+		
+		@Features(value = { "Workbook Utitlites Module" })
+		@Description("Verification of 'Purge all items in this workbook' functionality")
+		@TestCaseId("TC_WU_010")
+		@Test(dependsOnMethods = { "TC_WU_008" }, alwaysRun=true)
+		public void TC_WU_010() throws Exception{
+			
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
+			.clickOnWorkbookUtilitiesLink()
+			.clickOnPurgeAllItemsInThisWorkbookButton(data.getWorkbookName())
+			.acceptAlert()
+			.verifyPurgeAllItemsInThisWorkbookSuccessMsg(data.getWorkbookName());
+		}
+		
+	}
+	
+	@Test(groups = { "regression" }, dependsOnGroups = { removeItemsFromWorkbook }, alwaysRun = true)
 	public class WorkBookUtilitiesRemoval extends PageFactoryInitializer{
 
 		@Features(value = { "Workbook Utitlites Module" })

@@ -7,7 +7,9 @@ import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.framework.utils.TestUtility;
 import org.framework.utils.Waiting;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
@@ -92,7 +94,7 @@ public class WorkBookUtilitiesPageObjects extends PageFactoryInitializer {
 	@FindBy(how = How.XPATH, using = "//td[contains(text(),'Bulk Item Categorization')]")
 	private WebElement bulkItemCategorizationTabLocator;
 
-	@FindBy(how = How.XPATH, using = "//div[contains(text(),'For WorkBook Items')]//select[contains(@id,'MIUitemCtgForm:searchInId')]")
+	@FindBy(how = How.XPATH, using = "//div[contains(text(),'For WorkBook Items')]//select")
 	private WebElement forWorkbookItemsDropDownLocator;
 
 	@FindBy(how = How.XPATH, using = "//div[contains(text(),'Make Selected Category As Default')]/input[@id='MIUitemCtgForm:defaultCategory']")
@@ -106,6 +108,24 @@ public class WorkBookUtilitiesPageObjects extends PageFactoryInitializer {
 
 	@FindAll(@FindBy(how = How.XPATH, using = "//span[contains(@id,'ttformid:MIUtaxonomyTreeId')]"))
 	private List<WebElement> taxonomyCategoriesListLocator;
+
+	@FindBy(how = How.XPATH, using = "//select[@id='MIUitemCtgForm:searchInId1']")
+	private WebElement selectForWorkbookItemsDropDownLocator;
+
+	@FindBy(how = How.XPATH, using = "//select[@id='miuFormId:storedWBid']")
+	private WebElement selectItemsInWorkbookDropDownLocator;
+
+	@FindBy(how = How.XPATH, using = "//span[@id='MIUitemCtgForm:MIUsmsgId']")
+	private WebElement bulkItemCategorizationMsgLocator;
+
+	@FindBy(how = How.XPATH, using = "//td[contains(text(),'Items To Subset')]")
+	private WebElement itemsToSubsetTabLocator;
+
+	@FindBy(how = How.XPATH, using = "//span[normalize-space(text())='Subset Name']/following-sibling::select")
+	private WebElement subsetNameDropDownLocator;
+
+	@FindBy(how = How.XPATH, using = "//span[contains(@id,'MIUaddToSubsetForm:MIUsmsgId')]")
+	private WebElement itemsToSubsetMsgLocator;
 
 	@Step("Verify if tabs \"{0}\" are present in Workbook Utilites Page")
 	public WorkBookUtilitiesPageObjects verifyAllTabs(String tabsList) {
@@ -510,8 +530,101 @@ public class WorkBookUtilitiesPageObjects extends PageFactoryInitializer {
 	@Step("Verify if Categories:\"{0}\" are displayed")
 	public WorkBookUtilitiesPageObjects verifyCategoriesList(String[] categoriesList) {
 		for (int i = 0; i < categoriesList.length; i++) {
-			Assert.assertEquals(taxonomyCategoriesListLocator.get(i).getText().trim().toLowerCase(),categoriesList[i].trim().toLowerCase(),"Taxonomy Categories are displayed incorrectly.");
+			Assert.assertEquals(taxonomyCategoriesListLocator.get(i).getText().trim().toLowerCase(),
+					categoriesList[i].trim().toLowerCase(), "Taxonomy Categories are displayed incorrectly.");
 		}
+		return this;
+	}
+
+	@Step("Select \"{0}\" in \"For WorkBook Items\" drop down")
+	public WorkBookUtilitiesPageObjects selectForWorkbookItems(String valueToBeSelected) throws InterruptedException {
+		waiting.explicitWaitVisibilityOfElement(selectForWorkbookItemsDropDownLocator, 10);
+		Select selectFileFormat = new Select(selectForWorkbookItemsDropDownLocator);
+		Thread.sleep(2000);
+		selectFileFormat.selectByVisibleText(valueToBeSelected);
+		return this;
+	}
+
+	@Step("Select Workbook \"{0}\" in \"Bulk Item Categorization\" in tab")
+	public WorkBookUtilitiesPageObjects selectItemsInWorkbook(String workbookName) {
+		waiting.explicitWaitVisibilityOfElement(selectItemsInWorkbookDropDownLocator, 10);
+		Select workBook = new Select(selectItemsInWorkbookDropDownLocator);
+		List<WebElement> options = workBook.getOptions();
+		int i;
+		for (i = 0; i < options.size(); i++) {
+			if (options.get(i).getText().contains(workbookName)) {
+				break;
+			}
+		}
+		workBook.selectByIndex(i);
+		return this;
+	}
+
+	@Step("Click On \"Do Changes For Workbook Items\" button in \"Bulk Item Categorization\" tab")
+	public WorkBookUtilitiesPageObjects clickOnDoChangesForWorkbookItemsButton() {
+		waiting.explicitWaitVisibilityOfElement(doChangesForWorkbookItemsLocator, 10);
+		((JavascriptExecutor) getDriver()).executeScript("arguments[0].click();", doChangesForWorkbookItemsLocator);
+		return this;
+	}
+
+	@Step("Double Click On \"{0}\" Category in \"Bulk Item Categorization\" tab")
+	public WorkBookUtilitiesPageObjects doubleClickOnCategoryName(String categoryName) {
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//span[normalize-space(text())='" + categoryName + "']"), 10);
+		Actions action = new Actions(getDriver());
+		action.doubleClick(getDriver().findElement(By.xpath("//span[normalize-space(text())='" + categoryName + "']")))
+				.build().perform();
+		return this;
+	}
+
+	@Step("Verify if message \"{0}\" is displayed")
+	public WorkBookUtilitiesPageObjects verifyItemAssignToCategoryMsg(String itemAssignToCategorySuccessMsg) {
+		waiting.explicitWaitVisibilityOfElement(bulkItemCategorizationMsgLocator, 10);
+		Assert.assertTrue(
+				bulkItemCategorizationMsgLocator.getText().trim().toLowerCase()
+						.contains(itemAssignToCategorySuccessMsg.trim().toLowerCase()),
+				"Message for \"Bulk Categorization\" is displayed incorrectly.");
+		return this;
+	}
+
+	@Step("Click On \"{0}\" Category in \"Items To Subset\" tab")
+	public WorkBookUtilitiesPageObjects clickOnItemsToSubsetTab() {
+		waiting.explicitWaitVisibilityOfElement(itemsToSubsetTabLocator, 10);
+		itemsToSubsetTabLocator.click();
+		return this;
+	}
+
+	@Step("Verify if \"Susbset Name\" drop down is displayed in \"Items To Subset\" Tab")
+	public WorkBookUtilitiesPageObjects verifySusbsetNameDropDown() {
+		waiting.explicitWaitVisibilityOfElement(subsetNameDropDownLocator, 10);
+		Assert.assertTrue(subsetNameDropDownLocator.isDisplayed(), "\"Susbset Name\" dropdown is not displayed");
+		return this;
+	}
+
+	@Step("Verify if \"Remove Selected Items from this workbook\" icon is displayed in \"Items To Subset\" Tab")
+	public WorkBookUtilitiesPageObjects verifyRemoveSelectedItemsFromWorkbookIcon() {
+		waiting.explicitWaitVisibilityOfElement(removeSelectedItemsFromWorkbookLocator, 10);
+		Assert.assertTrue(removeSelectedItemsFromWorkbookLocator.isDisplayed(),
+				"\"Remove Selected Items from this workbook\" icon is not displayed");
+		return this;
+	}
+
+	@Step("Select \"{0}\" in \"Subset Name\" drop down")
+	public WorkBookUtilitiesPageObjects selectSubsetName(String valueToBeSelected) throws InterruptedException {
+		waiting.explicitWaitVisibilityOfElement(subsetNameDropDownLocator, 10);
+		Select selectFileFormat = new Select(subsetNameDropDownLocator);
+		selectFileFormat.selectByVisibleText(valueToBeSelected);
+		return this;
+	}
+
+	@Step("Verify if message \"{0}\" is displayed in \"Items to Subset\" tab")
+	public WorkBookUtilitiesPageObjects verifyItemsToSubsetMsg(String itemsToSubsetSuccessMsg) {
+		waiting.explicitWaitVisibilityOfElement(itemsToSubsetMsgLocator, 10);
+		Assert.assertTrue(
+				itemsToSubsetMsgLocator.getText().trim().toLowerCase()
+						.contains(itemsToSubsetSuccessMsg.trim().toLowerCase()),
+				"Message for \"Items to subset\" is displayed incorrectly. Expected message: \""
+						+ itemsToSubsetSuccessMsg.trim().toLowerCase() + "\" is not present in the actual message: \""
+						+ itemsToSubsetMsgLocator.getText().trim().toLowerCase());
 		return this;
 	}
 
