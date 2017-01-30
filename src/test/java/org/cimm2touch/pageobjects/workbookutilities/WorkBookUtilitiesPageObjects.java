@@ -76,7 +76,7 @@ public class WorkBookUtilitiesPageObjects extends PageFactoryInitializer {
 	@FindBy(how = How.XPATH, using = "//div[normalize-space(text())='Upload File']")
 	private WebElement uploadFileButtonLocator;
 
-	@FindBy(how = How.XPATH, using = "//span[@id='storeItemListTableFormId:removeMsId']")
+	@FindBy(how = How.XPATH, using = "//span[contains(@id,'AddNewWrkSaveMes')]")
 	private WebElement itemRemoveMsgLocator;
 
 	@FindBy(how = How.XPATH, using = "//input[@id='storeItemListTableFormId:storedItemListTableId:SALL']")
@@ -109,7 +109,7 @@ public class WorkBookUtilitiesPageObjects extends PageFactoryInitializer {
 	@FindAll(@FindBy(how = How.XPATH, using = "//span[contains(@id,'ttformid:MIUtaxonomyTreeId')]"))
 	private List<WebElement> taxonomyCategoriesListLocator;
 
-	@FindBy(how = How.XPATH, using = "//select[@id='MIUitemCtgForm:searchInId1']")
+	@FindBy(how = How.XPATH, using = "//div[contains(normalize-space(text()),'For WorkBook Items')]//select")
 	private WebElement selectForWorkbookItemsDropDownLocator;
 
 	@FindBy(how = How.XPATH, using = "//select[@id='miuFormId:storedWBid']")
@@ -126,6 +126,21 @@ public class WorkBookUtilitiesPageObjects extends PageFactoryInitializer {
 
 	@FindBy(how = How.XPATH, using = "//span[contains(@id,'MIUaddToSubsetForm:MIUsmsgId')]")
 	private WebElement itemsToSubsetMsgLocator;
+
+	@FindBy(how = How.XPATH, using = "//td[text()='Items To New Brand']")
+	private WebElement itemsToNewBrandTabLocator;
+
+	@FindBy(how = How.XPATH, using = "//input[@id='addItemsToNewBrandFormId:wbManufacturerListComboIdcomboboxField']")
+	private WebElement manufacturerNameDropDownLocator;
+
+	@FindBy(how = How.XPATH, using = "//input[@id='addItemsToNewBrandFormId:wbBrandListComboIdcomboboxField']")
+	private WebElement brandNameDropDownLocator;
+
+	@FindBy(how = How.XPATH, using = "//input[@value='Bulk Items To New Brand']")
+	private WebElement bulkItemsToNewBrandLocator;
+
+	@FindBy(how = How.XPATH, using = "//span[@id='addItemsToNewBrandFormId:wbItemsToBrandMessage']")
+	private WebElement itemsToNewBrandMsgLocator;
 
 	@Step("Verify if tabs \"{0}\" are present in Workbook Utilites Page")
 	public WorkBookUtilitiesPageObjects verifyAllTabs(String tabsList) {
@@ -409,8 +424,8 @@ public class WorkBookUtilitiesPageObjects extends PageFactoryInitializer {
 
 	@Step("Verify Items remove Message \"{0}\"")
 	public WorkBookUtilitiesPageObjects verifyItemRemoveMsg(String msgToBeVerified) {
-		waiting.explicitWaitVisibilityOfElement(itemRemoveMsgLocator, 10);
-		Assert.assertTrue(itemRemoveMsgLocator.getText().contains(msgToBeVerified),
+		waiting.explicitWaitVisibilityOfElement(itemRemoveMsgLocator, 20);
+		Assert.assertTrue(itemRemoveMsgLocator.getText().trim().toLowerCase().contains(msgToBeVerified.trim().toLowerCase()),
 				"Item Remove message was displayed incorrectly");
 		return this;
 	}
@@ -586,7 +601,7 @@ public class WorkBookUtilitiesPageObjects extends PageFactoryInitializer {
 		return this;
 	}
 
-	@Step("Click On \"{0}\" Category in \"Items To Subset\" tab")
+	@Step("Click On\"Items To Subset\" tab")
 	public WorkBookUtilitiesPageObjects clickOnItemsToSubsetTab() {
 		waiting.explicitWaitVisibilityOfElement(itemsToSubsetTabLocator, 10);
 		itemsToSubsetTabLocator.click();
@@ -625,6 +640,73 @@ public class WorkBookUtilitiesPageObjects extends PageFactoryInitializer {
 				"Message for \"Items to subset\" is displayed incorrectly. Expected message: \""
 						+ itemsToSubsetSuccessMsg.trim().toLowerCase() + "\" is not present in the actual message: \""
 						+ itemsToSubsetMsgLocator.getText().trim().toLowerCase());
+		return this;
+	}
+
+	@Step("Click\"Items To New Brand\" tab")
+	public WorkBookUtilitiesPageObjects clickOnItemsToNewBrandTab() {
+		waiting.explicitWaitVisibilityOfElement(itemsToNewBrandTabLocator, 10);
+		itemsToNewBrandTabLocator.click();
+		return this;
+	}
+
+	@Step("Enter manufacturer name as \"{0}\" in Manufacturer Name drop down and click on the manufacturer name from the list")
+	public WorkBookUtilitiesPageObjects enterAndSelectManufacturerName(String newManufacturerName)
+			throws InterruptedException {
+		waiting.explicitWaitVisibilityOfElement(manufacturerNameDropDownLocator, 10);
+		manufacturerNameDropDownLocator.sendKeys(newManufacturerName);
+		Thread.sleep(2000);
+		waiting.explicitWaitVisibilityOfElement(
+				By.xpath("//span[normalize-space(text())='" + newManufacturerName + "']"), 10);
+		getDriver().findElement(By.xpath("//span[normalize-space(text())='" + newManufacturerName + "']")).click();
+		return this;
+	}
+
+	@Step("Enter Brand name as \"{0}\" in Brand Name drop down and click on the Brand name from the list")
+	public WorkBookUtilitiesPageObjects enterAndSelectBrandName(String newBrandName) throws InterruptedException {
+		waiting.explicitWaitVisibilityOfElement(brandNameDropDownLocator, 10);
+		brandNameDropDownLocator.sendKeys(newBrandName);
+		Thread.sleep(2000);
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//span[normalize-space(text())='" + newBrandName + "']"), 10);
+		getDriver().findElement(By.xpath("//span[normalize-space(text())='" + newBrandName + "']")).click();
+		return this;
+	}
+
+	@Step("Click on \"Bulk Items To New Brand\" button in \"Items To New Brand\" Tab")
+	public WorkBookUtilitiesPageObjects clickOnBulkItemsToNewBrand() {
+		waiting.explicitWaitVisibilityOfElement(bulkItemsToNewBrandLocator, 10);
+		bulkItemsToNewBrandLocator.click();
+		return this;
+	}
+
+	@Step("Verify if message \"{0}\" is displayed in \"Items to New Brand\" tab")
+	public WorkBookUtilitiesPageObjects verifyItemsToNewBrandMsg(String itemsToNewBrandSuccessMsg) {
+		waiting.explicitWaitVisibilityOfElement(itemsToNewBrandMsgLocator, 10);
+		Assert.assertTrue(
+				itemsToNewBrandMsgLocator.getText().trim().toLowerCase()
+						.contains(itemsToNewBrandSuccessMsg.trim().toLowerCase()),
+				"Message for \"Items to New Brand\" is displayed incorrectly. Expected message: \""
+						+ itemsToNewBrandSuccessMsg.trim().toLowerCase() + "\" is not present in the actual message: \""
+						+ itemsToNewBrandMsgLocator.getText().trim().toLowerCase());
+		return this;
+	}
+
+	@Step("Verify if workbook has {0} items")
+	public WorkBookUtilitiesPageObjects verifyItemCountInWorkbook(int itemsCount) {
+		waiting.explicitWaitVisibilityOfElements(By.xpath("//tr[contains(@class,'rich-table-row')]"), 10);
+		Assert.assertEquals(getDriver().findElements(By.xpath("//tr[contains(@class,'rich-table-row')]")).size(),
+				itemsCount, "Mismatch in total number of items in workbook,");
+		return this;
+
+	}
+
+	@Step("Verify if workbook \'{0}\' already exists")
+	public WorkBookUtilitiesPageObjects verifyWorkbookAlreadyExists(String workbookName) {
+
+		waiting.explicitWaitVisibilityOfElement(By.xpath("//span[normalize-space(text())='" + workbookName + "']"), 10);
+		Assert.assertEquals(
+				getDriver().findElement(By.xpath("//span[normalize-space(text())='" + workbookName + "']")).getText(),
+				workbookName, "Workbook does not exist");
 		return this;
 	}
 

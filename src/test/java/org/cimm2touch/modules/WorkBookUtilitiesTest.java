@@ -8,7 +8,7 @@ import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.utils.ExcelWriter;
 import org.cimm2touch.utils.SearchDataPropertyFile;
 import org.framework.utils.PermittedCharacters;
-import org.framework.utils.RandomGenerator;
+import org.framework.utils.RandomGenerator;import org.openqa.selenium.TimeoutException;
 import org.testng.annotations.Test;
 
 import ru.yandex.qatools.allure.annotations.Description;
@@ -26,6 +26,13 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 	final static String removeItemsFromWorkbook = "RemoveItemFromWorkbook";
 	final static String importDependent = "ItemImportDependent";
 	
+	String[] itemPartNumbers = { "Auto TestPN 1", "Auto TestPN 2", "Auto TestPN 3" };
+	
+	String newManufacturerName="Auto TestManufacturer 2212";
+	String newBrandName="Auto TestBrand 2212";
+	
+	
+	/*
 	@Test(groups = {"regression"})
 	public class IndependentMentods extends PageFactoryInitializer{
 		
@@ -150,7 +157,7 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 			.verifyRemoveSelectedItemsFromWorkbookIcon();			
 		}
 
-	}
+	}*/
 	
 	@Test(groups={"regression", workBookUtilitiesCreation})
 	public class WorkBookUtilitiesCreation extends PageFactoryInitializer{
@@ -160,7 +167,17 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 		@TestCaseId("TC_WU_006")
 		public void TC_WU_006() throws Exception{
 			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
-			.clickOnWorkbookUtilitiesLink()
+			.clickOnWorkbookUtilitiesLink();
+			
+			try {
+				workBookUtilitiesPage()
+				.verifyWorkbookAlreadyExists(data.getWorkbookName())
+				.clickOnRemoveButtonOfWorkbook(data.getWorkbookName())
+				.acceptAlert();
+			} catch (TimeoutException e) {
+			}
+			
+			workBookUtilitiesPage()
 			.clickOnAddNewWorkbookButton()
 			.enterWorkbookName(data.getWorkbookName())
 			.clickOnSaveWorkbookButton()
@@ -169,9 +186,8 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 	
 	}
 	
-	@Test(groups = { "regression",workBookUtilitiesDependent })//,dependsOnGroups= {workBookUtilitiesCreation})
+	@Test(groups = { "regression", workBookUtilitiesDependent }, dependsOnGroups = { workBookUtilitiesCreation })
 	public class WorkBookUtilitiesCreationDependent extends PageFactoryInitializer {
-		
 		
 		@Features(value = {"Workbook Utitlites Module"})
 		@Description("Verification of 'Reset' functionality")
@@ -203,20 +219,18 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 		
 	}
 	
-	@Test(groups = { "regression", importItemsToWorkbook })//,dependsOnGroups= {workBookUtilitiesCreation})
+	@Test(groups = { "regression", importItemsToWorkbook }, dependsOnGroups = { workBookUtilitiesCreation })
 	public class ImportItemsToWorkBook extends PageFactoryInitializer{
 		
 		@Features(value = {"Workbook Utitlites Module"})
 		@Description("Verification of downloading template and 'Import Items to Workbook' functionality using file format as 'Part Number'")
 		@TestCaseId("TC_WU_013_014")
 		@Issue("Need to implement Auto IT scripts")
-		@Test(dataProvider="WorkbookUtilitiesModuleTest",dataProviderClass=SearchData.class,enabled=false)
+		@Test(dataProvider="WorkbookUtilitiesModuleTest",dataProviderClass=SearchData.class)//,enabled=false)
 		public void TC_WU_013_14(String excelSheetPath, String excelSheetName,String itemAddedSuccessMsg) throws Exception{
 			
 			String projectPath = System.getProperty("user.dir");
 			excelSheetPath = projectPath + "/" + excelSheetPath;
-
-			String[] itemPartNumbers = { "Auto TestPN 1", "Auto TestPN 2", "Auto TestPN 3" };
 			String templateFilePath = System.getProperty("user.home") + "\\Downloads\\WorkbookItemsTemplate.xlsx";
 
 			File file = new File(templateFilePath);
@@ -243,7 +257,9 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 			.enterFileLocationInUploadDialogbox(excelSheetPath);
 			Thread.sleep(4000);
 			workBookUtilitiesPage()
-			.clickOnUploadFileButton()
+			.clickOnUploadFileButton();
+			Thread.sleep(4000);
+			workBookUtilitiesPage()
 			.verifyItemsAddedToWorkbookMsg(itemAddedSuccessMsg,itemPartNumbers.length);
 		}
 
@@ -257,7 +273,6 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 			String projectPath = System.getProperty("user.dir");
 			excelSheetPath = projectPath + "/" + excelSheetPath;
 
-			String[] itemPartNumbers = { "Auto TestPN 1", "Auto TestPN 2", "Auto TestPN 3" };
 			String[] manufacturerNames = { "Auto TestManufacturer 2212", "Auto TestManufacturer 2212", "Auto TestManufacturer 2212" };
 
 			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
@@ -291,7 +306,6 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 			String projectPath = System.getProperty("user.dir");
 			excelSheetPath = projectPath + "/" + excelSheetPath;
 
-			String[] itemPartNumbers = { "Auto TestPN 1", "Auto TestPN 2", "Auto TestPN 3" };
 			String[] brandNames = { "Auto TestBrand 2212", "Auto TestBrand 2212", "Auto TestBrand 2212" };
 			String[] manufacturerNames = { "Auto TestManufacturer 2212", "Auto TestManufacturer 2212", "Auto TestManufacturer 2212" };
 
@@ -443,8 +457,23 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 	
 	}
 		
-	@Test(groups = { "regression", importDependent })//, dependsOnGroups = { importItemsToWorkbook },alwaysRun=true)
+	@Test(groups = { "regression", importDependent }, dependsOnGroups = { importItemsToWorkbook },alwaysRun=true)
 	public class ImportDependent extends PageFactoryInitializer{
+
+		@Features(value = { "Workbook Utitlites Module" })
+		@Description("Verification of Items in the workbook")
+		@TestCaseId("TC_WU_020")
+		public void TC_WU_020() throws Exception {
+			
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
+			.clickOnWorkbookUtilitiesLink()
+			.clickOnImportItemsToWorkbookTab()
+			.selectItemsInWorkbook(data.getWorkbookName());
+			Thread.sleep(4000);
+			workBookUtilitiesPage()
+			.verifyItemCountInWorkbook(itemPartNumbers.length);
+			
+		}
 
 		@Features(value = { "Workbook Utitlites Module" })
 		@Description("Verification of 'Bulk Item Categorization' functionality by selecting 'For WorkBook Items' option as 'Attach Selected category'")
@@ -548,6 +577,60 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 			Thread.sleep(4000);
 			workBookUtilitiesPage()
 			.verifyItemsToSubsetMsg(itemsToSubsetSuccessMsg);
+			
+		}
+		
+		@Features(value = { "Workbook Utitlites Module" })
+		@Description("Verification of removing items from the subset")
+		@TestCaseId("TC_WU_027")
+		@Test(dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class, dependsOnMethods = "TC_WU_026")
+		public void TC_WU_027(String itemsToSubsetRemoveMsg) throws Exception {
+			
+			String subsetName="AutomationTestSubset";
+			
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
+			.clickOnWorkbookUtilitiesLink()
+			.clickOnItemsToSubsetTab();
+			Thread.sleep(4000);
+			workBookUtilitiesPage()
+			.selectForWorkbookItems("Remove Items From Selected Subset")
+			.selectSubsetName(subsetName)
+			.selectItemsInWorkbook(data.getWorkbookName());
+			Thread.sleep(4000);
+			workBookUtilitiesPage()
+			.clickOnDoChangesForWorkbookItemsButton()
+			.acceptAlert();
+			Thread.sleep(4000);
+			workBookUtilitiesPage()
+			.verifyItemsToSubsetMsg(itemsToSubsetRemoveMsg);
+			
+		}
+
+		@Features(value = { "Workbook Utitlites Module" })
+		@Description("Verification of removing items from the subset")
+		@TestCaseId("TC_WU_028")
+		@Test(dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class)
+		public void TC_WU_028(String itemsToNewBrandSuccessMsg) throws Exception {
+			
+		
+			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
+			.clickOnWorkbookUtilitiesLink()
+			.clickOnItemsToNewBrandTab();
+			Thread.sleep(4000);
+			workBookUtilitiesPage()
+			.enterAndSelectManufacturerName(newManufacturerName);
+			Thread.sleep(2000);
+			workBookUtilitiesPage()
+			.enterAndSelectBrandName(newBrandName)
+			.selectItemsInWorkbook(data.getWorkbookName());
+			Thread.sleep(4000);
+			
+			workBookUtilitiesPage()
+			.clickOnBulkItemsToNewBrand()
+			.acceptAlert();
+			Thread.sleep(4000);
+			workBookUtilitiesPage()
+			.verifyItemsToNewBrandMsg(itemsToNewBrandSuccessMsg);
 			
 		}
 		
