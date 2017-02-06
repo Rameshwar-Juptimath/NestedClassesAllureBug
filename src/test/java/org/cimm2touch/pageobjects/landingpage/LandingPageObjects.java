@@ -5,6 +5,7 @@ import java.util.HashMap;
 import org.cimm2touch.dataprovider.SearchData;
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.pageobjects.homepage.HomePageObjects;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -49,6 +50,7 @@ public class LandingPageObjects extends PageFactoryInitializer {
 
 	@Step("Enter username as \'{0}\'")
 	public LandingPageObjects enterUsername(String userName) {
+		//getDriver().findElement(By.xpath("//input[@id='menuFmId:headerForm:searchKeywordId']")).sendKeys("1234");
 		usernameLocator.clear();
 		usernameLocator.sendKeys(userName);
 		return this;

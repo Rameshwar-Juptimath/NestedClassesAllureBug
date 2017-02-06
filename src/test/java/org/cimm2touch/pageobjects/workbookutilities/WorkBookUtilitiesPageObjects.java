@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import org.cimm2touch.initializer.PageFactoryInitializer;
+import org.cimm2touch.utils.TestUtilityMethods;
 import org.framework.utils.TestUtility;
 import org.framework.utils.Waiting;
 import org.openqa.selenium.By;
@@ -33,6 +34,7 @@ public class WorkBookUtilitiesPageObjects extends PageFactoryInitializer {
 	Waiting waiting = new Waiting(getDriver());
 
 	TestUtility tu = new TestUtility(getDriver());
+	TestUtilityMethods tuExtended = new TestUtilityMethods(getDriver());
 
 	@FindAll(value = { @FindBy(xpath = "//td[contains(@class,'rich-tab-header')]") })
 	private List<WebElement> allWorkbookUtilitesTabsLocator;
@@ -213,23 +215,21 @@ public class WorkBookUtilitiesPageObjects extends PageFactoryInitializer {
 
 	@Step("Click On Edit Workbook button of workBook:{0}")
 	public WorkBookUtilitiesPageObjects clickOnEditWorkbookButton(String workBookName) {
-		waiting.explicitWaitVisibilityOfElement(getDriver().findElement(By.xpath(
-				"//span[contains(text(),'" + workBookName + "')]/../..//input[@title='Edit this WorkBookName']")), 10);
-		getDriver().findElement(By
-				.xpath("//span[contains(text(),'" + workBookName + "')]/../..//input[@title='Edit this WorkBookName']"))
+		waiting.explicitWaitVisibilityOfElement(getDriver().findElement(By.xpath("//span[normalize-space(text())='"
+				+ workBookName + "']/../..//input[@title='Edit this WorkBookName']")), 10);
+		getDriver().findElement(By.xpath(
+				"//span[normalize-space(text())='" + workBookName + "']/../..//input[@title='Edit this WorkBookName']"))
 				.click();
 		return this;
 	}
 
 	@Step("Click On Remove Workbook button of workbook:{0}")
 	public WorkBookUtilitiesPageObjects clickOnRemoveButtonOfWorkbook(String workBookName) throws InterruptedException {
-		waiting.explicitWaitVisibilityOfElement(
-				getDriver().findElement(By.xpath(
-						"//span[contains(text(),'" + workBookName + "')]/../..//input[@title='Remove this WorkBook']")),
+		waiting.explicitWaitVisibilityOfElement(getDriver().findElement(By.xpath(
+				"//span[normalize-space(text())='" + workBookName + "']/../..//input[@title='Remove this WorkBook']")),
 				10);
-		getDriver()
-				.findElement(By.xpath(
-						"//span[contains(text(),'" + workBookName + "')]/../..//input[@title='Remove this WorkBook']"))
+		getDriver().findElement(By.xpath(
+				"//span[normalize-space(text())='" + workBookName + "']/../..//input[@title='Remove this WorkBook']"))
 				.click();
 		Thread.sleep(2000);
 		return this;
@@ -373,7 +373,7 @@ public class WorkBookUtilitiesPageObjects extends PageFactoryInitializer {
 		Thread.sleep(2000);
 
 		String path = fileLocation.replaceAll("/+", "\\\\");
-		tu.fileUpload(path);
+		tuExtended.fileUploadAutoIt(path);
 
 		Thread.sleep(2500);
 		return this;
@@ -423,9 +423,10 @@ public class WorkBookUtilitiesPageObjects extends PageFactoryInitializer {
 	}
 
 	@Step("Verify Items remove Message \"{0}\"")
-	public WorkBookUtilitiesPageObjects verifyItemRemoveMsg(String msgToBeVerified) {
+	public WorkBookUtilitiesPageObjects verifyItemRemoveMsg(int itemsCount, String msgToBeVerified) {
 		waiting.explicitWaitVisibilityOfElement(itemRemoveMsgLocator, 20);
-		Assert.assertTrue(itemRemoveMsgLocator.getText().trim().toLowerCase().contains(msgToBeVerified.trim().toLowerCase()),
+		Assert.assertEquals(itemRemoveMsgLocator.getText().trim().toLowerCase(),
+				itemsCount + " " + msgToBeVerified.trim().toLowerCase(),
 				"Item Remove message was displayed incorrectly");
 		return this;
 	}
@@ -452,15 +453,6 @@ public class WorkBookUtilitiesPageObjects extends PageFactoryInitializer {
 		getDriver().findElement(By.xpath(
 				"//td[normalize-space(text())='" + itemPartNumber + "']/..//input[@title='Remove from this List']"))
 				.click();
-		return this;
-	}
-
-	@Step("Verify if item with part Number:{0}, is not present in the workbook's Item List")
-	public WorkBookUtilitiesPageObjects verifyItemNotPresentInList(String itemPartNumber) {
-		Assert.assertEquals(getDriver().findElements(By
-				.xpath("//tbody[@id='storeItemListTableFormId:storedItemListTableId:tb']//tr[1]//td[normalize-space(text())='"
-						+ itemPartNumber + "']"))
-				.size(), 0, "Delete item from Workbook is not working");
 		return this;
 	}
 
@@ -592,15 +584,25 @@ public class WorkBookUtilitiesPageObjects extends PageFactoryInitializer {
 	}
 
 	@Step("Verify if message \"{0}\" is displayed")
-	public WorkBookUtilitiesPageObjects verifyItemAssignToCategoryMsg(String itemAssignToCategorySuccessMsg) {
+	public WorkBookUtilitiesPageObjects verifyItemAssignToCategoryMsg(int itemsCount,
+			String itemAssignToCategorySuccessMsg) {
 		waiting.explicitWaitVisibilityOfElement(bulkItemCategorizationMsgLocator, 10);
-		Assert.assertTrue(
-				bulkItemCategorizationMsgLocator.getText().trim().toLowerCase()
-						.contains(itemAssignToCategorySuccessMsg.trim().toLowerCase()),
-				"Message for \"Bulk Categorization\" is displayed incorrectly.");
+		Assert.assertEquals(bulkItemCategorizationMsgLocator.getText().trim().toLowerCase(),
+				itemsCount + " " + itemAssignToCategorySuccessMsg.trim().toLowerCase(),
+				"Message for \"Bulk Categorization\" is displayed incorrectly,");
 		return this;
 	}
 
+	@Step("Verify if message \"{0}\" is displayed")
+	public WorkBookUtilitiesPageObjects verifyItemRemoveFromCategoryMsg(
+			String itemAssignToCategorySuccessMsg) {
+		waiting.explicitWaitVisibilityOfElement(bulkItemCategorizationMsgLocator, 10);
+		Assert.assertEquals(bulkItemCategorizationMsgLocator.getText().trim().toLowerCase(),
+				itemAssignToCategorySuccessMsg.trim().toLowerCase(),
+				"Message for \"Bulk Categorization\" is displayed incorrectly,");
+		return this;
+	}
+	
 	@Step("Click On\"Items To Subset\" tab")
 	public WorkBookUtilitiesPageObjects clickOnItemsToSubsetTab() {
 		waiting.explicitWaitVisibilityOfElement(itemsToSubsetTabLocator, 10);
@@ -632,14 +634,11 @@ public class WorkBookUtilitiesPageObjects extends PageFactoryInitializer {
 	}
 
 	@Step("Verify if message \"{0}\" is displayed in \"Items to Subset\" tab")
-	public WorkBookUtilitiesPageObjects verifyItemsToSubsetMsg(String itemsToSubsetSuccessMsg) {
+	public WorkBookUtilitiesPageObjects verifyItemsToSubsetMsg(int itemsCount, String itemsToSubsetSuccessMsg) {
 		waiting.explicitWaitVisibilityOfElement(itemsToSubsetMsgLocator, 10);
-		Assert.assertTrue(
-				itemsToSubsetMsgLocator.getText().trim().toLowerCase()
-						.contains(itemsToSubsetSuccessMsg.trim().toLowerCase()),
-				"Message for \"Items to subset\" is displayed incorrectly. Expected message: \""
-						+ itemsToSubsetSuccessMsg.trim().toLowerCase() + "\" is not present in the actual message: \""
-						+ itemsToSubsetMsgLocator.getText().trim().toLowerCase());
+		Assert.assertEquals(itemsToSubsetMsgLocator.getText().trim().toLowerCase(),
+				itemsCount + " " + itemsToSubsetSuccessMsg.trim().toLowerCase(),
+				"Message for \"Items to subset\" is displayed incorrectly,");
 		return this;
 	}
 
@@ -654,6 +653,7 @@ public class WorkBookUtilitiesPageObjects extends PageFactoryInitializer {
 	public WorkBookUtilitiesPageObjects enterAndSelectManufacturerName(String newManufacturerName)
 			throws InterruptedException {
 		waiting.explicitWaitVisibilityOfElement(manufacturerNameDropDownLocator, 10);
+		manufacturerNameDropDownLocator.clear();
 		manufacturerNameDropDownLocator.sendKeys(newManufacturerName);
 		Thread.sleep(2000);
 		waiting.explicitWaitVisibilityOfElement(
@@ -665,6 +665,7 @@ public class WorkBookUtilitiesPageObjects extends PageFactoryInitializer {
 	@Step("Enter Brand name as \"{0}\" in Brand Name drop down and click on the Brand name from the list")
 	public WorkBookUtilitiesPageObjects enterAndSelectBrandName(String newBrandName) throws InterruptedException {
 		waiting.explicitWaitVisibilityOfElement(brandNameDropDownLocator, 10);
+		brandNameDropDownLocator.clear();
 		brandNameDropDownLocator.sendKeys(newBrandName);
 		Thread.sleep(2000);
 		waiting.explicitWaitVisibilityOfElement(By.xpath("//span[normalize-space(text())='" + newBrandName + "']"), 10);
@@ -680,19 +681,16 @@ public class WorkBookUtilitiesPageObjects extends PageFactoryInitializer {
 	}
 
 	@Step("Verify if message \"{0}\" is displayed in \"Items to New Brand\" tab")
-	public WorkBookUtilitiesPageObjects verifyItemsToNewBrandMsg(String itemsToNewBrandSuccessMsg) {
+	public WorkBookUtilitiesPageObjects verifyItemsToNewBrandMsg(int itemsCount, String itemsToNewBrandSuccessMsg) {
 		waiting.explicitWaitVisibilityOfElement(itemsToNewBrandMsgLocator, 10);
-		Assert.assertTrue(
-				itemsToNewBrandMsgLocator.getText().trim().toLowerCase()
-						.contains(itemsToNewBrandSuccessMsg.trim().toLowerCase()),
-				"Message for \"Items to New Brand\" is displayed incorrectly. Expected message: \""
-						+ itemsToNewBrandSuccessMsg.trim().toLowerCase() + "\" is not present in the actual message: \""
-						+ itemsToNewBrandMsgLocator.getText().trim().toLowerCase());
+		Assert.assertEquals(itemsToNewBrandMsgLocator.getText().trim().toLowerCase(),
+				itemsCount + " " + itemsToNewBrandSuccessMsg.trim().toLowerCase(),
+				"Message for \"Items to New Brand\" is displayed incorrectly,");
 		return this;
 	}
 
 	@Step("Verify if workbook has {0} items")
-	public WorkBookUtilitiesPageObjects verifyItemCountInWorkbook(int itemsCount) {
+	public WorkBookUtilitiesPageObjects verifyItemsInWorkbook(int itemsCount) {
 		waiting.explicitWaitVisibilityOfElements(By.xpath("//tr[contains(@class,'rich-table-row')]"), 10);
 		Assert.assertEquals(getDriver().findElements(By.xpath("//tr[contains(@class,'rich-table-row')]")).size(),
 				itemsCount, "Mismatch in total number of items in workbook,");

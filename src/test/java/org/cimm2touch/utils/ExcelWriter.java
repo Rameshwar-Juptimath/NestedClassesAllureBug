@@ -101,12 +101,12 @@ public class ExcelWriter {
 		output_file.close();
 	}
 
-	public void removeSheetsExcluding(String excelSheetName) throws IOException {
+	public void removeAllSheetsExcludingOne(String excludedSheetName) throws IOException {
 		FileOutputStream output_file = new FileOutputStream(new File(ExcelSheetPath));
 		boolean sheetFound = false;
 		if (xssfwrkbook != null) {
 			while (xssfwrkbook.getNumberOfSheets() > 1) {
-				if (xssfwrkbook.getSheetName(0).equalsIgnoreCase(excelSheetName)) {
+				if (xssfwrkbook.getSheetName(0).equalsIgnoreCase(excludedSheetName)) {
 					sheetFound = true;
 				}
 				if (sheetFound) {
@@ -119,7 +119,7 @@ public class ExcelWriter {
 		}
 		if (hssfwrkbook != null) {
 			while (xssfwrkbook.getNumberOfSheets() != 1) {
-				if (!hssfwrkbook.getSheetName(0).equals(excelSheetName)) {
+				if (!hssfwrkbook.getSheetName(0).equals(excludedSheetName)) {
 					sheetFound = true;
 					xssfwrkbook.removeSheetAt(0);
 				}

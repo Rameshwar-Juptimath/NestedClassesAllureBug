@@ -1,6 +1,7 @@
 
 package org.cimm2touch.utils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import org.framework.maincontroller.MainController;
@@ -124,6 +125,9 @@ public class TestUtilityMethods extends MainController {
 
 	// Rameshwar Code Begins
 
+	public void fileUploadAutoIt(String filePath) throws IOException{
+		Runtime.getRuntime().exec("resources/AutoIt/fileUpload.exe "+filePath);
+	}
 	// Rameshwar Code Ends
 
 	// Vadi Code Begins
