@@ -3,13 +3,13 @@ package org.cimm2touch.modules;
 import java.io.File;
 import java.util.Hashtable;
 
-import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.cimm2touch.dataprovider.SearchData;
 import org.cimm2touch.initializer.PageFactoryInitializer;
 import org.cimm2touch.utils.ExcelWriter;
 import org.cimm2touch.utils.SearchDataPropertyFile;
 import org.framework.utils.PermittedCharacters;
-import org.framework.utils.RandomGenerator;import org.openqa.selenium.TimeoutException;
+import org.framework.utils.RandomGenerator;
+import org.openqa.selenium.TimeoutException;
 import org.testng.annotations.Test;
 
 import ru.yandex.qatools.allure.annotations.Description;
