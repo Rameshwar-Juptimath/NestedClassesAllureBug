@@ -17,7 +17,7 @@ import ru.yandex.qatools.allure.annotations.Features;
 import ru.yandex.qatools.allure.annotations.Issue;
 import ru.yandex.qatools.allure.annotations.TestCaseId;
 
-public class WorkBookUtilitiesTest extends PageFactoryInitializer{
+public class WorkbookUtilitiesTest extends PageFactoryInitializer{
 	SearchDataPropertyFile data = new SearchDataPropertyFile();
 	Hashtable<String, String> creationData=new Hashtable<String,String>();
 	
@@ -48,7 +48,7 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 	static int itemsCount = 0;
 	
 	
-	/*
+	
 	@Test(groups = {"regression"})
 	public class IndependentMentods extends PageFactoryInitializer{
 		
@@ -189,7 +189,7 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 		}
 
 	}
-	*/
+	
 	
 	@Test(groups={"regression", workBookUtilitiesCreation})
 	public class WorkBookUtilitiesCreation extends PageFactoryInitializer{
@@ -219,7 +219,7 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 	
 	}
 	
-	/*@Test(groups = { "regression", workBookUtilitiesDependent }, dependsOnGroups = { workBookUtilitiesCreation })
+	@Test(groups = { "regression", workBookUtilitiesDependent }, dependsOnGroups = { workBookUtilitiesCreation })
 	public class WorkBookUtilitiesCreationDependent extends PageFactoryInitializer {
 		
 		@Features(value = {"Workbook Utitlites Module"})
@@ -250,7 +250,7 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 			.verifyAllItemListHeaders(itemListHeaders);
 		}
 		
-	}*/
+	}
 	
 	@Test(groups = { "regression", importItemsToWorkbook }, dependsOnGroups = { workBookUtilitiesCreation })
 	public class ImportItemsToWorkBook extends PageFactoryInitializer{
@@ -300,6 +300,7 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 		@Features(value = { "Workbook Utitlites Module" })
 		@Description("Verification of 'Import Items to Workbook' functionality using file format as 'Part Number, Brand Name, Manufacturer Name'")
 		@TestCaseId("TC_WU_016")
+		@Issue(value = "Functionality not working")
 		@Test(dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class,enabled=false)
 		public void TC_WU_016(String excelSheetPath, String excelSheetName,String itemAddedSuccessMsg) throws Exception{
 			System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -343,6 +344,7 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 		@Features(value = { "Workbook Utitlites Module" })
 		@Description("Verification of 'Import Items to Workbook' functionality using file format as 'Manufacturer Part Number, Manufacturer Name'")
 		@TestCaseId("TC_WU_017")
+		@Issue(value = "Functionality not working")
 		@Test(dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class,enabled=false)
 		public void TC_WU_017(String excelSheetPath, String excelSheetName,String itemAddedSuccessMsg) throws Exception{
 			System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -383,6 +385,7 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 		@Features(value = { "Workbook Utitlites Module" })
 		@Description("Verification of 'Import Items to Workbook' functionality using file format as 'Manufacturer Part Number, Brand Name'")
 		@TestCaseId("TC_WU_018")
+		@Issue(value = "Functionality not working")
 		@Test(dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class,enabled=false)
 		public void TC_WU_018(String excelSheetPath, String excelSheetName,String itemAddedSuccessMsg) throws Exception{
 			System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -438,7 +441,7 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 		}
 	}
 	
-	@Test(groups = { "regression", importDependent })//, dependsOnGroups = { importItemsToWorkbook },alwaysRun=true)
+	@Test(groups = { "regression", importDependent }, dependsOnGroups = { importItemsToWorkbook },alwaysRun=true)
 	public class ImportDependent extends PageFactoryInitializer{
 
 		@Features(value = { "Workbook Utitlites Module" })
@@ -690,6 +693,7 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 		@Features(value = { "Workbook Utitlites Module" })
 		@Description("Verification of 'Import Items to Workbook' functionality using file format as 'UPC'")
 		@TestCaseId("TC_WU_019")
+		@Issue(value = "Functionality not working, Items are being uploaded even when they are not mentioned in the excel sheet")
 		@Test(dataProvider = "WorkbookUtilitiesModuleTest", dataProviderClass = SearchData.class,alwaysRun = true,enabled=false)
 		public void TC_WU_019(String excelSheetPath, String excelSheetName,String itemAddedSuccessMsg) throws Exception{
 			System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -728,7 +732,7 @@ public class WorkBookUtilitiesTest extends PageFactoryInitializer{
 		@Features(value = { "Workbook Utitlites Module" })
 		@Description("Verification of 'Purge all items in this workbook' functionality")
 		@TestCaseId("TC_WU_010")
-		//@Test(dependsOnMethods = { "TC_WU_019" },alwaysRun = true)
+		@Test(dependsOnMethods = { "TC_WU_019" },alwaysRun = true)
 		public void TC_WU_010() throws Exception{
 			System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
 			landingPage().enterUsername(data.getUsername()).enterPassword(data.getPassword()).clickOnLogin()
